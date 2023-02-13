@@ -23,7 +23,7 @@ interface ButtonProps {
 
 interface HeaderProps {
   tabs: TabProps[]
-  buttons?: ButtonProps[]
+  buttons: ButtonProps[]
 }
 
 const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
@@ -40,22 +40,23 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
             { isMatch
               ? (
                 <>
-                  <DrawerComp/>
-                  <Typography marginLeft={'1%'} className="ecg-title" variant="body1">
+                  {/* <Typography sx={{ fontSize: '1.2rem', paddingLeft: '10%' }}> */}
+                  <Typography className="ecg-title">
                     Análisis de electrocardiogramas con IA
                   </Typography>
-
+                  <DrawerComp tabs={tabs} buttons={buttons}/>
                 </>
                 )
               : (
                 <>
-                <Typography marginLeft={'1%'} className="ecg-title" variant="body1">
+                {/* <Typography sx={{ fontSize: '1.2rem', paddingLeft: '10%' }}> */}
+                <Typography className="ecg-title">
                     Análisis de electrocardiogramas con IA
                   </Typography>
                 <Tabs
+                sx={{ marginLeft: 'auto' }}
             textColor='inherit'
             className='tabs-text'
-            sx={{ marginLeft: 'auto' }}
             value={value}
             onChange={(e, value) => { setValue(value) }}
 

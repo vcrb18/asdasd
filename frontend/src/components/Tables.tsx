@@ -4,6 +4,7 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import { TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
+import { dark } from '@mui/material/styles/createPalette'
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 

@@ -2,8 +2,22 @@ import React, { useState } from 'react'
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 
-const DrawerComp: React.FunctionComponent = () => {
+interface DrawerTabItems {
+  label: string
+}
+
+interface DrawerButtonItems {
+  label: string
+}
+
+interface DrawerCompProps {
+  tabs: DrawerTabItems[]
+  buttons: DrawerButtonItems[]
+}
+
+const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const tabsAndButtons = props.tabs.concat(props.buttons)
 
   return (
     <React.Fragment>
@@ -11,14 +25,19 @@ const DrawerComp: React.FunctionComponent = () => {
             onClose={() => { setOpenDrawer(false) }}
         >
             <List>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <ListItemText>Login</ListItemText>
-                    </ListItemIcon>
-                </ListItemButton>
+                {
+                    tabsAndButtons.map((tab, index) => (
+                        <ListItemButton onClick={() => { setOpenDrawer(false) }} key={index}>
+                            <ListItemIcon>
+                                <ListItemText>{tab.label}</ListItemText>
+                            </ListItemIcon>
+                        </ListItemButton>
+
+                    ))
+                }
             </List>
         </Drawer>
-        <IconButton onClick={() => { setOpenDrawer(!openDrawer) }}>
+        <IconButton sx={{ color: '#e0e0e0', marginLeft: 'auto' }} onClick={() => { setOpenDrawer(!openDrawer) }}>
             <MenuIcon sx={{ marginLeft: 'auto' }} />
         </IconButton>
 
