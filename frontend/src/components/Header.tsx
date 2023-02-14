@@ -10,10 +10,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import EngineeringIcon from "@mui/icons-material/Engineering";
+// import EngineeringIcon from "@mui/icons-material/Engineering";
 import "../styles/Header.css";
 import DrawerComp from "../components/DrawerComp";
-// import Image from 'mui-image'
+import Logo from "../components/Logo";
+// import Avatar from '@mui/material/Avatar';
 
 interface TabProps {
   label: string;
@@ -44,8 +45,10 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
     <React.Fragment>
       <AppBar sx={{ background: "#bababa" }}>
         <Toolbar>
-          <EngineeringIcon />
-          {/* <Image class='ecg-image' src='../media/Logo_PSINet.jpeg'> */}
+          <Logo />
+          {/* <EngineeringIcon /> */}
+          {/* <Image class='ecg-image' src='../media/Logo_PSINet.jpeg' /> */}
+          {/* <Avatar alt="PSINet Logo" src="../media/Logo_PSINet.jpeg" /> */}
           {isMatch ? (
             <>
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
