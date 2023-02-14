@@ -7,9 +7,13 @@
     max-width: 7%;
     height: auto;
     text-align: left;
-    font-size: 1.5rem; 
     padding-left: 5%;
 }
+
+/* .ecg-image {
+    width: 7%;
+    height: auto;    
+} */
 
 .tabs-text {
     color: #404040;

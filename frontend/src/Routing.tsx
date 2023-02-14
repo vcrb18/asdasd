@@ -4,8 +4,8 @@ import CustomizedTables from './components/Tables'
 
 function Routing () {
   const landingPageTabs = [
-    { label: 'About Us' },
-    { label: 'Contact Us' }
+    { label: 'Sobre Nosotros' },
+    { label: 'Contactanos' }
   ]
 
   const landingPageButtons = [

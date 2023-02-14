@@ -9,9 +9,11 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import EngineeringIcon from '@mui/icons-material/Engineering'
 import '../styles/Header.css'
 import DrawerComp from '../components/DrawerComp'
+// import Image from 'mui-image'
 
 interface TabProps {
   label: string
@@ -30,6 +32,13 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
   const [value, setValue] = useState()
   const theme = useTheme()
   const isMatch = useMediaQuery(theme.breakpoints.down('md'))
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#4d4d4d'
+      }
+    }
+  })
 
   return (
     <React.Fragment>
@@ -37,11 +46,11 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
         <Toolbar>
 
           <EngineeringIcon/>
+          {/* <Image class='ecg-image' src='../media/Logo_PSINet.jpeg'> */}
             { isMatch
               ? (
                 <>
-                  {/* <Typography sx={{ fontSize: '1.2rem', paddingLeft: '10%' }}> */}
-                  <Typography className="ecg-title">
+                  <Typography sx={{ fontSize: '1.2rem' }} className="ecg-title">
                     Análisis de electrocardiogramas con IA
                   </Typography>
                   <DrawerComp tabs={tabs} buttons={buttons}/>
@@ -49,8 +58,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
                 )
               : (
                 <>
-                {/* <Typography sx={{ fontSize: '1.2rem', paddingLeft: '10%' }}> */}
-                <Typography className="ecg-title">
+                <Typography sx={{ fontSize: '1.2rem' }} className="ecg-title">
                     Análisis de electrocardiogramas con IA
                   </Typography>
                 <Tabs
@@ -66,13 +74,15 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
             ))}
           </Tabs>
 
+          <ThemeProvider theme={buttonsTheme}>
           {(buttons != null) && buttons.length > 0
             ? (
                 buttons.map((button, index) => (
-              <Button color='secondary' key={index} sx={index === 0 ? { marginLeft: 'auto' } : index === 1 ? { marginLeft: '1%' } : {}} variant='contained'>{button.label}</Button>
+              <Button color='primary' key={index} sx={index === 0 ? { marginLeft: 'auto' } : index === 1 ? { marginLeft: '1%' } : {}} variant='contained'>{button.label}</Button>
                 ))
               )
             : null}
+          </ThemeProvider>
                 </>
                 )
               }
