@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 
-interface LandingPageProps {
+export interface LandingPageProps {
   tabs: Array<{ label: string }>;
   buttons: Array<{ label: string }>;
 }

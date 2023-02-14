@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/Header";
 import CustomizedTables from "./components/Tables";
+import Login from "./components/Login";
 
 function Routing(): JSX.Element {
   const landingPageTabs = [
@@ -20,6 +21,12 @@ function Routing(): JSX.Element {
           path="/"
           element={
             <LandingPage tabs={landingPageTabs} buttons={landingPageButtons} />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Login tabs={landingPageTabs} buttons={landingPageButtons} />
           }
         />
         <Route path="/examenes" element={<CustomizedTables />} />
