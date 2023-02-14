@@ -1,13 +1,13 @@
 .psinet-logo {
-    max-width: 5%;
-    height: auto;
+  max-width: 5%;
+  height: auto;
 }
 
 .ecg-title {
-    max-width: 7%;
-    height: auto;
-    text-align: left;
-    padding-left: 5%;
+  max-width: 7%;
+  height: auto;
+  text-align: left;
+  padding-left: 5%;
 }
 
 /* .ecg-image {
@@ -16,5 +16,5 @@
 } */
 
 .tabs-text {
-    color: #404040;
+  color: #404040;
 }

@@ -1,26 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LandingPage from './components/Header'
-import CustomizedTables from './components/Tables'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./components/Header";
+import CustomizedTables from "./components/Tables";
 
-function Routing () {
+function Routing(): JSX.Element {
   const landingPageTabs = [
-    { label: 'Sobre Nosotros' },
-    { label: 'Contactanos' }
-  ]
+    { label: "Sobre Nosotros" },
+    { label: "Contactanos" },
+  ];
 
   const landingPageButtons = [
-    { label: 'Iniciar Sesión' },
-    { label: 'Registrarse' }
-  ]
+    { label: "Iniciar Sesión" },
+    { label: "Registrarse" },
+  ];
 
   return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<LandingPage tabs={landingPageTabs} buttons={landingPageButtons}/>}/>
-                <Route path="/examenes" element={<CustomizedTables/>}/>
-            </Routes>
-        </BrowserRouter>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <LandingPage tabs={landingPageTabs} buttons={landingPageButtons} />
+          }
+        />
+        <Route path="/examenes" element={<CustomizedTables />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default Routing
+export default Routing;
