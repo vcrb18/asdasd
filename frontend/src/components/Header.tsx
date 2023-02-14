@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../styles/Header.css";
 import DrawerComp from "../components/DrawerComp";
 import Logo from "../components/Logo";
+import NavBarButton from "./NavBarButton";
 // import Avatar from '@mui/material/Avatar';
 
 interface TabProps {
@@ -74,8 +75,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
                   <Tab key={index} label={tab.label} />
                 ))}
               </Tabs>
-
-              <ThemeProvider theme={buttonsTheme}>
+              {/* <ThemeProvider theme={buttonsTheme}>
                 {buttons != null && buttons.length > 0
                   ? buttons.map((button, index) => (
                       <Button
@@ -94,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
                       </Button>
                     ))
                   : null}
-              </ThemeProvider>
+              </ThemeProvider> */}
             </>
           )}
         </Toolbar>
