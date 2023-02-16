@@ -17,6 +17,8 @@
   "plugins": ["react"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "triple-slash-reference": "off"
+    "triple-slash-reference": "off",
+    "strict-boolean-expressions": "off",
+    "prefer-nullish-coalescing": "off"
   }
 }

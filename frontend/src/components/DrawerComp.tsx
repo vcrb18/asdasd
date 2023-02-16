@@ -18,13 +18,15 @@ interface DrawerButtonItems {
 }
 
 interface DrawerCompProps {
-  tabs: DrawerTabItems[];
+  tabs?: DrawerTabItems[];
   buttons: DrawerButtonItems[];
 }
 
 const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const tabsAndButtons = props.tabs.concat(props.buttons);
+  const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
+  // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
+
 
   return (
     <React.Fragment>

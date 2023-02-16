@@ -8,13 +8,5 @@
   height: auto;
   text-align: left;
   padding-left: 5%;
-}
-
-/* .ecg-image {
-    width: 7%;
-    height: auto;    
-} */
-
-.tabs-text {
-  color: #404040;
+  font-weight: bold;
 }

@@ -1,9 +1,9 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Button, useTheme } from "@mui/material";
+import { Button } from "@mui/material";
 
 interface ButtonProps {
-    label: string;
+  label: string;
 }
 
 interface NavBarButtonProps {
@@ -11,11 +11,10 @@ interface NavBarButtonProps {
 }
 
 const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
-  const theme = useTheme();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
-        main: "#4d4d4d",
+        main: "#006a6b",
       },
     },
   });
@@ -26,13 +25,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
             <Button
               color="primary"
               key={index}
-              sx={
-                index === 0
-                  ? { marginLeft: "auto" }
-                  : index === 1
-                  ? { marginLeft: "1%" }
-                  : {}
-              }
+              sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
               variant="contained"
             >
               {button.label}

@@ -1,0 +1,4 @@
+.login-text:required {
+    background-color: red !important;
+    color: darkgoldenrod;
+}

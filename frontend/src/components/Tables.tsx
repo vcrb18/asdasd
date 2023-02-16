@@ -25,7 +25,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "paciente" | "fecha" | "resultados" | "algun" | "dato" | "extra";
+  id:
+      | "folio"
+    | "paciente"
+    | "fecha"
+    | "resultados"
+    | "algun"
+    | "dato"
+    | "extra";
   label: string;
   minWidth?: string;
   align?: "center" | "left" | "right";
