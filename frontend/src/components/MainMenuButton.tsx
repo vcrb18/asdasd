@@ -45,7 +45,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({
   headerButtonLabels,
 }) => {
   return (
-    <React.Fragment> 
+    <>
       <Header buttons={headerButtonLabels} />
       <Box
       display={"flex"}
@@ -54,7 +54,6 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({
       fontSize={"3rem"}
       color="primary.main"
       paddingLeft={'2%'}
-      paddingBottom={'50%'}
       sx={{width: '-webkit-fill-available'}}
       >
       Menú Principal
@@ -89,7 +88,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({
             ))
           : null}
       </Grid>
-    </React.Fragment>
+    </>
   );
 };
 

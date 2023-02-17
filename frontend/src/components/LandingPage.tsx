@@ -1,43 +1,25 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-import Logo from "./Logo";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 export interface LandingPageProps {
-  buttons: Array<{ label: string; href: string }>;
-  tabs: Array<{ label: string; }>;
+  buttons: Array<{ label: string, href: string }>;
+  tabs?: Array<{ label: string }>;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
-  const tabIndex = 0;
-  console.log("tabIndex");
-  console.log(tabIndex);
+  const [tabIndex, setTabIndex] = useState(0);
 
-  
-  // const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-  //   setTabIndex(newValue);
-  // };
+  const handleTabChange = (value: number) => {
+    setTabIndex(value);
+  };
 
   return (
     <>
-      {/* No le estaba pasando los tabs y igual los estaba mostrando. WTF */}
-      <Header tabs={tabs} buttons={buttons} />;
+      <Header tabs={tabs} buttons={buttons} onTabChange={handleTabChange} />
       <Box sx={{ padding: 2 }}>
-        {tabIndex === 0 && (
-          <Box>
-            <Typography>The first tab</Typography>
-          </Box>
-        )}
-        {tabIndex === 1 && (
-          <Box>
-            <Typography>The second tab</Typography>
-          </Box>
-        )}
-        {tabIndex === 2 && (
-          <Box>
-            <Typography>The third tab</Typography>
-          </Box>
-        )}
+        {tabIndex === 0 && <p>Render Component 1</p>}
+        {tabIndex === 1 && <p>Render Component 2</p>}
       </Box>
     </>
   );

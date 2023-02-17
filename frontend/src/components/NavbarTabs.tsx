@@ -4,10 +4,16 @@ import { TabProps } from "./Header";
 
 interface NavbarTabsProps {
   tabs: TabProps[];
+  onTabChange: (index: number) => void;
 }
 
-const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs }) => {
-  const [tabIndex, setTabIndex] = useState();
+const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (event: React.SyntheticEvent, newIndex: number) => {
+    setTabIndex(newIndex);
+    onTabChange(newIndex);
+  };
 
   return (
     <Tabs
@@ -15,9 +21,7 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs }) => {
       textColor="inherit"
       className="tabs-text"
       value={tabIndex}
-      onChange={(e, value) => {
-        setTabIndex(value);
-      }}
+      onChange={handleTabChange}
     >
       {tabs.map((tab, index) => (
         <Tab key={index} label={tab.label} />

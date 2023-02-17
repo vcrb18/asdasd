@@ -69,10 +69,9 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               Iniciar Sesión
             </Typography>
             <TextField
-              name="username"
-              value={loginInputs.username}
-              onChange={handleChange}
-              className="login-text"
+            margin="normal"
+            type={"text"}
+              name="login-text"
               required
               color="success"
               margin="normal"

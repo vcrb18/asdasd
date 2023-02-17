@@ -24,9 +24,10 @@ export interface ButtonProps {
 interface HeaderProps {
   tabs?: TabProps[];
   buttons: ButtonProps[];
+  onTabChange: (value: number) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
+const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabChange }) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -38,18 +39,19 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
           {isMatch ? (
             <>
               <Typography sx={{ fontSize: "1.2rem", paddingTop: "50%" }} className="ecg-title">
-                Análisis de electrocardiogramas con IA
+                ISATEC HEART
               </Typography>
               <DrawerComp buttons={buttons} />
             </>
           ) : (
             <>
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                Análisis de electrocardiogramas con IA
+                ISATEC HEART
               </Typography>
               {tabs && tabs.length > 0 ? (
                 <>
-                  <NavbarTabs tabs={tabs} />
+                  <NavbarTabs tabs={tabs} onTabChange={(index: number) => console.log(`Tab index changed to ${index}`)} />
+                  {/* <NavbarTabs tabs={tabs} onTabChange={onTabChange} /> */}
                   <NavBarButton buttonsLabels={buttons} />
                 </>
               ) : (
