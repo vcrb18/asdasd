@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "@mui/material";
-
-interface TabProps {
-  label: string;
-}
+import { TabProps } from "./Header";
 
 interface NavbarTabsProps {
   tabs: TabProps[];
 }
 
 const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs }) => {
-  const [value, setValue] = useState();
+  const [tabIndex, setTabIndex] = useState();
 
   return (
     <Tabs
       sx={{ marginLeft: "auto" }}
       textColor="inherit"
       className="tabs-text"
-      value={value}
+      value={tabIndex}
       onChange={(e, value) => {
-        setValue(value);
+        setTabIndex(value);
       }}
     >
       {tabs.map((tab, index) => (

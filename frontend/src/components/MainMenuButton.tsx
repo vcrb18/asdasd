@@ -1,66 +1,95 @@
 // import { useTheme } from "@emotion/react";
-import { Button, Container} from "@mui/material";
 // import { createTheme} from "@mui/system";
+import { Fab } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React from "react";
-import Grid from "@mui/material/Unstable_Grid2";
-import Box from '@mui/material/Box';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Header from "./Header";
+import { start } from "repl";
 
 interface ButtonProps {
   label: string;
+  href: string;
 }
 
 interface MainMenuButtonProps {
-  buttonLabels: ButtonProps[];
+  headerButtonLabels: ButtonProps[];
+  pageButtonLabels: ButtonProps[];
 }
-// const CustomContainer: React.FC<ButtonProps> = ({buttonLabels})=>{
-//     return(
-//         <Container fixed>
-            
-//             <Button>
-//                 {}
-//                 <ArrowForwardIcon></ArrowForwardIcon>
-//             </Button>
-//             </Box>
-//         </Container>
-//     )
-// }
 
-const MainMenuButton: React.FC<MainMenuButtonProps> = ({ buttonLabels }) => {
-//   const buttonsTheme = createTheme({
-//     palette: {
-//       primary: {
-//         main: "#006a6b",
-//       },
-//       secondary: {
-//         main: "#404040",
-//       },
-//     },
-//   });
+const boxDefault = {
+  border: "1px solid black",
+  padding: 2,
+  bgcolor: "primary.main",
+  flexGrow: 1,
+};
+
+const iconBox = {
+  padding: 2,
+  bgcolor: "primary.main",
+  flexGrow: 1,
+};
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
+const MainMenuButton: React.FC<MainMenuButtonProps> = ({
+  pageButtonLabels,
+  headerButtonLabels,
+}) => {
   return (
-    <Grid
-      container
-      spacing={{ xs: 2, md: 2 }}
-      columns={{ xs: 4, sm: 8, md: 12 }}
-    >
-      {buttonLabels != null && buttonLabels.length > 0
-        ? buttonLabels.map((button, index) => (
-            <Grid xs={2} sm={4} md={4} key={index}>
-                <Container fixed>
-                    <Box 
-                    justifyContent="flex-end"
-                    aling-items="flex-end"
-                    // borderColor="black"
-                    >
-                    <Button color="primary" variant="contained">
-                        {button.label}
-                    </Button>
+    <React.Fragment> 
+      <Header buttons={headerButtonLabels} />
+      <Box
+      display={"flex"}
+      justifyContent={"flex-start"}
+      alignItems={"flex-start"}
+      fontSize={"3rem"}
+      color="primary.main"
+      paddingLeft={'2%'}
+      paddingBottom={'50%'}
+      sx={{width: '-webkit-fill-available'}}
+      >
+      Menú Principal
+      </Box>
+      <Grid container lg={12} padding={5} spacing={"1%"} 
+      sx={{width: '-webkit-fill-available', heigth: '-webkit-fill-available'}}
+      >
+        {pageButtonLabels != null && pageButtonLabels.length > 0
+          ? pageButtonLabels.map((button, index) => (
+            <Grid item lg={6} xs={12} key={index}>
+                <Item>
+                  <Box>
+                    <Box
+                      display={"flex"}
+                      justifyContent={"flex-start"}
+                      fontSize={"1.26rem"}
+                      >
+                      {button.label}
                     </Box>
-                </Container>
-            </Grid>
-          ))
-        : null}
-    </Grid>
+                    <Box
+                      display={"flex"}
+                      justifyContent={"flex-end"}
+                      alignItems={"flex-end"}
+                      >
+                      <Fab size="small" color="secondary" href={button.href}>
+                        <ArrowForwardIcon />
+                      </Fab>
+                    </Box>
+                  </Box>
+                </Item>
+              </Grid>
+            ))
+          : null}
+      </Grid>
+    </React.Fragment>
   );
 };
 

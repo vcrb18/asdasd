@@ -1,10 +1,7 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "@mui/material";
-
-interface ButtonProps {
-  label: string;
-}
+import { ButtonProps } from "./Header";
 
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
@@ -25,6 +22,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
             <Button
               color="primary"
               key={index}
+              href={button.href}
               sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
               variant="contained"
             >

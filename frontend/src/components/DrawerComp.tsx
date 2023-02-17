@@ -11,10 +11,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 interface DrawerTabItems {
   label: string;
+  href: string;
 }
 
 interface DrawerButtonItems {
   label: string;
+  href: string;
 }
 
 interface DrawerCompProps {
@@ -27,7 +29,6 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
 
-
   return (
     <React.Fragment>
       <Drawer
@@ -37,15 +38,16 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
         }}
       >
         <List>
-          {tabsAndButtons.map((tab, index) => (
+          {tabsAndButtons.map((tabOrButton, index) => (
             <ListItemButton
+              href={tabOrButton.href}
               onClick={() => {
                 setOpenDrawer(false);
               }}
               key={index}
             >
               <ListItemIcon>
-                <ListItemText>{tab.label}</ListItemText>
+                <ListItemText>{tabOrButton.label}</ListItemText>
               </ListItemIcon>
             </ListItemButton>
           ))}

@@ -10,13 +10,15 @@ import "../styles/Header.css";
 import DrawerComp from "../components/DrawerComp";
 import Logo from "../components/Logo";
 import NavBarButton from "./NavBarButton";
+import NavbarTabs from "./NavbarTabs";
 
-interface TabProps {
+export interface TabProps {
   label: string;
 }
 
 export interface ButtonProps {
   label: string;
+  href: string;
 }
 
 interface HeaderProps {
@@ -35,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
           <Logo />
           {isMatch ? (
             <>
-              <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
+              <Typography sx={{ fontSize: "1.2rem", paddingTop: "50%" }} className="ecg-title">
                 Análisis de electrocardiogramas con IA
               </Typography>
               <DrawerComp buttons={buttons} />
@@ -45,7 +47,14 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons }) => {
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 Análisis de electrocardiogramas con IA
               </Typography>
-              <NavBarButton buttonsLabels={buttons} />
+              {tabs && tabs.length > 0 ? (
+                <>
+                  <NavbarTabs tabs={tabs} />
+                  <NavBarButton buttonsLabels={buttons} />
+                </>
+              ) : (
+                <NavBarButton buttonsLabels={buttons} />
+              )}
             </>
           )}
         </Toolbar>

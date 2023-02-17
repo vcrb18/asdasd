@@ -26,7 +26,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // obtener desde la base de datos
 interface Column {
   id:
-      | "folio"
+    | "folio"
     | "paciente"
     | "fecha"
     | "resultados"

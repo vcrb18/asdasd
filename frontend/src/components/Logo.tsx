@@ -1,6 +1,8 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
 import LogoImage from "../static/images/Logo_PSINet.jpg";
+import { Link } from "@mui/material";
+
 const Logo: React.FC = () => {
   const avatarStyle = {
     width: "7%",

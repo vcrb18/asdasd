@@ -3,28 +3,15 @@ import LandingPage from "./components/Header";
 import CustomizedTables from "./components/Tables";
 import Login from "./components/Login";
 import MainMenuButton from "./components/MainMenuButton";
+import {
+  landingPageTabs,
+  landingPageButtons,
+  loginPageButtons,
+  mainMenuPageButtons,
+  mainMenuHeaderButtons,
+} from "./utils/routingPropConsts";
 
 function Routing(): JSX.Element {
-  const landingPageTabs = [
-    { label: "Sobre Nosotros" },
-    { label: "Contactanos" },
-  ];
-
-  const landingPageButtons = [
-    { label: "Contacto" },
-    { label: "Idioma" },
-    { label: "Iniciar Sesión" },
-  ];
-
-  const loginPageButtons = [{ label: "Idioma" }];
-
-  const mainMenuPageButtons = [
-    { label: "Exámenes" },
-    { label: "Métricas" },
-    { label: "Alertas" },
-    { label: "Descargar Reporte" },
-  ];
-
   return (
     <BrowserRouter>
       <Routes>
@@ -38,7 +25,12 @@ function Routing(): JSX.Element {
         <Route path="/examenes" element={<CustomizedTables />} />
         <Route
           path="/mainmenu"
-          element={<MainMenuButton buttonLabels={mainMenuPageButtons} />}
+          element={
+            <MainMenuButton
+              pageButtonLabels={mainMenuPageButtons}
+              headerButtonLabels={mainMenuHeaderButtons}
+            />
+          }
         />
       </Routes>
     </BrowserRouter>
