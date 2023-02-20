@@ -3,14 +3,14 @@ import Header from "../components/Header";
 import { Box } from "@mui/material";
 
 export interface LandingPageProps {
-  buttons: Array<{ label: string, href: string }>;
+  buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string }>;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleTabChange = (value: number) => {
+  const handleTabChange = (value: number): void => {
     setTabIndex(value);
   };
 

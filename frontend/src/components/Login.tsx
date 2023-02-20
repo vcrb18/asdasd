@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import Header, { ButtonProps, TabProps } from "./Header";
+import Header, { type ButtonProps } from "./Header";
+// import bcrypt from 'bcrypt';
 import "../styles/Login.css";
 
 interface LoginProps {
@@ -12,6 +13,8 @@ interface LoginInputs {
   username: string;
   password: string;
 }
+
+// const bcryptHashComplexity = 10;
 
 const Login: React.FC<LoginProps> = ({ buttons }) => {
   const loginButtonTheme = createTheme({
@@ -26,15 +29,26 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
     password: "",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
     setLoginInputs((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
+    // const hashedPassword = bcrypt.hash(
+    // loginInputs.password,
+    // bcryptHashComplexity,
+    // (error: any, hash: string) => {
+    // if (error) {
+    // console.log("Error encriptando");
+    // } else {
+    // console.log(`Se hasheo la contrasena y es ${hash}`);
+    // }
+    // }
+    // );
     console.log(loginInputs);
   };
   return (
@@ -69,13 +83,11 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               Iniciar Sesión
             </Typography>
             <TextField
-            margin="normal"
-            type={"text"}
+              margin="normal"
+              type={"text"}
               name="login-text"
               required
               color="success"
-              margin="normal"
-              type={"text"}
               variant="outlined"
               placeholder="Usuario"
             />

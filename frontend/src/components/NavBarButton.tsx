@@ -1,7 +1,7 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "@mui/material";
-import { ButtonProps } from "./Header";
+import { type ButtonProps } from "./Header";
 
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];

@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabChange }) => {
           <Logo />
           {isMatch ? (
             <>
-              <Typography sx={{ fontSize: "1.2rem", paddingTop: "50%" }} className="ecg-title">
+              <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC HEART
               </Typography>
               <DrawerComp buttons={buttons} />
@@ -48,9 +48,14 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabChange }) => {
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC HEART
               </Typography>
-              {tabs && tabs.length > 0 ? (
+              {tabs != null && tabs.length > 0 ? (
                 <>
-                  <NavbarTabs tabs={tabs} onTabChange={(index: number) => console.log(`Tab index changed to ${index}`)} />
+                  <NavbarTabs
+                    tabs={tabs}
+                    onTabChange={(index: number) => {
+                      console.log(`Tab index changed to ${index}`);
+                    }}
+                  />
                   {/* <NavbarTabs tabs={tabs} onTabChange={onTabChange} /> */}
                   <NavBarButton buttonsLabels={buttons} />
                 </>
