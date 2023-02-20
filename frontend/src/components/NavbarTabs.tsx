@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "@mui/material";
 import { type TabProps } from "./Header";
 
@@ -14,9 +14,15 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
     event: React.SyntheticEvent,
     newIndex: number
   ): void => {
+    console.log(`NavbarTabs: Tab index changed to ${newIndex}`);
     setTabIndex(newIndex);
     onTabChange(newIndex);
   };
+
+  useEffect(() => {
+    console.log("Entramos al UseEffect del NavbarTabs")
+    // indexUseEffect = tabIndex
+  }, [tabIndex])
 
   return (
     <Tabs

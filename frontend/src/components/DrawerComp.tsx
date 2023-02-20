@@ -26,7 +26,7 @@ interface DrawerCompProps {
 
 const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const tabsAndButtons = [...(props.tabs != null || []), ...props.buttons];
+  const tabsAndButtons = [...((props.tabs != null) || []), ...props.buttons];
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
 
   return (

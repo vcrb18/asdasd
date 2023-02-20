@@ -22,43 +22,43 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
 interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
+    folio: string ;
+    fecha: Date;
+    estado: number;
+    urgencia: number;
+    revisado: boolean;
+    resultados: string;
 }
 
 function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
+  folio: string,
+  fecha: Date,
+  estado: number,
+  urgencia: number,
+  revisado: boolean,
+  resultados: string,
 ): Data {
   return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
+    folio,
+    fecha,
+    estado,
+    urgencia,
+    revisado,
+    resultados,
   };
 }
-
+const tableDate : Date = new Date()
 const rows = [
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Donut", 452, 25.0, 51, 4.9),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Honeycomb", 408, 3.2, 87, 6.5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0),
-  createData("KitKat", 518, 26.0, 65, 7.0),
-  createData("Lollipop", 392, 0.2, 98, 0.0),
-  createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
+  createData("F-123", tableDate, 1, 2, true, "none"),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T): number {
@@ -104,44 +104,36 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0]);
 }
 
+
 interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
+    id: keyof Data;
+    label: string;
+    align?: 'center' | 'left' ;
+    format?:(value:Date) => string;
+    // dataType?: boolean | string | Date | number 
 }
+
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Dessert (100g serving)",
+    id: "folio", label: "Folio", align: 'left',
   },
   {
-    id: "calories",
-    numeric: true,
-    disablePadding: false,
-    label: "Calories",
+    id: "fecha", label: "Fecha de recepción", align: "center", format: (value:Date) => value.toLocaleDateString('en-US')
   },
   {
-    id: "fat",
-    numeric: true,
-    disablePadding: false,
-    label: "Fat (g)",
+     id: "estado", label: "Estado",  align: "center",
   },
   {
-    id: "carbs",
-    numeric: true,
-    disablePadding: false,
-    label: "Carbs (g)",
+    id: "urgencia", label: "urgencia",  align: "center",
   },
   {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Protein (g)",
+    id: "revisado", label: "Revisado",  align: "center",
   },
+  {
+    id: "resultados", label: "Resultados",  align: "center",
+  },
+  
 ];
 
 interface EnhancedTableProps {
@@ -173,22 +165,10 @@ function EnhancedTableHead(props: EnhancedTableProps): JSX.Element {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -210,66 +190,66 @@ function EnhancedTableHead(props: EnhancedTableProps): JSX.Element {
   );
 }
 
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
+// interface EnhancedTableToolbarProps {
+//   numSelected: number;
+// }
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps): JSX.Element {
-  const { numSelected } = props;
+// function EnhancedTableToolbar(props: EnhancedTableToolbarProps): JSX.Element {
+//   const { numSelected } = props;
 
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Nutrition
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
+//   return (
+//     <Toolbar
+//       sx={{
+//         pl: { sm: 2 },
+//         pr: { xs: 1, sm: 1 },
+//         ...(numSelected > 0 && {
+//           bgcolor: (theme) =>
+//             alpha(
+//               theme.palette.primary.main,
+//               theme.palette.action.activatedOpacity
+//             ),
+//         }),
+//       }}
+//     >
+//       {numSelected > 0 ? (
+//         <Typography
+//           sx={{ flex: "1 1 100%" }}
+//           color="inherit"
+//           variant="subtitle1"
+//           component="div"
+//         >
+//           {numSelected} selected
+//         </Typography>
+//       ) : (
+//         <Typography
+//           sx={{ flex: "1 1 100%" }}
+//           variant="h6"
+//           id="tableTitle"
+//           component="div"
+//         >
+//           Nutrition
+//         </Typography>
+//       )}
+//       {numSelected > 0 ? (
+//         <Tooltip title="Delete">
+//           <IconButton>
+//             <DeleteIcon />
+//           </IconButton>
+//         </Tooltip>
+//       ) : (
+//         <Tooltip title="Filter list">
+//           <IconButton>
+//             <FilterListIcon />
+//           </IconButton>
+//         </Tooltip>
+//       )}
+//     </Toolbar>
+//   );
+// }
 
 export default function EnhancedTable(): JSX.Element {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("fecha");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -344,7 +324,6 @@ export default function EnhancedTable(): JSX.Element {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
