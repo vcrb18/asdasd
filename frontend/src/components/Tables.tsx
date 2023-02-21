@@ -8,8 +8,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-
-
 interface Column {
   id: "folio" | "fecha" | "estado" | "urgencia" | "revisado";
   label: string;
@@ -19,24 +17,25 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "folio", label: "Folio", align: "center"},
+  { id: "folio", label: "Folio", align: "center" },
   { id: "fecha", label: "Fecha de recepción", align: "center" },
   {
     id: "estado",
     label: "Estado",
     align: "center",
-    format: (value: boolean) => (value? "Aceptado : "Rechazado")
+    format: (value: boolean) => (value ? "Aceptado" : "Rechazado"),
   },
   {
     id: "urgencia",
     label: "Urgencia",
     align: "center",
-    format: (value) => { value? "Urgente" : "Normal" }
+    format: (value: boolean) => (value ? "Urgente" : "Normal"),
   },
   {
     id: "revisado",
     label: "Revisado",
     align: "center",
+    format: (value: boolean) => (value ? "Si" : "No"),
   },
 ];
 
@@ -59,7 +58,7 @@ function createData(
 }
 
 const rows = [
-  createData("F-11312",new Date(), true, true, true),
+  createData("F-11312", new Date(), true, true, true),
   createData("F-11314", new Date(), false, false, true),
   createData("F-11315", new Date(), false, true, true),
   createData("F-11316", new Date(), true, false, true),
@@ -74,7 +73,7 @@ export default function CustomizedTables(): JSX.Element {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage  = (
+  const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(+event.target.value);
@@ -103,13 +102,12 @@ export default function CustomizedTables(): JSX.Element {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id === "estado" && column.format(value) === "true"? "Aceptado" : "Rechazado"}
-                          {column.id === "revisado" && column.format(value) === "true"? "Normal" : "Urgente"}
+                          {column.format ? column.format(value) : value}
                         </TableCell>
                       );
                     })}

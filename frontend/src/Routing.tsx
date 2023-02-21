@@ -21,6 +21,9 @@ function Routing(): JSX.Element {
             <LandingPage
               tabs={landingPageTabs}
               buttons={landingPageButtons}
+              // onTabChange={(index: number) => {
+              //   console.log(`Tab index changed to ${index}`);
+              // }}
             />
           }
         />

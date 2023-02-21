@@ -5,12 +5,14 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import "../styles/Header.css";
 import DrawerComp from "../components/DrawerComp";
 import Logo from "../components/Logo";
 import NavBarButton from "./NavBarButton";
-import NavbarTabs from "./NavbarTabs";
+// import NavbarTabs from "./NavbarTabs";
 
 export interface TabProps {
   label: string;
@@ -27,14 +29,20 @@ interface HeaderProps {
   onTabValueChange: (index: number) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
-  const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabChange }) => {
+  const [tabIndex, setTabIndex] = useState<number>(0);
   const handleTabChange = (
-    index: number
+    event: React.SyntheticEvent,
+    newIndex: number
   ): void => {
     onTabValueChange(index);
   };
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  // const handleTabChange = (index: number): void => {
+  //   console.log(`Header 2: Tab index changed to ${index}`);
+  //   onTabValueChange(index);
+  // };
 
   return (
     <React.Fragment>
