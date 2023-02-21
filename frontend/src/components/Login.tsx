@@ -54,7 +54,12 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   return (
     <>
       <ThemeProvider theme={loginButtonTheme}>
-        {/* <Header buttons={buttons} /> */}
+        <Header
+          buttons={buttons}
+          onTabValueChange={(index: number) => {
+            console.log(`Funcion que no hace nada en el Login`);
+          }}
+        />
         <form onSubmit={handleSubmit}>
           <Box
             display={"flex"}
