@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/Header";
+import LandingPage from "./components/LandingPage";
 import CustomizedTables from "./components/Tables";
 import Login from "./components/Login";
 import MainMenuButton from "./components/MainMenuButton";
@@ -21,9 +21,6 @@ function Routing(): JSX.Element {
             <LandingPage
               tabs={landingPageTabs}
               buttons={landingPageButtons}
-              onTabChange={(index: number) => {
-                console.log(`Tab index changed to ${index}`);
-              }}
             />
           }
         />
