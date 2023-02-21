@@ -5,12 +5,14 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import "../styles/Header.css";
 import DrawerComp from "../components/DrawerComp";
 import Logo from "../components/Logo";
 import NavBarButton from "./NavBarButton";
-import NavbarTabs from "./NavbarTabs";
+// import NavbarTabs from "./NavbarTabs";
 
 export interface TabProps {
   label: string;
@@ -24,7 +26,7 @@ export interface ButtonProps {
 interface HeaderProps {
   tabs?: TabProps[];
   buttons: ButtonProps[];
-  onTabValueChange: (index: number) => void;
+  onTabChange: (index: number) => void;
   // onTabChange: (value: number) => void;
   // onHeaderUpdate?: () => void;
 
@@ -32,15 +34,22 @@ interface HeaderProps {
   // onTabChange: (event: React.SyntheticEvent, newIndex: number) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
+const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabChange }) => {
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const handleTabChange = (
+    event: React.SyntheticEvent,
+    newIndex: number
+  ): void => {
+    console.log(`Header: Tab index changed to ${newIndex}`);
+    setTabIndex(newIndex);
+    onTabChange(newIndex);
+  };
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const handleTabChange = (
-    index: number
-  ): void => {
-    console.log(`Header 2: Tab index changed to ${index}`);
-    onTabValueChange(index);
-  };
+  // const handleTabChange = (index: number): void => {
+  //   console.log(`Header 2: Tab index changed to ${index}`);
+  //   onTabValueChange(index);
+  // };
 
   // useEffect(() => {
   //   // Falta mandar el valor del index
@@ -73,14 +82,26 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
               </Typography>
               {tabs != null && tabs.length > 0 ? (
                 <>
-                  <NavbarTabs
+                  <Tabs
+                    sx={{ marginLeft: "auto" }}
+                    textColor="inherit"
+                    className="tabs-text"
+                    value={tabIndex}
+                    onChange={handleTabChange}
+                  >
+                    {tabs.map((tab, index) => (
+                      <Tab key={index} label={tab.label} />
+                    ))}
+                  </Tabs>
+
+                  {/* <NavbarTabs
                     tabs={tabs}
                     // onTabChange={onTabValueChange}
                     onTabChange={(index: number) => {
                       console.log(`Header 1: Tab index changed to ${index}`);
                       handleTabChange(index);
                     }}
-                  />
+                  /> */}
                   {/* <NavbarTabs tabs={tabs} onTabChange={onTabChange} /> */}
                   <NavBarButton buttonsLabels={buttons} />
                 </>

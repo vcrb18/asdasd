@@ -1,26 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
 // import { Box } from "@mui/material";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string }>;
+  // onTabValueChange: (index: number) => void;
   // onHeaderUpdate: () => void;
   // onHeaderUpdate: (index: number) => void;
   // landingPageTabChange: (index: number) => void;
   // onTabChange: (index: number) => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
+const LandingPage: React.FC<LandingPageProps> = ({
+  buttons,
+  tabs
+}) => {
   const [value, setValue] = useState<number>(0);
-  console.log(`El valor incial en LandingPage es ${value}`)
+  console.log(`El valor incial en LandingPage es ${value}`);
   // const handleOnTabValueChange = (index: number) => {
   //   setValue(index)
   // }
-  const handleOnTabValueChange = (index: number): void => {
-    console.log("LO LOGRASTE VINI!!!!!!!!!!!!!");
+  const handleTabChange = (index: number): void => {
+    console.log(`Landing Page 2: Tab index changed to ${index}`);
     setValue(index);
   };
+  // const handleOnTabValueChange = (index: number): void => {
+  //   console.log("LO LOGRASTE VINI!!!!!!!!!!!!!");
+  //   setValue(index);
+  // };
 
   // const [headerUpdated, setHeaderUpdated] = useState<boolean>(false);
   // const handlerHeaderUpdate = () => {
@@ -44,10 +52,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
       <Header
         buttons={buttons}
         tabs={tabs}
-        onTabValueChange={(index: number) => {
-          console.log(`Landing Page: Tab index changed to ${index}`);
-          handleOnTabValueChange(index);
+        onTabChange={(index: number) => {
+          console.log(`Landing Page 1: Tab index changed to ${index}`);
+          handleTabChange(index);
         }}
+        //  onTabValueChange={(index: number) => {
+        //   console.log(`Landing Page: Tab index changed to ${index}`);
+        //   handleOnTabValueChange(index);
+        // }}
         // onTabValueChange={(index: number) => { setValue(index) }}
         // onTabValueChange={handleOnTabValueChange}
         // onHeaderUpdate={(index: number) => {
