@@ -18,9 +18,13 @@ function Routing(): JSX.Element {
         <Route
           path="/"
           element={
-            <LandingPage tabs={landingPageTabs} buttons={landingPageButtons} onTabChange={(index: number) => {
-              console.log(`Tab index changed to ${index}`);
-            }} />
+            <LandingPage
+              tabs={landingPageTabs}
+              buttons={landingPageButtons}
+              onTabChange={(index: number) => {
+                console.log(`Tab index changed to ${index}`);
+              }}
+            />
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />

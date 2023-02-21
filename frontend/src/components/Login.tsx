@@ -54,7 +54,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   return (
     <>
       <ThemeProvider theme={loginButtonTheme}>
-        <Header buttons={buttons} />
+        {/* <Header buttons={buttons} /> */}
         <form onSubmit={handleSubmit}>
           <Box
             display={"flex"}

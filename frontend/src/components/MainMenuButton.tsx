@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Header from "./Header";
+// import Header from "./Header";
 interface ButtonProps {
   label: string;
   href: string;
@@ -32,7 +32,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({
 }) => {
   return (
     <>
-      <Header buttons={headerButtonLabels} />
+      {/* <Header buttons={headerButtonLabels} /> */}
       <Box
         display={"flex"}
         justifyContent={"flex-start"}

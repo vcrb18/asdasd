@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -24,28 +24,35 @@ export interface ButtonProps {
 interface HeaderProps {
   tabs?: TabProps[];
   buttons: ButtonProps[];
+  onTabValueChange: (index: number) => void;
   // onTabChange: (value: number) => void;
-  onHeaderUpdate?: () => void;
+  // onHeaderUpdate?: () => void;
+
   // landingPageTabChange: (index: number) => void;
   // onTabChange: (event: React.SyntheticEvent, newIndex: number) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ tabs, buttons, onHeaderUpdate }) => {
+const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const [tabIndex, setTabIndex] = useState(0);
+  const handleTabChange = (
+    index: number
+  ): void => {
+    console.log(`Header 2: Tab index changed to ${index}`);
+    onTabValueChange(index);
+  };
 
-  useEffect(() => {
-    // Falta mandar el valor del index
-    console.log('Entramos al useEffect de Header')
-    console.log("onHeaderUpdate")
-    console.log(onHeaderUpdate)
-    if (onHeaderUpdate) {
-      console.log("Entramos al if del useEffect");
-      
-      onHeaderUpdate();
-    }
-  }, [tabIndex])
+  // useEffect(() => {
+  //   // Falta mandar el valor del index
+  //   console.log('Entramos al useEffect de Header')
+  //   console.log("onHeaderUpdate")
+  //   console.log(onHeaderUpdate)
+  //   if (onHeaderUpdate) {
+  //     console.log("Entramos al if del useEffect");
+
+  //     onHeaderUpdate();
+  //   }
+  // }, [tabIndex])
 
   return (
     <React.Fragment>
@@ -68,9 +75,10 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onHeaderUpdate }) => {
                 <>
                   <NavbarTabs
                     tabs={tabs}
+                    // onTabChange={onTabValueChange}
                     onTabChange={(index: number) => {
-                      console.log(`Header: Tab index changed to ${index}`);
-                      setTabIndex(index)
+                      console.log(`Header 1: Tab index changed to ${index}`);
+                      handleTabChange(index);
                     }}
                   />
                   {/* <NavbarTabs tabs={tabs} onTabChange={onTabChange} /> */}
@@ -86,6 +94,5 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onHeaderUpdate }) => {
     </React.Fragment>
   );
 };
-
 
 export default Header;

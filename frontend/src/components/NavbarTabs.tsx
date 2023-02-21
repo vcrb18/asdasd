@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tabs, Tab } from "@mui/material";
 import { type TabProps } from "./Header";
 
@@ -8,8 +8,7 @@ interface NavbarTabsProps {
 }
 
 const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
-  const [tabIndex, setTabIndex] = useState(0);
-
+  const [tabIndex, setTabIndex] = useState<number>(0);
   const handleTabChange = (
     event: React.SyntheticEvent,
     newIndex: number
@@ -18,11 +17,6 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
     setTabIndex(newIndex);
     onTabChange(newIndex);
   };
-
-  useEffect(() => {
-    console.log("Entramos al UseEffect del NavbarTabs")
-    // indexUseEffect = tabIndex
-  }, [tabIndex])
 
   return (
     <Tabs
