@@ -223,8 +223,8 @@ function ExamTable(): JSX.Element {
     setPage(0);
   };
   return (
-    <Paper sx={{ width: "80%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: "100%" }}>
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <TableContainer>
         <Table stickyHeader aria-label="Examenes">
           <ExamTableHead
             order={order}
@@ -241,7 +241,7 @@ function ExamTable(): JSX.Element {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format &&
+                          {column.format != null &&
                           (typeof value === "number" ||
                             typeof value === "boolean")
                             ? column.format(value)

@@ -10,11 +10,14 @@ import {
   mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/ExamTable";
+import ExamsView from "./components/ExamsView";
+import PaperLogos from "./components/PaperLogos";
 
 function Routing(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/paperlogos" element={<PaperLogos />} />
         <Route
           path="/"
           element={
@@ -22,7 +25,16 @@ function Routing(): JSX.Element {
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
-        <Route path="/examenes" element={<ExamTable />} />
+        <Route path="/tablaexamenes" element={<ExamTable />} />
+        <Route
+          path="/examenes"
+          element={
+            <ExamsView
+              tabs={mainMenuPageButtons}
+              buttons={mainMenuHeaderButtons}
+            />
+          }
+        />
         <Route
           path="/mainmenu"
           element={

@@ -4,6 +4,10 @@ import { Box, Typography, Divider, Grid, Paper, Avatar } from "@mui/material";
 import ExtrasistoleImage from "../static/images/extrasistole.png";
 import ArritmiasImage from "../static/images/arritmia_image.png";
 import VerificacionExamenesImage from "../static/images/verificacion_examenes.png";
+import LogoCMM from "../static/images/logo_cmm.png";
+import LogoIsatecCompleto from "../static/images/logo_isatec_completo.png";
+import LogoUChhile from "../static/images/logo_uchile.png";
+import LogoUC from "../static/images/logo_uc.png";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -146,6 +150,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               Equipo
             </Typography>
             <Divider variant="fullWidth" />
+            <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+              Nuestro equipo está compuesto por investigadores, ingenieros y
+              profesionales médicos talentosos que están apasionados por mejorar
+              la vida de los pacientes con enfermedades del corazón.
+            </Typography>
+            <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+              Trabajamos en estrecha colaboración con las principales
+              instituciones y organizaciones médicas para asegurar que nuestra
+              investigación esté a la vanguardia de los últimos desarrollos
+              científicos.
+            </Typography>
           </Box>
         )}
         {tabIndex === 1 && (
