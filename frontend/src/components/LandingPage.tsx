@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-import { Box, Typography, Divider, Grid, Paper } from "@mui/material";
+import { Box, Typography, Divider, Grid, Paper, Avatar } from "@mui/material";
+import ExtrasistoleImage from "../static/images/extrasistole.png";
+import ArritmiasImage from "../static/images/arritmia_image.png";
+import VerificacionExamenesImage from "../static/images/verificacion_examenes.png";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -28,7 +31,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
       <Box sx={{ padding: 2, maxWidth: "60%" }}>
         {tabIndex === 0 && (
           <Box>
-            <Typography sx={{ fontSize: "4rem", color: "#404040" }}>
+            <Typography mt={30} sx={{ fontSize: "4rem", color: "#404040" }}>
               Inteligencia Artificial para Cardiología
             </Typography>
             <Divider variant="fullWidth" />
@@ -59,23 +62,90 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
             <Divider variant="fullWidth" />
             <Grid
               container
-              rowSpacing={1}
+              lg={12}
+              rowSpacing={2}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              sx={{marginTop: "1%"}}
+              padding={5}
+              sx={{
+                marginTop: "2%",
+                // backgroundColor: "#404040",
+                width: "-webkit-fill-available",
+                heigth: "-webkit-fill-available",
+              }}
             >
-              <Grid item xs={6}>
-                <Paper>1</Paper>
+              <Grid item xs={12} lg={6}>
+                <Paper sx={{ maxHeight: "100%" }} variant="outlined">
+                  Verificación de Exámenes
+                  <Avatar
+                    src={VerificacionExamenesImage}
+                    alt="arritmias-image"
+                    variant="square"
+                    sx={{
+                      width: "50%",
+                      height: "auto",
+                      padding: "1%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                  />
+                </Paper>
               </Grid>
-              <Grid item xs={6}>
-                <Paper>2</Paper>
+              <Grid item xs={12} lg={6}>
+                <Paper sx={{ height: "100%" }} variant="outlined">
+                  Arritmias
+                  <Avatar
+                    src={ArritmiasImage}
+                    alt="arritmias-image"
+                    variant="square"
+                    sx={{
+                      width: "50%",
+                      height: "auto",
+                      padding: "1%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                  />
+                </Paper>
               </Grid>
-              <Grid item xs={6}>
-                <Paper>3</Paper>
+              <Grid item xs={12} lg={6}>
+                <Paper sx={{ height: "100%" }} variant="outlined">
+                  Extrasístoles
+                  <Avatar
+                    src={ExtrasistoleImage}
+                    alt="extrasistole-image"
+                    variant="square"
+                    sx={{
+                      width: "50%",
+                      height: "auto",
+                      padding: "1%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                  />
+                </Paper>
               </Grid>
-              <Grid item xs={6}>
-                <Paper>4</Paper>
+              <Grid item xs={12} lg={6}>
+                <Paper sx={{ height: "100%" }} variant="outlined">
+                  Diagnósticos
+                  <Typography mt={2.5}>Ritmo sinusal</Typography>
+                  <Typography mt={1}>Requiere verificación médica</Typography>
+                  <Typography mt={1}>Trazado dentro de los limites</Typography>
+                  <Typography mt={1}>Multiples anomalías</Typography>
+                </Paper>
               </Grid>
             </Grid>
+            <Typography
+              mt={10}
+              sx={{
+                textAlign: "left",
+                fontSize: "2.5rem",
+                color: "#404040",
+                fontWeight: "bold",
+              }}
+            >
+              Equipo
+            </Typography>
+            <Divider variant="fullWidth" />
           </Box>
         )}
         {tabIndex === 1 && (

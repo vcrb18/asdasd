@@ -16,7 +16,7 @@ export const mainMenuPageButtons = [
   { label: "Exámenes", href: "#" },
   { label: "Métricas", href: "#" },
   { label: "Alertas", href: "#" },
-  { label: "Descargar Reporte", href: "#" },
+  { label: "Reporte", href: "#" },
 ];
 
 export const mainMenuHeaderButtons = [
