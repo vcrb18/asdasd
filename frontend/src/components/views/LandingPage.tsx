@@ -7,7 +7,7 @@ import ArritmiasImage from "../../static/images/arritmia_image.png";
 import VerificacionExamenesImage from "../../static/images/verificacion_examenes.png";
 import LogoCMM from "../../static/images/logo_cmm.png";
 import LogoIsatecCompleto from "../../static/images/logo_isatec_completo.png";
-import LogoUChhile from "../../static/images/logo_uchile.png";
+import LogoUChile from "../../static/images/logo_uchile.png";
 import LogoUC from "../../static/images/logo_uc.png";
 
 export interface LandingPageProps {
@@ -16,12 +16,26 @@ export interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
-  const logosStyle = {
+
+  const logosIsatec = {
+    width: "80%",
+    height: "80%",
+    // height: "auto",
+  };
+  const logosCMM = {
     maxWidth: "100%",
     maxHeight: "100%",
-    display: "block",
     // height: "auto",
-    margin: "auto",
+  };
+  const logosPUC = {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    // height: "auto",
+  };
+  const logosUChile = {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    // height: "auto",
   };
   const imagesStyle = {
     width: "50%",
@@ -160,63 +174,88 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               container
               lg={12}
               rowSpacing={2}
-              columnSpacing={{ xs: 1, md: 2, lg: 3 }}
               padding={5}
               sx={{
                 marginTop: "2%",
                 width: "-webkit-fill-available",
                 heigth: "-webkit-fill-available",
-                backgroundColor: "#FFFFFF",
-                justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
               <Grid item xs={12} md={6} lg={3}>
-                <Avatar
+                <Box>
+                <img src={LogoIsatecCompleto}
+                  alt="isatec image"
+                  width={"50%"}
+                  height={"50%"}
+                  />
+                </Box>
+                {/* <Avatar
                   src={LogoIsatecCompleto}
                   alt="isatec image"
                   variant="square"
-                  sx={logosStyle}
-                />
+                  sx={{logosIsatec}}
+                /> */}
               </Grid>
               <Grid
                 item
                 xs={12}
                 md={6}
                 lg={3}
+                sx={{logosCMM}}
               >
-                <Avatar
+                <Box>
+                <img src={LogoCMM}
+                  alt="cmm image"
+                  width={"40%"}
+                  height={"40%"}
+                  />
+                </Box>
+                {/* <Avatar
                   src={LogoCMM}
                   alt="cmm image"
                   variant="square"
-                  sx={logosStyle}
-                />
+                /> */}
               </Grid>
               <Grid
                 item
                 xs={12}
                 md={6}
                 lg={3}
+                sx={{logosPUC}}
               >
-                <Avatar
+                <Box>
+                <img src={LogoUC}
+                  alt="universidad catolica image"
+                  width={"25%"}
+                  height={"25%"}
+                  />
+                </Box>
+                {/* <Avatar
                   src={LogoUC}
                   alt="universidad catolica image"
                   variant="square"
-                  sx={logosStyle}
-                />
+                /> */}
               </Grid>
               <Grid
                 item
                 xs={12}
                 md={6}
                 lg={3}
+                sx={{logosUChile}}
               >
-                <Avatar
-                  src={LogoUChhile}
+                <Box>
+                <img src={LogoUChile}
+                  alt="universidad de chileimage"
+                  width={"25%"}
+                  height={"25%"}
+                  />
+                </Box>
+                {/* <Avatar
+                  src={LogoUChile}
                   alt="universidad de chile image"
                   variant="square"
-                  sx={logosStyle}
-                />
+                /> */}
               </Grid>
             </Grid>
           </Box>

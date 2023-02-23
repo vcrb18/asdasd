@@ -231,7 +231,7 @@ function ExamTable(): JSX.Element {
           <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row: Data) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     {columns.map((column) => {
