@@ -113,10 +113,10 @@ function createData(
   };
 }
 const rows = [
-  createData("1", "Juan", "2020-01-01", true, 0, false),
-  createData("1", "Juan", "2020-01-01", true, 1, false),
-  createData("1", "Juan", "2020-01-01", false, 1, false),
-  createData("1", "Juan", "2020-01-01", true, 2, false),
+  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, false),
+  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, false),
+  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, false),
+  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, false),
 ];
 
 type Order = "asc" | "desc";

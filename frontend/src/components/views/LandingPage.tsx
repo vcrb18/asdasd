@@ -171,7 +171,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 alignItems: "center",
               }}
             >
-              <Grid item xs={12} md={6} lg={3} sx={{ backgroundColor: "red" }}>
+              <Grid item xs={12} md={6} lg={3}>
                 <Avatar
                   src={LogoIsatecCompleto}
                   alt="isatec image"
@@ -184,7 +184,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 xs={12}
                 md={6}
                 lg={3}
-                sx={{ backgroundColor: "yellow" }}
               >
                 <Avatar
                   src={LogoCMM}
@@ -198,7 +197,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 xs={12}
                 md={6}
                 lg={3}
-                sx={{ backgroundColor: "green" }}
               >
                 <Avatar
                   src={LogoUC}
@@ -212,7 +210,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 xs={12}
                 md={6}
                 lg={3}
-                sx={{ backgroundColor: "black" }}
               >
                 <Avatar
                   src={LogoUChhile}
