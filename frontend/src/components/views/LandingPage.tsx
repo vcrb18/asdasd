@@ -9,6 +9,8 @@ import LogoCMM from "../../static/images/logo_cmm.png";
 import LogoIsatecCompleto from "../../static/images/logo_isatec_completo.png";
 import LogoUChhile from "../../static/images/logo_uchile.png";
 import LogoUC from "../../static/images/logo_uc.png";
+import { useTranslation } from 'react-i18next';
+
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -16,6 +18,7 @@ export interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
+  const { t } = useTranslation();
   const logosStyle = {
     maxWidth: "100%",
     maxHeight: "100%",
@@ -75,6 +78,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 fontWeight: "bold",
               }}
             >
+              {/* {t('greeting')} */}
               Nuestros Proyectos
             </Typography>
             <Divider variant="fullWidth" />
