@@ -1,11 +1,11 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
-import LogoImage from "../static/images/logo-isatec.png";
+import LogoImage from "../../static/images/logo-isatec.png";
 
 const Logo: React.FC = () => {
   const avatarStyle = {
-    width: "7%",
-    height: "auto",
+    maxWidth: "100%",
+    maxHeight: "100%",
     padding: "1%",
   };
 

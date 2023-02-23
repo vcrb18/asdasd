@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import Login from "./components/Login";
-import MainMenuButton from "./components/MainMenuButton";
+import LandingPage from "./components/views/LandingPage";
+import Login from "./components/views/Login";
 import {
   landingPageTabs,
   landingPageButtons,
@@ -9,15 +8,14 @@ import {
   mainMenuPageButtons,
   mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
-import ExamTable from "./components/ExamTable";
-import ExamsView from "./components/ExamsView";
-import PaperLogos from "./components/PaperLogos";
+import ExamTable from "./components/customComponents/ExamTable";
+import ExamsView from "./components/views/ExamsView";
+import MainMenuView from "./components/views/MainMenuView";
 
 function Routing(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/paperlogos" element={<PaperLogos />} />
         <Route
           path="/"
           element={
@@ -37,12 +35,7 @@ function Routing(): JSX.Element {
         />
         <Route
           path="/mainmenu"
-          element={
-            <MainMenuButton
-              pageButtonLabels={mainMenuPageButtons}
-              headerButtonLabels={mainMenuHeaderButtons}
-            />
-          }
+          element={<MainMenuView buttons={mainMenuPageButtons} />}
         />
       </Routes>
     </BrowserRouter>

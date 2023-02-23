@@ -6,9 +6,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import "../styles/Header.css";
-import DrawerComp from "../components/DrawerComp";
-import Logo from "../components/Logo";
+import "../../styles/Header.css";
+import DrawerComp from "./DrawerComp";
+import Logo from "./Logo";
 import NavBarButton from "./NavBarButton";
 import NavbarTabs from "./NavbarTabs";
 

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
+import Header from "../customComponents/Header";
+import Footer from "../customComponents/Footer";
 import { Box, Typography, Divider, Grid, Paper, Avatar } from "@mui/material";
-import ExtrasistoleImage from "../static/images/extrasistole.png";
-import ArritmiasImage from "../static/images/arritmia_image.png";
-import VerificacionExamenesImage from "../static/images/verificacion_examenes.png";
-import LogoCMM from "../static/images/logo_cmm.png";
-import LogoIsatecCompleto from "../static/images/logo_isatec_completo.png";
-import LogoUChhile from "../static/images/logo_uchile.png";
-import LogoUC from "../static/images/logo_uc.png";
+import ExtrasistoleImage from "../../static/images/extrasistole.png";
+import ArritmiasImage from "../../static/images/arritmia_image.png";
+import VerificacionExamenesImage from "../../static/images/verificacion_examenes.png";
+import LogoCMM from "../../static/images/logo_cmm.png";
+import LogoIsatecCompleto from "../../static/images/logo_isatec_completo.png";
+import LogoUChhile from "../../static/images/logo_uchile.png";
+import LogoUC from "../../static/images/logo_uc.png";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -15,6 +16,19 @@ export interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
+  const logosStyle = {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    display: "block",
+    // height: "auto",
+    margin: "auto",
+  };
+  const imagesStyle = {
+    width: "50%",
+    height: "auto",
+    padding: "1%",
+    margin: "auto",
+  };
   const [tabIndex, setTabIndex] = useState<number>(0);
 
   const handleOnTabValueChange = (index: number): void => {
@@ -35,7 +49,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
       <Box sx={{ padding: 2, maxWidth: "60%" }}>
         {tabIndex === 0 && (
           <Box>
-            <Typography mt={30} sx={{ fontSize: "4rem", color: "#404040" }}>
+            <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
               Inteligencia Artificial para Cardiología
             </Typography>
             <Divider variant="fullWidth" />
@@ -71,8 +85,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               padding={5}
               sx={{
-                marginTop: "2%",
-                // backgroundColor: "#404040",
+                marginTop: "1%",
                 width: "-webkit-fill-available",
                 heigth: "-webkit-fill-available",
               }}
@@ -84,13 +97,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                     src={VerificacionExamenesImage}
                     alt="arritmias-image"
                     variant="square"
-                    sx={{
-                      width: "50%",
-                      height: "auto",
-                      padding: "1%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
+                    sx={imagesStyle}
                   />
                 </Paper>
               </Grid>
@@ -101,13 +108,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                     src={ArritmiasImage}
                     alt="arritmias-image"
                     variant="square"
-                    sx={{
-                      width: "50%",
-                      height: "auto",
-                      padding: "1%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
+                    sx={imagesStyle}
                   />
                 </Paper>
               </Grid>
@@ -118,13 +119,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                     src={ExtrasistoleImage}
                     alt="extrasistole-image"
                     variant="square"
-                    sx={{
-                      width: "50%",
-                      height: "auto",
-                      padding: "1%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
+                    sx={imagesStyle}
                   />
                 </Paper>
               </Grid>
@@ -161,19 +156,90 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               investigación esté a la vanguardia de los últimos desarrollos
               científicos.
             </Typography>
+            <Grid
+              container
+              lg={12}
+              rowSpacing={2}
+              columnSpacing={{ xs: 1, md: 2, lg: 3 }}
+              padding={5}
+              sx={{
+                marginTop: "2%",
+                width: "-webkit-fill-available",
+                heigth: "-webkit-fill-available",
+                backgroundColor: "#FFFFFF",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Grid item xs={12} md={6} lg={3} sx={{ backgroundColor: "red" }}>
+                <Avatar
+                  src={LogoIsatecCompleto}
+                  alt="isatec image"
+                  variant="square"
+                  sx={logosStyle}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                lg={3}
+                sx={{ backgroundColor: "yellow" }}
+              >
+                <Avatar
+                  src={LogoCMM}
+                  alt="cmm image"
+                  variant="square"
+                  sx={logosStyle}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                lg={3}
+                sx={{ backgroundColor: "green" }}
+              >
+                <Avatar
+                  src={LogoUC}
+                  alt="universidad catolica image"
+                  variant="square"
+                  sx={logosStyle}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                lg={3}
+                sx={{ backgroundColor: "black" }}
+              >
+                <Avatar
+                  src={LogoUChhile}
+                  alt="universidad de chile image"
+                  variant="square"
+                  sx={logosStyle}
+                />
+              </Grid>
+            </Grid>
           </Box>
         )}
         {tabIndex === 1 && (
           <Box>
-            <Typography>Render Component 2</Typography>
+            <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
+              SOBRE NOSOTROS
+            </Typography>
           </Box>
         )}
         {tabIndex === 2 && (
           <Box>
-            <Typography>Render Component 3</Typography>
+            <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
+              CONTACTANOS
+            </Typography>
           </Box>
         )}
       </Box>
+      <Footer footerPosition={"static"} />
     </>
   );
 };

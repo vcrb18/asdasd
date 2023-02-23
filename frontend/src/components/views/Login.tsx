@@ -1,9 +1,10 @@
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import Header, { type ButtonProps } from "./Header";
+import Header, { type ButtonProps } from "../customComponents/Header";
+import Footer from "../customComponents/Footer";
 // import bcrypt from 'bcrypt';
-import "../styles/Login.css";
+import "../../styles/Login.css";
 
 interface LoginProps {
   buttons: ButtonProps[];
@@ -111,12 +112,14 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               sx={{ marginTop: 3, borderRadius: 3 }}
               variant="contained"
               color="primary"
+              href="/mainmenu"
             >
               Iniciar Sesión
             </Button>
           </Box>
         </form>
       </ThemeProvider>
+      <Footer footerPosition={"fixed"} />
     </>
   );
 };

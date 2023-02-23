@@ -147,10 +147,7 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number
-): any {
+function stableSort<T>(array: Data[], comparator: (a: T, b: T) => number): any {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -232,7 +229,7 @@ function ExamTable(): JSX.Element {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {rows
+            {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
@@ -267,24 +264,5 @@ function ExamTable(): JSX.Element {
     </Paper>
   );
 }
-// const columns = readonly Column[] = [
-//     { id: "name", label: "Name", minWidth: 100},
-//     { id: "code", label: 'ISO\u00a0code', minwidth: 100},
-//     {
-//         id: "population",
-//         label: "Population",
-//         minWidth: 100,
-//         align: "right",
-//         format: (value:number) => {
-//             return value.toLocaleString();
-//         }
-//     }
-// ]
-
-// function Table(){
-//     return(
-//         <h1>Table</h1>
-//     )
-// }
 
 export default ExamTable;
