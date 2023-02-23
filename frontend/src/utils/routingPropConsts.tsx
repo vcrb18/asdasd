@@ -1,5 +1,5 @@
 export const landingPageTabs = [
-  { label: "Home" },
+  { label: "Inicio" },
   { label: "Sobre Nosotros" },
   { label: "Contactanos" },
 ];
@@ -10,17 +10,27 @@ export const landingPageButtons = [
   { label: "Iniciar Sesión", href: "/login" },
 ];
 
-export const loginPageButtons = [{ label: "Idioma", href: "#" }];
+export const loginPageButtons = [
+  { label: "Idioma", href: "#" },
+  { label: "Inicio", href: "/" },
+];
 
 export const mainMenuPageButtons = [
+  { label: "Exámenes", href: "/examenes" },
+  { label: "Métricas", href: "#" },
+  { label: "Alertas", href: "#" },
+  { label: "Reporte", href: "#" },
+];
+
+export const mainMenuTabs = [
   { label: "Exámenes", href: "#" },
   { label: "Métricas", href: "#" },
   { label: "Alertas", href: "#" },
-  { label: "Descargar Reporte", href: "#" },
+  { label: "Reporte", href: "#" },
 ];
 
 export const mainMenuHeaderButtons = [
   { label: "Idioma", href: "#" },
   { label: "Mi cuenta", href: "#" },
-  { label: "Cerrar sesión", href: "#" },
+  { label: "Cerrar sesión", href: "/" },
 ];

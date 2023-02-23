@@ -1,8 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import CustomizedTables from "./components/Tables";
-import Login from "./components/Login";
-import MainMenuButton from "./components/MainMenuButton";
+import LandingPage from "./components/views/LandingPage";
+import Login from "./components/views/Login";
 import {
   landingPageTabs,
   landingPageButtons,
@@ -10,6 +8,9 @@ import {
   mainMenuPageButtons,
   mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
+import ExamTable from "./components/customComponents/ExamTable";
+import ExamsView from "./components/views/ExamsView";
+import MainMenuView from "./components/views/MainMenuView";
 
 function Routing(): JSX.Element {
   return (
@@ -22,15 +23,19 @@ function Routing(): JSX.Element {
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
-        <Route path="/examenes" element={<CustomizedTables />} />
+        <Route path="/tablaexamenes" element={<ExamTable />} />
         <Route
-          path="/mainmenu"
+          path="/examenes"
           element={
-            <MainMenuButton
-              pageButtonLabels={mainMenuPageButtons}
-              headerButtonLabels={mainMenuHeaderButtons}
+            <ExamsView
+              tabs={mainMenuPageButtons}
+              buttons={mainMenuHeaderButtons}
             />
           }
+        />
+        <Route
+          path="/mainmenu"
+          element={<MainMenuView buttons={mainMenuPageButtons} />}
         />
       </Routes>
     </BrowserRouter>
