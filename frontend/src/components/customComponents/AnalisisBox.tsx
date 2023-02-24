@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Typography, Divider, Grid, Paper, Avatar } from "@mui/material";
+import {  Typography, Grid } from "@mui/material";
 
-export default function AnalisisBox() {
+export default function AnalisisBox(): JSX.Element {
   return (
     <>
     <Grid 

@@ -16,12 +16,7 @@ export interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
-
-  const logosIsatec = {
-    width: "80%",
-    height: "80%",
-    // height: "auto",
-  };
+  
   const logosCMM = {
     maxWidth: "100%",
     maxHeight: "100%",
