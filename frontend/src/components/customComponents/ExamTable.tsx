@@ -228,10 +228,10 @@ function ExamTable(): JSX.Element {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          <TableBody>
+          {/* <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
+              .map((row:Data) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     {columns.map((column) => {
@@ -249,7 +249,7 @@ function ExamTable(): JSX.Element {
                   </TableRow>
                 );
               })}
-          </TableBody>
+          </TableBody> */}
         </Table>
       </TableContainer>
       <TablePagination

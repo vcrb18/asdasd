@@ -4,8 +4,11 @@ import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { Box, Typography } from "@mui/material";
 import { mainMenuHeaderButtons } from "../../utils/routingPropConsts";
+import { useTranslation } from "react-i18next";
 
 const MainMenuView: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Header
@@ -27,7 +30,7 @@ const MainMenuView: React.FC = () => {
       >
         <Box>
           <Typography color={"#404040"} fontSize={"4rem"}>
-            Menú Principal
+            {t("mainMenu")}
           </Typography>
         </Box>
       </Box>

@@ -9,8 +9,7 @@ import LogoCMM from "../../static/images/logo_cmm.png";
 import LogoIsatecCompleto from "../../static/images/logo_isatec_completo.png";
 import LogoUChhile from "../../static/images/logo_uchile.png";
 import LogoUC from "../../static/images/logo_uc.png";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -23,7 +22,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
     maxWidth: "100%",
     maxHeight: "100%",
     display: "block",
-    // height: "auto",
     margin: "auto",
   };
   const imagesStyle = {
@@ -53,21 +51,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
         {tabIndex === 0 && (
           <Box>
             <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
-              Inteligencia Artificial para Cardiología
+              {t("landingTitle")}
             </Typography>
             <Divider variant="fullWidth" />
             <Typography mt={10} sx={{ color: "#404040", fontSize: "1.4rem" }}>
-              Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo
-              dedicado a explorar el potencial de la inteligencia artificial
-              (IA) en el campo de la cardiología.
+              {t("landingFirstText")}
             </Typography>
             <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
-              Nuestro equipo se centra en desarrollar herramientas y tecnologías
-              de IA de vanguardia para ayudar a mejorar el diagnóstico,
-              tratamiento y manejo de las enfermedades del corazón. A través de
-              nuestra investigación, buscamos ampliar los límites de lo que es
-              posible en el campo de la cardiología y contribuir al avance de la
-              ciencia médica.
+              {t("landingSecondText")}
             </Typography>
             <Typography
               mt={10}
@@ -78,8 +69,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 fontWeight: "bold",
               }}
             >
-              {/* {t('greeting')} */}
-              Nuestros Proyectos
+              {t("ourProjects")}
             </Typography>
             <Divider variant="fullWidth" />
             <Grid
@@ -96,7 +86,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
             >
               <Grid item xs={12} lg={6}>
                 <Paper sx={{ maxHeight: "100%" }} variant="outlined">
-                  Verificación de Exámenes
+                  {t("verificationExams")}
                   <Avatar
                     src={VerificacionExamenesImage}
                     alt="arritmias-image"
@@ -107,7 +97,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <Paper sx={{ height: "100%" }} variant="outlined">
-                  Arritmias
+                  {t("arrhythmias")}
                   <Avatar
                     src={ArritmiasImage}
                     alt="arritmias-image"
@@ -118,7 +108,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <Paper sx={{ height: "100%" }} variant="outlined">
-                  Extrasístoles
+                  {t("extrasystole")}
                   <Avatar
                     src={ExtrasistoleImage}
                     alt="extrasistole-image"
@@ -129,11 +119,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <Paper sx={{ height: "100%" }} variant="outlined">
-                  Diagnósticos
-                  <Typography mt={2.5}>Ritmo sinusal</Typography>
-                  <Typography mt={1}>Requiere verificación médica</Typography>
-                  <Typography mt={1}>Trazado dentro de los limites</Typography>
-                  <Typography mt={1}>Multiples anomalías</Typography>
+                  {t("diagnostics")}
+                  <Typography mt={2.5}> {t("firstTextDiagnostics")}</Typography>
+                  <Typography mt={1}>{t("secondTextDiagnostics")}</Typography>
+                  <Typography mt={1}>{t("thirdTextDiagnostics")}</Typography>
+                  <Typography mt={1}>{t("fourthTextDiagnostics")}</Typography>
                 </Paper>
               </Grid>
             </Grid>
@@ -146,19 +136,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 fontWeight: "bold",
               }}
             >
-              Equipo
+              {t("team")}
             </Typography>
             <Divider variant="fullWidth" />
             <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
-              Nuestro equipo está compuesto por investigadores, ingenieros y
-              profesionales médicos talentosos que están apasionados por mejorar
-              la vida de los pacientes con enfermedades del corazón.
+              {t("firstTextTeam")}
             </Typography>
             <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
-              Trabajamos en estrecha colaboración con las principales
-              instituciones y organizaciones médicas para asegurar que nuestra
-              investigación esté a la vanguardia de los últimos desarrollos
-              científicos.
+              {t("secondTextTeam")}
             </Typography>
             <Grid
               container
@@ -183,12 +168,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                   sx={logosStyle}
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                lg={3}
-              >
+              <Grid item xs={12} md={6} lg={3}>
                 <Avatar
                   src={LogoCMM}
                   alt="cmm image"
@@ -196,12 +176,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                   sx={logosStyle}
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                lg={3}
-              >
+              <Grid item xs={12} md={6} lg={3}>
                 <Avatar
                   src={LogoUC}
                   alt="universidad catolica image"
@@ -209,12 +184,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                   sx={logosStyle}
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                lg={3}
-              >
+              <Grid item xs={12} md={6} lg={3}>
                 <Avatar
                   src={LogoUChhile}
                   alt="universidad de chile image"

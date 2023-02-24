@@ -35,7 +35,7 @@ function Routing(): JSX.Element {
         />
         <Route
           path="/mainmenu"
-          element={<MainMenuView buttons={mainMenuPageButtons} />}
+          element={<MainMenuView />}
         />
       </Routes>
     </BrowserRouter>
