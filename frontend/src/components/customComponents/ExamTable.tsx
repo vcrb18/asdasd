@@ -3,17 +3,19 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { styled } from "@mui/material/styles";
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import {
   Box,
+  Button,
   TableContainer,
   TableHead,
   TablePagination,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
-
+import Brightness1RoundedIcon from '@mui/icons-material/Brightness1Rounded';
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,11 +34,11 @@ interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string) | ((value: boolean) => string);
+  format?: ((value: number) => string) | ((value: boolean) => string) | ((value: string) => string);
 }
 
 const columns: readonly Column[] = [
-  { id: "folio", label: "Folio", minWidth: "30%" },
+  { id: "folio", label: "Folio", minWidth: "30%", align: 'center' },
   {
     id: "paciente",
     label: "Nombre paciente",
@@ -48,9 +50,10 @@ const columns: readonly Column[] = [
     label: "Fecha",
     minWidth: "30%",
     align: "center",
-    format: (value: number) => {
-      return new Date(value).toLocaleDateString();
-    },
+    format: (value: string) => { return value.replace('T', ' ')},
+    // format: (value: number) => {
+    //   return new Date(value).toLocaleDateString();
+    // },
   },
   {
     id: "estado",
@@ -77,10 +80,6 @@ const columns: readonly Column[] = [
     label: "Resultados",
     minWidth: "30%",
     align: "center",
-    format: (value: boolean) => {
-      const returnValue = value ? "Si" : "No";
-      return returnValue;
-    },
   },
 ];
 
@@ -92,7 +91,7 @@ interface Data {
   fecha: string;
   estado: boolean;
   urgencia: number;
-  resultados: boolean;
+  resultados: string;
 }
 
 function createData(
@@ -101,7 +100,7 @@ function createData(
   fecha: string,
   estado: boolean,
   urgencia: number,
-  resultados: boolean
+  resultados: string
 ): Data {
   return {
     folio,
@@ -113,10 +112,10 @@ function createData(
   };
 }
 const rows = [
-  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, false),
-  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, false),
-  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, false),
-  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, false),
+  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, 'false'),
+  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, 'false'),
+  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, 'false'),
+  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, 'false'),
 ];
 
 type Order = "asc" | "desc";
@@ -196,6 +195,13 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function ExamTable(): JSX.Element {
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#c7dff9",
+      },
+    },
+  });
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
@@ -231,21 +237,26 @@ function ExamTable(): JSX.Element {
           <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row: Data) => {
+              .map((row: Data,  index: number) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format != null &&
-                          (typeof value === "number" ||
-                            typeof value === "boolean")
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
+                    <StyledTableCell component="th" id={labelId} scope="row" align="center" padding="none">
+                      {row.folio}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{row.paciente}</StyledTableCell>
+                    <StyledTableCell align="center">{(row.fecha).includes("T")? ((row.fecha).replace('T', ' ')).split('.')[0] : (row.fecha).split('.') }</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.estado ? <Brightness1RoundedIcon color={"success"}/> : <Brightness1RoundedIcon color={"error"}/>}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.urgencia === 1 ? <Typography color={'red'}>Urgente</Typography> : <Typography>Normal</Typography>}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                    <ThemeProvider theme={buttonsTheme}>
+                      <Button  href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
+                    </ThemeProvider>
+                    </StyledTableCell>
                   </TableRow>
                 );
               })}

@@ -222,11 +222,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 xs={12}
                 md={6}
                 lg={3}
-                sx={{logosPUC}}
+                sx={{logosUChile}}
               >
                 <Box>
-                <img src={LogoUC}
-                  alt="universidad catolica image"
+                <img src={LogoUChile}
+                  alt="universidad de chileimage"
                   width={"25%"}
                   height={"25%"}
                   />
@@ -242,11 +242,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
                 xs={12}
                 md={6}
                 lg={3}
-                sx={{logosUChile}}
+                sx={{logosPUC}}
               >
+                
                 <Box>
-                <img src={LogoUChile}
-                  alt="universidad de chileimage"
+                <img src={LogoUC}
+                  alt="universidad catolica image"
                   width={"25%"}
                   height={"25%"}
                   />
