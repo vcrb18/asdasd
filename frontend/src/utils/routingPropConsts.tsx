@@ -1,5 +1,5 @@
 export const landingPageTabs = [
-  { label: "Inicio" },
+  { label: "home" },
   { label: "Sobre Nosotros" },
   { label: "Contactanos" },
 ];

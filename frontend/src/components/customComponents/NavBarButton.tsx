@@ -13,7 +13,7 @@ interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
 }
 
-const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
+const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) : JSX.Element => {
   const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
@@ -44,19 +44,21 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
               sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
               variant="contained"
             >
-              {button.label}
+              {t(button.label)}
+              {/* {t("login")} */}
+              {/* {button.label} */}
             </Button>
           ))
         : null}
       <Select
         value={language}
         onChange={handleLanguageChange}
+        size="small"
         sx={{
           marginLeft: "1%",
           backgroundColor: "#006a6b",
           color: "#fff",
-          borderRadius: 4,
-          minWidth: 100,
+          borderRadius: 1
         }}
       >
         <MenuItem value="es">{t("es")}</MenuItem>
