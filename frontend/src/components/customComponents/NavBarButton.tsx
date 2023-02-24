@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import {
+  Button,
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+} from "@mui/material";
 import { type ButtonProps } from "./Header";
+import { useTranslation } from "react-i18next";
 
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
 }
 
 const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
+  const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -15,6 +22,17 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
       },
     },
   });
+  const { i18n } = useTranslation();
+  const [language, setLanguage] = useState<string>(i18n.language);
+
+  const handleLanguageChange = (event: SelectChangeEvent): void => {
+    const newLanguage = event.target.value;
+    setLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage).catch((error) => {
+      console.error(error);
+    });
+  };
+
   return (
     <ThemeProvider theme={buttonsTheme}>
       {buttonsLabels != null && buttonsLabels.length > 0
@@ -30,6 +48,20 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) => {
             </Button>
           ))
         : null}
+      <Select
+        value={language}
+        onChange={handleLanguageChange}
+        sx={{
+          marginLeft: "1%",
+          backgroundColor: "#006a6b",
+          color: "#fff",
+          borderRadius: 4,
+          minWidth: 100,
+        }}
+      >
+        <MenuItem value="es">{t("es")}</MenuItem>
+        <MenuItem value="en">{t("en")}</MenuItem>
+      </Select>
     </ThemeProvider>
   );
 };

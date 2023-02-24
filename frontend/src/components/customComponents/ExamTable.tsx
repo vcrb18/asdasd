@@ -234,7 +234,7 @@ function ExamTable(): JSX.Element {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          <TableBody>
+          {/* <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: Data,  index: number) => {
@@ -260,7 +260,7 @@ function ExamTable(): JSX.Element {
                   </TableRow>
                 );
               })}
-          </TableBody>
+          </TableBody> */}
         </Table>
       </TableContainer>
       <TablePagination
