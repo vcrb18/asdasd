@@ -1,35 +1,36 @@
-import { useTranslation } from "react-i18next";
-
-const { t } = useTranslation();
-
 export const landingPageTabs = [
-  { label: t("ourProjects") },
-  { label: t("aboutUs") },
-  { label: t("contactUs") },
+  { label: "Inicio" },
+  { label: "Sobre Nosotros" },
+  { label: "Contactanos" },
 ];
 
 export const landingPageButtons = [
-  { label: t("contact"), href: "#" },
-  { label: t("login"), href: "/login" },
+  { label: "Contacto", href: "#" },
+  { label: "Idioma", href: "#" },
+  { label: "Iniciar Sesión", href: "/login" },
 ];
 
-export const loginPageButtons = [{ label: t("home"), href: "/" }];
+export const loginPageButtons = [
+  { label: "Idioma", href: "#" },
+  { label: "Inicio", href: "/" },
+];
 
 export const mainMenuPageButtons = [
-  { label: t("examinations"), href: "/examenes" },
-  { label: t("metrics"), href: "#" },
-  { label: t("alerts"), href: "#" },
-  { label: t("report"), href: "#" },
+  { label: "Exámenes", href: "/examenes" },
+  { label: "Métricas", href: "#" },
+  { label: "Alertas", href: "#" },
+  { label: "Reporte", href: "#" },
 ];
 
 export const mainMenuTabs = [
-  { label: t("examinations"), href: "#" },
-  { label: t("metrics"), href: "#" },
-  { label: t("alerts"), href: "#" },
-  { label: t("report"), href: "#" },
+  { label: "Exámenes", href: "#" },
+  { label: "Métricas", href: "#" },
+  { label: "Alertas", href: "#" },
+  { label: "Reporte", href: "#" },
 ];
 
 export const mainMenuHeaderButtons = [
-  { label: t("myAccount"), href: "#" },
-  { label: t("logOut"), href: "/" },
+  { label: "Idioma", href: "#" },
+  { label: "Mi cuenta", href: "#" },
+  { label: "Cerrar sesión", href: "/" },
 ];
