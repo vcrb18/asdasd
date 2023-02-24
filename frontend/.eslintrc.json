@@ -18,7 +18,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "triple-slash-reference": "off",
-    "strict-boolean-expressions": "off",
-    "prefer-nullish-coalescing": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off"
   }
 }
