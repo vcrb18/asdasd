@@ -6,12 +6,10 @@ export const landingPageTabs = [
 
 export const landingPageButtons = [
   { label: "Contacto", href: "#" },
-  { label: "Idioma", href: "#" },
   { label: "Iniciar Sesión", href: "/login" },
 ];
 
 export const loginPageButtons = [
-  { label: "Idioma", href: "#" },
   { label: "Inicio", href: "/" },
 ];
 
@@ -30,7 +28,6 @@ export const mainMenuTabs = [
 ];
 
 export const mainMenuHeaderButtons = [
-  { label: "Idioma", href: "#" },
   { label: "Mi cuenta", href: "#" },
   { label: "Cerrar sesión", href: "/" },
 ];
