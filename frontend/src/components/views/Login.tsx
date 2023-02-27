@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Header, { type ButtonProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
+import { useTranslation } from "react-i18next";
 // import bcrypt from 'bcrypt';
 import "../../styles/Login.css";
 
@@ -18,6 +19,7 @@ interface LoginInputs {
 // const bcryptHashComplexity = 10;
 
 const Login: React.FC<LoginProps> = ({ buttons }) => {
+  const { t } = useTranslation();
   const loginButtonTheme = createTheme({
     palette: {
       primary: {
@@ -86,7 +88,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               textAlign={"center"}
               color="primary"
             >
-              Iniciar Sesión
+              {t("login")}
             </Typography>
             <TextField
               margin="normal"
@@ -114,7 +116,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               color="primary"
               href="/mainmenu"
             >
-              Iniciar Sesión
+              {t("login")}
             </Button>
           </Box>
         </form>

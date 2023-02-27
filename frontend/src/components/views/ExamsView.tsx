@@ -3,6 +3,7 @@ import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import ExamTable from "../customComponents/ExamTable";
+import { useTranslation } from "react-i18next";
 
 interface ExamsViewProps {
   buttons: Array<{ label: string; href: string }>;
@@ -10,6 +11,7 @@ interface ExamsViewProps {
 }
 
 const ExamsView: React.FC<ExamsViewProps> = ({ buttons, tabs }) => {
+  const { t } = useTranslation();
   const [tabIndex] = useState<number>(0);
 
   // const handleOnTabValueChange = (index: number): void => {
@@ -42,7 +44,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({ buttons, tabs }) => {
               justifyContent={"flex-start"}
               sx={{ color: "#404040", fontSize: "4rem" }}
             >
-              Exámenes
+              {t("examinations")}
             </Typography>
             <Divider variant="middle" />
             <Grid
@@ -63,7 +65,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({ buttons, tabs }) => {
                     justifyContent={"flex-start"}
                     sx={{ color: "#404040", fontSize: "1.5rem" }}
                   >
-                    Aqui podría ir un menú de filtro
+                    {t("filter")}
                   </Typography>
                 </Box>
               </Grid>
