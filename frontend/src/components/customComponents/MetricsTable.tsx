@@ -12,10 +12,8 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Typography,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
-import Brightness1RoundedIcon from '@mui/icons-material/Brightness1Rounded';
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -30,7 +28,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "paciente" | "fecha" | "estado" | "urgencia" | "resultados";
+  id: "folio" | "estado" | "puntos" | "error rr" | "error fc" | "error qt" | 'error qtc'| 'error st'| 'resultados';
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
@@ -40,40 +38,46 @@ interface Column {
 const columns: readonly Column[] = [
   { id: "folio", label: "Folio", minWidth: "30%", align: 'center' },
   {
-    id: "paciente",
-    label: "Nombre paciente",
+    id: "estado",
+    label: "Estado",
     align: "center",
     minWidth: "40%",
   },
   {
-    id: "fecha",
-    label: "Fecha",
+    id: "puntos",
+    label: "Puntos Fiduciales",
     minWidth: "30%",
     align: "center",
-    format: (value: string) => { return value.replace('T', ' ')},
-    // format: (value: number) => {
-    //   return new Date(value).toLocaleDateString();
-    // },
   },
   {
-    id: "estado",
-    label: "Estado",
+    id: "error rr",
+    label: "Error RR",
     minWidth: "20%",
     align: "center",
-    format: (value: boolean) => {
-      const returnValue = value ? "Aceptado" : "Rechazado";
-      return returnValue;
-    },
   },
   {
-    id: "urgencia",
-    label: "Urgencia",
+    id: "error fc",
+    label: "Error FC",
     minWidth: "20%",
     align: "center",
-    format: (value: number) => {
-      const returnValue = value === 1 ? "Urgente" : "Normal";
-      return returnValue;
-    },
+  },
+  {
+    id: "error qt",
+    label: "Error QT",
+    minWidth: "20%",
+    align: "center",
+  },
+  {
+    id: "error qtc",
+    label: "Error QTc",
+    minWidth: "20%",
+    align: "center",
+  },
+  {
+    id: "error st",
+    label: "Error ST",
+    minWidth: "20%",
+    align: "center",
   },
   {
     id: "resultados",
@@ -87,35 +91,52 @@ const columns: readonly Column[] = [
 // depediendo de como llegan desde la base de datos
 interface Data {
   folio: string;
-  paciente: string;
-  fecha: string;
-  estado: boolean;
-  urgencia: number;
+  estado: string;
+  puntos: string;
+  errorRR: string;
+  errorFC: string;
+  errorQT: string;
+  errorQTc: string;
+  errorST: string;
   resultados: string;
 }
 
 function createData(
   folio: string,
-  paciente: string,
-  fecha: string,
-  estado: boolean,
-  urgencia: number,
+  estado: string,
+  puntos: string,
+  errorRR: string,
+  errorFC: string,
+  errorQT: string,
+  errorQTc: string,
+  errorST: string,
   resultados: string
 ): Data {
   return {
     folio,
-    paciente,
-    fecha,
     estado,
-    urgencia,
-    resultados,
+    puntos,
+    errorRR,
+    errorFC,
+    errorQT,
+    errorQTc,
+    errorST,
+    resultados
   };
 }
 const rows = [
-  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, 'false'),
-  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, 'false'),
-  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, 'false'),
-  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, 'false'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
 ];
 
 type Order = "asc" | "desc";
@@ -194,7 +215,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function ExamTable(): JSX.Element {
+function MetricsTable(): JSX.Element {
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -238,25 +259,25 @@ function ExamTable(): JSX.Element {
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: Data) => {
-                const fecha = (row.fecha).includes("T") ? (row.fecha).replace('T', ' ').split('.')[0] : (row.fecha).split('.');
-                const estadoIcon = row.estado ? <Brightness1RoundedIcon color={"success"}/> : <Brightness1RoundedIcon color={"error"}/>;
-                const urgenciaText = row.urgencia === 1 ? <Typography color={'red'}>Urgente</Typography> : <Typography>Normal</Typography>;
-
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     <StyledTableCell align="center">{row.folio}</StyledTableCell>
-                    <StyledTableCell align="center">{row.paciente}</StyledTableCell>
-                    <StyledTableCell align="center">{fecha}</StyledTableCell>
-                    <StyledTableCell align="center">{estadoIcon}</StyledTableCell>
-                    <StyledTableCell align="center">{urgenciaText}</StyledTableCell>
+                    <StyledTableCell align="center">{row.estado}</StyledTableCell>
+                    <StyledTableCell align="center">{row.puntos}</StyledTableCell>
+                    <StyledTableCell align="center">{row.errorRR}</StyledTableCell>
+                    <StyledTableCell align="center">{row.errorFC}</StyledTableCell>
+                    <StyledTableCell align="center">{row.errorQT}</StyledTableCell>
+                    <StyledTableCell align="center">{row.errorQTc}</StyledTableCell>
+                    <StyledTableCell align="center">{row.errorST}</StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
                         <Button href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
                       </ThemeProvider>
                     </StyledTableCell>
                   </TableRow>
-                );
+                )
               })}
+
           </TableBody>
         </Table>
       </TableContainer>
@@ -273,4 +294,4 @@ function ExamTable(): JSX.Element {
   );
 }
 
-export default ExamTable;
+export default MetricsTable;

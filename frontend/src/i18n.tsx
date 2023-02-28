@@ -29,7 +29,7 @@ const resources = {
       contactUs: "Contact Us",
       login: "Login",
       contact: "Contact",
-      examinations: "Examinations",
+      examinations: "Exams",
       metrics: "Metrics",
       alerts: "Alerts",
       report: "Report",

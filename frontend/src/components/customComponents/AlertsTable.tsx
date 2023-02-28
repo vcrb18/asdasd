@@ -30,7 +30,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "paciente" | "fecha" | "estado" | "urgencia" | "resultados";
+  id: "folio" | "fecha" | "estado" | "urgencia" | "patologia" | "resultados";
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
@@ -39,12 +39,6 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: "folio", label: "Folio", minWidth: "30%", align: 'center' },
-  {
-    id: "paciente",
-    label: "Nombre paciente",
-    align: "center",
-    minWidth: "40%",
-  },
   {
     id: "fecha",
     label: "Fecha",
@@ -76,6 +70,12 @@ const columns: readonly Column[] = [
     },
   },
   {
+    id: "patologia",
+    label: "Patología 1",
+    align: "center",
+    minWidth: "40%",
+  },
+  {
     id: "resultados",
     label: "Resultados",
     minWidth: "30%",
@@ -87,35 +87,35 @@ const columns: readonly Column[] = [
 // depediendo de como llegan desde la base de datos
 interface Data {
   folio: string;
-  paciente: string;
   fecha: string;
   estado: boolean;
   urgencia: number;
+  patologia: string;
   resultados: string;
 }
 
 function createData(
   folio: string,
-  paciente: string,
   fecha: string,
   estado: boolean,
   urgencia: number,
+  patologia: string,
   resultados: string
 ): Data {
   return {
     folio,
-    paciente,
     fecha,
     estado,
     urgencia,
+    patologia,
     resultados,
   };
 }
 const rows = [
-  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, 'false'),
-  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, 'false'),
-  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, 'false'),
-  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, 'false'),
+  createData("1", "2023-01-20T17:38:06.664148", true, 0, "", 'false'),
+  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", 'false'),
+  createData("3", "2020-03-01T04:39:46.671206", false, 1,"", 'false'),
+  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", 'false'),
 ];
 
 type Order = "asc" | "desc";
@@ -194,7 +194,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function ExamTable(): JSX.Element {
+function AlertTable(): JSX.Element {
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -245,10 +245,10 @@ function ExamTable(): JSX.Element {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     <StyledTableCell align="center">{row.folio}</StyledTableCell>
-                    <StyledTableCell align="center">{row.paciente}</StyledTableCell>
                     <StyledTableCell align="center">{fecha}</StyledTableCell>
                     <StyledTableCell align="center">{estadoIcon}</StyledTableCell>
                     <StyledTableCell align="center">{urgenciaText}</StyledTableCell>
+                    <StyledTableCell align="center">{row.patologia}</StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
                         <Button href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
@@ -273,4 +273,4 @@ function ExamTable(): JSX.Element {
   );
 }
 
-export default ExamTable;
+export default AlertTable;

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
-import { Box, Typography } from "@mui/material";
+import { Box} from "@mui/material";
 // import { useTranslation } from "react-i18next";
-import HomeTab from '../customComponents/HomeTab';
+import HomeTab from '../tabs/HomeTab';
+import AboutUsTab from "../tabs/AboutUsTab";
+import ContactUsTab from "../tabs/ContactUsTab";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
@@ -31,20 +33,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
 
       <Box sx={{ padding: 2, maxWidth: "60%" }}>
         {tabIndex === 0 && (
-             <HomeTab/>)}
+          <HomeTab/>
+        )}
         {tabIndex === 1 && (
-          <Box>
-            <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
-              Aqui debemos ver que vamos a escribir (o hacer una vista de esto)
-            </Typography>
-          </Box>
+          <AboutUsTab/>
         )}
         {tabIndex === 2 && (
-          <Box>
-            <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
-            Aqui debemos ver que vamos a escribir (o hacer una vista de esto)
-            </Typography>
-          </Box>
+          <ContactUsTab/>
         )}
       </Box>
       <Footer footerPosition={"static"} />

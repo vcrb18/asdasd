@@ -9,8 +9,10 @@ import {
   mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/customComponents/ExamTable";
-import ExamsView from "./components/views/ExamsView";
+import ExamsView from "./components/tabs/ExamsTab";
 import MainMenuView from "./components/views/MainMenuView";
+import MetricTabs from "./components/tabs/MetricTab";
+import AlertTab from "./components/tabs/AlertsTab";
 
 function Routing(): JSX.Element {
   return (
@@ -25,7 +27,7 @@ function Routing(): JSX.Element {
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
         <Route path="/tablaexamenes" element={<ExamTable />} />
         <Route
-          path="/examenes"
+          path="/exams"
           element={
             <ExamsView
               tabs={mainMenuPageButtons}
@@ -33,6 +35,25 @@ function Routing(): JSX.Element {
             />
           }
         />
+        <Route
+          path="/metrics"
+          element={
+            <MetricTabs
+              tabs={mainMenuPageButtons}
+              buttons={mainMenuHeaderButtons}
+            />
+          }
+        />
+        <Route
+          path="/alerts"
+          element={
+            <AlertTab
+              tabs={mainMenuPageButtons}
+              buttons={mainMenuHeaderButtons}
+            />
+          }
+        />
+
         <Route
           path="/mainmenu"
           element={<MainMenuView />}

@@ -14,9 +14,9 @@ export const loginPageButtons = [
 ];
 
 export const mainMenuPageButtons = [
-  { label: "Exámenes", href: "/examenes" },
-  { label: "Métricas", href: "#" },
-  { label: "Alertas", href: "#" },
+  { label: "Exámenes", href: "/exams" },
+  { label: "Métricas", href: "/metrics"  },
+  { label: "Alertas", href: "/alerts"  },
   { label: "Reporte", href: "#" },
 ];
 
