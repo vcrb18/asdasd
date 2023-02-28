@@ -14,10 +14,10 @@ export const loginPageButtons = [
 ];
 
 export const mainMenuPageButtons = [
-  { label: "Exámenes", href: "/exams" },
-  { label: "Métricas", href: "/metrics"  },
-  { label: "Alertas", href: "/alerts"  },
-  { label: "Reporte", href: "#" },
+  { label: "Exámenes", href: "/tables" },
+  { label: "Métricas", href: "/tables"  },
+  { label: "Alertas", href: "/tables"  },
+  { label: "Reporte", href: "/tables" },
 ];
 
 export const mainMenuTabs = [

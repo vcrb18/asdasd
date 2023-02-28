@@ -13,12 +13,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const MainMenuButton: React.FC = () => {
+  
   return (
     <>
       <Grid
         container
         lg={12}
-        padding={1}
+        padding={"5%"}
         spacing={"1%"}
         sx={{
           width: "-webkit-fill-available",

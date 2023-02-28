@@ -17,24 +17,23 @@ const MainMenuView: React.FC = () => {
           console.log(`Main Menu: Tab index changed to ${index}`);
         }}
       />
-      <Box
-        display={"flex"}
-        justifyContent={"flex-start"}
-        alignItems={"flex-start"}
-        paddingLeft={"2%"}
-        sx={{
-          width: "-webkit-fill-available",
-          height: "-webkit-fill-available",
-        }}
-        mt={"5%"}
-      >
-        <Box>
-          <Typography color={"#404040"} fontSize={"4rem"}>
-            {t("mainMenu")}
-          </Typography>
-        </Box>
-      </Box>
-      <MainMenuButton />
+          <Box
+          display={"flex"}
+          justifyContent={"flex-start"}
+          alignItems={"flex-start"}
+          paddingLeft={"2%"}
+          sx={{
+            width: "-webkit-fill-available",
+            height: "-webkit-fill-available",
+          }}
+          mt={"5%"}
+              >
+                
+            <Typography color={"#404040"} fontSize={"4rem"}>
+              {t("mainMenu")}
+            </Typography>
+            </Box>
+          <MainMenuButton />        
       <Footer footerPosition={"fixed"} />
     </>
   );

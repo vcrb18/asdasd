@@ -9,7 +9,7 @@ export default function AnalisisBox(): JSX.Element {
     lg={12}
     rowSpacing={2}
     columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-    padding={5} 
+    padding={4} 
     >
         <Grid item>
             <Typography></Typography>

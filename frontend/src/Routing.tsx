@@ -5,14 +5,10 @@ import {
   landingPageTabs,
   landingPageButtons,
   loginPageButtons,
-  mainMenuPageButtons,
-  mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/customComponents/ExamTable";
-import ExamsView from "./components/tabs/ExamsTab";
 import MainMenuView from "./components/views/MainMenuView";
-import MetricTabs from "./components/tabs/MetricTab";
-import AlertTab from "./components/tabs/AlertsTab";
+import TablesView from "./components/views/TablesView";
 
 function Routing(): JSX.Element {
   return (
@@ -26,38 +22,16 @@ function Routing(): JSX.Element {
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
         <Route path="/tablaexamenes" element={<ExamTable />} />
-        <Route
-          path="/exams"
-          element={
-            <ExamsView
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
-          }
-        />
-        <Route
-          path="/metrics"
-          element={
-            <MetricTabs
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
-          }
-        />
-        <Route
-          path="/alerts"
-          element={
-            <AlertTab
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
-          }
-        />
 
         <Route
           path="/mainmenu"
           element={<MainMenuView />}
         />
+        <Route
+          path="/tables"
+          element={<TablesView index={0} />}
+        />
+
       </Routes>
     </BrowserRouter>
   );

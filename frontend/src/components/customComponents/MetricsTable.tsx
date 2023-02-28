@@ -137,6 +137,22 @@ const rows = [
   createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
   createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
   createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
 ];
 
 type Order = "asc" | "desc";
