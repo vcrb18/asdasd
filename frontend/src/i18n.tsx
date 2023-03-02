@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 // Define the translation resources for your app
 const resources = {
   en: {
+    state: "estado", 
     translation: {
       landingTitle: "Artificial Intelligence for Cardiology",
       landingFirstText:
@@ -43,6 +44,7 @@ const resources = {
   },
   es: {
     translation: {
+      state: "estado", 
       landingTitle: "Inteligencia Artificial para Cardiología",
       landingFirstText:
         "Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo dedicado a explorar el potencial de la inteligencia artificial (IA) en el campo de la cardiología.",

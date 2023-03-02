@@ -13,6 +13,7 @@ import ExamsView from "./components/tabs/ExamsTab";
 import MainMenuView from "./components/views/MainMenuView";
 import MetricTabs from "./components/tabs/MetricTab";
 import AlertTab from "./components/tabs/AlertsTab";
+import AnalisisBox from "./components/customComponents/AnalisisBox";
 
 function Routing(): JSX.Element {
   return (
@@ -58,6 +59,12 @@ function Routing(): JSX.Element {
           path="/mainmenu"
           element={<MainMenuView />}
         />
+
+        <Route
+          path="/patogrid"
+          element={<AnalisisBox/>}
+        />
+
       </Routes>
     </BrowserRouter>
   );
