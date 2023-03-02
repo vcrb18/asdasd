@@ -32,7 +32,7 @@ const DeletableBoxItem = ({ label, onDelete }: { label: string, onDelete: (item:
         <Box display={'flex'} flexDirection={'row'}>
         <Box display={"flex"} justifyContent={"center"} alignItems={'flex-start'} width={'100%'}
             >
-                <Typography fontSize={"100%"} sx={{color: '#000000'}}>{label}</Typography>
+                <Typography fontSize={"70%"} sx={{color: '#000000'}}>{label}</Typography>
         </Box>
         <Box
         width={'10%'}
@@ -82,8 +82,8 @@ const DiagnosisComponent = (): JSX.Element => {
       };
   return (
     <>
-    <Box>
-        <Typography color={'#0000'}> Diagnosticos sugeridos</Typography>
+    <Box width={'100%'} mb={'5%'}>
+        <Typography color={'#000000'} fontSize={'80%'}> Diagnosticos sugeridos</Typography>
     </Box>
     <Box>
         {items.map((item) =>

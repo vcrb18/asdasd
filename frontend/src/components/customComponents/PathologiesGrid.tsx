@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField} from '@mui/material';
+import { Box, Grid, IconButton, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Paper} from '@mui/material';
 import ClearSharpIcon from '@mui/icons-material/ClearSharp';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -29,31 +29,20 @@ const DeletableGridItem = ({ label, onDelete }: { label: string, onDelete: (item
   };
 
   return (
+    <Paper sx={{width: '98%', margin: '1%' }} >
     <Grid
       container
-    //   onMouseEnter={() => { setHovered(true) }}
-    //   onMouseLeave={() => { setHovered(false) }}
+      //   onMouseEnter={() => { setHovered(true) }}
+      //   onMouseLeave={() => { setHovered(false) }}
       lg={8}
       md={10}
       xs={12}
       justifyContent={'center'}
       alignItems={'center'}
-
-    >   
-    
-        <Grid item lg={5} xs={12}>
-            <Box display={"flex"} justifyContent={"center"} alignItems={'center'}
-            >
-                <Typography fontSize={"80%"} sx={{color: '#000000'}}>{label}</Typography>
-            </Box>
-        </Grid>
-        <Grid item lg={1}>
-            <Box
-            display={"flex"}
-            justifyContent={"flex-start"}
-            alignItems={"flex-start"}
-            sx={{backgroundColor: "#e45c64"}}
-            >   
+      >
+        <Grid container lg={6} md={6} xs={6}>
+            <Box display={"flex"} flexDirection={'row'} justifyContent={"center"} alignItems={'center'}>
+                <Typography fontSize={"60%"} sx={{color: '#000000'}}>{label}</Typography>
                 <IconButton size='small' edge={'end'} onClick={handleDeleteClick}>
                     <ClearSharpIcon fontSize={'inherit'} />
                 </IconButton>
@@ -71,6 +60,7 @@ const DeletableGridItem = ({ label, onDelete }: { label: string, onDelete: (item
       </Dialog>
 
     </Grid>
+    </Paper>
   );
 };
 
@@ -103,13 +93,13 @@ const PatoGrid = (): JSX.Element =>  {
   return (
     <Grid container lg={12}>
       {items.map((item) => (
-        <Grid item lg={6} md={6} sx={{backgroundColor: '#36c513'}} justifyContent={'center'} alignItems={'center'} key={item}>
+        <Grid item lg={6} md={6}  justifyContent={'center'} alignItems={'center'} key={item}>
             <DeletableGridItem key={item} label={item} onDelete={handleDelete} />
         </Grid>
           ))}
         <Grid item lg={3}>
             <IconButton size='small' edge={'end'} onClick={handleAdd}>
-            	    <AddIcon fontSize={'inherit'} sx={{color: '#36c513'}}/>
+            	    <AddIcon fontSize={'inherit'}/>
             </IconButton>
         </Grid>
         <Dialog open={openAddDialog} onClose={handleAddDialogClose}>

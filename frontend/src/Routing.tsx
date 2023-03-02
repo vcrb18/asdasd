@@ -16,6 +16,7 @@ import AlertTab from "./components/tabs/AlertsTab";
 import AnalisisBox from "./components/customComponents/AnalisisBox";
 import DiagnosisComponent from "./components/customComponents/DiagnosisComponent";
 import PredictionBox from "./components/customComponents/PredictionBox";
+import ExamsView from "./components/views/ExamsView";
 
 function Routing(): JSX.Element {
   return (
@@ -74,6 +75,14 @@ function Routing(): JSX.Element {
         <Route
           path="/predicciones"
           element={<PredictionBox />}
+        />
+        
+        <Route
+          path="/examsview"
+          element={<ExamsView 
+            
+            tabs={mainMenuPageButtons}
+            buttons={mainMenuHeaderButtons} />}
         />
         
       </Routes>
