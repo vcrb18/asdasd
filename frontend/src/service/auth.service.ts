@@ -1,24 +1,35 @@
+import { Login } from "@mui/icons-material";
 import axios from "axios";
 
 const API_URL = "http://localhost:8080/";
 
-export const register = (username: string, email: string, password: string) => {
-  return axios.post(API_URL + "signup", {
+export const register = async (username: string, email: string, password: string) => {
+  return await axios.post(API_URL + "signup", {
     username,
     email,
     password,
   });
 };
 
-export const login = (email: string, password: string) => {
-  return axios
+export const login = async (email: string, password: string) => {
+  return await axios
     .post(API_URL + "login", {
       email,
       password,
     })
     .then((response) => {
+      console.log("Estamos en la response del login");
+      console.log("response");
+      console.log(response);
+      console.log("response.data");
+      console.log(response.data);
+      console.log("response.data.accessToken");
+      console.log(response.data.accessToken);
+
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
+        console.log("Entro en el if: if (response.data.accessToken)");
+        
       }
 
       return response.data;
