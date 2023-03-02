@@ -5,12 +5,12 @@ import { Box, Typography, Divider, Grid } from "@mui/material";
 import ExamTable from "../customComponents/ExamTable";
 import { useTranslation } from "react-i18next";
 
-interface ExamsViewProps {
+interface ExamsTableViewProps {
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string }>;
 }
 
-const ExamsView: React.FC<ExamsViewProps> = ({ buttons, tabs }) => {
+const ExamsTableView: React.FC<ExamsTableViewProps> = ({ buttons, tabs }) => {
   const { t } = useTranslation();
   const [tabIndex] = useState<number>(0);
 
@@ -88,4 +88,4 @@ const ExamsView: React.FC<ExamsViewProps> = ({ buttons, tabs }) => {
   );
 };
 
-export default ExamsView;
+export default ExamsTableView;

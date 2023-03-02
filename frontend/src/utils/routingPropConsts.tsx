@@ -31,3 +31,4 @@ export const mainMenuHeaderButtons = [
   { label: "Mi cuenta", href: "#" },
   { label: "Cerrar sesión", href: "/" },
 ];
+

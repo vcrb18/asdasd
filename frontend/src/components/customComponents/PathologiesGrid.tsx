@@ -113,7 +113,7 @@ const PatoGrid = (): JSX.Element =>  {
             </IconButton>
         </Grid>
         <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle>Add Pathology</DialogTitle>
         <DialogContent>
             <TextField
                 label="New Item"

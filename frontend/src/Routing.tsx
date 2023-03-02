@@ -9,11 +9,13 @@ import {
   mainMenuHeaderButtons,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/customComponents/ExamTable";
-import ExamsView from "./components/tabs/ExamsTab";
+import ExamsTableView from "./components/tabs/ExamsTab";
 import MainMenuView from "./components/views/MainMenuView";
 import MetricTabs from "./components/tabs/MetricTab";
 import AlertTab from "./components/tabs/AlertsTab";
 import AnalisisBox from "./components/customComponents/AnalisisBox";
+import DiagnosisComponent from "./components/customComponents/DiagnosisComponent";
+import PredictionBox from "./components/customComponents/PredictionBox";
 
 function Routing(): JSX.Element {
   return (
@@ -30,7 +32,7 @@ function Routing(): JSX.Element {
         <Route
           path="/exams"
           element={
-            <ExamsView
+            <ExamsTableView
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
             />
@@ -65,6 +67,15 @@ function Routing(): JSX.Element {
           element={<AnalisisBox/>}
         />
 
+        <Route
+          path="/diagnosis"
+          element={<DiagnosisComponent/>}
+        />
+        <Route
+          path="/predicciones"
+          element={<PredictionBox />}
+        />
+        
       </Routes>
     </BrowserRouter>
   );
