@@ -98,6 +98,8 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               color="success"
               variant="outlined"
               placeholder="Usuario"
+              value={loginInputs.password}
+              onChange={handleChange}
             />
             <TextField
               name="password"

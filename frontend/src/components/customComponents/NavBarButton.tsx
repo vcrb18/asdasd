@@ -13,7 +13,9 @@ interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
 }
 
-const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) : JSX.Element => {
+const NavBarButton: React.FC<NavBarButtonProps> = ({
+  buttonsLabels,
+}): JSX.Element => {
   const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
@@ -58,7 +60,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) : JSX.Elem
           marginLeft: "1%",
           backgroundColor: "#006a6b",
           color: "#fff",
-          borderRadius: 1
+          borderRadius: 1,
         }}
       >
         <MenuItem value="es">{t("es")}</MenuItem>

@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function DiagnosisComponent() {
-  return (
-    <div>DiagnosisComponent</div>
-  )
+  return <div>DiagnosisComponent</div>;
 }

@@ -55,16 +55,9 @@ function Routing(): JSX.Element {
           }
         />
 
-        <Route
-          path="/mainmenu"
-          element={<MainMenuView />}
-        />
+        <Route path="/mainmenu" element={<MainMenuView />} />
 
-        <Route
-          path="/patogrid"
-          element={<AnalisisBox/>}
-        />
-
+        <Route path="/patogrid" element={<AnalisisBox />} />
       </Routes>
     </BrowserRouter>
   );
