@@ -58,7 +58,12 @@ export const login = async (
 };
 
 export const logout = (): void => {
+  console.log("ENTRAMOS al logout");
   localStorage.removeItem("user");
+  const userIsLogged = getCurrentUser();
+  console.log("userIsLogged");
+  console.log(userIsLogged);
+  
 };
 
 export const getCurrentUser = (): any => {

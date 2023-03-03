@@ -8,6 +8,9 @@ import {
 } from "@mui/material";
 import { type ButtonProps } from "./Header";
 import { useTranslation } from "react-i18next";
+import { logout } from "../../service/auth.service";
+import { type NavigateFunction, useNavigate } from "react-router-dom";
+
 
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
@@ -26,6 +29,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
   });
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState<string>(i18n.language);
+  const navigate: NavigateFunction = useNavigate();
 
   const handleLanguageChange = (event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
@@ -33,6 +37,22 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
     i18n.changeLanguage(newLanguage).catch((error) => {
       console.error(error);
     });
+  };
+
+  const handleLogOutClick = (event: React.MouseEvent<HTMLAnchorElement>, label: string, href: string): void => {
+    event.preventDefault();
+    console.log("Entramos al handleLogOutClick");
+    console.log("label");
+    console.log(label);
+    
+    // USAR CON LA LLAVE DE LA TRADUCCION!@!!!
+    if (label === "Cerrar Sesión" || label === "Log Out") {
+      logout();
+      navigate("/");
+      window.location.reload();
+    } else {
+      navigate(href)
+    }
   };
 
   return (
@@ -45,6 +65,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
               href={button.href}
               sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
               variant="contained"
+              onClick={(event) => {handleLogOutClick(event, button.label, button.href)}}
             >
               {t(button.label)}
               {/* {t("login")} */}

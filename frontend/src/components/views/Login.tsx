@@ -50,7 +50,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
       () => {
         console.log("Entramos al login");
         navigate("/mainmenu");
-        // window.location.reload();
+        window.location.reload();
       },
       (error) => {
         console.log("Entramos al error");
