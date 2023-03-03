@@ -58,33 +58,22 @@ function Routing(): JSX.Element {
           }
         />
 
-        <Route
-          path="/mainmenu"
-          element={<MainMenuView />}
-        />
+        <Route path="/mainmenu" element={<MainMenuView />} />
 
-        <Route
-          path="/patogrid"
-          element={<AnalisisBox/>}
-        />
+        <Route path="/patogrid" element={<AnalisisBox />} />
 
-        <Route
-          path="/diagnosis"
-          element={<DiagnosisComponent/>}
-        />
-        <Route
-          path="/predicciones"
-          element={<PredictionBox />}
-        />
-        
+        <Route path="/diagnosis" element={<DiagnosisComponent />} />
+        <Route path="/predicciones" element={<PredictionBox />} />
+
         <Route
           path="/examsview"
-          element={<ExamsView 
-            
-            tabs={mainMenuPageButtons}
-            buttons={mainMenuHeaderButtons} />}
+          element={
+            <ExamsView
+              tabs={mainMenuPageButtons}
+              buttons={mainMenuHeaderButtons}
+            />
+          }
         />
-        
       </Routes>
     </BrowserRouter>
   );

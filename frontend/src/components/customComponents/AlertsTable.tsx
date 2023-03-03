@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
-import Brightness1RoundedIcon from '@mui/icons-material/Brightness1Rounded';
+import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,17 +34,21 @@ interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string) | ((value: boolean) => string) | ((value: string) => string);
+  format?: ((value: number) => string)
+    | ((value: boolean) => string)
+    | ((value: string) => string);
 }
 
 const columns: readonly Column[] = [
-  { id: "folio", label: "Folio", minWidth: "30%", align: 'center' },
+  { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
   {
     id: "fecha",
     label: "Fecha",
     minWidth: "30%",
     align: "center",
-    format: (value: string) => { return value.replace('T', ' ')},
+    format: (value: string) => {
+      return value.replace("T", " ");
+    },
     // format: (value: number) => {
     //   return new Date(value).toLocaleDateString();
     // },
@@ -112,10 +116,10 @@ function createData(
   };
 }
 const rows = [
-  createData("1", "2023-01-20T17:38:06.664148", true, 0, "", 'false'),
-  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", 'false'),
-  createData("3", "2020-03-01T04:39:46.671206", false, 1,"", 'false'),
-  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", 'false'),
+  createData("1", "2023-01-20T17:38:06.664148", true, 0, "", "false"),
+  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", "false"),
+  createData("3", "2020-03-01T04:39:46.671206", false, 1, "", "false"),
+  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", "false"),
 ];
 
 type Order = "asc" | "desc";
@@ -238,20 +242,46 @@ function AlertTable(): JSX.Element {
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: Data) => {
-                const fecha = (row.fecha).includes("T") ? (row.fecha).replace('T', ' ').split('.')[0] : (row.fecha).split('.');
-                const estadoIcon = row.estado ? <Brightness1RoundedIcon color={"success"}/> : <Brightness1RoundedIcon color={"error"}/>;
-                const urgenciaText = row.urgencia === 1 ? <Typography color={'red'}>Urgente</Typography> : <Typography>Normal</Typography>;
+                const fecha = row.fecha.includes("T")
+                  ? row.fecha.replace("T", " ").split(".")[0]
+                  : row.fecha.split(".");
+                const estadoIcon = row.estado ? (
+                  <Brightness1RoundedIcon color={"success"} />
+                ) : (
+                  <Brightness1RoundedIcon color={"error"} />
+                );
+                const urgenciaText =
+                  row.urgencia === 1 ? (
+                    <Typography color={"red"}>Urgente</Typography>
+                  ) : (
+                    <Typography>Normal</Typography>
+                  );
 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
-                    <StyledTableCell align="center">{row.folio}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.folio}
+                    </StyledTableCell>
                     <StyledTableCell align="center">{fecha}</StyledTableCell>
-                    <StyledTableCell align="center">{estadoIcon}</StyledTableCell>
-                    <StyledTableCell align="center">{urgenciaText}</StyledTableCell>
-                    <StyledTableCell align="center">{row.patologia}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {estadoIcon}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {urgenciaText}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.patologia}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
-                        <Button href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
+                        <Button
+                          href={row.resultados}
+                          color="primary"
+                          variant="contained"
+                          sx={{ color: "#006a6b" }}
+                        >
+                          Acceder
+                        </Button>
                       </ThemeProvider>
                     </StyledTableCell>
                   </TableRow>
