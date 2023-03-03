@@ -14,6 +14,7 @@ import MainMenuView from "./components/views/MainMenuView";
 import MetricTabs from "./components/tabs/MetricTab";
 import AlertTab from "./components/tabs/AlertsTab";
 import AnalisisBox from "./components/customComponents/AnalisisBox";
+import RequireAuth from "./components/customComponents/ProtectedRoute";
 
 function Routing(): JSX.Element {
   return (
@@ -26,38 +27,63 @@ function Routing(): JSX.Element {
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
-        <Route path="/tablaexamenes" element={<ExamTable />} />
+        <Route
+          path="/tablaexamenes"
+          element={
+            <RequireAuth>
+              <ExamTable />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/exams"
           element={
-            <ExamsView
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
+            <RequireAuth>
+              <ExamsView
+                tabs={mainMenuPageButtons}
+                buttons={mainMenuHeaderButtons}
+              />
+            </RequireAuth>
           }
         />
         <Route
           path="/metrics"
           element={
-            <MetricTabs
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
+            <RequireAuth>
+              <MetricTabs
+                tabs={mainMenuPageButtons}
+                buttons={mainMenuHeaderButtons}
+              />
+            </RequireAuth>
           }
         />
         <Route
           path="/alerts"
           element={
-            <AlertTab
-              tabs={mainMenuPageButtons}
-              buttons={mainMenuHeaderButtons}
-            />
+            <RequireAuth>
+              <AlertTab
+                tabs={mainMenuPageButtons}
+                buttons={mainMenuHeaderButtons}
+              />
+            </RequireAuth>
           }
         />
-
-        <Route path="/mainmenu" element={<MainMenuView />} />
-
-        <Route path="/patogrid" element={<AnalisisBox />} />
+        <Route
+          path="/mainmenu"
+          element={
+            <RequireAuth>
+              <MainMenuView />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/patogrid"
+          element={
+            <RequireAuth>
+              <AnalisisBox />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

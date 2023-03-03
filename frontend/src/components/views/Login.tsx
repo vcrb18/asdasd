@@ -5,10 +5,9 @@ import Header, { type ButtonProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { useTranslation } from "react-i18next";
 import { login } from "../../service/auth.service";
-// import bcrypt from 'bcrypt';
 import "../../styles/Login.css";
 import { type NavigateFunction, useNavigate } from "react-router-dom";
-interface LoginProps {
+export interface LoginProps {
   buttons: ButtonProps[];
 }
 
@@ -17,13 +16,11 @@ interface LoginInputs {
   password: string;
 }
 
-// const bcryptHashComplexity = 10;
-
 const Login: React.FC<LoginProps> = ({ buttons }) => {
   const { t } = useTranslation();
   const navigate: NavigateFunction = useNavigate();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
   const loginButtonTheme = createTheme({
@@ -53,22 +50,18 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
       () => {
         console.log("Entramos al login");
         navigate("/mainmenu");
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         console.log("Entramos al error");
-        console.log(error);
-        
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        console.log(error.response.data);
 
-        console.log(message);
-        setLoading(false);
+        const resMessage =
+          error?.response?.data?.message || error.message || error.toString();
+
+        // setLoading(false);
         setMessage(resMessage);
+        console.log(message);
       }
     );
   };

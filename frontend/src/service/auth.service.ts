@@ -1,9 +1,20 @@
-import { Login } from "@mui/icons-material";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 
 const API_URL = "http://localhost:8080/";
 
-export const register = async (username: string, email: string, password: string) => {
+interface LoginResponse {
+  data: any;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: any;
+}
+
+export const register = async (
+  username: string,
+  email: string,
+  password: string
+): Promise<AxiosResponse> => {
   return await axios.post(API_URL + "signup", {
     username,
     email,
@@ -11,36 +22,46 @@ export const register = async (username: string, email: string, password: string
   });
 };
 
-export const login = async (email: string, password: string) => {
-  return await axios
-    .post(API_URL + "login", {
+export const login = async (
+  email: string,
+  password: string
+) => {
+  try {
+    const response = await axios.post(API_URL + "login", {
       email,
       password,
-    })
-    .then((response) => {
-      console.log("Estamos en la response del login");
-      console.log("response");
-      console.log(response);
-      console.log("response.data");
-      console.log(response.data);
-      console.log("response.data.accessToken");
-      console.log(response.data.accessToken);
-
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        console.log("Entro en el if: if (response.data.accessToken)");
-        
-      }
-
-      return response.data;
     });
+
+    console.log("Estamos en la response del login");
+    console.log("response");
+    console.log(response);
+    console.log("response.data");
+    console.log(response.data);
+    console.log("response.data.token");
+    console.log(response.data.token);
+
+    if (response.data.token) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log("Entro en el if: if (response.data.token)");
+      const userIsLogged = getCurrentUser();
+      console.log("userIsLogged");
+      console.log(userIsLogged);
+      
+      
+    }
+
+    return response.data;
+  } catch (error) {
+    console.log("Error in login request:", error);
+    throw error;
+  }
 };
 
-export const logout = () => {
+export const logout = (): void => {
   localStorage.removeItem("user");
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): any => {
   const userStr = localStorage.getItem("user");
   if (userStr) return JSON.parse(userStr);
 
