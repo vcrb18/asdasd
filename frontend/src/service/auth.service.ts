@@ -22,10 +22,7 @@ export const register = async (
   });
 };
 
-export const login = async (
-  email: string,
-  password: string
-) => {
+export const login = async (email: string, password: string): Promise<LoginResponse>  => {
   try {
     const response = await axios.post(API_URL + "login", {
       email,
@@ -46,8 +43,6 @@ export const login = async (
       const userIsLogged = getCurrentUser();
       console.log("userIsLogged");
       console.log(userIsLogged);
-      
-      
     }
 
     return response.data;
@@ -63,7 +58,6 @@ export const logout = (): void => {
   const userIsLogged = getCurrentUser();
   console.log("userIsLogged");
   console.log(userIsLogged);
-  
 };
 
 export const getCurrentUser = (): any => {

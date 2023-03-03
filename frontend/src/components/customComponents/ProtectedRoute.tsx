@@ -11,7 +11,6 @@ const RequireAuth: React.FC<ProtectedRouteProps> = ({ children }) => {
   const userIsLogged = getCurrentUser();
   console.log("userIsLogged");
   console.log(userIsLogged);
-  
 
   if (!userIsLogged) {
     return <Login buttons={loginPageButtons} />;

@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { logout } from "../../service/auth.service";
 import { type NavigateFunction, useNavigate } from "react-router-dom";
 
-
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
 }
@@ -39,19 +38,23 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
     });
   };
 
-  const handleLogOutClick = (event: React.MouseEvent<HTMLAnchorElement>, label: string, href: string): void => {
+  const handleLogOutClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    label: string,
+    href: string
+  ): void => {
     event.preventDefault();
     console.log("Entramos al handleLogOutClick");
     console.log("label");
     console.log(label);
-    
+
     // USAR CON LA LLAVE DE LA TRADUCCION!@!!!
     if (label === "Cerrar Sesión" || label === "Log Out") {
       logout();
       navigate("/");
       window.location.reload();
     } else {
-      navigate(href)
+      navigate(href);
     }
   };
 
@@ -65,7 +68,9 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
               href={button.href}
               sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
               variant="contained"
-              onClick={(event) => {handleLogOutClick(event, button.label, button.href)}}
+              onClick={(event) => {
+                handleLogOutClick(event, button.label, button.href);
+              }}
             >
               {t(button.label)}
               {/* {t("login")} */}
