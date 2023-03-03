@@ -36,20 +36,20 @@ const PredictionBox = (): JSX.Element => {
           <Box
             display={"flex"}
             flexDirection={"row"}
-            justifyContent={"space-between"}
+            justifyContent={"space-evenly"}
             key={prediccion.id}
           >
-            <Box width={"33%"} margin={"1%"}>
+            <Box  margin={"1%"}>
               <Typography fontSize={"80%"} color={"#000000"}>
                 {prediccion.id}
               </Typography>
             </Box>
-            <Box width={"33%"} margin={"1%"}>
+            <Box  margin={"1%"}>
               <Typography fontSize={"80%"} color={"#000000"}>
                 {prediccion.estado}
               </Typography>
             </Box>
-            <Box width={"33%"} margin={"1%"}>
+            <Box  margin={"1%"}>
               <Typography fontSize={"80%"} color={"#000000"}>
                 {prediccion.porcentaje}
               </Typography>

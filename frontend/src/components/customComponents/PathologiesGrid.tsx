@@ -15,7 +15,7 @@ import {
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
 
-const patologías = ["arritmia", "bloqueo ventricular", "pato1", "pato2"];
+const patologías = ["Arritmia", "Bloqueo ventricular", "Pato1", "Pato2"];
 
 const DeletableGridItem = ({
   label,
@@ -63,7 +63,7 @@ const DeletableGridItem = ({
               {label}
             </Typography>
             <IconButton size="small" edge={"end"} onClick={handleDeleteClick}>
-              <ClearSharpIcon fontSize={"inherit"} />
+              <ClearSharpIcon fontSize={"inherit"} sx={{ color: "#e45c64" }}/>
             </IconButton>
           </Box>
         </Grid>

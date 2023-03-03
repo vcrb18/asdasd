@@ -49,7 +49,7 @@ const DeletableBoxItem = ({
             size="small"
             edge={"end"}
             onClick={handleDeleteClick}
-            sx={{ backgroundColor: "#e45c64" }}
+            sx={{ color: "#e45c64" }}
           >
             <ClearSharpIcon fontSize={"inherit"} />
           </IconButton>
