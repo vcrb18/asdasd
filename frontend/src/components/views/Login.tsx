@@ -71,7 +71,6 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
             alignItems={"center"}
             justifyContent={"center"}
             margin={"auto"}
-            marginTop={"5%"}
             padding={"5%"}
             borderRadius={5}
             boxShadow={"5px 5px 10px #ccc"}

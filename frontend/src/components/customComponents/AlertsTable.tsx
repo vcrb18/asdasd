@@ -112,7 +112,7 @@ function createData(
   };
 }
 const rows = [
-  createData("1", "2023-01-20T17:38:06.664148", true, 0, "", 'false'),
+  createData("1", "2023-01-20T17:38:06.664148", true, 0, "Arritmia Constante", 'false'),
   createData("2", "2020-02-01T02:39:46.671206", true, 1, "", 'false'),
   createData("3", "2020-03-01T04:39:46.671206", false, 1,"", 'false'),
   createData("4", "2020-01-13T16:39:46.671206", true, 0, "", 'false'),
@@ -248,7 +248,20 @@ function AlertTable(): JSX.Element {
                     <StyledTableCell align="center">{fecha}</StyledTableCell>
                     <StyledTableCell align="center">{estadoIcon}</StyledTableCell>
                     <StyledTableCell align="center">{urgenciaText}</StyledTableCell>
-                    <StyledTableCell align="center">{row.patologia}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {  row.patologia === "" ? null : <Box
+                      padding={1}
+                      sx={{
+                        width: "fit-content",
+                        borderRadius: '10px',
+                        backgroundColor: '#c7ccd4',
+                      }}
+                      >
+                        <Typography variant="body1">
+                          {row.patologia}
+                        </Typography>
+                      </Box>}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
                         <Button href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
