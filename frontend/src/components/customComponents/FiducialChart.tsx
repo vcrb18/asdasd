@@ -13059,15 +13059,6 @@ const FiducialChart = (props: any): JSX.Element => {
     const tStartPoint = [{ x: fidST, y: timeseriesData[fidST] }, 6];
     const tEndPoint = [{ x: fidT, y: timeseriesData[fidT] }, 7];
 
-    const rr = fidR2 - fidR;
-    const fc = 1000 * 60 / rr;
-    const pq = fidQRS - fidP;
-    const qrs = fidS - fidQRS;
-    const qt = fidT - fidQRS;
-    const qtc = (1000 * qt / 1000 / Math.sqrt(rr / 1000));
-    const st = 25 / 1000 * (fidST - fidS);
-
-
     let element: { x: number, y: number, x2: number, y2: number, centerX: number, centerY: number, elements: any };
     let lastEvent: any;
 
