@@ -1,8 +1,9 @@
 import { Fab, Box, Typography, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { mainMenuPageButtons } from "../../utils/routingPropConsts";
+import TablesView from "../views/TablesView";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -12,8 +13,18 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const MainMenuButton: React.FC = () => {
-  
+interface MainMenuButtonProps {
+  onButtonClick: (index: number) => void;
+}
+
+const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) => {
+  const [tabIndex, setTabIndex] = useState<number>(4);
+
+  const handleButtonClick = (index: number) => {
+    setTabIndex(index);
+    onButtonClick(index);
+  };
+
   return (
     <>
       <Grid
@@ -42,7 +53,7 @@ const MainMenuButton: React.FC = () => {
                   >
                     <Fab
                       size="small"
-                      href={button.href}
+                      onClick={() => handleButtonClick(index)}
                       sx={{ backgroundColor: "#404040", color: "#c7dff9" }}
                     >
                       <ArrowForwardIcon sx={{ color: "#1c9093" }} />

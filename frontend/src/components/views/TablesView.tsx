@@ -6,41 +6,50 @@ import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingP
 import AlertsTab from "../tabs/AlertsTab";
 import MetricTabs from "../tabs/MetricTab";
 import ExamsTab from "../tabs/ExamsTab";
+import MainMenuView from "./MainMenuView";
 
-const TablesView: React.FC<{ index: number }> = ({ index }) : JSX.Element => {
-  const [tabIndex, setTabIndex] = useState<number>(index);
+const TablesView: React.FC = (): JSX.Element => {
+  const [selectedIndex, setSelectedIndex] = useState<number>(4);
 
-  const handleOnTabValueChange = (index: number): void => {
-    setTabIndex(index);
+  const handleButtonClicked = (index: number): void => {
+    setSelectedIndex(index);
   };
 
-  return (
+  return ( 
     <>
+      {selectedIndex === 4 && (
+        <MainMenuView onButtonClick={(index: number) => {handleButtonClicked(index)}} />
+
+        )}
+      {selectedIndex !== 4 && (
+        <>
       <Header
         buttons={mainMenuHeaderButtons}
         tabs={mainMenuPageButtons}
         onTabValueChange={(index: number) => {
-          console.log(`Main Menu: Tab index changed to ${index}`);
-          handleOnTabValueChange(index);
+          handleButtonClicked(index);
         }}
       />
       <Box sx={{width: "-webkit-fill-available"}}>
-        {tabIndex === 0 && (
+        {selectedIndex === 0 && (
             <ExamsTab/>
             )}
-        {tabIndex === 1 && (
+        {selectedIndex === 1 && (
             <MetricTabs/>
             )}
-        {tabIndex === 2 && (
+        {selectedIndex === 2 && (
             <AlertsTab/>
             )}
-        {tabIndex === 3 && (
+        {selectedIndex === 3 && (
             <>
             <Typography> Aqui debe ir algo que no se que es</Typography>
             </>
-          )}      
+          )}
         </Box>
       <Footer footerPosition={"fixed"} />
+    </>
+    )}
+
     </>
   );
 };

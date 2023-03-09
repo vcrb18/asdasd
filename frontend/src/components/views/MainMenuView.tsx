@@ -1,12 +1,17 @@
 import React from "react";
-import MainMenuButton from "../customComponents/MainMenuButton";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { Box, Typography } from "@mui/material";
 import { mainMenuHeaderButtons } from "../../utils/routingPropConsts";
 import { useTranslation } from "react-i18next";
+import MainMenuButton from "../customComponents/MainMenuButton";
 
-const MainMenuView: React.FC = () => {
+const MainMenuView: React.FC<{ onButtonClick: (index: number) => void }> = ({
+  onButtonClick,
+}) => {
+  const handleButtonClick = (index: number): void => {
+    onButtonClick(index);
+  };
   const { t } = useTranslation();
 
   return (
@@ -32,8 +37,8 @@ const MainMenuView: React.FC = () => {
             <Typography color={"#404040"} fontSize={"4rem"}>
               {t("mainMenu")}
             </Typography>
-            </Box>
-          <MainMenuButton />        
+            </Box>   
+        <MainMenuButton onButtonClick={handleButtonClick} />
       <Footer footerPosition={"fixed"} />
     </>
   );

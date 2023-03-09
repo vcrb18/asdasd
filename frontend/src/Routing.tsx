@@ -7,7 +7,6 @@ import {
   loginPageButtons,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/customComponents/ExamTable";
-import MainMenuView from "./components/views/MainMenuView";
 import TablesView from "./components/views/TablesView";
 
 function Routing(): JSX.Element {
@@ -24,12 +23,8 @@ function Routing(): JSX.Element {
         <Route path="/tablaexamenes" element={<ExamTable />} />
 
         <Route
-          path="/mainmenu"
-          element={<MainMenuView />}
-        />
-        <Route
           path="/tables"
-          element={<TablesView index={0} />}
+          element={<TablesView />}
         />
 
       </Routes>
