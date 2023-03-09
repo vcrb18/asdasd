@@ -2,6 +2,7 @@ import { Box, Button, Fab, Typography } from "@mui/material";
 import React from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
+import DerivationsComponent from "../customComponents/DerivationsComponent";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
@@ -68,6 +69,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 <PredictionBox />
               </Box>
             </Box>
+        </Box>
+        <Box display={"flex"} justifyContent={"center"} marginTop={"5%"}>
+            <DerivationsComponent />
         </Box>
       </Box>
       <Footer footerPosition={"fixed"} />
