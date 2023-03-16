@@ -19,10 +19,12 @@ const DiagnosticosSugeridos = [
 ];
 
 const PredictionBox = (): JSX.Element => {
+  const fontColor = ('#000');
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
-    <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-      <Typography fontSize={"80%"} color={"#000000"}>
+    <Box display={"flex"} flexDirection={"column"} width={"100%"} sx={{backgroundColor: '#159194', borderRadius: '2%'}}> 
+    <Box sx={{backgroundColor: '#fff', borderRadius: '2%'}} margin={"3%"}>
+      <Typography fontSize={"80%"} color={fontColor} mt={'2%'}>
         Predicción de Patologías
       </Typography>
       <Box
@@ -57,6 +59,9 @@ const PredictionBox = (): JSX.Element => {
           </Box>
         ))}
       </Box>
+    </Box>
+    <Box sx={{backgroundColor: '#fff', borderRadius: '2%'}} margin={"3%"}>
+    
       <Typography color={"#000000"} fontSize={"80%"} width={"100%"}>
         Diagnosticos sugeridos
       </Typography>
@@ -88,6 +93,8 @@ const PredictionBox = (): JSX.Element => {
         ))}
       </Box>
     </Box>
+    </Box>
+
   );
 };
 

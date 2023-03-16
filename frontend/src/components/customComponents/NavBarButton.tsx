@@ -45,8 +45,6 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({ buttonsLabels }) : JSX.Elem
               variant="contained"
             >
               {t(button.label)}
-              {/* {t("login")} */}
-              {/* {button.label} */}
             </Button>
           ))
         : null}

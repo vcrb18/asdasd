@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -41,7 +42,8 @@ const DeletableBoxItem = ({
   return (
     <>
       <Box display={"flex"} flexDirection={"row"}>
-        <Box display={"flex"} justifyContent={"space-between"} width={"100%"}>
+      <Paper sx={{ width: "98%", margin: "1%" }}>
+        <Box display={"flex"} justifyContent={"space-between"} width={"100%"} marginRight={'3%'}>
           <Typography fontSize={"70%"} sx={{ color: "#000000" }}>
             {label}
           </Typography>
@@ -50,10 +52,11 @@ const DeletableBoxItem = ({
             edge={"end"}
             onClick={handleDeleteClick}
             sx={{ color: "#e45c64" }}
-          >
-            <ClearSharpIcon fontSize={"inherit"} />
+            >
+              <ClearSharpIcon fontSize={"inherit"}/>
           </IconButton>
         </Box>
+        </Paper>
       </Box>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>
@@ -103,7 +106,7 @@ const DiagnosisComponent = (): JSX.Element => {
   };
   return (
     <>
-      <Box width={"100%"} mb={"5%"} display={"flex"}>
+      <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={'center'}>
         <Typography color={"#000000"} fontSize={"80%"}>
           Diagnosticos sugeridos
         </Typography>
@@ -118,6 +121,7 @@ const DiagnosisComponent = (): JSX.Element => {
         <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
           <DialogTitle>Add Pathology</DialogTitle>
           <DialogContent>
+            
             <TextField
               label="New Item"
               fullWidth

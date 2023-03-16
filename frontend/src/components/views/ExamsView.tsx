@@ -1,4 +1,4 @@
-import { Box, Button, Fab, Typography } from "@mui/material";
+import { Box, Button, Fab, Grid, Typography } from "@mui/material";
 import React from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
@@ -25,51 +25,36 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           console.log(`Landing Page: Tab index changed to ${index}`);
         }}
       />
-      <Box mt={"3%"} mb={"4%"} width={"100%"}>
-        <Box display={"flex"} justifyContent={"center"}>
-          <Box
-            display={"flex"}
-            flexDirection={"row"}
-            width={"80%"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            height={"100%"}
-          >
-            <Fab size="small">
-              <ArrowCircleLeftIcon />
-            </Fab>
-            <Typography color={"#404040"}>Folio examen: F-2341 </Typography>
-            <Typography color={"#404040"}>
+      <Box marginY={"6%"} width={"100%"} >
+        <Grid container display={'flex'} mt={'1%'} mb={'4%'} >
+          <Grid item xs={12} sm={12} md={3} lg={3}>
+            <Fab size="small" href="/exams">
+                <ArrowCircleLeftIcon/>
+              </Fab>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+            <Typography fontSize={'80%'} color={"#404040"}> Folio examen: F-2341 </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3} lg={3}>
+          <Typography fontSize={'80%'} color={"#404040"}>
               Fecha de recepción: 12/12/2020
             </Typography>
-            <Button sx={{ backgroundColor: "#159194", color: "#000000" }}>
-              Validar mediciones
-            </Button>
-          </Box>
-        </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} md={3} lg={3}>
+            <Button variant="contained" sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}>
+                Validar mediciones
+              </Button>
+          </Grid>
+        </Grid>
 
-        <Box display={"flex"} justifyContent={"center"} marginTop={"5%"}>
-          
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"space-evenly"}
-              alignItems={"flex-start"}
-            >
-              <Box display={"flex"} flexDirection={"column"} width={"45%"}>
-                <AnalisisBox />
-              </Box>
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                width={"45%"}
-                sx={{ backgroundColor: "#D4E6DA" }}
-                borderRadius={4}
-              >
-                <PredictionBox />
-              </Box>
-            </Box>
-        </Box>
+        <Grid container display={'flex'} width={'100%'} rowSpacing={1} alignItems={'center'}>
+          <Grid item xs={12} sm={12} md={12} lg={5.5} marginX={'2%'}>
+            <AnalisisBox/>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={5.5} marginX={'2%'}>
+            <PredictionBox/>
+          </Grid>
+        </Grid>
         <Box display={"flex"} justifyContent={"center"} marginTop={"5%"}>
             <DerivationsComponent />
         </Box>
