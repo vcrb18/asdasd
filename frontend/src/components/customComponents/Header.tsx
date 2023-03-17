@@ -42,14 +42,14 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
           {isMatch ? (
             <>
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                ISATEC HEART
+                ISATEC Heart
               </Typography>
               <DrawerComp buttons={buttons} />
             </>
           ) : (
             <>
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                ISATEC HEART
+                ISATEC Heart
               </Typography>
               {tabs != null && tabs.length > 0 ? (
                 <>

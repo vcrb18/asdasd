@@ -5,7 +5,7 @@ export const landingPageTabs = [
 ];
 
 export const landingPageButtons = [
-  { label: "Contacto", href: "#" },
+  // { label: "Contacto", href: "#" }, eliminado porque se repetia con contactanos
   { label: "Iniciar Sesión", href: "/login" },
 ];
 
@@ -19,9 +19,9 @@ export const mainMenuPageButtons = [
 ];
 
 export const mainMenuTabs = [
-  { label: "Exámenes", href: "#" },
-  { label: "Métricas", href: "#" },
-  { label: "Alertas", href: "#" },
+  { label: "Exámenes", href: "/exams" },
+  { label: "Métricas", href: "/metrics" },
+  { label: "Alertas", href: "/alerts" },
   { label: "Reporte", href: "#" },
 ];
 

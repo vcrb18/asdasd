@@ -9,7 +9,7 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary
 }));
 
 const MainMenuButton: React.FC = () => {
@@ -22,7 +22,7 @@ const MainMenuButton: React.FC = () => {
         spacing={"1%"}
         sx={{
           width: "-webkit-fill-available",
-          heigth: "-webkit-fill-available",
+          heigth: "-webkit-fill-available"
         }}
       >
         {mainMenuPageButtons != null && mainMenuPageButtons.length > 0
@@ -30,7 +30,7 @@ const MainMenuButton: React.FC = () => {
               <Grid item lg={6} md={6} xs={12} key={index}>
                 <Item sx={{ backgroundColor: "#c7dff9" }}>
                   <Box display={"flex"} justifyContent={"flex-start"}>
-                    <Typography fontSize={"1.5rem"} color={"#404040"}>
+                    <Typography variant="h3" color={"#666666"}>
                       {button.label}
                     </Typography>
                   </Box>

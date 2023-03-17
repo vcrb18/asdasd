@@ -3,7 +3,7 @@ import MainMenuButton from "../customComponents/MainMenuButton";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { Box, Typography } from "@mui/material";
-import { mainMenuHeaderButtons } from "../../utils/routingPropConsts";
+import { mainMenuHeaderButtons, mainMenuTabs } from "../../utils/routingPropConsts";
 import { useTranslation } from "react-i18next";
 
 const MainMenuView: React.FC = () => {
@@ -12,6 +12,7 @@ const MainMenuView: React.FC = () => {
   return (
     <>
       <Header
+        tabs={mainMenuTabs}
         buttons={mainMenuHeaderButtons}
         onTabValueChange={(index: number) => {
           console.log(`Main Menu: Tab index changed to ${index}`);
@@ -24,9 +25,9 @@ const MainMenuView: React.FC = () => {
         paddingLeft={"2%"}
         sx={{
           width: "-webkit-fill-available",
-          height: "-webkit-fill-available",
+          height: "-webkit-fill-available"
         }}
-        mt={"5%"}
+        mt={"-10%"}
       >
         <Box>
           <Typography color={"#404040"} fontSize={"4rem"}>

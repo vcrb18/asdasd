@@ -27,12 +27,10 @@ const AlertTab: React.FC<AlertTabProps> = ({ buttons, tabs }) => {
         }}
       />
       <Box
-        mt={"10%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
         sx={{
-          padding: 2,
           width: "100%",
         }}
       >

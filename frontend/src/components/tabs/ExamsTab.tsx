@@ -27,13 +27,12 @@ const ExamsTableView: React.FC<ExamsTableViewProps> = ({ buttons, tabs }) => {
         }}
       />
       <Box
-        mt={"10%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
         sx={{
-          padding: 2,
           width: "100%",
+          alignItems: "flex-start",
         }}
       >
         {tabIndex === 0 && (
@@ -54,15 +53,20 @@ const ExamsTableView: React.FC<ExamsTableViewProps> = ({ buttons, tabs }) => {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               padding={5}
             >
-              <Grid item lg={1} xs={0} md={1}>
+              <Grid item xs={0} md={2} lg={2}>
                 <Box
                   display={"flex"}
                   justifyContent={"flex-start"}
                   alignItems={"center"}
+                  sx={{
+                    backgroundColor: "white",
+                    borderRadius: '4px'
+                  }}
                 >
                   <Typography
                     display={"flex"}
                     justifyContent={"flex-start"}
+                    variant="h3"
                     sx={{ color: "#404040", fontSize: "1.5rem" }}
                   >
                     {t("filter")}
@@ -71,9 +75,9 @@ const ExamsTableView: React.FC<ExamsTableViewProps> = ({ buttons, tabs }) => {
               </Grid>
               <Grid
                 item
-                lg={11}
                 xs={12}
-                md={11}
+                md={10}
+                lg={10}
                 display={"flex"}
                 justifyContent={"flex-end"}
               >
