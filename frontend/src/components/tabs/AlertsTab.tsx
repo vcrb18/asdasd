@@ -1,43 +1,24 @@
-import React, { useState } from "react";
-import Header from "../customComponents/Header";
-import Footer from "../customComponents/Footer";
+import React from "react";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AlertTable from "../customComponents/AlertsTable";
 
-interface AlertTabProps {
-  buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string }>;
-}
 
-const AlertTab: React.FC<AlertTabProps> = ({ buttons, tabs }) => {
+const AlertsTab = () : JSX.Element => {
   const { t } = useTranslation();
-  const [tabIndex] = useState<number>(0);
 
-  // const handleOnTabValueChange = (index: number): void => {
-  //   setTabIndex(index);
-  // };
   return (
     <>
-      <Header
-        tabs={tabs}
-        buttons={buttons}
-        onTabValueChange={(index: number) => {
-          console.log(`Landing Page: Tab index changed to ${index}`);
-        }}
-      />
       <Box
+        mt={"4%"}
+        mb={'3%'}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        sx={{
-          width: "100%",
-        }}
       >
-        {tabIndex === 0 && (
           <Box>
             <Typography
-              paddingLeft={2}
+              paddingLeft={'3%'}
               display={"flex"}
               justifyContent={"flex-start"}
               sx={{ color: "#404040", fontSize: "4rem" }}
@@ -52,23 +33,20 @@ const AlertTab: React.FC<AlertTabProps> = ({ buttons, tabs }) => {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               padding={5}
             >
-              
-                <Grid
+              <Grid
                 item
                 xs={12}
                 md={12}
                 display={"flex"}
                 justifyContent={"center"}
-                >
+              >
                 <AlertTable />
-            </Grid>
+              </Grid>
             </Grid>
           </Box>
-        )}
       </Box>
-      <Footer footerPosition={"fixed"} />
     </>
   );
 };
 
-export default AlertTab;
+export default AlertsTab;

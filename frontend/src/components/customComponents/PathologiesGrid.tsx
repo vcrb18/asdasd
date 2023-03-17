@@ -90,6 +90,9 @@ const PatoGrid = (): JSX.Element => {
   const [addedPatologies, setAddedPatologies] = useState<string[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
 
+  const handleDelete = (item: string): void => {
+    setItems(items.filter((i) => i !== item));
+  };
 
   const handleDelete = (item: string): void => {
     setItems(items.filter((i) => i !== item));

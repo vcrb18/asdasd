@@ -56,7 +56,6 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
                   <NavbarTabs
                     tabs={tabs}
                     onTabChange={(index: number) => {
-                      console.log(`Header 1: Tab index changed to ${index}`);
                       handleTabChange(index);
                     }}
                   />

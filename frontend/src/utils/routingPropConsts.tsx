@@ -12,10 +12,10 @@ export const landingPageButtons = [
 export const loginPageButtons = [{ label: "Inicio", href: "/" }];
 
 export const mainMenuPageButtons = [
-  { label: "Exámenes", href: "/exams" },
-  { label: "Métricas", href: "/metrics" },
-  { label: "Alertas", href: "/alerts" },
-  { label: "Reporte", href: "#" },
+  { label: "Exámenes", href: "/tables" },
+  { label: "Métricas", href: "/tables"  },
+  { label: "Alertas", href: "/tables"  },
+  { label: "Reporte", href: "/tables" },
 ];
 
 export const mainMenuTabs = [
@@ -27,5 +27,5 @@ export const mainMenuTabs = [
 
 export const mainMenuHeaderButtons = [
   { label: "Mi cuenta", href: "#" },
-  { label: "Cerrar sesión", href: "/" },
+  { label: "Cerrar Sesión", href: "/" },
 ];

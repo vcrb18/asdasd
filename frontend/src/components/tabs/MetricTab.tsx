@@ -1,45 +1,31 @@
-import React, { useState } from "react";
-import Header from "../customComponents/Header";
+import React from "react";
 import Footer from "../customComponents/Footer";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import MetricsTable from "../customComponents/MetricsTable";
 
-interface MetricTabProps {
-  buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string }>;
-}
 
-const MetricTabs: React.FC<MetricTabProps> = ({ buttons, tabs }) => {
+const MetricTabs = (): JSX.Element => {
   const { t } = useTranslation();
-  const [tabIndex] = useState<number>(0);
 
   // const handleOnTabValueChange = (index: number): void => {
   //   setTabIndex(index);
   // };
   return (
     <>
-      <Header
-        tabs={tabs}
-        buttons={buttons}
-        onTabValueChange={(index: number) => {
-          console.log(`Landing Page: Tab index changed to ${index}`);
-        }}
-      />
       <Box
-        mt={"10%"}
+        mt={"4%"}
+        mb={'3%'}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        sx={{
-          padding: 2,
+        sx={{ 
           width: "100%",
         }}
       >
-        {tabIndex === 0 && (
           <Box>
             <Typography
-              paddingLeft={2}
+              paddingLeft={'3%'}
               display={"flex"}
               justifyContent={"flex-start"}
               sx={{ color: "#404040", fontSize: "4rem" }}
@@ -54,19 +40,17 @@ const MetricTabs: React.FC<MetricTabProps> = ({ buttons, tabs }) => {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               padding={5}
             >
-              
-                <Grid
+              <Grid
                 item
                 xs={12}
                 md={12}
                 display={"flex"}
                 justifyContent={"center"}
-                >
+              >
                 <MetricsTable />
-            </Grid>
+              </Grid>
             </Grid>
           </Box>
-        )}
       </Box>
       <Footer footerPosition={"fixed"} />
     </>

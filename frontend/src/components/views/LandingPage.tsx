@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 // import { useTranslation } from "react-i18next";
-import HomeTab from '../tabs/HomeTab';
+import HomeTab from "../tabs/HomeTab";
 import AboutUsTab from "../tabs/AboutUsTab";
 import ContactUsTab from "../tabs/ContactUsTab";
 
@@ -32,15 +32,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
       />
 
       <Box sx={{ padding: 2, maxWidth: "60%" }}>
-        {tabIndex === 0 && (
-          <HomeTab/>
-        )}
-        {tabIndex === 1 && (
-          <AboutUsTab/>
-        )}
-        {tabIndex === 2 && (
-          <ContactUsTab/>
-        )}
+        {tabIndex === 0 && <HomeTab />}
+        {tabIndex === 1 && <AboutUsTab />}
+        {tabIndex === 2 && <ContactUsTab />}
       </Box>
       <Footer footerPosition={"static"} />
     </>
