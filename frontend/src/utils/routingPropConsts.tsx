@@ -9,9 +9,7 @@ export const landingPageButtons = [
   { label: "Iniciar Sesión", href: "/login" },
 ];
 
-export const loginPageButtons = [
-  { label: "Inicio", href: "/" },
-];
+export const loginPageButtons = [{ label: "Inicio", href: "/" }];
 
 export const mainMenuPageButtons = [
   { label: "Exámenes", href: "/tables" },
@@ -29,5 +27,5 @@ export const mainMenuTabs = [
 
 export const mainMenuHeaderButtons = [
   { label: "Mi cuenta", href: "#" },
-  { label: "Cerrar sesión", href: "/" },
+  { label: "Cerrar Sesión", href: "/" },
 ];

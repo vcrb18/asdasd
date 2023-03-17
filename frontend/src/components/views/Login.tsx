@@ -4,10 +4,10 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import Header, { type ButtonProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { useTranslation } from "react-i18next";
-// import bcrypt from 'bcrypt';
+import { login } from "../../service/auth.service";
 import "../../styles/Login.css";
-
-interface LoginProps {
+import { type NavigateFunction, useNavigate } from "react-router-dom";
+export interface LoginProps {
   buttons: ButtonProps[];
 }
 
@@ -16,10 +16,13 @@ interface LoginInputs {
   password: string;
 }
 
-// const bcryptHashComplexity = 10;
-
 const Login: React.FC<LoginProps> = ({ buttons }) => {
   const { t } = useTranslation();
+  const navigate: NavigateFunction = useNavigate();
+
+  // const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+
   const loginButtonTheme = createTheme({
     palette: {
       primary: {
@@ -41,18 +44,26 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   };
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    // const hashedPassword = bcrypt.hash(
-    // loginInputs.password,
-    // bcryptHashComplexity,
-    // (error: any, hash: string) => {
-    // if (error) {
-    // console.log("Error encriptando");
-    // } else {
-    // console.log(`Se hasheo la contrasena y es ${hash}`);
-    // }
-    // }
-    // );
-    console.log(loginInputs);
+    console.log(`loginInputs.username: ${loginInputs.username}`);
+    console.log(`loginInputs.password: ${loginInputs.password}`);
+    login(loginInputs.username, loginInputs.password).then(
+      () => {
+        console.log("Entramos al login");
+        navigate("/mainmenu");
+        window.location.reload();
+      },
+      (error) => {
+        console.log("Entramos al error");
+        console.log(error.response.data);
+
+        const resMessage =
+          error?.response?.data?.message || error.message || error.toString();
+
+        // setLoading(false);
+        setMessage(resMessage);
+        console.log(message);
+      }
+    );
   };
   return (
     <>
@@ -93,11 +104,13 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
             <TextField
               margin="normal"
               type={"text"}
-              name="login-text"
+              name="username"
               required
               color="success"
               variant="outlined"
               placeholder="Usuario"
+              value={loginInputs.username}
+              onChange={handleChange}
             />
             <TextField
               name="password"
@@ -114,7 +127,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               sx={{ marginTop: 3, borderRadius: 3 }}
               variant="contained"
               color="primary"
-              href="/tables"
+              // href="/mainmenu"
             >
               {t("login")}
             </Button>

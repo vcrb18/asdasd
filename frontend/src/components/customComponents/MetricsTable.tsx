@@ -28,15 +28,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "estado" | "puntos" | "error rr" | "error fc" | "error qt" | 'error qtc'| 'error st'| 'resultados';
+  id:
+    | "folio"
+    | "estado"
+    | "puntos"
+    | "error rr"
+    | "error fc"
+    | "error qt"
+    | "error qtc"
+    | "error st"
+    | "resultados";
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string) | ((value: boolean) => string) | ((value: string) => string);
+  format?:
+    | ((value: number) => string)
+    | ((value: boolean) => string)
+    | ((value: string) => string);
 }
 
 const columns: readonly Column[] = [
-  { id: "folio", label: "Folio", minWidth: "30%", align: 'center' },
+  { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
   {
     id: "estado",
     label: "Estado",
@@ -121,38 +133,142 @@ function createData(
     errorQT,
     errorQTc,
     errorST,
-    resultados
+    resultados,
   };
 }
 const rows = [
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
-  createData("1", "Bien Aceptado", "Medido", '3.4%', "40.5%", "12.3%", '34.3%', "93.4%", 'Acceder'),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
+  createData(
+    "1",
+    "Bien Aceptado",
+    "Medido",
+    "3.4%",
+    "40.5%",
+    "12.3%",
+    "34.3%",
+    "93.4%",
+    "Acceder"
+  ),
 ];
 
 type Order = "asc" | "desc";
@@ -277,23 +393,45 @@ function MetricsTable(): JSX.Element {
               .map((row: Data) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
-                    <StyledTableCell align="center">{row.folio}</StyledTableCell>
-                    <StyledTableCell align="center">{row.estado}</StyledTableCell>
-                    <StyledTableCell align="center">{row.puntos}</StyledTableCell>
-                    <StyledTableCell align="center">{row.errorRR}</StyledTableCell>
-                    <StyledTableCell align="center">{row.errorFC}</StyledTableCell>
-                    <StyledTableCell align="center">{row.errorQT}</StyledTableCell>
-                    <StyledTableCell align="center">{row.errorQTc}</StyledTableCell>
-                    <StyledTableCell align="center">{row.errorST}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.folio}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.estado}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.puntos}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.errorRR}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.errorFC}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.errorQT}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.errorQTc}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.errorST}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
-                        <Button href={row.resultados} color="primary" variant="contained" sx={{color: "#006a6b"}}>Acceder</Button>
+                        <Button
+                          href={row.resultados}
+                          color="primary"
+                          variant="contained"
+                          sx={{ color: "#006a6b" }}
+                        >
+                          Acceder
+                        </Button>
                       </ThemeProvider>
                     </StyledTableCell>
                   </TableRow>
-                )
+                );
               })}
-
           </TableBody>
         </Table>
       </TableContainer>

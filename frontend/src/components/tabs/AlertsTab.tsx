@@ -33,16 +33,15 @@ const AlertsTab = () : JSX.Element => {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               padding={5}
             >
-              
-                <Grid
+              <Grid
                 item
                 xs={12}
                 md={12}
                 display={"flex"}
                 justifyContent={"center"}
-                >
+              >
                 <AlertTable />
-            </Grid>
+              </Grid>
             </Grid>
           </Box>
       </Box>
