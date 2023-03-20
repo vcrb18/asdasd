@@ -1,7 +1,7 @@
 export const landingPageTabs = [
   { label: "home" },
-  { label: "Sobre Nosotros" },
-  { label: "Contactanos" },
+  { label: "aboutUs" },
+  { label: "contactUs" },
 ];
 
 export const landingPageButtons = [
@@ -9,7 +9,7 @@ export const landingPageButtons = [
   { label: "Iniciar Sesión", href: "/login" },
 ];
 
-export const loginPageButtons = [{ label: "Inicio", href: "/" }];
+export const loginPageButtons = [{ label: "home", href: "/" }];
 
 export const mainMenuPageButtons = [
   { label: "Exámenes", href: "/tables" },

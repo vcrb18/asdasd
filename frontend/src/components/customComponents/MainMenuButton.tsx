@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { mainMenuPageButtons } from "../../utils/routingPropConsts";
+import { useTranslation } from "react-i18next";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,7 +24,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) : JSX.
     setTabIndex(index);
     onButtonClick(index);
   };
-
+  const { t } = useTranslation();
   return (
     <>
       <Grid
@@ -41,8 +42,8 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) : JSX.
               <Grid item lg={6} md={6} xs={12} key={index}>
                 <Item sx={{ backgroundColor: "#c7dff9" }}>
                   <Box display={"flex"} justifyContent={"flex-start"}>
-                    <Typography variant="h3" color={"#666666"}>
-                      {button.label}
+                    <Typography fontSize={"1.5rem"} color={"#404040"}>
+                      {t(button.label)}
                     </Typography>
                   </Box>
                   <Box

@@ -25,7 +25,7 @@ const ExamsTab = (): JSX.Element => {
           justifyContent={"flex-start"}
           sx={{ color: "#404040", fontSize: "4rem" }}
         >
-          {t("examinations")}
+          {t("exams")}
         </Typography>
         <Divider variant="middle" />
         <Grid
@@ -35,7 +35,7 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid item lg={2} xs={0} md={1}>
+          <Grid item lg={1} xs={0} md={1}>
             <Box
               display={"flex"}
               justifyContent={"flex-start"}
@@ -52,11 +52,12 @@ const ExamsTab = (): JSX.Element => {
           </Grid>
           <Grid
             item
-            lg={10}
+            lg={11}
             xs={12}
             md={11}
             display={"flex"}
-            justifyContent={"flex-end"}
+            justifyContent={"flex-start"}
+            sx={{ color: "#404040", fontSize: "1.5rem" }}
           >
             <ExamTable />
           </Grid>

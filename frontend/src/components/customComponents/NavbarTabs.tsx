@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "@mui/material";
 import { type TabProps } from "./Header";
+import { useTranslation } from "react-i18next";
 
 interface NavbarTabsProps {
   tabs: TabProps[];
@@ -8,6 +9,7 @@ interface NavbarTabsProps {
 }
 
 const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
+  const { t } = useTranslation();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const handleTabChange = (
     event: React.SyntheticEvent,
@@ -27,7 +29,7 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
       onChange={handleTabChange}
     >
       {tabs.map((tab, index) => (
-        <Tab key={index} label={tab.label} />
+        <Tab key={index} label={t(tab.label)} />
       ))}
     </Tabs>
   );

@@ -4,8 +4,9 @@ import { initReactI18next } from "react-i18next";
 // Define the translation resources for your app
 const resources = {
   en: {
-    state: "estado",
     translation: {
+      patology: "Patology",
+      state: "State",
       landingTitle: "Artificial Intelligence for Cardiology",
       landingFirstText:
         "Welcome to ISATEC Heart, a research and development team dedicated to exploring the dedicated to exploring the potential of artificial intelligence (AI) in the field of cardiology.",
@@ -30,7 +31,7 @@ const resources = {
       contactUs: "Contact Us",
       login: "Login",
       contact: "Contact",
-      examinations: "Exams",
+      exams: "Exams",
       metrics: "Metrics",
       alerts: "Alerts",
       report: "Report",
@@ -38,13 +39,19 @@ const resources = {
       logOut: "Log Out",
       mainMenu: "Main Menu",
       filter: "Here could be a filter menu",
+      urgency: 'Urgency',
+      normal: 'Normal',
+      results: 'Results',
+      date: 'Date',
+      pacient: 'Pacient',
       es: "Spanish",
       en: "English",
     },
   },
   es: {
     translation: {
-      state: "estado",
+      patology: "Patología",
+      state: "Estado",
       landingTitle: "Inteligencia Artificial para Cardiología",
       landingFirstText:
         "Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo dedicado a explorar el potencial de la inteligencia artificial (IA) en el campo de la cardiología.",
@@ -69,7 +76,7 @@ const resources = {
       contactUs: "Contactanos",
       login: "Iniciar Sesión",
       contact: "Contacto",
-      examinations: "Exámenes",
+      exams: "Exámenes",
       metrics: "Métricas",
       alerts: "Alertas",
       report: "Reporte",
@@ -77,6 +84,11 @@ const resources = {
       logOut: "Cerrar Sesión",
       mainMenu: "Menú Principal",
       filter: "Aqui podría ir un menú de filtro",
+      urgency: 'Urgencia',
+      normal: 'Normal',
+      results: 'Resultados',
+      pacient: 'Pacient',
+      date: 'Fecha',
       es: "Español",
       en: "Inglés",
     },

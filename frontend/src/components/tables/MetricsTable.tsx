@@ -51,7 +51,7 @@ const columns: readonly Column[] = [
   { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
   {
     id: "estado",
-    label: "Estado",
+    label: "state",
     align: "center",
     minWidth: "40%",
   },
@@ -93,7 +93,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "resultados",
-    label: "Resultados",
+    label: "results",
     minWidth: "30%",
     align: "center",
   },
