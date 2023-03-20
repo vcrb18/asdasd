@@ -1,31 +1,31 @@
 export const landingPageTabs = [
   { label: "home" },
-  { label: "Sobre Nosotros" },
-  { label: "Contactanos" },
+  { label: "aboutUs" },
+  { label: "contactUs" },
 ];
 
 export const landingPageButtons = [
-  { label: "Contacto", href: "#" },
-  { label: "Iniciar Sesión", href: "/login" },
+  { label: "contact", href: "#" },
+  { label: "login", href: "/login" },
 ];
 
-export const loginPageButtons = [{ label: "Inicio", href: "/" }];
+export const loginPageButtons = [{ label: "home", href: "/" }];
 
 export const mainMenuPageButtons = [
-  { label: "Exámenes", href: "/exams" },
-  { label: "Métricas", href: "/metrics" },
-  { label: "Alertas", href: "/alerts" },
-  { label: "Reporte", href: "#" },
+  { label: "exams", href: "/exams" },
+  { label: "metrics", href: "/metrics" },
+  { label: "alerts", href: "/alerts" },
+  { label: "report", href: "#" },
 ];
 
 export const mainMenuTabs = [
-  { label: "Exámenes", href: "#" },
-  { label: "Métricas", href: "#" },
-  { label: "Alertas", href: "#" },
-  { label: "Reporte", href: "#" },
+  { label: "exams", href: "#" },
+  { label: "metrics", href: "#" },
+  { label: "alerts", href: "#" },
+  { label: "report", href: "#" },
 ];
 
 export const mainMenuHeaderButtons = [
-  { label: "Mi cuenta", href: "#" },
-  { label: "Cerrar sesión", href: "/" },
+  { label: "myAccount", href: "#" },
+  { label: "logOut", href: "/" },
 ];

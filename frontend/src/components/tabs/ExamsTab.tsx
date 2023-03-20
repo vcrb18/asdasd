@@ -44,7 +44,7 @@ const ExamsTableView: React.FC<ExamsTableViewProps> = ({ buttons, tabs }) => {
               justifyContent={"flex-start"}
               sx={{ color: "#404040", fontSize: "4rem" }}
             >
-              {t("examinations")}
+              {t("exams")}
             </Typography>
             <Divider variant="middle" />
             <Grid

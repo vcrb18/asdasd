@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
+import { useTranslation } from "react-i18next";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,13 +44,13 @@ const columns: readonly Column[] = [
   { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
   {
     id: "paciente",
-    label: "Nombre paciente",
+    label: "pacient",
     align: "center",
     minWidth: "40%",
   },
   {
     id: "fecha",
-    label: "Fecha",
+    label: "date",
     minWidth: "30%",
     align: "center",
     format: (value: string) => {
@@ -61,7 +62,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "estado",
-    label: "Estado",
+    label: "state",
     minWidth: "20%",
     align: "center",
     format: (value: boolean) => {
@@ -71,7 +72,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "urgencia",
-    label: "Urgencia",
+    label: "urgency",
     minWidth: "20%",
     align: "center",
     format: (value: number) => {
@@ -81,7 +82,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "resultados",
-    label: "Resultados",
+    label: "results",
     minWidth: "30%",
     align: "center",
   },
@@ -169,6 +170,7 @@ interface ExamHeadTableProps {
 }
 
 function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
+  const { t } = useTranslation();
   const { order, orderBy, onRequestSort } = props;
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -184,7 +186,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
               direction={orderBy === columns.id ? order : "asc"}
               onClick={createSortHandler(columns.id)}
             >
-              {columns.label}
+              {t(columns.label)}
               {orderBy === columns.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -199,6 +201,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function ExamTable(): JSX.Element {
+  const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -252,9 +255,9 @@ function ExamTable(): JSX.Element {
                 );
                 const urgenciaText =
                   row.urgencia === 1 ? (
-                    <Typography color={"red"}>Urgente</Typography>
+                    <Typography color={"red"}>{t('urgency')}</Typography>
                   ) : (
-                    <Typography>Normal</Typography>
+                    <Typography>{t('normal')}</Typography>
                   );
 
                 return (
