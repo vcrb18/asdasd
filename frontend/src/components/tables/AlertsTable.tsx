@@ -34,7 +34,8 @@ interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string)
+  format?:
+    | ((value: number) => string)
     | ((value: boolean) => string)
     | ((value: string) => string);
 }
@@ -116,10 +117,17 @@ function createData(
   };
 }
 const rows = [
-  createData("1", "2023-01-20T17:38:06.664148", true, 0, "Arritmia Constante", 'false'),
-  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", 'false'),
-  createData("3", "2020-03-01T04:39:46.671206", false, 1,"", 'false'),
-  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", 'false'),
+  createData(
+    "1",
+    "2023-01-20T17:38:06.664148",
+    true,
+    0,
+    "Arritmia Constante",
+    "false"
+  ),
+  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", "false"),
+  createData("3", "2020-03-01T04:39:46.671206", false, 1, "", "false"),
+  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", "false"),
 ];
 
 type Order = "asc" | "desc";

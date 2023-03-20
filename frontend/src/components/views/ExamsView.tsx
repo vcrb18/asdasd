@@ -1,4 +1,4 @@
-import { Box, Button, Fab, Grid, Typography } from "@mui/material";
+import { Box, Button, Fab, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
@@ -25,39 +25,72 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           console.log(`Landing Page: Tab index changed to ${index}`);
         }}
       />
-      <Box marginY={"6%"} width={"100%"} >
-        <Grid container display={'flex'} mt={'1%'} mb={'4%'} >
+      <Box marginY={"6%"} width={"100%"}>
+        <Grid container display={"flex"} mt={"1%"} mb={"4%"}>
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Fab size="small" href="/exams">
-                <ArrowCircleLeftIcon/>
-              </Fab>
+              <ArrowCircleLeftIcon />
+            </Fab>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={'80%'} color={"#404040"}> Folio examen: F-2341 </Typography>
+            <Typography fontSize={"80%"} color={"#404040"}>
+              {" "}
+              Folio examen: F-2341{" "}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-          <Typography fontSize={'80%'} color={"#404040"}>
+            <Typography fontSize={"80%"} color={"#404040"}>
               Fecha de recepción: 12/12/2020
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
-            <Button variant="contained" sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}>
-                Validar mediciones
-              </Button>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
+            >
+              Validar mediciones
+            </Button>
           </Grid>
         </Grid>
 
-        <Grid container display={'flex'} width={'100%'} rowSpacing={1} alignItems={'center'}>
-          <Grid item xs={12} sm={12} md={12} lg={5.5} marginX={'2%'}>
-            <AnalisisBox/>
+        <Grid
+          container
+          display={"flex"}
+          width={"100%"}
+          rowSpacing={1}
+          alignItems={"center"}
+        >
+          <Grid item xs={12} sm={12} md={12} lg={6} padding={"2%"}>
+            <AnalisisBox />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={5.5} marginX={'2%'}>
-            <PredictionBox/>
+          <Grid item xs={12} sm={12} md={12} lg={6} padding={"2%"}>
+            <PredictionBox />
           </Grid>
         </Grid>
         <Box display={"flex"} justifyContent={"center"} marginTop={"5%"}>
-            <DerivationsComponent />
+          <DerivationsComponent />
         </Box>
+      </Box>
+      <Box
+        display={"flex"}
+        justifyContent={"center"}
+        flexDirection={"column"}
+        marginBottom={"3%"}
+        width={"80%"}
+        marginX={"3%"}
+      >
+        <Box display={"flex"} alignItems={"flex-start"}>
+          <Typography fontSize={"80%"} color={"#000"}>
+            Comentarios
+          </Typography>
+        </Box>
+        <TextField
+          id="outlined-multiline-static"
+          label="Ingrese aquí sus comentarios"
+          multiline
+          rows={4}
+          fullWidth
+        ></TextField>
       </Box>
       <Footer footerPosition={"fixed"} />
     </>

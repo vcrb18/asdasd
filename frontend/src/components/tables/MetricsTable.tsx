@@ -28,7 +28,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio"
+  id:
+    | "folio"
     | "estado"
     | "puntos"
     | "error rr"
@@ -40,7 +41,8 @@ interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string)
+  format?:
+    | ((value: number) => string)
     | ((value: boolean) => string)
     | ((value: string) => string);
 }

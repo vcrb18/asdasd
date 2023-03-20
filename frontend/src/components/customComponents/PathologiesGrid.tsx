@@ -19,9 +19,25 @@ import {
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
 
-const patologíasexistentes = ["Arritmia", "Bloqueo ventricular", "Pato1", "Pato2"];
-const patologies = ["Pato1", "a", "b", "c", "d", "e" , "bloqueo", "Arritmia", "Bloqueo ventricular",'patologia numero 2' ,"Pato3"];
-
+const patologíasexistentes = [
+  "Arritmia",
+  "Bloqueo ventricular",
+  "Pato1",
+  "Pato2",
+];
+const patologies = [
+  "Pato1",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "bloqueo",
+  "Arritmia",
+  "Bloqueo ventricular",
+  "patologia numero 2",
+  "Pato3",
+];
 
 const DeletableGridItem = ({
   label,
@@ -55,31 +71,31 @@ const DeletableGridItem = ({
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        margin={'1%'}
+        margin={"1%"}
       >
-          <Typography fontSize={"60%"} sx={{ color: "#000000" }}>
-            {label}
-          </Typography>
-          <IconButton size="small" edge={"end"} onClick={handleDeleteClick}>
-            <ClearSharpIcon fontSize={"inherit"} sx={{ color: "#e45c64" }}/>
-          </IconButton>
+        <Typography fontSize={"60%"} sx={{ color: "#000000" }}>
+          {label}
+        </Typography>
+        <IconButton size="small" edge={"end"} onClick={handleDeleteClick}>
+          <ClearSharpIcon fontSize={"inherit"} sx={{ color: "#e45c64" }} />
+        </IconButton>
       </Grid>
-        <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Typography>Are you sure you want to delete {label}?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDeleteCancel}>Cancel</Button>
-            <Button
-              onClick={handleDeleteConfirm}
-              variant="contained"
-              color="error"
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete {label}?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            variant="contained"
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };
@@ -92,18 +108,14 @@ const PatoGrid = (): JSX.Element => {
 
   const handleDelete = (item: string): void => {
     setItems(items.filter((i) => i !== item));
-  };
-
-  const handleDelete = (item: string): void => {
-    setItems(items.filter((i) => i !== item));
     setAddableItems(addableItems.concat(item));
   };
 
   const checkForPatologies = (): void => {
-    const filteredItems = addableItems.filter(item => !items.includes(item));
+    const filteredItems = addableItems.filter((item) => !items.includes(item));
     setAddableItems(filteredItems);
   };
-  
+
   const handleToggle = (value: number, item: string) => () => {
     // index del item actual
     const currentIndex = checked.indexOf(value);
@@ -113,15 +125,13 @@ const PatoGrid = (): JSX.Element => {
     if (currentIndex === -1) {
       newChecked.push(value);
       setAddedPatologies([...addedPatologies, item]);
-
     } else {
       newChecked.splice(currentIndex, 1);
-      setAddedPatologies(addedPatologies.filter((i) => i!== item));
+      setAddedPatologies(addedPatologies.filter((i) => i !== item));
     }
 
     setChecked(newChecked);
   };
-
 
   const handleAdd = (): void => {
     setAddedPatologies([]);
@@ -130,7 +140,7 @@ const PatoGrid = (): JSX.Element => {
   };
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
-  
+
   const handleAddDialogClose = (): void => {
     setChecked([]);
     setOpenAddDialog(false);
@@ -165,11 +175,18 @@ const PatoGrid = (): JSX.Element => {
       <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
         <DialogTitle>Add Pathology</DialogTitle>
         <DialogContent>
-          <List dense sx={{ width: "100%", maxWidth:360, bgcolor: 'Background.paper' }}>
+          <List
+            dense
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "Background.paper" }}
+          >
             {addableItems.map((item: string, value: number) => {
               return (
                 <ListItem key={value}>
-                  <ListItemButton role={undefined} onClick={handleToggle(value, item)} dense>
+                  <ListItemButton
+                    role={undefined}
+                    onClick={handleToggle(value, item)}
+                    dense
+                  >
                     <ListItemIcon>
                       <Checkbox
                         edge="start"
@@ -183,7 +200,6 @@ const PatoGrid = (): JSX.Element => {
                 </ListItem>
               );
             })}
-
           </List>
         </DialogContent>
         <DialogActions>

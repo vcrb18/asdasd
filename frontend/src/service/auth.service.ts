@@ -22,7 +22,10 @@ export const register = async (
   });
 };
 
-export const login = async (email: string, password: string): Promise<LoginResponse>  => {
+export const login = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
   try {
     const response = await axios.post(API_URL + "login", {
       email,

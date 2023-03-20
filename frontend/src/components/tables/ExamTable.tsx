@@ -34,7 +34,8 @@ interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  format?: ((value: number) => string)
+  format?:
+    | ((value: number) => string)
     | ((value: boolean) => string)
     | ((value: string) => string);
 }

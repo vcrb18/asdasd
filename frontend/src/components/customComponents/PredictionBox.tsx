@@ -19,82 +19,85 @@ const DiagnosticosSugeridos = [
 ];
 
 const PredictionBox = (): JSX.Element => {
-  const fontColor = ('#000');
+  const fontColor = "#000";
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
-    <Box display={"flex"} flexDirection={"column"} width={"100%"} sx={{backgroundColor: '#159194', borderRadius: '2%'}}> 
-    <Box sx={{backgroundColor: '#fff', borderRadius: '2%'}} margin={"3%"}>
-      <Typography fontSize={"80%"} color={fontColor} mt={'2%'}>
-        Predicción de Patologías
-      </Typography>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        width={"100%"}
-        marginTop={"5%"}
-        marginBottom={"5%"}
-      >
-        {predicciones.map((prediccion) => (
-          <Box
-            display={"flex"}
-            flexDirection={"row"}
-            justifyContent={"space-evenly"}
-            key={prediccion.id}
-          >
-            <Box  margin={"1%"}>
-              <Typography fontSize={"80%"} color={"#000000"}>
-                {prediccion.id}
-              </Typography>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      width={"100%"}
+      sx={{ backgroundColor: "#159194", borderRadius: "2%" }}
+    >
+      <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
+        <Typography fontSize={"80%"} color={fontColor} mt={"2%"}>
+          Predicción de Patologías
+        </Typography>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          width={"100%"}
+          marginTop={"5%"}
+          marginBottom={"5%"}
+        >
+          {predicciones.map((prediccion) => (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              justifyContent={"space-evenly"}
+              key={prediccion.id}
+            >
+              <Box margin={"1%"}>
+                <Typography fontSize={"80%"} color={"#000000"}>
+                  {prediccion.id}
+                </Typography>
+              </Box>
+              <Box margin={"1%"}>
+                <Typography fontSize={"80%"} color={"#000000"}>
+                  {prediccion.estado}
+                </Typography>
+              </Box>
+              <Box margin={"1%"}>
+                <Typography fontSize={"80%"} color={"#000000"}>
+                  {prediccion.porcentaje}
+                </Typography>
+              </Box>
             </Box>
-            <Box  margin={"1%"}>
-              <Typography fontSize={"80%"} color={"#000000"}>
-                {prediccion.estado}
-              </Typography>
+          ))}
+        </Box>
+      </Box>
+      <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
+        <Typography color={"#000000"} fontSize={"80%"} width={"100%"}>
+          Diagnosticos sugeridos
+        </Typography>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          width={"100%"}
+          marginTop={"5%"}
+          marginBottom={"5%"}
+        >
+          {DiagnosticosSugeridos.map((diagnostico) => (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              key={diagnostico.diagnostico}
+            >
+              <Box width={"70%"} marginLeft={"5%"}>
+                <Typography fontSize={"80%"} color={"#000000"}>
+                  {diagnostico.diagnostico}
+                </Typography>
+              </Box>
+              <Box width={"30%"}>
+                <Typography fontSize={"80%"} color={"#000000"}>
+                  {diagnostico.porcentaje}
+                </Typography>
+              </Box>
             </Box>
-            <Box  margin={"1%"}>
-              <Typography fontSize={"80%"} color={"#000000"}>
-                {prediccion.porcentaje}
-              </Typography>
-            </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
     </Box>
-    <Box sx={{backgroundColor: '#fff', borderRadius: '2%'}} margin={"3%"}>
-    
-      <Typography color={"#000000"} fontSize={"80%"} width={"100%"}>
-        Diagnosticos sugeridos
-      </Typography>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        width={"100%"}
-        marginTop={"5%"}
-        marginBottom={"5%"}
-      >
-        {DiagnosticosSugeridos.map((diagnostico) => (
-          <Box
-            display={"flex"}
-            flexDirection={"row"}
-            justifyContent={"space-between"}
-            key={diagnostico.diagnostico}
-          >
-            <Box width={"70%"} marginLeft={"5%"}>
-              <Typography fontSize={"80%"} color={"#000000"}>
-                {diagnostico.diagnostico}
-              </Typography>
-            </Box>
-            <Box width={"30%"}>
-              <Typography fontSize={"80%"} color={"#000000"}>
-                {diagnostico.porcentaje}
-              </Typography>
-            </Box>
-          </Box>
-        ))}
-      </Box>
-    </Box>
-    </Box>
-
   );
 };
 

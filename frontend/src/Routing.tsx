@@ -8,8 +8,7 @@ import {
   mainMenuHeaderButtons,
   mainMenuPageButtons,
 } from "./utils/routingPropConsts";
-import ExamTable from "./components/customComponents/ExamTable";
-import MainMenuView from "./components/views/MainMenuView";
+import ExamTable from "./components/tables/ExamTable";
 import MetricTabs from "./components/tabs/MetricTab";
 import AlertTab from "./components/tabs/AlertsTab";
 import AnalisisBox from "./components/customComponents/AnalisisBox";
@@ -17,6 +16,7 @@ import DiagnosisComponent from "./components/customComponents/DiagnosisComponent
 import PredictionBox from "./components/customComponents/PredictionBox";
 import ExamsView from "./components/views/ExamsView";
 import RequireAuth from "./components/customComponents/ProtectedRoute";
+import TablesView from "./components/views/TablesView";
 
 function Routing(): JSX.Element {
   return (
@@ -37,6 +37,8 @@ function Routing(): JSX.Element {
             </RequireAuth>
           }
         />
+        <Route path="/tables" element={<TablesView />} />
+
         <Route
           path="/exams"
           element={
@@ -52,10 +54,7 @@ function Routing(): JSX.Element {
           path="/metrics"
           element={
             <RequireAuth>
-              <MetricTabs
-                tabs={mainMenuPageButtons}
-                buttons={mainMenuHeaderButtons}
-              />
+              <MetricTabs />
             </RequireAuth>
           }
         />
@@ -63,14 +62,10 @@ function Routing(): JSX.Element {
           path="/alerts"
           element={
             <RequireAuth>
-              <AlertTab
-                tabs={mainMenuPageButtons}
-                buttons={mainMenuHeaderButtons}
-              />
+              <AlertTab />
             </RequireAuth>
           }
         />
-
 
         <Route path="/patogrid" element={<AnalisisBox />} />
 
@@ -83,13 +78,14 @@ function Routing(): JSX.Element {
             <ExamsView
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
-            />}
             />
+          }
+        />
         <Route
           path="/mainmenu"
           element={
             <RequireAuth>
-              <MainMenuView tabs={mainMenuPageButtons} buttons={mainMenuHeaderButtons} />
+              <TablesView />
             </RequireAuth>
           }
         />

@@ -13,8 +13,8 @@ export const loginPageButtons = [{ label: "Inicio", href: "/" }];
 
 export const mainMenuPageButtons = [
   { label: "Exámenes", href: "/tables" },
-  { label: "Métricas", href: "/tables"  },
-  { label: "Alertas", href: "/tables"  },
+  { label: "Métricas", href: "/tables" },
+  { label: "Alertas", href: "/tables" },
   { label: "Reporte", href: "/tables" },
 ];
 

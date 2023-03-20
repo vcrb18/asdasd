@@ -3,21 +3,20 @@ import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { mainMenuPageButtons } from "../../utils/routingPropConsts";
-import TablesView from "../views/TablesView";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
-  color: theme.palette.text.secondary
+  color: theme.palette.text.secondary,
 }));
 
 interface MainMenuButtonProps {
   onButtonClick: (index: number) => void;
 }
 
-const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) => {
+const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) : JSX.Element => {
   const [tabIndex, setTabIndex] = useState<number>(4);
 
   const handleButtonClick = (index: number) => {
@@ -34,7 +33,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) => {
         spacing={"1%"}
         sx={{
           width: "-webkit-fill-available",
-          heigth: "-webkit-fill-available"
+          heigth: "-webkit-fill-available",
         }}
       >
         {mainMenuPageButtons != null && mainMenuPageButtons.length > 0
@@ -53,7 +52,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) => {
                   >
                     <Fab
                       size="small"
-                      onClick={() => handleButtonClick(index)}
+                      onClick={() => {handleButtonClick(index)}}
                       sx={{ backgroundColor: "#404040", color: "#c7dff9" }}
                     >
                       <ArrowForwardIcon sx={{ color: "#1c9093" }} />

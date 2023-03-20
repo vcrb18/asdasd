@@ -126,7 +126,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               sx={{ marginTop: 3, borderRadius: 3 }}
               variant="contained"
               color="primary"
-              // href="/mainmenu"
+              href="/tables"
             >
               {t("login")}
             </Button>

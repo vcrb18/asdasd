@@ -1,8 +1,7 @@
-import React  from "react";
+import React from "react";
 import { Box, Typography, Divider, Grid } from "@mui/material";
-import ExamTable from "../customComponents/ExamTable";
+import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
-
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -11,24 +10,24 @@ const ExamsTab = (): JSX.Element => {
     <>
       <Box
         mt={"4%"}
-        mb={'3%'}
+        mb={"3%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        sx={{ 
+        sx={{
           width: "100%",
           alignItems: "flex-start",
         }}
       >
         <Typography
-          paddingLeft={'3%'}
+          paddingLeft={"3%"}
           display={"flex"}
           justifyContent={"flex-start"}
           sx={{ color: "#404040", fontSize: "4rem" }}
         >
           {t("examinations")}
         </Typography>
-        <Divider variant="middle"/>
+        <Divider variant="middle" />
         <Grid
           container
           lg={12}
@@ -36,7 +35,7 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid item lg={2} xs={0} md={1} >
+          <Grid item lg={2} xs={0} md={1}>
             <Box
               display={"flex"}
               justifyContent={"flex-start"}

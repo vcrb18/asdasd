@@ -42,20 +42,25 @@ const DeletableBoxItem = ({
   return (
     <>
       <Box display={"flex"} flexDirection={"row"}>
-      <Paper sx={{ width: "98%", margin: "1%" }}>
-        <Box display={"flex"} justifyContent={"space-between"} width={"100%"} marginRight={'3%'}>
-          <Typography fontSize={"70%"} sx={{ color: "#000000" }}>
-            {label}
-          </Typography>
-          <IconButton
-            size="small"
-            edge={"end"}
-            onClick={handleDeleteClick}
-            sx={{ color: "#e45c64" }}
+        <Paper sx={{ width: "98%", margin: "1%" }}>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            marginRight={"3%"}
+          >
+            <Typography fontSize={"70%"} sx={{ color: "#000000" }}>
+              {label}
+            </Typography>
+            <IconButton
+              size="small"
+              edge={"end"}
+              onClick={handleDeleteClick}
+              sx={{ color: "#e45c64" }}
             >
-              <ClearSharpIcon fontSize={"inherit"}/>
-          </IconButton>
-        </Box>
+              <ClearSharpIcon fontSize={"inherit"} />
+            </IconButton>
+          </Box>
         </Paper>
       </Box>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
@@ -106,7 +111,7 @@ const DiagnosisComponent = (): JSX.Element => {
   };
   return (
     <>
-      <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={'center'}>
+      <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
         <Typography color={"#000000"} fontSize={"80%"}>
           Diagnosticos sugeridos
         </Typography>
@@ -121,7 +126,6 @@ const DiagnosisComponent = (): JSX.Element => {
         <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
           <DialogTitle>Add Pathology</DialogTitle>
           <DialogContent>
-            
             <TextField
               label="New Item"
               fullWidth
