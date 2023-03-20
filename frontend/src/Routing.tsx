@@ -17,6 +17,7 @@ import PredictionBox from "./components/customComponents/PredictionBox";
 import ExamsView from "./components/views/ExamsView";
 import RequireAuth from "./components/customComponents/ProtectedRoute";
 import TablesView from "./components/views/TablesView";
+import FilterComponent from "./components/customComponents/FilterComponent";
 
 function Routing(): JSX.Element {
   return (
@@ -50,6 +51,8 @@ function Routing(): JSX.Element {
             </RequireAuth>
           }
         />
+        <Route path="/filter" element={<FilterComponent/>} />
+
         <Route
           path="/metrics"
           element={
