@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from "axios";
-
+import authHeader from "./auth.header";
 const API_URL = "http://localhost:8080/";
 
 // ASI LLAMO A MIS RUTAS PROTEGIDAS
@@ -8,9 +8,9 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
   return await axios.get(API_URL + "landingPage");
 };
 
-// export const getUsers = async (): Promise<AxiosResponse> => {
-// return await axios.get(API_URL + "users", { headers: authHeader() });
-// };
+export const getExams = async (): Promise<AxiosResponse> => {
+  return await axios.get(API_URL + "exams", { headers: authHeader() });
+};
 
 // export const getPatients = async (): Promise<AxiosResponse> => {
 // return await axios.get(API_URL + "patients", { headers: authHeader() });

@@ -14,9 +14,15 @@ import {
   TableSortLabel,
   Typography,
 } from "@mui/material";
+// import authHeader from "../../service/auth.header";
+import { getExams } from "../../service/user.service";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
+import axios, { type AxiosResponse } from "axios";
+import { ReactElement } from "react";
+
+const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -116,7 +122,8 @@ function createData(
     urgencia,
     resultados,
   };
-}
+};
+
 const rows = [
   createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, "false"),
   createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, "false"),
@@ -201,7 +208,43 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function ExamTable(): JSX.Element {
+const ExamTable = (): JSX.Element => {
+
+  getExams().then(
+    (response) => {
+      console.log("response");
+      console.log(response);
+      
+    }
+  )
+  // async function getExams(): Promise<any> {
+  //   // const authHeader = authHeader();
+  //   try {
+  //     const response = await fetch(API_URL + "exams" , {
+  //       headers: authHeader()
+  //     });
+  //     // const response = await axios.get(API_URL + "exams");
+  //     const data = await response.json();
+  //     console.log(data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error('There was a problem with the fetch operation:', error);
+  //   }
+  // }
+  // console.log("aurhHeader!!!");
+  // console.log(authHeader());
+  // const header = authHeader();
+  // console.log(header);
+  
+  
+  // const getExams = (): Promise<AxiosResponse> => {
+  //   return axios.get(API_URL + "exams", { headers: authHeader() });
+  // }
+  // const getExamsData = getExams().then((response) => {
+  //   console.log("response");
+  //   console.log(response);
+  // })
+  
   const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
