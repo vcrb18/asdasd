@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Divider, Grid } from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
+import FilterComponent from "../customComponents/FilterComponent";
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -35,26 +36,27 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid item lg={1} xs={0} md={1}>
+          <Grid item lg={3} xs={12} md={3}>
             <Box
               display={"flex"}
               justifyContent={"flex-start"}
               alignItems={"center"}
             >
-              <Typography
+              <FilterComponent />
+              {/* <Typography
                 display={"flex"}
                 justifyContent={"flex-start"}
                 sx={{ color: "#404040", fontSize: "1.5rem" }}
               >
                 {t("filter")}
-              </Typography>
+              </Typography> */}
             </Box>
           </Grid>
           <Grid
             item
-            lg={11}
+            lg={9}
             xs={12}
-            md={11}
+            md={9}
             display={"flex"}
             justifyContent={"flex-start"}
             sx={{ color: "#404040", fontSize: "1.5rem" }}
