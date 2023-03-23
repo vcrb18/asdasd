@@ -27,7 +27,7 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(API_URL + "login", {
+    const response = await axios.post("/login", {
       email,
       password,
     });
@@ -40,6 +40,7 @@ export const login = async (
     console.log("response.data.token");
     console.log(response.data.token);
 
+    // CAMBIAR
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
       console.log("Entro en el if: if (response.data.token)");
@@ -55,8 +56,10 @@ export const login = async (
   }
 };
 
+// CAMBIAR
 export const logout = (): void => {
   console.log("ENTRAMOS al logout");
+  // 
   localStorage.removeItem("user");
   const userIsLogged = getCurrentUser();
   console.log("userIsLogged");
@@ -64,6 +67,7 @@ export const logout = (): void => {
 };
 
 export const getCurrentUser = (): any => {
+  // CAMBIAR
   const userStr = localStorage.getItem("user");
   if (userStr) return JSON.parse(userStr);
 
