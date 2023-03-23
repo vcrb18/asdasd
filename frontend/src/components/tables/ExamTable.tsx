@@ -21,6 +21,7 @@ import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
 import axios, { type AxiosResponse } from "axios";
 import { ReactElement } from "react";
+import { Token } from "@mui/icons-material";
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -210,13 +211,23 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 
 const ExamTable = (): JSX.Element => {
 
-  getExams().then(
-    (response) => {
-      console.log("response");
-      console.log(response);
+  // getExams().then(
+  //   (response) => {
+  //     console.log("response");
+  //     console.log(response);
       
-    }
-  )
+  //   }
+  // )
+  
+  axios.get('/exams', {
+    withCredentials: true,
+  })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
   // async function getExams(): Promise<any> {
   //   // const authHeader = authHeader();
   //   try {

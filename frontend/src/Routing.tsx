@@ -43,12 +43,12 @@ function Routing(): JSX.Element {
         <Route
           path="/exams"
           element={
-            <RequireAuth>
+            // <RequireAuth>
               <ExamsView
                 tabs={mainMenuPageButtons}
                 buttons={mainMenuHeaderButtons}
               />
-            </RequireAuth>
+            // </RequireAuth>
           }
         />
         <Route path="/filter" element={<FilterComponent/>} />
@@ -87,9 +87,9 @@ function Routing(): JSX.Element {
         <Route
           path="/mainmenu"
           element={
-            <RequireAuth>
+            // <RequireAuth>
               <TablesView />
-            </RequireAuth>
+            // </RequireAuth>
           }
         />
         <Route
