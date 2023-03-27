@@ -1,17 +1,20 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Select, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Select, Typography } from '@mui/material';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import dayjs,  { Dayjs } from 'dayjs';
 import React from 'react';
 
+type FilterComponentProps = {
+    handleSubmit: () => void;
+  };
 
-const FilterComponent = () => {
+
+const FilterComponent = ({handleSubmit}: FilterComponentProps) : JSX.Element => {
     const [fromValue, setFromValue] = React.useState<Dayjs | null>(dayjs());
     const [toValue, setToValue] = React.useState<Dayjs | null>(dayjs());
     const [fromDate, setFromDate] = React.useState<string>();
     const [toDate, setToDate] = React.useState<string>();
-    const theme = useTheme();
-    const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
 
     const handleFromDate = (newValue: Dayjs | null ): void => {
@@ -24,13 +27,13 @@ const FilterComponent = () => {
         setToDate(value[0]);
     };
 
-    const handleFromChangeValue = (newValue: Dayjs | null ) => 
+    const handleFromChangeValue = (newValue: Dayjs | null ): void => 
     {
         handleFromDate(newValue);
         setFromValue(newValue);
     };
 
-    const handleToChangeValue = (newValue: Dayjs | null ) => {
+    const handleToChangeValue = (newValue: Dayjs | null ): void => {
         handleToDate(newValue);
         setToValue(newValue)
     };
@@ -55,37 +58,29 @@ const FilterComponent = () => {
 
     const handleCalendarSubmit = () : void => {
         // TODO: Confirmar que la fecha está correctamente ingresada
+        handleCheckDate();
         setOpenFromCalendar(false);
         setOpenToCalendar(false);
     };
 
-    const handleFilterApply = () : void => {
-
+    const handleCheckDate = () : void => {
+        
     };
-    
 
     return (
-        <>
-        {isMatch? (
-         <Box>
-
-         </Box>
-         
-         ): (
-         <Box color={'#000'} borderRadius={'2%'} sx={{backgroundColor:'#c7dff9'}} padding={'1.5%'} width={'100%'}>
-
-         <Box >
-         <Typography fontSize={'100%'}>Filtros</Typography>
-
+        
+         <Box color={'#000'} borderRadius={'2%'} sx={{backgroundColor:'#c7dff9'}} width={'100%'}>
+         <Box padding={'2%'}>
              <Grid
                  container
                  display={"flex"}
-                 justifyContent={"space-between"}
-                 padding={"1%"}
-                 marginY={'2%'}
+                 justifyContent={"space-evenly"}
+                 alignItems={"center"}
+                 marginY={'5%'}
+                 width={'100%'}
                  >
                  <Grid item>
-                     <Typography fontSize={"75%"} sx={{ color: "#000000" }}>
+                     <Typography fontSize={"100%"} sx={{ color: "#000000" }}>
                      Urgencia
                      </Typography>
                  </Grid>
@@ -106,11 +101,11 @@ const FilterComponent = () => {
              <Grid
                  container
                  display={"flex"}
-                 justifyContent={"space-between"}
-                 padding={"1%"}
+                 justifyContent={"space-evenly"}
+                 alignItems={"center"}
                  >
                  <Grid item>
-                     <Typography fontSize={"75%"} sx={{ color: "#000000" }}>
+                     <Typography fontSize={"100%"} sx={{ color: "#000000" }}>
                      Estado
                      </Typography>
                  </Grid>
@@ -130,15 +125,15 @@ const FilterComponent = () => {
              </Grid>
          </Box>
          <Box display={'flex'} flexDirection={'column'} alignItems={'space-around'} mt={'3%'} justifyContent={'space-around'} >
-             <Box marginY={'2%'}>
+             <Box margin={'2%'} >
              <Paper>
                  <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                     <Button onClick={handleFromCalendarOpen} size='large'>Desde</Button>
+                     <Button onClick={handleFromCalendarOpen} variant='contained' size='large'>Desde</Button>
                      <Typography marginRight={'2%'}>{fromDate}</Typography>
                  </Box>
              </Paper>
              </Box>
-         <Dialog open={openFromCalendar} onClose={handleFromCalendarClose}>
+         <Dialog  open={openFromCalendar} onClose={handleFromCalendarClose}>
              <DialogTitle title="Desde:"></DialogTitle>
              <DialogContent>
              <Box marginY={'2%'}>
@@ -162,10 +157,10 @@ const FilterComponent = () => {
                  </Button>
              </DialogActions>
          </Dialog>
-         <Box marginY={'2%'}>
+         <Box margin={'2%'}>
          <Paper>
                  <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                     <Button onClick={handleToCalendarOpen} size='large'>Hasta</Button>
+                     <Button onClick={handleToCalendarOpen} variant='contained' size='large'>Hasta</Button>
                      <Typography marginRight={'2%'}>{toDate}</Typography>
                  </Box>
              </Paper>
@@ -196,10 +191,11 @@ const FilterComponent = () => {
              </DialogActions>
          </Dialog>
      </Box>
-     <Button onClick={handleFilterApply} sx={{position: 'end'}}>Aplicar Filtros</Button>
+     <Box padding={'2%'}>
+     <Button fullWidth variant='contained' onClick={handleSubmit}>Aplicar Filtros</Button>
      </Box>
-     )}
-        </>
+
+     </Box>
       );
     }
 

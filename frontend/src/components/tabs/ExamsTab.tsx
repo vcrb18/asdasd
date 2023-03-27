@@ -1,11 +1,24 @@
-import React from "react";
-import { Box, Typography, Divider, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, Divider, Grid, Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
+
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  
+  const handleOpenFilter = (): void => {
+    setOpenFilter(true);
+  };
+  const handleCloseFilter= (): void => {
+    setOpenFilter(false);
+  };
+
+  const handleSubmit = (): void => {
+    setOpenFilter(false);
+  };
 
   return (
     <>
@@ -36,27 +49,22 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid item lg={3} xs={12} md={3}>
-            <Box
-              display={"flex"}
-              justifyContent={"flex-start"}
-              alignItems={"center"}
-            >
-              <FilterComponent />
-              {/* <Typography
-                display={"flex"}
-                justifyContent={"flex-start"}
-                sx={{ color: "#404040", fontSize: "1.5rem" }}
-              >
-                {t("filter")}
-              </Typography> */}
-            </Box>
+          <Grid container lg={12} xs={12} md={12} display={'flex'} justifyContent={'flex-end'} >
+            <Button onClick={handleOpenFilter} sx={{color: '#000'}} >Filtros</Button>
           </Grid>
+          <Dialog fullWidth open={openFilter} onClose={handleCloseFilter} >
+            <DialogTitle>
+              <Typography fontSize={'100%'}>Filtros</Typography>
+            </DialogTitle>
+            <DialogContent >
+              <FilterComponent handleSubmit={handleSubmit}/>  
+            </DialogContent>
+          </Dialog>
           <Grid
             item
-            lg={9}
+            lg={12}
             xs={12}
-            md={9}
+            md={12}
             display={"flex"}
             justifyContent={"flex-start"}
             sx={{ color: "#404040", fontSize: "1.5rem" }}
