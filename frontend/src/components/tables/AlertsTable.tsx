@@ -208,7 +208,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function colorSwitcher(value: number) {
+function colorSwitcher(value: number): string {
   switch(value){
     case 1:
       return "black";
@@ -216,6 +216,8 @@ function colorSwitcher(value: number) {
       return "orange";
     case 3:
       return "red";
+    default:
+      return "black";
   }
 }
 

@@ -351,7 +351,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function colorSwitcher(value: string) {
+function colorSwitcher(value: string): string {
   switch(value){
     case "Aceptado":
       return "black";
@@ -365,6 +365,8 @@ function colorSwitcher(value: string) {
       return "orange";
     case "Rechazado":
       return "red";
+    default:
+      return "black";
   }
 }
 
