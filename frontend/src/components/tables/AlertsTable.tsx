@@ -122,13 +122,13 @@ const rows = [
     "1",
     "2023-01-20T17:38:06.664148",
     true,
-    0,
+    3,
     "Arritmia Constante",
     "false"
   ),
-  createData("2", "2020-02-01T02:39:46.671206", true, 1, "", "false"),
-  createData("3", "2020-03-01T04:39:46.671206", false, 1, "", "false"),
-  createData("4", "2020-01-13T16:39:46.671206", true, 0, "", "false"),
+  createData("2", "2020-02-01T02:39:46.671206", true, 2, "", "false"),
+  createData("3", "2020-03-01T04:39:46.671206", false, 3, "", "false"),
+  createData("4", "2020-01-13T16:39:46.671206", true, 1, "", "false"),
 ];
 
 type Order = "asc" | "desc";
@@ -208,6 +208,17 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
+function colorSwitcher(value: number) {
+  switch(value){
+    case 1:
+      return "black";
+    case 2:
+      return "orange";
+    case 3:
+      return "red";
+  }
+}
+
 function AlertTable(): JSX.Element {
   const { t } = useTranslation();
 
@@ -262,12 +273,9 @@ function AlertTable(): JSX.Element {
                 ) : (
                   <Brightness1RoundedIcon color={"error"} />
                 );
-                const urgenciaText =
-                  row.urgencia === 1 ? (
-                    <Typography color={"red"}>{t('urgency')}</Typography>
-                  ) : (
-                    <Typography>{t('normal')}</Typography>
-                  );
+                const urgenciaText = (
+                    <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
+                  )
 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>

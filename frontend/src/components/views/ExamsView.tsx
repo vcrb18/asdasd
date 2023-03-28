@@ -9,7 +9,7 @@ import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 interface ExamsViewProps {
   buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string }>;
+  tabs?: Array<{ label: string; href: string }>;
 }
 
 const ExamsView: React.FC<ExamsViewProps> = ({

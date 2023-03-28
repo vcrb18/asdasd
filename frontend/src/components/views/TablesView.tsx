@@ -51,6 +51,6 @@ const TablesView: React.FC = (): JSX.Element => {
       )}
     </>
   );
-};
+}; 
 
 export default TablesView;

@@ -8,6 +8,7 @@ import {
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useTranslation } from "react-i18next";
 
 interface DrawerTabItems {
   label: string;
@@ -27,6 +28,7 @@ interface DrawerCompProps {
 const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
+  const { t } = useTranslation();
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
 
   return (
@@ -47,7 +49,7 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
               key={index}
             >
               <ListItemIcon>
-                <ListItemText>{tabOrButton.label}</ListItemText>
+                <ListItemText>{t(tabOrButton.label)}</ListItemText>
               </ListItemIcon>
             </ListItemButton>
           ))}

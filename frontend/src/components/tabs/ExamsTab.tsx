@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, Divider, Grid, Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Typography, Divider, Grid, Dialog, DialogContent, DialogTitle, TextField, IconButton } from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
+import { Search } from "@mui/icons-material";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -49,15 +51,25 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid container lg={12} xs={12} md={12} display={'flex'} justifyContent={'flex-end'} >
-            <Button onClick={handleOpenFilter} sx={{color: '#000'}} >Filtros</Button>
+          <Grid container lg={12} xs={12} md={12} columnSpacing={3} display={'flex'} justifyContent={'flex-end'}>
+            <Grid item lg={10} md={10} xs={10} display={'flex'} justifyContent={'flex-end'}>
+              <TextField id="folio-search" label={t("folioSearch")} variant="filled" size="small"/>
+              <IconButton type="button">
+                <Search/>
+              </IconButton>
+            </Grid>
+            <Grid item lg={2} md={2} xs={2}>
+              <IconButton onClick={handleOpenFilter} sx={{color: '#000'}} >
+                <FilterListIcon>{t('filter')}</FilterListIcon>
+                </IconButton>
+            </Grid>
           </Grid>
           <Dialog fullWidth open={openFilter} onClose={handleCloseFilter} >
             <DialogTitle>
-              <Typography fontSize={'100%'}>Filtros</Typography>
+              <Typography fontSize={'100%'}>{t('filter')}</Typography>
             </DialogTitle>
             <DialogContent >
-              <FilterComponent handleSubmit={handleSubmit}/>  
+              <FilterComponent handleSubmit={handleSubmit} filterType="exams"/>  
             </DialogContent>
           </Dialog>
           <Grid
