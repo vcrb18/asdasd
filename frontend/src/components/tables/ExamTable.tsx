@@ -126,10 +126,10 @@ function createData(
 };
 
 const rows = [
-  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 0, "false"),
-  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 1, "false"),
+  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 1, "false"),
+  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 2, "false"),
   createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, "false"),
-  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 0, "false"),
+  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
 ];
 
 type Order = "asc" | "desc";
@@ -207,6 +207,19 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
       </TableRow>
     </TableHead>
   );
+}
+
+function colorSwitcher(value: number): string {
+  switch(value){
+    case 1:
+      return "black";
+    case 2:
+      return "orange";
+    case 3:
+      return "red";
+    default:
+      return "black";
+  }
 }
 
 const ExamTable = (): JSX.Element => {
@@ -308,13 +321,9 @@ const ExamTable = (): JSX.Element => {
                 ) : (
                   <Brightness1RoundedIcon color={"error"} />
                 );
-                const urgenciaText =
-                  row.urgencia === 1 ? (
-                    <Typography color={"red"}>{t('urgency')}</Typography>
-                  ) : (
-                    <Typography>{t('normal')}</Typography>
-                  );
-
+                const urgenciaText = (
+                    <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
+                  ) 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     <StyledTableCell align="center">

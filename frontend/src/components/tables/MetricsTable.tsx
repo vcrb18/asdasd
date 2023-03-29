@@ -12,8 +12,10 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Typography,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
+import { useTranslation } from "react-i18next";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -57,7 +59,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "puntos",
-    label: "Puntos Fiduciales",
+    label: "fiducialPoints",
     minWidth: "30%",
     align: "center",
   },
@@ -319,6 +321,8 @@ interface ExamHeadTableProps {
 
 function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   const { order, orderBy, onRequestSort } = props;
+  const { t } = useTranslation();
+
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
@@ -333,7 +337,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
               direction={orderBy === columns.id ? order : "asc"}
               onClick={createSortHandler(columns.id)}
             >
-              {columns.label}
+              {t(columns.label)}
               {orderBy === columns.id ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -347,7 +351,27 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
+function colorSwitcher(value: string): string {
+  switch(value){
+    case "Aceptado":
+      return "black";
+    case "Bien Aceptado":
+      return "green";
+    case "Bien Rechazado":
+      return "green";
+    case "Mal Aceptado":
+      return "orange";
+    case "Mal Rechazado":
+      return "orange";
+    case "Rechazado":
+      return "red";
+    default:
+      return "black";
+  }
+}
+
 function MetricsTable(): JSX.Element {
+  const {t} = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -391,13 +415,16 @@ function MetricsTable(): JSX.Element {
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: Data) => {
+                const estados = (
+                  <Typography color={colorSwitcher(row.estado)}>{t(row.estado)}</Typography>
+                )
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     <StyledTableCell align="center">
                       {row.folio}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.estado}
+                      {estados}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.puntos}

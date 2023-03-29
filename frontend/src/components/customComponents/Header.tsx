@@ -14,6 +14,7 @@ import NavbarTabs from "./NavbarTabs";
 
 export interface TabProps {
   label: string;
+  href: string;
 }
 
 export interface ButtonProps {
@@ -36,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
 
   return (
     <React.Fragment>
-      <AppBar sx={{ background: "#1c9093" }}>
+      <AppBar sx={{ background: "#1c9093", height: "auto" }}>
         <Toolbar>
           <Logo />
           {isMatch ? (
@@ -44,7 +45,11 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
               </Typography>
-              <DrawerComp buttons={buttons} />
+              {tabs != null ? <DrawerComp buttons={buttons} tabs={tabs} onTabChange={(index: number) => {
+                      handleTabChange(index);
+                    }} /> :
+              <DrawerComp buttons={buttons} onTabChange={()=>{}}/>
+               }
             </>
           ) : (
             <>

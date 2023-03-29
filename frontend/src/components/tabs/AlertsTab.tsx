@@ -1,10 +1,25 @@
-import React from "react";
-import { Box, Typography, Divider, Grid } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, Divider, Grid, TextField, IconButton, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AlertTable from "../tables/AlertsTable";
+import FilterComponent from "../customComponents/FilterComponent";
+import { Search } from "@mui/icons-material";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const AlertsTab = (): JSX.Element => {
   const { t } = useTranslation();
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  
+  const handleOpenFilter = (): void => {
+    setOpenFilter(true);
+  };
+  const handleCloseFilter= (): void => {
+    setOpenFilter(false);
+  };
+
+  const handleSubmit = (): void => {
+    setOpenFilter(false);
+  };
 
   return (
     <>
@@ -14,8 +29,11 @@ const AlertsTab = (): JSX.Element => {
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
+        sx={{
+          width: "100%",
+          alignItems: "flex-start",
+        }}
       >
-        <Box>
           <Typography
             paddingLeft={"3%"}
             display={"flex"}
@@ -26,12 +44,33 @@ const AlertsTab = (): JSX.Element => {
           </Typography>
           <Divider variant="middle" />
           <Grid
-            container
-            lg={12}
-            rowSpacing={2}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            padding={5}
-          >
+          container
+          lg={12}
+          rowSpacing={2}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          padding={5}
+        >
+          <Grid container lg={12} xs={12} md={12} columnSpacing={3} display={'flex'} justifyContent={'flex-end'} >
+            <Grid item lg={10} md={10} xs={10} display={'flex'} justifyContent={'flex-end'}>
+              <TextField size="small" id="folio-search" label={t("folioSearch")} variant="filled" />
+              <IconButton type="button">
+                <Search/>
+              </IconButton>
+            </Grid>
+            <Grid item lg={2} md={2} xs={2}>
+              <IconButton onClick={handleOpenFilter} sx={{color: '#000'}} >
+                <FilterListIcon>{t('filter')}</FilterListIcon>
+                </IconButton>
+            </Grid>
+          </Grid>
+          <Dialog fullWidth open={openFilter} onClose={handleCloseFilter} >
+            <DialogTitle>
+              <Typography fontSize={'100%'}>{t('filter')}</Typography>
+            </DialogTitle>
+            <DialogContent >
+              <FilterComponent handleSubmit={handleSubmit} filterType="alerts"/>  
+            </DialogContent>
+          </Dialog>
             <Grid
               item
               xs={12}
@@ -43,7 +82,6 @@ const AlertsTab = (): JSX.Element => {
             </Grid>
           </Grid>
         </Box>
-      </Box>
     </>
   );
 };

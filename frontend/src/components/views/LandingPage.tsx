@@ -9,7 +9,7 @@ import ContactUsTab from "../tabs/ContactUsTab";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string }>;
+  tabs?: Array<{ label: string; href: string }>;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
