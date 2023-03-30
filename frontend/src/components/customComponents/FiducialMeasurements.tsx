@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import { getExamPredictedMarkersComputations } from "../../service/user.service";
 
 interface Measurements {
+  exam_id: number;
   fc: number;
   rr: number;
   pq: number;
@@ -18,26 +19,35 @@ interface Measurements {
   st: number;
 }
 
-function createData(
-  fc: number,
-  rr: number,
-  pq: number,
-  qrs: number,
-  qt: number,
-  qtc: number,
-  st: number
-): Measurements {
-  return { fc, rr, pq, qrs, qt, qtc, st };
-}
+// function createData(
+//   fc: number,
+//   rr: number,
+//   pq: number,
+//   qrs: number,
+//   qt: number,
+//   qtc: number,
+//   st: number
+// ): Measurements {
+//   return { fc, rr, pq, qrs, qt, qtc, st };
+// }
 
 const FiducialMeasurementsTable = (props: any): JSX.Element => {
-  const [computationPoints, setComputationPoints] = useState<Measurements>();
+  const [computationPoints, setComputationPoints] = useState<Measurements>({
+    exam_id: 0,
+    fc: 0,
+    rr: 0,
+    pq: 0,
+    qrs: 0,
+    qt: 0,
+    qtc: 0,
+    st: 0,
+  
+  });
   useEffect(() => {
     getExamPredictedMarkersComputations(props.examId).then(
       (response) => {
+        console.log(response.data)
         setComputationPoints(response.data)
-        console.log("computationPoints");
-        console.log(computationPoints);
       },
       (error) => {
         const _content =
@@ -56,17 +66,16 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   // const qt = computationPoints? computationPoints.qt : 0;
   // const qtc = computationPoints? computationPoints.qtc : 0;
   // const st = computationPoints? computationPoints.st: 0;
-  // const row = computationPoints;
+  const row = computationPoints;
+  // const rr = props.fidR2 - props.fidR;
+  // const fc = (1000 * 60) / rr;
+  // const pq = props.fidQRS - props.fidP;
+  // const qrs = props.fidS - props.fidQRS;
+  // const qt = props.fidT - props.fidQRS;
+  // const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
+  // const st = (25 / 1000) * (props.fidST - props.fidS);
 
-  const rr = props.fidR2 - props.fidR;
-  const fc = (1000 * 60) / rr;
-  const pq = props.fidQRS - props.fidP;
-  const qrs = props.fidS - props.fidQRS;
-  const qt = props.fidT - props.fidQRS;
-  const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
-  const st = (25 / 1000) * (props.fidST - props.fidS);
-
-   const row = createData(fc, rr, pq, qrs, qt, qtc, st);
+  //  const row = createData(fc, rr, pq, qrs, qt, qtc, st);
 
   return (
     <TableContainer component={Paper}>

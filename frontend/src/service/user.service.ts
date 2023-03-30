@@ -17,7 +17,7 @@ export const getExams = async (): Promise<AxiosResponse> => {
 // }
 
 export const getExamPredictedMarkersComputations = (exam_id: number): Promise<AxiosResponse> => {
-  return axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
+  return axios.get(`/predicted_marker_computations/${exam_id}`, { withCredentials: true });
 }
 // Esto se ve de la siguiente manera:
 // {
