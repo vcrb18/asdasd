@@ -1,21 +1,81 @@
 import { Box, Button, Fab, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import { getExam, getExamPredictedMarkersComputations } from "../../service/user.service";
 
 interface ExamsViewProps {
+  exam_id: number ;
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string; href: string }>;
 }
 
+interface PredictedValuesData {
+  exam_id: number;
+  fc: number;
+  rr: number;
+  pq: number;
+  qrs: number;
+  qt: number;
+  qtc: number;
+  st: number;
+}
+
+export interface ExamData {
+  exam_id: number;
+  patient_id: string | null;
+  created_at: string;
+  estado: boolean;
+  urgencia: number;
+  resultados: string;
+}
+
+
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
+  exam_id,
 }): JSX.Element => {
+  const [examData, setExamData] = useState<ExamData>();
+  useEffect(() => {
+    getExam(exam_id).then(
+      (response) => {
+        setExamData(response.data)
+      },
+      (error) => {
+        const _content =
+        (error.response && error.response.data) ||
+        error.message ||
+        error.toString();
+        setExamData(_content);
+      }
+    )
+  }, []);
+  let predictedExamValuesData: PredictedValuesData;
+  let examPredictedMarkersComputations = getExamPredictedMarkersComputations(exam_id);
+  
+  // let examData: ExamData = {
+  //   exam_id: 1,
+  //   patient_id: '',
+  //   created_at: '',
+  //   estado: false,
+  //   urgencia: 1,
+  //   resultados: '',
+  // };
+  // getExam(exam_id).then((response) => {
+  //   examData = response.data;
+  //   console.log("EL id del Examen es = ");
+  // })
+  console.log(examData);
+
+  const fecha = examData?.created_at.includes("T")
+                  ? examData?.created_at.replace("T", " ").split(".")[0]
+                  : examData?.created_at.split(".");
+  
   return (
     <>
       <Header
@@ -33,14 +93,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Fab>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={"80%"} color={"#404040"}>
-              {" "}
-              Folio examen: F-2341{" "}
+            <Typography fontSize={"75%"} color={"#404040"}>
+              Folio examen: {examData?.exam_id.toString()}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
             <Typography fontSize={"80%"} color={"#404040"}>
-              Fecha de recepción: 12/12/2020
+              Fecha: {fecha}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
@@ -60,16 +119,16 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           rowSpacing={1}
           alignItems={"center"}
         >
-          <Grid item xs={12} sm={12} md={12} lg={6} padding={"2%"}>
-            <AnalisisBox />
+          <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
+            <AnalisisBox examId={exam_id} />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={6} padding={"2%"}>
-            <PredictionBox />
+          <Grid item xs={12} sm={12} md={12} lg={12} display={"flex"} justifyContent={"center"} marginY={"5%"}>
+            <DerivationsComponent  />
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
+            <PredictionBox examId={exam_id}/>
           </Grid>
         </Grid>
-        <Box display={"flex"} justifyContent={"center"} marginTop={"5%"}>
-          <DerivationsComponent />
-        </Box>
       </Box>
       <Box
         display={"flex"}

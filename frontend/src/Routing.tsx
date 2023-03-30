@@ -39,17 +39,7 @@ function Routing(): JSX.Element {
         />
         <Route path="/tables" element={<TablesView />} />
 
-        <Route
-          path="/exams"
-          element={
-            // <RequireAuth>
-              <ExamsView
-                tabs={mainMenuPageButtons}
-                buttons={mainMenuHeaderButtons}
-              />
-            // </RequireAuth>
-          }
-        />
+        
 
         <Route
           path="/metrics"
@@ -68,15 +58,12 @@ function Routing(): JSX.Element {
           }
         />
 
-        <Route path="/patogrid" element={<AnalisisBox />} />
-
-        <Route path="/diagnosis" element={<DiagnosisComponent />} />
-        <Route path="/predicciones" element={<PredictionBox />} />
 
         <Route
           path="/examsview"
           element={
             <ExamsView
+              exam_id={107243}
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
             />
@@ -90,15 +77,7 @@ function Routing(): JSX.Element {
             // </RequireAuth>
           }
         />
-        <Route
-          path="/patogrid"
-          element={
-            <RequireAuth>
-              <AnalisisBox />
-            </RequireAuth>
-          }
-        />
-      </Routes>
+        </Routes>
     </BrowserRouter>
   );
 }

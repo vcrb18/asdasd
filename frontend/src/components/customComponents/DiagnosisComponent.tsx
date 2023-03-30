@@ -10,9 +10,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
+import { getSuggestedDiagnostic } from "../../service/user.service";
 
 const DiagnosisTypes = ["Trasado dentro de los limites", "Ritmo sinusal"];
 
@@ -85,12 +86,58 @@ const DeletableBoxItem = ({
   );
 };
 
-const DiagnosisComponent = (): JSX.Element => {
-  const [items, setItems] = useState(DiagnosisTypes);
+interface SuggestedDiagnostic {
+  prediction_id?: number,
+  exam_id?: number,
+  algorithm_type_id?: number,
+  value_name?: string,
+  value_type?: string,
+  value?: string
+}
+
+interface DiagnosisProps {
+  examId: number;
+}
+
+const DiagnosisComponent: React.FC<DiagnosisProps> = ({examId}): JSX.Element => {
+
+  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<SuggestedDiagnostic[]>([]);
+
+  useEffect(() => {
+    getSuggestedDiagnostic(examId, 3).then(
+      (res) => {
+        // .map((element: string )=>{
+        //   element
+        // })
+        setDiagnosticosSugerido(res.data)
+
+      },
+      (error) => {
+        const _content =
+        (error.response && error.response.data) ||
+        error.message ||
+        error.toString();
+        setDiagnosticosSugerido(_content);
+      }
+    )
+  }, []);
+  console.log(DiagnosticosSugeridos)
+
+
+  // const [items, setItems] = useState<string[]>([]);
+  // useEffect(() => {
+  //   DiagnosticosSugeridos.map((item) =>
+  //   {
+  //     item.value? setItems([...items, item.value]) : null
+  //   })
+  // }, [] );
+
+
+  
   const [newItem, setNewItem] = useState("");
 
   const handleDelete = (item: string): void => {
-    setItems(items.filter((i) => i !== item));
+    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i !== item));
   };
 
   const handleAdd = (): void => {
@@ -103,9 +150,9 @@ const DiagnosisComponent = (): JSX.Element => {
     setOpenAddDialog(false);
   };
   const handleAddDialogSubmit = (): void => {
-    if (newItem !== "") {
-      setItems([...items, newItem]);
-    }
+    // if (newItem !== '') {
+    //   setDiagnosticosSugerido([...DiagnosticosSugeridos, newItem]);
+    // }
     setNewItem("");
     setOpenAddDialog(false);
   };
@@ -117,8 +164,8 @@ const DiagnosisComponent = (): JSX.Element => {
         </Typography>
       </Box>
       <Box>
-        {items.map((item) => (
-          <DeletableBoxItem key={item} label={item} onDelete={handleDelete} />
+        {DiagnosticosSugeridos.map((item) => (
+          <DeletableBoxItem label={item.value? item.value : ''} onDelete={handleDelete} />
         ))}
         <IconButton size="small" edge={"end"} onClick={handleAdd}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#36c513" }} />

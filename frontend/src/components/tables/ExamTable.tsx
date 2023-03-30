@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
 import { getExams } from "../../service/user.service";
+// import { type NavigateFunction, useNavigate } from "react-router-dom";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
@@ -125,12 +126,14 @@ function createData(
   };
 };
 
-const rows = [
-  createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 1, "false"),
-  createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 2, "false"),
-  createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, "false"),
-  createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
-];
+interface ExamData {
+  exam_id: number;
+  patient_id: string | null;
+  created_at: string;
+  estado: boolean;
+  urgencia: number;
+  resultados: string;
+}
 
 type Order = "asc" | "desc";
 
@@ -160,7 +163,7 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: Data[], comparator: (a: T, b: T) => number): any {
+function stableSort<T>(array: ExamData[], comparator: (a: T, b: T) => number): any {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -222,54 +225,29 @@ function colorSwitcher(value: number): string {
   }
 }
 
-const ExamTable = (): JSX.Element => {
+// const rows = [
+//   createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 1, "false"),
+//   createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 2, "false"),
+//   createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, "false"),
+//   createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
+// ];
 
-  // getExams().then(
-  //   (response) => {
-  //     console.log("response");
-  //     console.log(response);
-      
-  //   }
-  // )
-  
-  axios.get('/exams', {
-    withCredentials: true,
-  })
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error(error);
+let rows: ExamData[] = [];
+getExams().then((response) => {
+  rows = response.data.map((exam:ExamData) => {
+    return {
+      ...exam, // copy all existing properties from the original object
+      estado: Math.random() < 0.5,
+      urgencia: Math.floor(Math.random() * 3) + 1,
+      resultados: '/examsview',
+    } as ExamData; // enforce the ExamData interface on the new object
   });
-  // async function getExams(): Promise<any> {
-  //   // const authHeader = authHeader();
-  //   try {
-  //     const response = await fetch(API_URL + "exams" , {
-  //       headers: authHeader()
-  //     });
-  //     // const response = await axios.get(API_URL + "exams");
-  //     const data = await response.json();
-  //     console.log(data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error('There was a problem with the fetch operation:', error);
-  //   }
-  // }
-  // console.log("aurhHeader!!!");
-  // console.log(authHeader());
-  // const header = authHeader();
-  // console.log(header);
-  
-  
-  // const getExams = (): Promise<AxiosResponse> => {
-  //   return axios.get(API_URL + "exams", { headers: authHeader() });
-  // }
-  // const getExamsData = getExams().then((response) => {
-  //   console.log("response");
-  //   console.log(response);
-  // })
-  
+});
+
+const ExamTable = (): JSX.Element => {  
+
   const { t } = useTranslation();
+  // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -281,6 +259,11 @@ const ExamTable = (): JSX.Element => {
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  // const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
+  //     event.preventDefault();
+  //     navigate('/exams'.concat(examId))
+  // }
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -312,10 +295,10 @@ const ExamTable = (): JSX.Element => {
           <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row: Data) => {
-                const fecha = row.fecha.includes("T")
-                  ? row.fecha.replace("T", " ").split(".")[0]
-                  : row.fecha.split(".");
+              .map((row: ExamData) => {
+                const fecha = row.created_at.includes("T")
+                  ? row.created_at.replace("T", " ").split(".")[0]
+                  : row.created_at.split(".");
                 const estadoIcon = row.estado ? (
                   <Brightness1RoundedIcon color={"success"} />
                 ) : (
@@ -325,12 +308,12 @@ const ExamTable = (): JSX.Element => {
                     <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
                   ) 
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
                     <StyledTableCell align="center">
-                      {row.folio}
+                      {row.exam_id}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.paciente}
+                      {row.patient_id}
                     </StyledTableCell>
                     <StyledTableCell align="center">{fecha}</StyledTableCell>
                     <StyledTableCell align="center">
@@ -346,6 +329,10 @@ const ExamTable = (): JSX.Element => {
                           color="primary"
                           variant="contained"
                           sx={{ color: "#006a6b" }}
+                          value={row.exam_id}
+                          // onClick={(event) => {
+                          //   handleSubmit(event, row.exam_id);
+                          // }}
                         >
                           Acceder
                         </Button>

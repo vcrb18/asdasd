@@ -9,13 +9,50 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
 };
 
 export const getExams = async (): Promise<AxiosResponse> => {
-  return await axios.get(API_URL + "exams", { headers: authHeader() });
+  return await axios.get("/exams", { withCredentials: true });
 };
 
-// export const getPatients = async (): Promise<AxiosResponse> => {
-// return await axios.get(API_URL + "patients", { headers: authHeader() });
-// };
+// export const getExamPredictedMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
+//   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
+// }
 
-// export const getAdminBoard = async (): Promise<AxiosResponse> => {
-// return await axios.get(API_URL + "admin", { headers: authHeader() });
-// };
+export async function getExamPredictedMarkersComputations(exam_id: number) {
+  try {
+    const { data, status } = await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
+    console.log(JSON.stringify(data));
+    return data;
+  } catch (error) {
+    console.error("El error es el siguiente:", error);
+  }
+}
+// Esto se ve de la siguiente manera:
+// {
+//   "exam_id": 107220,
+//   "fc": 66.00660066006601,
+//   "rr": 909,
+//   "pq": 191,
+//   "qrs": 155,
+//   "qt": 405,
+//   "qtc": 424.788823481098,
+//   "st": 0.47500000000000003
+// }
+
+export const getExam = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams/${exam_id}`, { withCredentials: true });
+}
+
+export const getExamAllAlgorithmPredictions = (exam_id: number): Promise<AxiosResponse> => {
+  return axios.get(`/algorithm_predictions/${exam_id}`, { withCredentials: true });
+}
+
+
+// Esto se ve de la siguiente manera:
+// {
+//   "exam_id": 107220,
+//   "patient_id": null,
+//   "created_at": "2023-03-16T14:23:46.000Z"
+// }
+
+export const getSuggestedDiagnostic = async (exam_id: number, type_id: number): Promise<AxiosResponse> => {
+  return await axios.get(`/algorithm_predictions/${exam_id}/${type_id}`, { withCredentials: true });
+}
