@@ -39,7 +39,14 @@ function stateColorSwitcher(value: boolean | undefined ): string {
 
 const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
   const { t } = useTranslation();
-  const [analisisData, setAnalisisData] = useState<ExamData>();
+  const [analisisData, setAnalisisData] = useState<ExamData>({
+    exam_id: 0,
+    patient_id: null,
+    created_at: "",
+    estado: false,
+    urgencia: 1,
+    resultados: "",
+  });
   useEffect(() => {
     getExam(examId).then((response) =>{
       let data =  {
@@ -82,8 +89,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
             </Typography>
           </Grid>
           <Grid item>
-          <Typography fontSize={"80%"} color={stateColorSwitcher(analisisData?.estado)}>
-              {analisisData?.estado? 'Aceptado' : 'Rechazado'}
+          <Typography fontSize={"80%"} color={stateColorSwitcher(analisisData.estado)}>
+              {analisisData.estado === true? 'Aceptado' : 'Rechazado'}
             </Typography>
           </Grid>
         </Grid>

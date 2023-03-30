@@ -5,7 +5,7 @@ import {getExamAllAlgorithmPredictions } from "../../service/user.service";
 interface Prediccion {
   // id: "Estado" | "Urgencia" | "Arritmia" | "Tipo" | "Extrasistole" | "Bloqueo";
   id: string;
-  estado?: string;
+  estado: string | boolean;
   confianza: number;
   razon_rechazo?: string;
   razon_rechazo_confianza?: number;
@@ -224,12 +224,12 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
               </Grid>
               <Grid item margin={"1%"}>
                 <Typography fontSize={"80%"} color={"#000000"}>
-                  {prediccion.estado}
+                  {typeof prediccion.estado === "boolean" ? prediccion.estado === true ? "Aceptado" : "Rechazado" : prediccion.estado}
                 </Typography>
               </Grid>
               <Grid item margin={"1%"}>
                 <Typography fontSize={"80%"} color={colorSwitcher(prediccion.confianza)}>
-                  {prediccion.confianza}{prediccion.id == "Arritmia" ? "" : "%"}
+                  {prediccion.confianza}{prediccion.id === "Arritmia" ? "" : "%"}
                 </Typography>
               </Grid>
             </Grid>
