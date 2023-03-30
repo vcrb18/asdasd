@@ -90,7 +90,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           fidS={fidS}
           fidST={fidST}
           fidT={fidT}
-          examId ={ examId}
+          examId={examId}
         />
       </Box>
     </Stack>

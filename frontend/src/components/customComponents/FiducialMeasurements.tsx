@@ -49,13 +49,13 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
     )
   }, []);
 
-  // const arr = computationPoints?.rr;
-  // const afc = computationPoints?.fc;
-  // const apq = computationPoints?.pq;
-  // const aqrs = computationPoints?.qrs;
-  // const aqt = computationPoints?.qt;
-  // const aqtc = computationPoints?.qtc;
-  // const ast = computationPoints?.st;
+  // const rr = computationPoints? computationPoints.rr : 0;
+  // const fc = computationPoints? computationPoints.fc : 0;
+  // const pq = computationPoints? computationPoints.pq : 0;
+  // const qrs = computationPoints? computationPoints.qrs: 0;
+  // const qt = computationPoints? computationPoints.qt : 0;
+  // const qtc = computationPoints? computationPoints.qtc : 0;
+  // const st = computationPoints? computationPoints.st: 0;
   // const row = computationPoints;
 
   const rr = props.fidR2 - props.fidR;

@@ -60,10 +60,9 @@ function Routing(): JSX.Element {
 
 
         <Route
-          path="/examsview"
+          path="/examsview/:examId"
           element={
             <ExamsView
-              exam_id={107243}
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
             />

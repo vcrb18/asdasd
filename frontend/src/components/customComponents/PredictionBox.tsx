@@ -237,12 +237,14 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
         </Box>
       </Box>
       <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
-        <Typography color={"#000000"} fontSize={"80%"} width={"100%"}>
+        <Typography color={"#000000"} fontSize={"80%"} marginTop={'2%'} width={"100%"}>
           Diagnosticos sugeridos
         </Typography>
         <Box
           display={"flex"}
           flexDirection={"column"}
+          justifyContent={'space-around'}
+          alignItems={'space-evenly'}
           width={"100%"}
           marginTop={"5%"}
           marginBottom={"5%"}
@@ -254,7 +256,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
               justifyContent={"space-between"}
               key={diagnostico}
             >
-              <Box width={"70%"} marginLeft={"5%"}>
+              <Box width={"100%"} display={'flex'} marginY={'1%'} justifyContent={'center'} >
                 <Typography fontSize={"80%"} color={"#000000"}>
                   {diagnostico}
                 </Typography>

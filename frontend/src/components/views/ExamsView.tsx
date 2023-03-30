@@ -7,9 +7,10 @@ import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { getExam, getExamPredictedMarkersComputations } from "../../service/user.service";
+import { useParams } from "react-router-dom";
 
 interface ExamsViewProps {
-  exam_id: number ;
+  // examId: number ;
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string; href: string }>;
 }
@@ -33,16 +34,15 @@ export interface ExamData {
   urgencia: number;
   resultados: string;
 }
-
-
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
-  exam_id,
 }): JSX.Element => {
+  const { examId } = useParams<{ examId: string }>();
+  const examIdNumber = parseInt(examId || "0", 10);
   const [examData, setExamData] = useState<ExamData>();
   useEffect(() => {
-    getExam(exam_id).then(
+    getExam(examIdNumber).then(
       (response) => {
         setExamData(response.data)
       },
@@ -119,13 +119,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           alignItems={"center"}
         >
           <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
-            <AnalisisBox examId={exam_id} />
+            <AnalisisBox examId={examIdNumber} />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} display={"flex"} justifyContent={"center"} marginY={"5%"}>
-            <DerivationsComponent examId={exam_id} />
+          <Grid item xs={12} sm={12} md={12} lg={12} display={"flex"} justifyContent={"center"} alignItems={'center'} marginY={"5%"}>
+            <DerivationsComponent examId={examIdNumber} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
-            <PredictionBox examId={exam_id}/>
+            <PredictionBox examId={examIdNumber}/>
           </Grid>
         </Grid>
       </Box>

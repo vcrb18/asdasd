@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import axios, { type AxiosResponse } from "axios";
 import { ReactElement } from "react";
 import { Token } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -323,18 +324,19 @@ const ExamTable = (): JSX.Element => {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
+                        <Link to={`/examsview/${row.exam_id}`}>
                         <Button
-                          href={row.resultados}
                           color="primary"
                           variant="contained"
                           sx={{ color: "#006a6b" }}
                           value={row.exam_id}
                           // onClick={(event) => {
-                          //   handleSubmit(event, row.exam_id);
-                          // }}
-                        >
+                            //   handleSubmit(event, row.exam_id);
+                            // }}
+                            >
                           Acceder
                         </Button>
+                        </Link>
                       </ThemeProvider>
                     </StyledTableCell>
                   </TableRow>

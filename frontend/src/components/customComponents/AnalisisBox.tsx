@@ -51,6 +51,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
     getExam(examId).then((response) =>{
       let data =  {
         ...response.data,
+        estado: response.data.estado.estado,
         resultados: '/examsview',
       }
       setAnalisisData(data)
@@ -63,7 +64,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
       }
     )
   }, []);
-  console.log(analisisData)
   return (
     <Box
       display={"flex"}
