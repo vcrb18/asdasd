@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { getExamPredictedMarkersComputations } from "../../service/user.service";
 
 interface Measurements {
   fc: number;
@@ -30,6 +31,33 @@ function createData(
 }
 
 const FiducialMeasurementsTable = (props: any): JSX.Element => {
+  const [computationPoints, setComputationPoints] = useState<Measurements>();
+  useEffect(() => {
+    getExamPredictedMarkersComputations(props.examId).then(
+      (response) => {
+        setComputationPoints(response.data)
+        console.log("computationPoints");
+        console.log(computationPoints);
+      },
+      (error) => {
+        const _content =
+        (error.response && error.response.data) ||
+        error.message ||
+        error.toString();
+        setComputationPoints(_content);
+      }
+    )
+  }, []);
+
+  // const arr = computationPoints?.rr;
+  // const afc = computationPoints?.fc;
+  // const apq = computationPoints?.pq;
+  // const aqrs = computationPoints?.qrs;
+  // const aqt = computationPoints?.qt;
+  // const aqtc = computationPoints?.qtc;
+  // const ast = computationPoints?.st;
+  // const row = computationPoints;
+
   const rr = props.fidR2 - props.fidR;
   const fc = (1000 * 60) / rr;
   const pq = props.fidQRS - props.fidP;
@@ -38,7 +66,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
   const st = (25 / 1000) * (props.fidST - props.fidS);
 
-  const row = createData(fc, rr, pq, qrs, qt, qtc, st);
+   const row = createData(fc, rr, pq, qrs, qt, qtc, st);
 
   return (
     <TableContainer component={Paper}>

@@ -56,7 +56,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     )
   }, []);
   let predictedExamValuesData: PredictedValuesData;
-  let examPredictedMarkersComputations = getExamPredictedMarkersComputations(exam_id);
   
   // let examData: ExamData = {
   //   exam_id: 1,
@@ -123,7 +122,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             <AnalisisBox examId={exam_id} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} display={"flex"} justifyContent={"center"} marginY={"5%"}>
-            <DerivationsComponent  />
+            <DerivationsComponent examId={exam_id} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
             <PredictionBox examId={exam_id}/>

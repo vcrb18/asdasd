@@ -4,7 +4,11 @@ import React from "react";
 import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 
-const DerivationsComponent = (): JSX.Element => {
+interface DerivationsProps {
+  examId: number; 
+}
+
+const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
   // TODO: consumir puntos reales
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
@@ -13,6 +17,7 @@ const DerivationsComponent = (): JSX.Element => {
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
+
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -85,6 +90,7 @@ const DerivationsComponent = (): JSX.Element => {
           fidS={fidS}
           fidST={fidST}
           fidT={fidT}
+          examId ={ examId}
         />
       </Box>
     </Stack>

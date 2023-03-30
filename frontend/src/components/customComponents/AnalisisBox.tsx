@@ -11,21 +11,54 @@ interface AnalisisProps{
   examId: number;
 }
 
+function urgencyColorSwitcher(value: number | undefined ): string {
+  switch(value){
+    case undefined:
+      return "black";
+    case 1:
+      return "black";
+    case 2:
+      return "orange";
+    case 3:
+      return "red";
+    default:
+      return "black";
+  }
+}
+
+function stateColorSwitcher(value: boolean | undefined ): string {
+  switch(value){  
+    case true:
+      return "green";
+    case false:
+      return "red";
+    default:
+      return "red";
+  }
+}
+
 const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
   const { t } = useTranslation();
   const [analisisData, setAnalisisData] = useState<ExamData>();
   useEffect(() => {
     getExam(examId).then((response) =>{
+      let data =  {
+        ...response,
+        estado: Math.random() < 0.5,
+        urgencia: Math.floor(Math.random() * 3) + 1,
+        resultados: '/examsview',
+      }
       setAnalisisData(response.data)
     }, 
     (error) => {
-        const _content = (error.response && error.response.data) || error.message || error.toString();
+        const _content = (error.response && error.response.data) ||
+        error.message ||
+        error.toString();
         setAnalisisData(_content);
       }
     )
   }, []);
-    // let nivelDeUrgencia: string = analisisData?.urgencia;
-  
+  console.log(analisisData)
   return (
     <Box
       display={"flex"}
@@ -51,8 +84,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
             </Typography>
           </Grid>
           <Grid item>
-          <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              Estado
+          <Typography fontSize={"80%"} color={stateColorSwitcher(analisisData?.estado)}>
+              {analisisData?.estado? 'Aceptado' : 'Rechazado'}
             </Typography>
           </Grid>
         </Grid>
@@ -68,8 +101,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"}>
-          <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              {analisisData?.urgencia}
+          <Typography fontSize={"80%"} color={urgencyColorSwitcher(analisisData?.urgencia)}>
+              {analisisData?.urgencia?.toString()}
             </Typography>
           </Grid>
         </Grid>

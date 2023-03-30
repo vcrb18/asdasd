@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { getSuggestedDiagnostic, getExamAllAlgorithmPredictions } from "../../service/user.service";
 
@@ -15,9 +15,8 @@ interface Patologias {
   algorithm_type_id?: number,
   value_name?: string,
   value_type?: string,
-  value?: string
+  value: string
 }
-
 
 
 interface PredictionProps {
@@ -44,15 +43,11 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
   function colorSwitcher(value: string): string {
     value = value.substring(0, value.length - 1);
     var num: number = +value;
-    if (num <= 25)
+    if (num <= 50)
     	return "red";
-    else if(num<=50)
-      return "yellow";
-    else if(num<=70)
+    else if(num<=75)
       return "orange";
-    else if(num<=90)
-      return "red";  
-    return("black")
+    return("green")
     }
   // const [DiagnosticosSugeridos, setDiagnosticoSugerido] = useState<SuggestedDiagnostic[]>([]);
   // useEffect(() => {
@@ -74,63 +69,133 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
 
   // BORRADOR VINI //////////////////////////////////////////////////
   
-
-  
-  
   const prediccionesVini: Prediccion[] = [];
   const patologiasEstado = patologias.filter(item => item.algorithm_type_id === 1);
+  let idEstado = "Estado";
+  let estadoEstado = "";
+  let porcentajeEstado = "";
   const prediccionPrimeraFila = patologiasEstado.map((patologiaEstado:Patologias) => {
-    let id = "Aceptado/Rechazado";
-    let estado = "";
-    let porcentaje = "";
+    // let idEstado = "Aceptado/Rechazado";
+    // let estadoEstado = "";
+    // let porcentajeEstado = "";
     if (patologiaEstado.value_type === "bool") {
       if (patologiaEstado.value === "true") {
-        estado = "Aceptado"; // O ES RECHAZADO?
+        estadoEstado = "Aceptado"; // O ES RECHAZADO?
       } else {
-        estado = "Rechazado"
+        estadoEstado = "Rechazado"
       }
+    } else if (patologiaEstado.value_type === "float") {
+        porcentajeEstado = patologiaEstado.value;
+    } else if (patologiaEstado.value_type === "string") {
+      porcentajeEstado = patologiaEstado.value;
     }
-    //  else if (patologiaEstado.value_type === "float") {
-    //   porcentaje = patologiaEstado.value;
-    // }
-    return { id: id, estado: estado, porcentaje: porcentaje }
+    return { id: idEstado, estado: estadoEstado, porcentaje: porcentajeEstado } as Prediccion;
   })
+  const primeraFilaSinMap = { id: idEstado, estado: estadoEstado, porcentaje: porcentajeEstado };
+  prediccionesVini.push(primeraFilaSinMap);
 
   const patologiasArritmia = patologias.filter(item => item.algorithm_type_id === 2);
+  let idArritmia = "Arritmia";
+  let estadoArritmia = "";
+  let porcentajeArritmia = "";
   const prediccionSegundaFila = patologiasArritmia.map((patologiaArritmia:Patologias) => {
-    let id = "Arritmia";
-    let estado = "";
-    let porcentaje = "";
+    // let idArritmia = "Arritmia";
+    // let estadoArritmia = "";
+    // let porcentajeArritmia = "";
     if (patologiaArritmia.value_type === "bool") {
       if (patologiaArritmia.value === "true") {
-        estado = "Positivo"; // O ES RECHAZADO?
+        estadoArritmia = "Positivo"; // O ES RECHAZADO?
+      } else {
+        estadoArritmia = "Negativo";
       }
-      // Puede no estar
-    } 
-    // else if (patologiaArritmia.value_type === "float") {
-    //   porcentaje = patologiaArritmia.value;
-    // }
-    return { id: id, estado: estado, porcentaje: porcentaje }
+    } else if (patologiaArritmia.value_type === "float") {
+        porcentajeArritmia = patologiaArritmia.value;
+    }
+    return { id: idArritmia, estado: estadoArritmia, porcentaje: porcentajeArritmia }
   })
+  const segundaFilaSinMap = { id: idArritmia, estado: estadoArritmia, porcentaje: porcentajeArritmia };
+  prediccionesVini.push(segundaFilaSinMap);
+
 
   const patologiasExtrasistole = patologias.filter(item => item.algorithm_type_id === 4);
+  let idExtrasistole = "Extrasistole";
+  let estadoExtrasistole = "";
+  let porcentajeExtrasistole = "";
+  const prediccionTerceraFila = patologiasExtrasistole.map((patologiaExtrasistole:Patologias) => {
+    // let idExtrasistole = "Extrasistole";
+    // let estadoExtrasistole = "";
+    // let porcentajeExtrasistole = "";
+    if (patologiaExtrasistole.value_type === "bool") {
+      if (patologiaExtrasistole.value === "true") {
+        estadoExtrasistole = "Positivo";
+      } else {
+        estadoExtrasistole = "Negativo";
+      }
+    } 
+    else if (patologiaExtrasistole.value_type === "float") {
+        porcentajeExtrasistole = patologiaExtrasistole.value;
+    }
+    return { id: idExtrasistole, estado: estadoExtrasistole, porcentaje: porcentajeExtrasistole }
+  })
+  const terceraFilaSinMap = { id: idExtrasistole, estado: estadoExtrasistole, porcentaje: porcentajeExtrasistole };
+  prediccionesVini.push(terceraFilaSinMap);
 
 
   const patologiasInfarto = patologias.filter(item => item.algorithm_type_id === 5);
+  let idInfarto = "Infarto";
+  let estadoInfarto = "";
+  let porcentajeInfarto = "";
+  const prediccionCuartaFila = patologiasExtrasistole.map((patologiaInfarto:Patologias) => {
+    // let idInfarto = "Extrasistole";
+    // let estadoInfarto = "";
+    // let porcentajeInfarto = "";
+    if (patologiaInfarto.value_type === "bool") {
+      if (patologiaInfarto.value === "true") {
+        estadoInfarto = "Positivo";
+      } else {
+        estadoInfarto = "Negativo";
+      }
+    } 
+    else if (patologiaInfarto.value_type === "float") {
+        porcentajeInfarto = patologiaInfarto.value;
+    }
+    return { id: idInfarto, estado: estadoInfarto, porcentaje: porcentajeInfarto }
+  })
+  const cuartaFilaSinMap = { id: idInfarto, estado: estadoInfarto, porcentaje: porcentajeInfarto };
+  prediccionesVini.push(cuartaFilaSinMap);
 
 
   const patologiasBloqueo = patologias.filter(item => item.algorithm_type_id === 6);
-
-
+  let idBloqueo = "Bloqueo";
+  let estadoBloqueo = "";
+  let porcentajeBloqueo = "";
+  const prediccionQuintaFila = patologiasBloqueo.map((patologiaBloqueo:Patologias) => {
+    // let idBloqueo = "Bloqueo";
+    // let estadoBloqueo = "";
+    // let porcentajeBloqueo = "";
+    if (patologiaBloqueo.value_type === "bool") {
+      if (patologiaBloqueo.value === "true") {
+        estadoBloqueo = "Positivo"; // O ES RECHAZADO?
+      } else {
+        estadoBloqueo = "Negativo";
+      }
+    } else if (patologiaBloqueo.value_type === "float") {
+        porcentajeBloqueo = patologiaBloqueo.value;
+    }
+    return { id: idBloqueo, estado: estadoBloqueo, porcentaje: porcentajeBloqueo }
+  })
+  const quintaFilaSinMap = { id: idBloqueo, estado: estadoBloqueo, porcentaje: porcentajeBloqueo };
+  prediccionesVini.push(quintaFilaSinMap);
+  const predicciones: readonly Prediccion[] = prediccionesVini;
 
   // BORRADOR VINI //////////////////////////////////////////////////
 
 
-  const predicciones: readonly Prediccion[] = [
-    { id: "Estado", estado: "Aceptado", porcentaje: "98%" },
-    { id: "Arritmia", estado: "Positivo", porcentaje: "78%" },
-    { id: "Urgencia", estado: "Normal", porcentaje: "87%" },
-  ];
+  // const predicciones: readonly Prediccion[] = [
+  //   { id: "Estado", estado: "Aceptado", porcentaje: "98%" },
+  //   { id: "Arritmia", estado: "Positivo", porcentaje: "78%" },
+  //   { id: "Urgencia", estado: "Normal", porcentaje: "87%" },
+  // ];
   const fontColor = "#000";
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -152,28 +217,28 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
           marginBottom={"5%"}
         >
           {predicciones.map((prediccion) => (
-            <Box
+            <Grid container
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-evenly"}
               key={prediccion.id}
             >
-              <Box margin={"1%"}>
+              <Grid item margin={"1%"}>
                 <Typography fontSize={"80%"} color={"#000000"}>
                   {prediccion.id}
                 </Typography>
-              </Box>
-              <Box margin={"1%"}>
+              </Grid>
+              <Grid item margin={"1%"}>
                 <Typography fontSize={"80%"} color={"#000000"}>
                   {prediccion.estado}
                 </Typography>
-              </Box>
-              <Box margin={"1%"}>
-                <Typography fontSize={"80%"} color={"#000000"}>
+              </Grid>
+              <Grid item margin={"1%"}>
+                <Typography fontSize={"80%"} color={colorSwitcher(prediccion.porcentaje)}>
                   {prediccion.porcentaje}
                 </Typography>
-              </Box>
-            </Box>
+              </Grid>
+            </Grid>
           ))}
         </Box>
       </Box>

@@ -16,14 +16,8 @@ export const getExams = async (): Promise<AxiosResponse> => {
 //   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 // }
 
-export async function getExamPredictedMarkersComputations(exam_id: number) {
-  try {
-    const { data, status } = await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
-    console.log(JSON.stringify(data));
-    return data;
-  } catch (error) {
-    console.error("El error es el siguiente:", error);
-  }
+export const getExamPredictedMarkersComputations = (exam_id: number): Promise<AxiosResponse> => {
+  return axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 }
 // Esto se ve de la siguiente manera:
 // {
