@@ -87,7 +87,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       <Box marginY={"6%"} width={"100%"}>
         <Grid container display={"flex"} mt={"1%"} mb={"4%"}>
           <Grid item xs={12} sm={12} md={3} lg={3}>
-            <Fab size="small" href="/exams">
+            <Fab size="small" href="/mainmenu">
               <ArrowCircleLeftIcon />
             </Fab>
           </Grid>

@@ -1,22 +1,16 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { getSuggestedDiagnostic, getExamAllAlgorithmPredictions } from "../../service/user.service";
+import {getExamAllAlgorithmPredictions } from "../../service/user.service";
 
 interface Prediccion {
   // id: "Estado" | "Urgencia" | "Arritmia" | "Tipo" | "Extrasistole" | "Bloqueo";
   id: string;
-  estado: string;
-  porcentaje: string;
+  estado?: string;
+  confianza: number;
+  razon_rechazo?: string;
+  razon_rechazo_confianza?: number;
 }
 
-interface Patologias {
-  prediction_id?: number,
-  exam_id?: number,
-  algorithm_type_id?: number,
-  value_name?: string,
-  value_type?: string,
-  value: string
-}
 
 
 interface PredictionProps {
@@ -24,28 +18,28 @@ interface PredictionProps {
 }
 
 const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
-  const [patologias, setPatologias] = useState<Patologias[]>([]);
+  const [predicciones, setPredicciones] = useState<Prediccion[]>([]);
+  const [diagnosticos, setDiagnosticos] = useState<string[]>([]);
   useEffect(() => {
     getExamAllAlgorithmPredictions(examId).then(
       (response) => {
-        setPatologias(response.data)
+        setPredicciones(response.data[0])
+        setDiagnosticos(response.data[1])
       },
       (error) => {
         const _content =
-        (error.response && error.response.data) ||
+        (error?.response?.data) ||
         error.message ||
         error.toString();
-        setPatologias(_content);
+        setPredicciones(_content);
       }
     )
   }, []);
   
-  function colorSwitcher(value: string): string {
-    value = value.substring(0, value.length - 1);
-    var num: number = +value;
-    if (num <= 50)
+  function colorSwitcher(value: number): string {
+    if (value <= 50)
     	return "red";
-    else if(num<=75)
+    else if(value <= 75)
       return "orange";
     return("green")
     }
@@ -68,7 +62,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
 
 
   // BORRADOR VINI //////////////////////////////////////////////////
-  
+  /* 
   const prediccionesVini: Prediccion[] = [];
   const patologiasEstado = patologias.filter(item => item.algorithm_type_id === 1);
   let idEstado = "Estado";
@@ -189,7 +183,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
   const predicciones: readonly Prediccion[] = prediccionesVini;
 
   // BORRADOR VINI //////////////////////////////////////////////////
-
+*/
 
   // const predicciones: readonly Prediccion[] = [
   //   { id: "Estado", estado: "Aceptado", porcentaje: "98%" },
@@ -234,8 +228,8 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
                 </Typography>
               </Grid>
               <Grid item margin={"1%"}>
-                <Typography fontSize={"80%"} color={colorSwitcher(prediccion.porcentaje)}>
-                  {prediccion.porcentaje}
+                <Typography fontSize={"80%"} color={colorSwitcher(prediccion.confianza)}>
+                  {prediccion.confianza}{prediccion.id == "Arritmia" ? "" : "%"}
                 </Typography>
               </Grid>
             </Grid>
@@ -253,20 +247,20 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
           marginTop={"5%"}
           marginBottom={"5%"}
         >
-          {/* {DiagnosticosSugeridos.map((diagnostico) => (
+          {diagnosticos.map((diagnostico) => (
             <Box
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
-              key={diagnostico.value}
+              key={diagnostico}
             >
               <Box width={"70%"} marginLeft={"5%"}>
                 <Typography fontSize={"80%"} color={"#000000"}>
-                  {diagnostico.value}
+                  {diagnostico}
                 </Typography>
               </Box>
             </Box>
-          ))} */}
+          ))}
         </Box>
       </Box>
     </Box>

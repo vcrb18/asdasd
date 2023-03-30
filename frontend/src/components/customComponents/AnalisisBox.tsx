@@ -43,12 +43,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
   useEffect(() => {
     getExam(examId).then((response) =>{
       let data =  {
-        ...response,
-        estado: Math.random() < 0.5,
-        urgencia: Math.floor(Math.random() * 3) + 1,
+        ...response.data,
         resultados: '/examsview',
       }
-      setAnalisisData(response.data)
+      setAnalisisData(data)
     }, 
     (error) => {
         const _content = (error.response && error.response.data) ||

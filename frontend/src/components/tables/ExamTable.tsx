@@ -237,8 +237,6 @@ getExams().then((response) => {
   rows = response.data.map((exam:ExamData) => {
     return {
       ...exam, // copy all existing properties from the original object
-      estado: Math.random() < 0.5,
-      urgencia: Math.floor(Math.random() * 3) + 1,
       resultados: '/examsview',
     } as ExamData; // enforce the ExamData interface on the new object
   });
@@ -299,7 +297,8 @@ const ExamTable = (): JSX.Element => {
                 const fecha = row.created_at.includes("T")
                   ? row.created_at.replace("T", " ").split(".")[0]
                   : row.created_at.split(".");
-                const estadoIcon = row.estado ? (
+                console.log(row)
+                const estadoIcon = row.estado? (
                   <Brightness1RoundedIcon color={"success"} />
                 ) : (
                   <Brightness1RoundedIcon color={"error"} />
