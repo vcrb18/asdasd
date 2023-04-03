@@ -231,7 +231,11 @@ const ExamTable = (): JSX.Element => {
       
   //   }
   // )
-  
+  const exams = getExams();
+  console.log("exams")
+  console.log(exams);
+
+
   axios.get('/exams', {
     withCredentials: true,
   })

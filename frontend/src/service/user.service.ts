@@ -9,7 +9,7 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
 };
 
 export const getExams = async (): Promise<AxiosResponse> => {
-  return await axios.get(API_URL + "exams", { headers: authHeader() });
+  return await axios.get("/exams", {withCredentials:true});
 };
 
 // export const getPatients = async (): Promise<AxiosResponse> => {
