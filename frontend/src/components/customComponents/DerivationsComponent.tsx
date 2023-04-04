@@ -10,13 +10,13 @@ interface DerivationsProps {
 }
 
 interface Fiduciales {
-  p_start: number;  //fidP
-  qrs_start: number;  //fidQRS
-  r: number;  //fidR
-  qrs_end: number;  //fidS
-  t_start: number;  //fidT
+  p_start: number;  // fidP
+  qrs_start: number;  // fidQRS
+  r: number;  // fidR
+  qrs_end: number;  // fidS
+  t_start: number;  // fidT
   t_end: number; // fidST
-  r2: number;  //fidR2
+  r2: number;  // fidR2
 }
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
@@ -29,9 +29,9 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
   const [fiduciales,setFiduciales] = React.useState<Fiduciales>({
-    p_start: 0,  //fidP
-    qrs_start: 0,  //fidQRS
-    r: 0,  //fidR
+    p_start: 0,  // fidP
+    qrs_start: 0,  // fidQRS
+    r: 0,  // fidR
     qrs_end: 0,
     t_start: 0,
     t_end: 0,
@@ -42,10 +42,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       (response) => {
         // console.log(response.data)
         setFidP(response.data.p_start)
-        setFiduciales({
-          ...response.data
-        })
+        setFidQRS(response.data.qrs_start)
+        setFidR(response.data.r)
+        setFidR2(response.data.r2)
+        setFidS(response.data.qrs_end)
+        setFidST(response.data.t_start)
+        setFidT(response.data.t_end) 
       }
+
+      //   setFiduciales({
+      //     ...response.data
+      //   })
+      // }
     )
   }
   )
