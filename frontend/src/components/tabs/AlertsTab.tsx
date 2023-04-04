@@ -5,6 +5,8 @@ import AlertTable from "../tables/AlertsTable";
 import FilterComponent from "../customComponents/FilterComponent";
 import { Search } from "@mui/icons-material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Header from "../customComponents/Header";
+import { mainMenuHeaderButtons, mainMenuPageButtons, mainMenuTabs } from "../../utils/routingPropConsts";
 
 const AlertsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -23,7 +25,14 @@ const AlertsTab = (): JSX.Element => {
 
   return (
     <>
-      <Box
+      
+      <Grid item lg={12} md={12} xs={12} >
+        <Header buttons={mainMenuHeaderButtons} tabs={mainMenuTabs} onTabValueChange={function (index: number): void {
+          throw new Error("Function not implemented.");
+        } } />
+      </Grid>
+       
+      <Grid item lg={12} md={12} xs={12}
         mt={"4%"}
         mb={"3%"}
         flexDirection={"row"}
@@ -32,6 +41,7 @@ const AlertsTab = (): JSX.Element => {
         sx={{
           width: "100%",
           alignItems: "flex-start",
+          height: "100%",
         }}
       >
           <Typography
@@ -81,7 +91,7 @@ const AlertsTab = (): JSX.Element => {
               <AlertTable />
             </Grid>
           </Grid>
-        </Box>
+        </Grid>
     </>
   );
 };

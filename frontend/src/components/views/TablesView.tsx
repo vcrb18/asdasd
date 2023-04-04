@@ -22,9 +22,6 @@ const TablesView: React.FC = (): JSX.Element => {
     <>
       {selectedIndex === 4 && (
         <MainMenuView
-          onButtonClick={(index: number) => {
-            handleButtonClicked(index);
-          }}
         />
       )}
       {selectedIndex !== 4 && (

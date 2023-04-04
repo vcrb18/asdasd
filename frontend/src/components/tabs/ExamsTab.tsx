@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
 import { Search } from "@mui/icons-material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Header from "../customComponents/Header";
+import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
+import Footer from "../customComponents/Footer";
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -24,15 +27,22 @@ const ExamsTab = (): JSX.Element => {
 
   return (
     <>
-      <Box
-        mt={"4%"}
-        mb={"3%"}
+      <Grid item lg={12} md={12} xs={12} 
+        marginBottom={"5%"}>
+        <Header buttons={mainMenuHeaderButtons} tabs={mainMenuPageButtons} onTabValueChange={function (index: number): void {
+          throw new Error("Function not implemented.");
+        } } />
+      </Grid>
+      <Grid item lg={12} md={12} xs={12}
+        mt={"7%"}
+        mb={'3%'}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
         sx={{
           width: "100%",
           alignItems: "flex-start",
+          height: "100%",
         }}
       >
         <Typography
@@ -84,7 +94,15 @@ const ExamsTab = (): JSX.Element => {
             <ExamTable />
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
+      <Grid item
+        lg={12}
+        xs={12}
+        md={12} >
+          
+      </Grid>
+      <Footer footerPosition={"static"} />
+
     </>
   );
 };

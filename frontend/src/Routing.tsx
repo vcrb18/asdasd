@@ -17,6 +17,7 @@ import PredictionBox from "./components/customComponents/PredictionBox";
 import ExamsView from "./components/views/ExamsView";
 import RequireAuth from "./components/customComponents/ProtectedRoute";
 import TablesView from "./components/views/TablesView";
+import ExamsTab from "./components/tabs/ExamsTab";
 
 function Routing(): JSX.Element {
   return (
@@ -29,17 +30,17 @@ function Routing(): JSX.Element {
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
-        <Route
-          path="/tablaexamenes"
-          element={
-            <RequireAuth>
-              <ExamTable />
-            </RequireAuth>
-          }
-        />
+        
         <Route path="/tables" element={<TablesView />} />
 
-        
+        <Route 
+          path="/exams" 
+          element={
+            <RequireAuth>
+              <ExamsTab />
+            </RequireAuth>
+         }
+        />
 
         <Route
           path="/metrics"

@@ -30,7 +30,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   const handleTabChange = (index: number): void => {
     onTabValueChange(index);
   };

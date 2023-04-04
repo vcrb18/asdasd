@@ -13,17 +13,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-interface MainMenuButtonProps {
-  onButtonClick: (index: number) => void;
-}
 
-const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) : JSX.Element => {
-  const [tabIndex, setTabIndex] = useState<number>(4);
-
-  const handleButtonClick = (index: number) => {
-    setTabIndex(index);
-    onButtonClick(index);
-  };
+const MainMenuButton = (): JSX.Element => {
   const { t } = useTranslation();
   return (
     <>
@@ -53,7 +44,7 @@ const MainMenuButton: React.FC<MainMenuButtonProps> = ({ onButtonClick }) : JSX.
                   >
                     <Fab
                       size="small"
-                      onClick={() => {handleButtonClick(index)}}
+                      href={button.href}
                       sx={{ backgroundColor: "#404040", color: "#c7dff9" }}
                     >
                       <ArrowForwardIcon sx={{ color: "#1c9093" }} />

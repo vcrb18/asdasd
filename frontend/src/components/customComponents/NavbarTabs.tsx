@@ -29,7 +29,7 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
       onChange={handleTabChange}
     >
       {tabs.map((tab, index) => (
-        <Tab key={index} label={t(tab.label)} />
+        <Tab key={index} href={tab.href} label={t(tab.label)} />
       ))}
     </Tabs>
   );

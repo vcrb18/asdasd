@@ -80,6 +80,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
         <FiducialChart
+        
           fidP={fidP}
           fidQRS={fidQRS}
           fidR={fidR}

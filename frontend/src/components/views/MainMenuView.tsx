@@ -9,12 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import MainMenuButton from "../customComponents/MainMenuButton";
 
-const MainMenuView: React.FC<{ onButtonClick: (index: number) => void }> = ({
-  onButtonClick,
-}) => {
-  const handleButtonClick = (index: number): void => {
-    onButtonClick(index);
-  };
+const MainMenuView = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -41,7 +36,7 @@ const MainMenuView: React.FC<{ onButtonClick: (index: number) => void }> = ({
           {t("mainMenu")}
         </Typography>
       </Box>
-      <MainMenuButton onButtonClick={handleButtonClick} />
+        <MainMenuButton />
       <Footer footerPosition={"fixed"} />
     </>
   );

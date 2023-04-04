@@ -7,6 +7,8 @@ import { Search } from "@mui/icons-material";
 import FilterComponent from "../customComponents/FilterComponent";
 
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Header from "../customComponents/Header";
+import { mainMenuHeaderButtons, mainMenuPageButtons, mainMenuTabs } from "../../utils/routingPropConsts";
 
 const MetricTabs = (): JSX.Element => {
   const { t } = useTranslation();
@@ -23,15 +25,22 @@ const MetricTabs = (): JSX.Element => {
     setOpenFilter(false);
   };
   return (
-    <Box
-    mt={"10%"}>
-      <Box
+    <>
+      <Grid item lg={12} md={12} xs={12} 
+        mb={"5%"}>
+        <Header buttons={mainMenuHeaderButtons} tabs={mainMenuTabs} onTabValueChange={function (index: number): void {
+          throw new Error("Function not implemented.");
+        } } />
+      </Grid>
+      <Grid 
+        mt={"7%"}
         mb={"3%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
         sx={{
           width: "100%",
+          height: "100%",
         }}
       >
         <Box>
@@ -85,9 +94,9 @@ const MetricTabs = (): JSX.Element => {
             </Grid>
           </Grid>
         </Box>
-      </Box>
-      <Footer footerPosition={"fixed"} />
-    </Box>
+      </Grid>
+      <Footer footerPosition={"static"} />
+    </>
   );
 };
 
