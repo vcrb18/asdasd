@@ -82,7 +82,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         },
       }}
     >
-      <Box sx={{ backgroundColor: "#ffffff", border: '5px solid #000000', borderRadius: "1%" }} margin={"3%"}>
+      <Box sx={{ backgroundColor: "#ffffff", border: '5px solid #000000', borderRadius: "1%", padding: '2%' }} margin={"3%"}>
         <Typography fontSize={"80%"} width={"100%"} sx={{ color: "#000000" }}>
           Análisis
         </Typography>
@@ -143,7 +143,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           </Grid> */}
         </Grid>
       </Box>
-      <Box sx={{ backgroundColor: "#fff", borderRadius: "1%" }} margin={"3%"}>
+      <Box sx={{ backgroundColor: "#fff", border: '5px solid #000000', borderRadius: "1%", padding: '2%' }} margin={"3%"}>
         <DiagnosisComponent examId={examId} />
       </Box>
     </Box>
