@@ -8,6 +8,11 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import Header from "../customComponents/Header";
 import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
 import Footer from "../customComponents/Footer";
+import { useForm } from "react-hook-form";
+
+type FormInput = {
+  folioSearch: string;
+}
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -21,8 +26,21 @@ const ExamsTab = (): JSX.Element => {
     setOpenFilter(false);
   };
 
-  const handleSubmit = (): void => {
+  const handleFilterSubmit = (): void => {
     setOpenFilter(false);
+  };
+  const [inputValue, setInputValue] = useState("");
+  
+  const { register, handleSubmit } = useForm<FormInput>();
+
+  const onSubmit = (data: FormInput) : void => {
+    console.log("Input:", data.folioSearch);
+    console.log(inputValue)
+    // Do whatever you need with the input value here
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) : void => {
+    setInputValue(event.target.value);
   };
 
   return (
@@ -63,10 +81,18 @@ const ExamsTab = (): JSX.Element => {
         >
           <Grid container lg={12} xs={12} md={12} columnSpacing={3} display={'flex'} justifyContent={'flex-end'}>
             <Grid item lg={10} md={10} xs={10} display={'flex'} justifyContent={'flex-end'}>
-              <TextField id="folio-search" label={t("folioSearch")} variant="filled" size="small"/>
-              <IconButton type="button">
+              <form onSubmit={handleSubmit(onSubmit)}> 
+              <TextField 
+                id="folio-search"
+                label={t("folioSearch")} 
+                variant="filled"
+                size="small"
+                {...register("folioSearch")} 
+                onChange={handleInputChange}/>
+              <IconButton type="submit">
                 <Search/>
               </IconButton>
+              </form>
             </Grid>
             <Grid item lg={2} md={2} xs={2}>
               <IconButton onClick={handleOpenFilter} sx={{color: '#000'}} >
@@ -79,7 +105,7 @@ const ExamsTab = (): JSX.Element => {
               <Typography fontSize={'100%'}>{t('filter')}</Typography>
             </DialogTitle>
             <DialogContent >
-              <FilterComponent handleSubmit={handleSubmit} filterType="exams"/>  
+              <FilterComponent handleSubmit={handleFilterSubmit} filterType="exams"/>  
             </DialogContent>
           </Dialog>
           <Grid
@@ -91,7 +117,7 @@ const ExamsTab = (): JSX.Element => {
             justifyContent={"flex-start"}
             sx={{ color: "#404040", fontSize: "1.5rem" }}
           >
-            <ExamTable />
+            <ExamTable useFilter={false} filterId={""}  />
           </Grid>
         </Grid>
       </Grid>

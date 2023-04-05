@@ -243,7 +243,12 @@ getExams().then((response) => {
   });
 });
 
-const ExamTable = (): JSX.Element => {  
+interface ExamProps {
+  useFilter: boolean;
+  filterId: string  
+}
+
+const ExamTable: React.FC<ExamProps>= ({useFilter, filterId}): JSX.Element => {  
 
   const { t } = useTranslation();
   // const navigate: NavigateFunction = useNavigate();
@@ -292,7 +297,7 @@ const ExamTable = (): JSX.Element => {
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy))
+            {!useFilter && stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: ExamData) => {
                 const fecha = row.created_at.includes("T")
@@ -342,6 +347,7 @@ const ExamTable = (): JSX.Element => {
                   </TableRow>
                 );
               })}
+              
           </TableBody>
         </Table>
       </TableContainer>
