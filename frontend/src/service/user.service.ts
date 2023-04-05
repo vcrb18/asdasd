@@ -54,3 +54,7 @@ export const getSuggestedDiagnostic = async (exam_id: number, type_id: number): 
 export const getExamPredictedMarkers = async (exam_id: number): Promise<AxiosResponse> => {
   return await axios.get(`/predicted_markers/${exam_id}`, {withCredentials: true})
 }
+
+export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.get(`/time_series/${exam_id}`, {withCredentials: true});
+}

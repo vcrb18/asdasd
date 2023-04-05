@@ -21,6 +21,7 @@ interface Fiduciales {
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
   // TODO: consumir puntos reales
+  const [fidExamId, setFidExamId] = React.useState(0);
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
   const [fidR, setFidR] = React.useState(1870);
@@ -41,6 +42,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     getExamPredictedMarkers(examId).then(
       (response) => {
         // console.log(response.data)
+        setFidExamId(response.data.examId)
         setFidP(response.data.p_start)
         setFidQRS(response.data.qrs_start)
         setFidR(response.data.r)
@@ -57,6 +59,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     )
   }
   )
+  console.log(fidExamId)
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -80,6 +83,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
         <FiducialChart
+          examId={fidExamId}
           fidP={fidP}
           fidQRS={fidQRS}
           fidR={fidR}
