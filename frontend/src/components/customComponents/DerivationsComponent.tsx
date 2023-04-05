@@ -6,20 +6,22 @@ import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamPredictedMarkers } from "../../service/user.service";
 
 interface DerivationsProps {
-  examId: number; 
+  examId: number;
 }
 
 interface Fiduciales {
-  p_start: number;  // fidP
-  qrs_start: number;  // fidQRS
-  r: number;  // fidR
-  qrs_end: number;  // fidS
-  t_start: number;  // fidT
+  p_start: number; // fidP
+  qrs_start: number; // fidQRS
+  r: number; // fidR
+  qrs_end: number; // fidS
+  t_start: number; // fidT
   t_end: number; // fidST
-  r2: number;  // fidR2
+  r2: number; // fidR2
 }
 
-const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
+const DerivationsComponent: React.FC<DerivationsProps> = ({
+  examId,
+}): JSX.Element => {
   // TODO: consumir puntos reales
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
@@ -28,35 +30,34 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
-  const [fiduciales,setFiduciales] = React.useState<Fiduciales>({
-    p_start: 0,  // fidP
-    qrs_start: 0,  // fidQRS
-    r: 0,  // fidR
+  const [fiduciales, setFiduciales] = React.useState<Fiduciales>({
+    p_start: 0, // fidP
+    qrs_start: 0, // fidQRS
+    r: 0, // fidR
     qrs_end: 0,
     t_start: 0,
     t_end: 0,
     r2: 0,
   });
-  useEffect(()=> {
+  useEffect(() => {
     getExamPredictedMarkers(examId).then(
       (response) => {
         // console.log(response.data)
-        setFidP(response.data.p_start)
-        setFidQRS(response.data.qrs_start)
-        setFidR(response.data.r)
-        setFidR2(response.data.r2)
-        setFidS(response.data.qrs_end)
-        setFidST(response.data.t_start)
-        setFidT(response.data.t_end) 
+        setFidP(response.data.p_start);
+        setFidQRS(response.data.qrs_start);
+        setFidR(response.data.r);
+        setFidR2(response.data.r2);
+        setFidS(response.data.qrs_end);
+        setFidST(response.data.t_start);
+        setFidT(response.data.t_end);
       }
 
       //   setFiduciales({
       //     ...response.data
       //   })
       // }
-    )
-  }
-  )
+    );
+  });
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -80,7 +81,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
         <FiducialChart
-        
           fidP={fidP}
           fidQRS={fidQRS}
           fidR={fidR}

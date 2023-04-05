@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import axios, { type AxiosResponse } from "axios";
 import { ReactElement } from "react";
 import { Token } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -34,6 +34,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    fontWeight: 'bold',
   },
 }));
 
@@ -125,7 +126,7 @@ function createData(
     urgencia,
     resultados,
   };
-};
+}
 
 interface ExamData {
   exam_id: number;
@@ -164,7 +165,10 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: ExamData[], comparator: (a: T, b: T) => number): any {
+function stableSort<T>(
+  array: ExamData[],
+  comparator: (a: T, b: T) => number
+): any {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -214,7 +218,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function colorSwitcher(value: number): string {
-  switch(value){
+  switch (value) {
     case 1:
       return "black";
     case 2:
@@ -235,22 +239,21 @@ function colorSwitcher(value: number): string {
 
 let rows: ExamData[] = [];
 getExams().then((response) => {
-  rows = response.data.map((exam:ExamData) => {
+  rows = response.data.map((exam: ExamData) => {
     return {
       ...exam, // copy all existing properties from the original object
-      resultados: '/examsview',
+      resultados: "/examsview",
     } as ExamData; // enforce the ExamData interface on the new object
   });
 });
 
-const ExamTable = (): JSX.Element => {  
-
+const ExamTable = (): JSX.Element => {
   const { t } = useTranslation();
   // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
-        main: "#c7dff9",
+        main: "#D4E6DA",
       },
     },
   });
@@ -298,17 +301,25 @@ const ExamTable = (): JSX.Element => {
                 const fecha = row.created_at.includes("T")
                   ? row.created_at.replace("T", " ").split(".")[0]
                   : row.created_at.split(".");
-                console.log(row)
-                const estadoIcon = row.estado? (
+                console.log(row);
+                const estadoIcon = row.estado ? (
                   <Brightness1RoundedIcon color={"success"} />
                 ) : (
                   <Brightness1RoundedIcon color={"error"} />
                 );
                 const urgenciaText = (
-                    <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
-                  ) 
+                  <Typography color={colorSwitcher(row.urgencia)}>
+                    {t("urgencyLevel").concat(row.urgencia.toString())}
+                  </Typography>
+                );
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.exam_id}
+                    sx={{color: '#FFC1C1', backgroundColor: row.urgencia === 3 ? '#FFC1C1' : '#ffffff'}}
+                  >
                     <StyledTableCell align="center">
                       {row.exam_id}
                     </StyledTableCell>
@@ -324,18 +335,21 @@ const ExamTable = (): JSX.Element => {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <ThemeProvider theme={buttonsTheme}>
-                        <Link to={`/examsview/${row.exam_id}`}>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          sx={{ color: "#006a6b" }}
-                          value={row.exam_id}
-                          // onClick={(event) => {
+                        <Link
+                          href={`/examsview/${row.exam_id}`}
+                          underline={"none"}
+                        >
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            sx={{ color: "#3d3d3d", fontWeight: "700" }}
+                            value={row.exam_id}
+                            // onClick={(event) => {
                             //   handleSubmit(event, row.exam_id);
                             // }}
-                            >
-                          Acceder
-                        </Button>
+                          >
+                            Acceder
+                          </Button>
                         </Link>
                       </ThemeProvider>
                     </StyledTableCell>
@@ -356,6 +370,6 @@ const ExamTable = (): JSX.Element => {
       />
     </Paper>
   );
-}
+};
 
 export default ExamTable;

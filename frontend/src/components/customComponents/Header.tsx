@@ -45,11 +45,17 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
               <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
               </Typography>
-              {tabs != null ? <DrawerComp buttons={buttons} tabs={tabs} onTabChange={(index: number) => {
-                      handleTabChange(index);
-                    }} /> :
-              <DrawerComp buttons={buttons} onTabChange={()=>{}}/>
-               }
+              {tabs != null ? (
+                <DrawerComp
+                  buttons={buttons}
+                  tabs={tabs}
+                  onTabChange={(index: number) => {
+                    handleTabChange(index);
+                  }}
+                />
+              ) : (
+                <DrawerComp buttons={buttons} onTabChange={() => {}} />
+              )}
             </>
           ) : (
             <>

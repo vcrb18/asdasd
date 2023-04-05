@@ -352,7 +352,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function colorSwitcher(value: string): string {
-  switch(value){
+  switch (value) {
     case "Aceptado":
       return "black";
     case "Bien Aceptado":
@@ -371,7 +371,7 @@ function colorSwitcher(value: string): string {
 }
 
 function MetricsTable(): JSX.Element {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -416,16 +416,16 @@ function MetricsTable(): JSX.Element {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row: Data) => {
                 const estados = (
-                  <Typography color={colorSwitcher(row.estado)}>{t(row.estado)}</Typography>
-                )
+                  <Typography color={colorSwitcher(row.estado)}>
+                    {t(row.estado)}
+                  </Typography>
+                );
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
                     <StyledTableCell align="center">
                       {row.folio}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {estados}
-                    </StyledTableCell>
+                    <StyledTableCell align="center">{estados}</StyledTableCell>
                     <StyledTableCell align="center">
                       {row.puntos}
                     </StyledTableCell>

@@ -20,10 +20,7 @@ const TablesView: React.FC = (): JSX.Element => {
 
   return (
     <>
-      {selectedIndex === 4 && (
-        <MainMenuView
-        />
-      )}
+      {selectedIndex === 4 && <MainMenuView />}
       {selectedIndex !== 4 && (
         <>
           <Header
@@ -48,6 +45,6 @@ const TablesView: React.FC = (): JSX.Element => {
       )}
     </>
   );
-}; 
+};
 
 export default TablesView;

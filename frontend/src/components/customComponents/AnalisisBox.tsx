@@ -6,13 +6,12 @@ import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
 import { getExam } from "../../service/user.service";
 
-
-interface AnalisisProps{
+interface AnalisisProps {
   examId: number;
 }
 
-function urgencyColorSwitcher(value: number | undefined ): string {
-  switch(value){
+function urgencyColorSwitcher(value: number | undefined): string {
+  switch (value) {
     case undefined:
       return "black";
     case 1:
@@ -26,8 +25,8 @@ function urgencyColorSwitcher(value: number | undefined ): string {
   }
 }
 
-function stateColorSwitcher(value: boolean | undefined ): string {
-  switch(value){  
+function stateColorSwitcher(value: boolean | undefined): string {
+  switch (value) {
     case true:
       return "green";
     case false:
@@ -37,7 +36,7 @@ function stateColorSwitcher(value: boolean | undefined ): string {
   }
 }
 
-const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
+const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   const { t } = useTranslation();
   const [analisisData, setAnalisisData] = useState<ExamData>({
     exam_id: 0,
@@ -48,27 +47,29 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
     resultados: "",
   });
   useEffect(() => {
-    getExam(examId).then((response) =>{
-      let data =  {
-        ...response.data,
-        estado: response.data.estado.estado,
-        resultados: '/examsview',
-      }
-      setAnalisisData(data)
-    }, 
-    (error) => {
-        const _content = (error.response && error.response.data) ||
-        error.message ||
-        error.toString();
+    getExam(examId).then(
+      (response) => {
+        let data = {
+          ...response.data,
+          estado: response.data.estado.estado,
+          resultados: "/examsview",
+        };
+        setAnalisisData(data);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
         setAnalisisData(_content);
       }
-    )
+    );
   }, []);
   return (
     <Box
       display={"flex"}
       flexDirection={"column"}
-      justifyContent={'center'}
+      justifyContent={"center"}
       width={"80%"}
       height={"100%"}
       sx={{ backgroundColor: "#159194", borderRadius: "2%" }}
@@ -89,8 +90,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
             </Typography>
           </Grid>
           <Grid item>
-          <Typography fontSize={"80%"} color={stateColorSwitcher(analisisData.estado)}>
-              {analisisData.estado === true? 'Aceptado' : 'Rechazado'}
+            <Typography
+              fontSize={"80%"}
+              color={stateColorSwitcher(analisisData.estado)}
+            >
+              {analisisData.estado === true ? "Aceptado" : "Rechazado"}
             </Typography>
           </Grid>
         </Grid>
@@ -106,7 +110,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"}>
-          <Typography fontSize={"80%"} color={urgencyColorSwitcher(analisisData?.urgencia)}>
+            <Typography
+              fontSize={"80%"}
+              color={urgencyColorSwitcher(analisisData?.urgencia)}
+            >
               {analisisData?.urgencia?.toString()}
             </Typography>
           </Grid>
@@ -133,6 +140,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({examId}): JSX.Element => {
       </Box>
     </Box>
   );
-}
+};
 
 export default AnalisisBox;

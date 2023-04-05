@@ -34,14 +34,45 @@ const HomeTab = (): JSX.Element => {
   };
   return (
     <Box>
-      <Typography mt={20} sx={{ fontSize: "4rem", color: "#404040" }}>
+      <Typography
+        mt={20}
+        sx={{
+          fontSize: "4rem",
+          color: "#404040",
+          border: "1px solid #000",
+          padding: "10px",
+          textAlign: "center",
+          borderRadius: "10px",
+          boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+          "@media (max-width: 600px)": {
+            fontSize: "2rem",
+            padding: "5px",
+            borderRadius: "5px",
+            boxShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)",
+          },
+        }}
+      >
         {t("landingTitle")}
       </Typography>
       <Divider variant="fullWidth" />
-      <Typography mt={10} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+      <Typography
+        mt={10}
+        sx={{
+          color: "#404040",
+          fontSize: "1.4rem",
+          textShadow: "0px 1px 1px #555",
+        }}
+      >
         {t("landingFirstText")}
       </Typography>
-      <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+      <Typography
+        mt={5}
+        sx={{
+          color: "#404040",
+          fontSize: "1.4rem",
+          textShadow: "0px 1px 1px #555",
+        }}
+      >
         {t("landingSecondText")}
       </Typography>
       <Typography

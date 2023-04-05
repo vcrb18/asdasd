@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import {getExamAllAlgorithmPredictions } from "../../service/user.service";
+import { getExamAllAlgorithmPredictions } from "../../service/user.service";
 
 interface Prediccion {
   // id: "Estado" | "Urgencia" | "Arritmia" | "Tipo" | "Extrasistole" | "Bloqueo";
@@ -10,8 +10,6 @@ interface Prediccion {
   razon_rechazo?: string;
   razon_rechazo_confianza?: number;
 }
-
-
 
 interface PredictionProps {
   examId: number;
@@ -23,26 +21,22 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
   useEffect(() => {
     getExamAllAlgorithmPredictions(examId).then(
       (response) => {
-        setPredicciones(response.data[0])
-        setDiagnosticos(response.data[1])
+        setPredicciones(response.data[0]);
+        setDiagnosticos(response.data[1]);
       },
       (error) => {
         const _content =
-        (error?.response?.data) ||
-        error.message ||
-        error.toString();
+          error?.response?.data || error.message || error.toString();
         setPredicciones(_content);
       }
-    )
+    );
   }, []);
-  
+
   function colorSwitcher(value: number): string {
-    if (value <= 50)
-    	return "red";
-    else if(value <= 75)
-      return "orange";
-    return("green")
-    }
+    if (value <= 50) return "red";
+    else if (value <= 75) return "orange";
+    return "green";
+  }
   // const [DiagnosticosSugeridos, setDiagnosticoSugerido] = useState<SuggestedDiagnostic[]>([]);
   // useEffect(() => {
   //   getSuggestedDiagnostic(examId, 3).then(
@@ -58,8 +52,6 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
   //     }
   //   )
   // }, []);
-
-
 
   // BORRADOR VINI //////////////////////////////////////////////////
   /* 
@@ -211,7 +203,8 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
           marginBottom={"5%"}
         >
           {predicciones.map((prediccion) => (
-            <Grid container
+            <Grid
+              container
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-evenly"}
@@ -224,12 +217,20 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
               </Grid>
               <Grid item margin={"1%"}>
                 <Typography fontSize={"80%"} color={"#000000"}>
-                  {typeof prediccion.estado === "boolean" ? prediccion.estado === true ? "Aceptado" : "Rechazado" : prediccion.estado}
+                  {typeof prediccion.estado === "boolean"
+                    ? prediccion.estado === true
+                      ? "Aceptado"
+                      : "Rechazado"
+                    : prediccion.estado}
                 </Typography>
               </Grid>
               <Grid item margin={"1%"}>
-                <Typography fontSize={"80%"} color={colorSwitcher(prediccion.confianza)}>
-                  {prediccion.confianza}{prediccion.id === "Arritmia" ? "" : "%"}
+                <Typography
+                  fontSize={"80%"}
+                  color={colorSwitcher(prediccion.confianza)}
+                >
+                  {prediccion.confianza}
+                  {prediccion.id === "Arritmia" ? "" : "%"}
                 </Typography>
               </Grid>
             </Grid>
@@ -237,14 +238,19 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
         </Box>
       </Box>
       <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
-        <Typography color={"#000000"} fontSize={"80%"} marginTop={'2%'} width={"100%"}>
+        <Typography
+          color={"#000000"}
+          fontSize={"80%"}
+          marginTop={"2%"}
+          width={"100%"}
+        >
           Diagnosticos sugeridos
         </Typography>
         <Box
           display={"flex"}
           flexDirection={"column"}
-          justifyContent={'space-around'}
-          alignItems={'space-evenly'}
+          justifyContent={"space-around"}
+          alignItems={"space-evenly"}
           width={"100%"}
           marginTop={"5%"}
           marginBottom={"5%"}
@@ -256,7 +262,12 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
               justifyContent={"space-between"}
               key={diagnostico}
             >
-              <Box width={"100%"} display={'flex'} marginY={'1%'} justifyContent={'center'} >
+              <Box
+                width={"100%"}
+                display={"flex"}
+                marginY={"1%"}
+                justifyContent={"center"}
+              >
                 <Typography fontSize={"80%"} color={"#000000"}>
                   {diagnostico}
                 </Typography>

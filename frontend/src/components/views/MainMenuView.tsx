@@ -32,11 +32,16 @@ const MainMenuView = (): JSX.Element => {
         }}
         mt={"5%"}
       >
-        <Typography color={"#404040"} fontSize={"4rem"}>
+        <Typography
+          align="center"
+          color={"#404040"}
+          fontSize={"4rem"}
+          sx={{ margin: "auto" }}
+        >
           {t("mainMenu")}
         </Typography>
       </Box>
-        <MainMenuButton />
+      <MainMenuButton />
       <Footer footerPosition={"fixed"} />
     </>
   );

@@ -13,7 +13,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
 const MainMenuButton = (): JSX.Element => {
   const { t } = useTranslation();
   return (
