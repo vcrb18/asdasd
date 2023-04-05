@@ -95,7 +95,11 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Fab>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={"75%"} color={"#404040"}>
+            <Typography
+              fontSize={"75%"}
+              color={"#061525"}
+              sx={{ fontWeight: "bold" }}
+            >
               Folio examen: {examData?.exam_id.toString()}
             </Typography>
           </Grid>
@@ -183,7 +187,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           fullWidth
         ></TextField>
       </Box>
-      <Footer footerPosition={"fixed"} />
+      <Footer footerPosition={"static"} />
     </>
   );
 };

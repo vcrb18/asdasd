@@ -34,7 +34,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 }));
 
@@ -318,7 +318,11 @@ const ExamTable = (): JSX.Element => {
                     role="checkbox"
                     tabIndex={-1}
                     key={row.exam_id}
-                    sx={{color: '#FFC1C1', backgroundColor: row.urgencia === 3 ? '#FFC1C1' : '#ffffff'}}
+                    sx={{
+                      color: "#FFC1C1",
+                      backgroundColor:
+                        row.urgencia === 3 ? "#FFC1C1" : "#ffffff",
+                    }}
                   >
                     <StyledTableCell align="center">
                       {row.exam_id}

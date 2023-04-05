@@ -72,9 +72,17 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       justifyContent={"center"}
       width={"80%"}
       height={"100%"}
-      sx={{ backgroundColor: "#159194", borderRadius: "2%" }}
+      sx={{
+        backgroundColor: "#F2FAFA",
+        borderRadius: "1%",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+        transition: "box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+        },
+      }}
     >
-      <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
+      <Box sx={{ backgroundColor: "#ffffff", border: '5px solid #000000', borderRadius: "1%" }} margin={"3%"}>
         <Typography fontSize={"80%"} width={"100%"} sx={{ color: "#000000" }}>
           Análisis
         </Typography>
@@ -135,7 +143,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           </Grid> */}
         </Grid>
       </Box>
-      <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
+      <Box sx={{ backgroundColor: "#fff", borderRadius: "1%" }} margin={"3%"}>
         <DiagnosisComponent examId={examId} />
       </Box>
     </Box>
