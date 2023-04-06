@@ -3,12 +3,13 @@ import { Box, Typography, Divider, Grid, Dialog, DialogContent, DialogTitle, Tex
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
-import { Search } from "@mui/icons-material";
+import { Folder, Search } from "@mui/icons-material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Header from "../customComponents/Header";
 import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
 import Footer from "../customComponents/Footer";
 import { useForm } from "react-hook-form";
+import { truncate } from "fs";
 
 type FormInput = {
   folioSearch: string;
@@ -29,13 +30,20 @@ const ExamsTab = (): JSX.Element => {
   const handleFilterSubmit = (): void => {
     setOpenFilter(false);
   };
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filterCondition, setFilterCondition] = useState<boolean>(false);
   
   const { register, handleSubmit } = useForm<FormInput>();
 
   const onSubmit = (data: FormInput) : void => {
     console.log("Input:", data.folioSearch);
     console.log(inputValue)
+    setInputValue(inputValue);
+    if (inputValue !== "" ) {
+      setFilterCondition(true);
+    } else {
+      setFilterCondition(false);
+    }
     // Do whatever you need with the input value here
   };
 
@@ -90,7 +98,8 @@ const ExamsTab = (): JSX.Element => {
                 {...register("folioSearch")} 
                 onChange={handleInputChange}/>
               <IconButton type="submit">
-                <Search/>
+                <Search
+                onClick={handleSubmit(onSubmit)}/>
               </IconButton>
               </form>
             </Grid>
@@ -117,7 +126,7 @@ const ExamsTab = (): JSX.Element => {
             justifyContent={"flex-start"}
             sx={{ color: "#404040", fontSize: "1.5rem" }}
           >
-            <ExamTable useFilter={false} filterId={""}  />
+            <ExamTable useFilter={filterCondition} filterId={inputValue}  />
           </Grid>
         </Grid>
       </Grid>

@@ -24,6 +24,7 @@ import axios, { type AxiosResponse } from "axios";
 import { ReactElement } from "react";
 import { Token } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { isEmptyArray } from "formik";
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -243,13 +244,15 @@ getExams().then((response) => {
   });
 });
 
-interface ExamProps {
+interface ExamTableProps {
   useFilter: boolean;
-  filterId: string  
+  filterId: string; 
 }
 
-const ExamTable: React.FC<ExamProps>= ({useFilter, filterId}): JSX.Element => {  
-
+const ExamTable = ({
+  useFilter,
+  filterId
+}: ExamTableProps) => {
   const { t } = useTranslation();
   // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
@@ -263,15 +266,29 @@ const ExamTable: React.FC<ExamProps>= ({useFilter, filterId}): JSX.Element => {
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  };
 
-  // const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
+  const getStatusIcon = (estado: boolean) => (
+    <Brightness1RoundedIcon color={estado ? "success" : "error"} />
+  );
+
+  const getUrgencyText = (urgencia: number) => (
+    <Typography color={colorSwitcher(urgencia)}>
+      {t("urgencyLevel").concat(urgencia.toString())}
+    </Typography>
+  );
+  const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
   //     event.preventDefault();
   //     navigate('/exams'.concat(examId))
-  // }
+  }
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: string
+    property: string  
   ): void => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -287,81 +304,239 @@ const ExamTable: React.FC<ExamProps>= ({useFilter, filterId}): JSX.Element => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const renderRow = (row: ExamData) => (
+    
+    <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
+      <StyledTableCell align="center">{row.exam_id}</StyledTableCell>
+      <StyledTableCell align="center">{row.patient_id}</StyledTableCell>
+      <StyledTableCell align="center">
+        {formatDate(row.created_at)}
+      </StyledTableCell>
+      <StyledTableCell align="center">{getStatusIcon(row.estado)}</StyledTableCell>
+      <StyledTableCell align="center">{getUrgencyText(row.urgencia)}</StyledTableCell>
+      <StyledTableCell align="center">
+        <ThemeProvider theme={buttonsTheme}>
+          <Link to={`/examsview/${row.exam_id}`}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ color: "#006a6b" }}
+              value={row.exam_id}
+              // onClick={(event) => {
+              //   handleSubmit(event, row.exam_id);
+              // }}
+            >
+              Acceder
+            </Button>
+          </Link>
+        </ThemeProvider>
+      </StyledTableCell>
+    </TableRow>
+  );
+
+  const sortedRows = useFilter
+    ? stableSort(filteredFolio, getComparator(order, orderBy))
+    : stableSort(rows, getComparator(order, orderBy));
+
+  const paginatedRows = sortedRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer>
-        <Table stickyHeader aria-label="Examenes">
-          <ExamTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {!useFilter && stableSort(rows, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row: ExamData) => {
-                const fecha = row.created_at.includes("T")
-                  ? row.created_at.replace("T", " ").split(".")[0]
-                  : row.created_at.split(".");
-                console.log(row)
-                const estadoIcon = row.estado? (
-                  <Brightness1RoundedIcon color={"success"} />
-                ) : (
-                  <Brightness1RoundedIcon color={"error"} />
-                );
-                const urgenciaText = (
-                    <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
-                  ) 
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
-                    <StyledTableCell align="center">
-                      {row.exam_id}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.patient_id}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">{fecha}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {estadoIcon}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {urgenciaText}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <ThemeProvider theme={buttonsTheme}>
-                        <Link to={`/examsview/${row.exam_id}`}>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          sx={{ color: "#006a6b" }}
-                          value={row.exam_id}
-                          // onClick={(event) => {
-                            //   handleSubmit(event, row.exam_id);
-                            // }}
-                            >
-                          Acceder
-                        </Button>
-                        </Link>
-                      </ThemeProvider>
-                    </StyledTableCell>
-                  </TableRow>
-                );
-              })}
-              
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+       <TableContainer>
+         <Table stickyHeader aria-label="Examenes">
+           <ExamTableHead
+             order={order}
+             orderBy={orderBy}
+             onRequestSort={handleRequestSort}
+           />
+            <TableBody>
+              {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
+              {paginatedRows.map((row: ExamData) => renderRow(row))}
+               {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+         rowsPerPageOptions={[10, 25, 100]}
+         component="div"
+         count={rows.length}
+         rowsPerPage={rowsPerPage}
+         page={page}
+         onPageChange={handleChangePage}
+         onRowsPerPageChange={handleChangeRowsPerPage}
+       />
     </Paper>
-  );
-}
+  )
+};
+
+// const ExamTable: React.FC<ExamProps>= ({useFilter, filterId}): JSX.Element => {  
+
+//   const { t } = useTranslation();
+//   // const navigate: NavigateFunction = useNavigate();
+//   const buttonsTheme = createTheme({
+//     palette: {
+//       primary: {
+//         main: "#c7dff9",
+//       },
+//     },
+//   });
+//   const [order, setOrder] = React.useState<Order>("asc");
+//   const [orderBy, setOrderBy] = React.useState<string>("fecha");
+//   const [page, setPage] = React.useState(0);
+//   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+//   // const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
+//   //     event.preventDefault();
+//   //     navigate('/exams'.concat(examId))
+//   // }
+
+//   const handleRequestSort = (
+//     event: React.MouseEvent<unknown>,
+//     property: string
+//   ): void => {
+//     const isAsc = orderBy === property && order === "asc";
+//     setOrder(isAsc ? "desc" : "asc");
+//     setOrderBy(property);
+//   };
+
+//   const handleChangePage = (event: unknown, newPage: number): void => {
+//     setPage(newPage);
+//   };
+//   const handleChangeRowsPerPage = (
+//     event: React.ChangeEvent<HTMLInputElement>
+//   ): void => {
+//     setRowsPerPage(+event.target.value);
+//     setPage(0);
+//   };
+//   const filteredFolio = rows.filter(row => row.exam_id.toString() === filterId);
+//   return (
+//     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+//       <TableContainer>
+//         <Table stickyHeader aria-label="Examenes">
+//           <ExamTableHead
+//             order={order}
+//             orderBy={orderBy}
+//             onRequestSort={handleRequestSort}
+//           />
+//           <TableBody>
+//             {!useFilter && stableSort(rows, getComparator(order, orderBy))
+//               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+//               .map((row: ExamData) => {
+//                 const fecha = row.created_at.includes("T")
+//                   ? row.created_at.replace("T", " ").split(".")[0]
+//                   : row.created_at.split(".");
+//                 console.log(row)
+//                 const estadoIcon = row.estado? (
+//                   <Brightness1RoundedIcon color={"success"} />
+//                 ) : (
+//                   <Brightness1RoundedIcon color={"error"} />
+//                 );
+//                 const urgenciaText = (
+//                     <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
+//                   ) 
+//                 return (
+//                   <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
+//                     <StyledTableCell align="center">
+//                       {row.exam_id}
+//                     </StyledTableCell>
+//                     <StyledTableCell align="center">
+//                       {row.patient_id}
+//                     </StyledTableCell>
+//                     <StyledTableCell align="center">{fecha}</StyledTableCell>
+//                     <StyledTableCell align="center">
+//                       {estadoIcon}
+//                     </StyledTableCell>
+//                     <StyledTableCell align="center">
+//                       {urgenciaText}
+//                     </StyledTableCell>
+//                     <StyledTableCell align="center">
+//                       <ThemeProvider theme={buttonsTheme}>
+//                         <Link to={`/examsview/${row.exam_id}`}>
+//                         <Button
+//                           color="primary"
+//                           variant="contained"
+//                           sx={{ color: "#006a6b" }}
+//                           value={row.exam_id}
+//                           // onClick={(event) => {
+//                             //   handleSubmit(event, row.exam_id);
+//                             // }}
+//                             >
+//                           Acceder
+//                         </Button>
+//                         </Link>
+//                       </ThemeProvider>
+//                     </StyledTableCell>
+//                   </TableRow>
+//                 );
+//               })}
+//               {useFilter && 
+//               filteredFolio.map((row) =>{
+//                 const fecha = row.created_at.includes("T")
+//                   ? row.created_at.replace("T", " ").split(".")[0]
+//                   : row.created_at.split(".");
+//                 console.log(row)
+//                 const estadoIcon = row.estado? (
+//                   <Brightness1RoundedIcon color={"success"} />
+//                 ) : (
+//                   <Brightness1RoundedIcon color={"error"} />
+//                 );
+//                 const urgenciaText = (
+//                     <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
+//                   )
+//                   return (
+//                 <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
+//                   <StyledTableCell align="center">
+//                     {row.exam_id}
+//                   </StyledTableCell>
+//                   <StyledTableCell align="center">
+//                     {row.patient_id}
+//                   </StyledTableCell>
+//                   <StyledTableCell align="center">{fecha}</StyledTableCell>
+//                   <StyledTableCell align="center">
+//                     {estadoIcon}
+//                   </StyledTableCell>
+//                   <StyledTableCell align="center">
+//                     {urgenciaText}
+//                   </StyledTableCell>
+//                   <StyledTableCell align="center">
+//                     <ThemeProvider theme={buttonsTheme}>
+//                       <Link to={`/examsview/${row.exam_id}`}>
+//                       <Button
+//                         color="primary"
+//                         variant="contained"
+//                         sx={{ color: "#006a6b" }}
+//                         value={row.exam_id}
+//                         // onClick={(event) => {
+//                           //   handleSubmit(event, row.exam_id);
+//                           // }}
+//                           >
+//                         Acceder
+//                       </Button>
+//                       </Link>
+//                     </ThemeProvider>
+//                   </StyledTableCell>
+//                 </TableRow>
+//               );
+//             })
+//             }
+//             </TableBody>
+//             </Table>
+//             </TableContainer>
+//       <TablePagination
+//         rowsPerPageOptions={[10, 25, 100]}
+//         component="div"
+//         count={rows.length}
+//         rowsPerPage={rowsPerPage}
+//         page={page}
+//         onPageChange={handleChangePage}
+//         onRowsPerPageChange={handleChangeRowsPerPage}
+//       />
+//     </Paper>
+//   );
+// }
 
 export default ExamTable;
