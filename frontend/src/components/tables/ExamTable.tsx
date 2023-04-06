@@ -20,11 +20,11 @@ import { getExams } from "../../service/user.service";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
-import axios, { type AxiosResponse } from "axios";
-import { ReactElement } from "react";
-import { Token } from "@mui/icons-material";
+// import axios, { type AxiosResponse } from "axios";
+// import { ReactElement } from "react";
+// import { Token } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { isEmptyArray } from "formik";
+// import { isEmptyArray } from "formik";
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -41,7 +41,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "paciente" | "fecha" | "estado" | "urgencia" | "resultados";
+  id: "folio" | "paciente" | "fecha" | "estado" | "urgencia" | "review"| "resultados";
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
@@ -57,12 +57,12 @@ const columns: readonly Column[] = [
     id: "paciente",
     label: "pacient",
     align: "center",
-    minWidth: "40%",
+    minWidth: "30%",
   },
   {
     id: "fecha",
     label: "date",
-    minWidth: "30%",
+    minWidth: "20%",
     align: "center",
     format: (value: string) => {
       return value.replace("T", " ");
@@ -74,7 +74,7 @@ const columns: readonly Column[] = [
   {
     id: "estado",
     label: "state",
-    minWidth: "20%",
+    minWidth: "10%",
     align: "center",
     format: (value: boolean) => {
       const returnValue = value ? "Aceptado" : "Rechazado";
@@ -92,6 +92,12 @@ const columns: readonly Column[] = [
     },
   },
   {
+    id: "review",
+    label: "review",
+    minWidth: "10%",
+    align: "center",
+  },
+  {
     id: "resultados",
     label: "results",
     minWidth: "30%",
@@ -107,6 +113,7 @@ interface Data {
   fecha: string;
   estado: boolean;
   urgencia: number;
+  review: boolean;
   resultados: string;
 }
 
@@ -116,6 +123,7 @@ function createData(
   fecha: string,
   estado: boolean,
   urgencia: number,
+  review: boolean,
   resultados: string
 ): Data {
   return {
@@ -124,6 +132,7 @@ function createData(
     fecha,
     estado,
     urgencia,
+    review,
     resultados,
   };
 };
@@ -134,6 +143,7 @@ interface ExamData {
   created_at: string;
   estado: boolean;
   urgencia: number;
+  reviews: boolean;
   resultados: string;
 }
 
@@ -239,6 +249,7 @@ getExams().then((response) => {
   rows = response.data.map((exam:ExamData) => {
     return {
       ...exam, // copy all existing properties from the original object
+      review: false,
       resultados: '/examsview',
     } as ExamData; // enforce the ExamData interface on the new object
   });
@@ -272,7 +283,7 @@ const ExamTable = ({
     return date.toLocaleString();
   };
 
-  const getStatusIcon = (estado: boolean) => (
+  const getStatusIcon = (estado: boolean)  => (
     <Brightness1RoundedIcon color={estado ? "success" : "error"} />
   );
 
@@ -281,7 +292,22 @@ const ExamTable = ({
       {t("urgencyLevel").concat(urgencia.toString())}
     </Typography>
   );
-  const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
+  const getReviewState = (state: boolean) : JSX.Element => {
+    if (state === true) {
+      return(
+        <Typography>
+          {t("reviewed")}
+        </Typography>
+      )
+    } else {
+      return (
+        <Typography>
+          {t("toReview")}
+        </Typography>
+        )
+    }
+  }
+  const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ) : void => {
   //     event.preventDefault();
   //     navigate('/exams'.concat(examId))
   }
@@ -298,6 +324,9 @@ const ExamTable = ({
   const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
   };
+
+  
+
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -305,16 +334,17 @@ const ExamTable = ({
     setPage(0);
   };
 
-  const renderRow = (row: ExamData) => (
+  const renderRow = (row: ExamData) : JSX.Element => (
     
     <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
       <StyledTableCell align="center">{row.exam_id}</StyledTableCell>
       <StyledTableCell align="center">{row.patient_id}</StyledTableCell>
       <StyledTableCell align="center">
         {formatDate(row.created_at)}
-      </StyledTableCell>
+      </StyledTableCell>  
       <StyledTableCell align="center">{getStatusIcon(row.estado)}</StyledTableCell>
       <StyledTableCell align="center">{getUrgencyText(row.urgencia)}</StyledTableCell>
+      <StyledTableCell align="center">{getReviewState(row.reviews)}</StyledTableCell>
       <StyledTableCell align="center">
         <ThemeProvider theme={buttonsTheme}>
           <Link to={`/examsview/${row.exam_id}`}>
