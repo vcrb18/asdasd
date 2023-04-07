@@ -26,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.2.1",
     "chartjs-plugin-annotation": "^2.1.2",
+    "chartjs-plugin-dragdata": "^2.2.5",
     "dayjs": "^1.11.7",
     "formik": "^2.2.9",
     "i18next": "^22.4.10",

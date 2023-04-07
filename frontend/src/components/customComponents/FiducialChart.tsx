@@ -14,6 +14,8 @@ import {
   // registerables
 } from "chart.js";
 
+import 'chartjs-plugin-dragdata'
+
 import { Chart } from "react-chartjs-2";
 import annotationPlugin from "chartjs-plugin-annotation";
 import React, {useEffect} from "react";
@@ -861,165 +863,66 @@ const FiducialChart = (props: any): JSX.Element => {
   };
 
   const options = {
-    events: [
-      "mousedown" as const,
-      "mouseup" as const,
-      "mousemove" as const,
-      "mouseout" as const,
-    ],
-    responsive: true,
     scales: {
       y: {
-        title: {
-          text: "VOLTAJE [mV]",
-          display: false,
-        },
-        ticks: {
-          display: false,
-          // maxTicksLimit: 5,
-          stepSize: 800,
-        },
-        grid: {
-          display: false,
-        },
-        min: -1600,
-        max: 2400,
-      },
-      x: {
-        title: {
-          text: "TIEMPO [ms]",
-          display: true,
-        },
-        ticks: {
-          display: false,
-          stepSize: 200,
-          // maxTicksLimit: 100
-        },
-        grid: {
-          display: false,
-        },
-        // min: init_point,
-        // max: end_point
-      },
+        min: 0,
+        max: 20
+      }
     },
-    chartArea: {
-      backgroundColor: "rgba(251, 85, 85, 0.4)",
+    onHover: function(e) {
+      const point = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false);
+      console.log("hover");
+      if (point.length) e.native.target.style.cursor = 'grab'
+      else e.native.target.style.cursor = 'default'
     },
-    background: "#FF0000",
     plugins: {
-      legend: {
-        display: true,
-        position: "top" as const,
-      },
-      title: {
-        display: false,
-        text: "Puntos fiduciales",
-      },
-      annotation: {
-        enter(ctx: any) {
-          const element = ctx.element;
-          console.log("enter", element);
+      dragData: {
+        round: 1,
+        showTooltip: true,
+        onDragStart: function(e, datasetIndex, index, value) {
+           console.log(e)
         },
-        leave() {
-          const element = undefined;
-          const lastEvent = undefined;
-          console.log("leave", element);
+        onDrag: function(e, datasetIndex, index, value) {              
+          e.target.style.cursor = 'grabbing'
+          // console.log(e, datasetIndex, index, value)
         },
-        annotations: {
-          annotation3,
+        onDragEnd: function(e, datasetIndex, index, value) {
+          e.target.style.cursor = 'default' 
+          // console.log(datasetIndex, index, value)
         },
-      },
-    },
+      }
+    }
   };
 
   const data = {
-    labels: timeseriesLabels.slice(0, 5000),
-    datasets: [
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "P",
-        data: pStartPoint,
-        spanGaps: true,
-        borderColor: "rgb(237, 28, 36)",
-        backgroundColor: "rgb(237, 28, 36)",
+    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        fill: true,
+        tension: 0.4,
+        borderWidth: 1,
+        pointHitRadius: 25
       },
       {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "Q",
-        data: qrsStartPoint,
-        spanGaps: true,
-        borderColor: "rgb(255, 127, 39)",
-        backgroundColor: "rgb(255, 127, 39)",
-      },
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "R",
-        data: rPoint,
-        spanGaps: true,
-        borderColor: "rgb(0, 162, 232)",
-        backgroundColor: "rgb(0, 162, 232)",
-      },
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "S",
-        data: qrsEndPoint,
-        spanGaps: true,
-        borderColor: "rgb(63, 72, 204)",
-        backgroundColor: "rgb(63, 72, 204)",
-      },
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "ST",
-        data: tStartPoint,
-        spanGaps: true,
-        borderColor: "rgb(255, 174, 201)",
-        backgroundColor: "rgb(255, 174, 201)",
-      },
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "T",
-        data: tEndPoint,
-        spanGaps: true,
-        borderColor: "rgb(163, 73, 164)",
-        backgroundColor: "rgb(163, 73, 164)",
-      },
-      {
-        type: "scatter" as const,
-        pointRadius: pointRadious,
-        label: "R2",
-        data: r2Point,
-        spanGaps: true,
-        borderColor: "rgb(30, 30, 30)",
-        backgroundColor: "rgb(30, 30, 30)",
-        hidden: true,
-      },
-      {
-        type: "line" as const,
-        label: "ECG",
-        data: timeseriesData.slice(0, 5000),
-        backgroundColor: "rgb(139,139,139)",
-        pointRadius: 0,
-        pointHitRadius: 0,
-        borderColor: "rgb(34,139,34)",
-        borderWidth: 1.5,
-      },
-    ],
+        label: '# of Points',
+        data: [7, 11, 5, 8, 3, 7],
+        fill: true,
+        tension: 0.4,
+        borderWidth: 1,
+        pointHitRadius: 25
+      }
+    ]
   };
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
     <Box sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}>
       <Chart
         type="line"
-        height="40"
+        //height="40"
         options={options}
         data={data}
-        plugins={[dragger]}
+        //plugins={[dragger]}
       />
     </Box>
   );
