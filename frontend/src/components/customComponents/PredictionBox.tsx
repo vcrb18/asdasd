@@ -189,7 +189,15 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
       display={"flex"}
       flexDirection={"column"}
       width={"80%"}
-      sx={{ backgroundColor: "#159194", borderRadius: "2%" }}
+      sx={{
+        backgroundColor: "#F2FAFA",
+        borderRadius: "1%",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+        transition: "box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+        },
+      }}
     >
       <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
         <Typography fontSize={"80%"} color={fontColor} mt={"2%"}>
@@ -198,9 +206,16 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
         <Box
           display={"flex"}
           flexDirection={"column"}
-          width={"100%"}
-          marginTop={"5%"}
+          width={"90%"}
+          // marginTop={"5%"}
+          margin={"3%"}
           marginBottom={"5%"}
+          sx={{
+            backgroundColor: "#ffffff",
+            border: "2.5px solid #000000",
+            borderRadius: "1%",
+            padding: "2%",
+          }}
         >
           {predicciones.map((prediccion) => (
             <Grid
@@ -237,7 +252,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
           ))}
         </Box>
       </Box>
-      <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
+      {/* <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
         <Typography
           color={"#000000"}
           fontSize={"80%"}
@@ -275,7 +290,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
             </Box>
           ))}
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -29,8 +29,8 @@ const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#c7dff9",
-    color: "#404040",
+    backgroundColor: "#c6c6c5",
+    color: "#061525",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,

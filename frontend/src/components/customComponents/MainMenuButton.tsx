@@ -30,9 +30,13 @@ const MainMenuButton = (): JSX.Element => {
         {mainMenuPageButtons != null && mainMenuPageButtons.length > 0
           ? mainMenuPageButtons.map((button, index) => (
               <Grid item lg={6} md={6} xs={12} key={index}>
-                <Item sx={{ backgroundColor: "#c7dff9" }}>
+                <Item sx={{ backgroundColor: "#ffffff" }}>
                   <Box display={"flex"} justifyContent={"flex-start"}>
-                    <Typography fontSize={"1.5rem"} color={"#404040"}>
+                    <Typography
+                      fontSize={"1.5rem"}
+                      color={"#404040"}
+                      sx={{ fontWeight: "500" }}
+                    >
                       {t(button.label)}
                     </Typography>
                   </Box>
@@ -44,7 +48,11 @@ const MainMenuButton = (): JSX.Element => {
                     <Fab
                       size="small"
                       href={button.href}
-                      sx={{ backgroundColor: "#404040", color: "#c7dff9" }}
+                      sx={{
+                        backgroundColor: "#404040",
+                        color: "#c7dff9",
+                        boxShadow: "0px 0px 0px 0px",
+                      }}
                     >
                       <ArrowForwardIcon sx={{ color: "#1c9093" }} />
                     </Fab>

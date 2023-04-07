@@ -84,7 +84,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         tabs={tabs}
         buttons={buttons}
         onTabValueChange={(index: number) => {
-          console.log(`Landing Page: Tab index changed to ${index}`);
+          console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
       <Box marginY={"6%"} width={"100%"}>
@@ -95,18 +95,80 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Fab>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
+              >
+                <Typography
+                  fontSize={"100%"}
+                  color={"#061525"}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Folio examen:
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  fontSize: "75%",
+                  color: "#061525",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                <Typography fontSize={"85%"} color={"#061525"}>
+                  {examData?.exam_id.toString()}
+                </Typography>
+              </Box>
+            </Box>
+            {/* <Typography
               fontSize={"75%"}
               color={"#061525"}
               sx={{ fontWeight: "bold" }}
             >
               Folio examen: {examData?.exam_id.toString()}
-            </Typography>
+            </Typography> */}
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={"80%"} color={"#404040"}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
+              >
+                <Typography
+                  fontSize={"100%"}
+                  color={"#061525"}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Fecha
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  fontSize: "75%",
+                  color: "#061525",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                <Typography fontSize={"85%"} color={"#061525"}>
+                  {fecha}
+                </Typography>
+              </Box>
+            </Box>
+            {/* <Typography fontSize={"80%"} color={"#404040"}>
               Fecha: {fecha}
-            </Typography>
+            </Typography> */}
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Button

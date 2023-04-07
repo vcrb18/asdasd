@@ -42,9 +42,9 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
           <Logo />
           {isMatch ? (
             <>
-              <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
+              {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
-              </Typography>
+              </Typography> */}
               {tabs != null ? (
                 <DrawerComp
                   buttons={buttons}
@@ -59,9 +59,9 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
             </>
           ) : (
             <>
-              <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
+              {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
-              </Typography>
+              </Typography> */}
               {tabs != null && tabs.length > 0 ? (
                 <>
                   <NavbarTabs

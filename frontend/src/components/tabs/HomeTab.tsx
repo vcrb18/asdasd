@@ -38,17 +38,12 @@ const HomeTab = (): JSX.Element => {
         mt={20}
         sx={{
           fontSize: "4rem",
-          color: "#404040",
-          border: "1px solid #000",
+          color: "#061525",
           padding: "10px",
           textAlign: "center",
-          borderRadius: "10px",
-          boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
           "@media (max-width: 600px)": {
-            fontSize: "2rem",
+            fontSize: "2.5rem",
             padding: "5px",
-            borderRadius: "5px",
-            boxShadow: "1px 1px 2px rgba(0, 0, 0, 0.1)",
           },
         }}
       >
@@ -60,7 +55,10 @@ const HomeTab = (): JSX.Element => {
         sx={{
           color: "#404040",
           fontSize: "1.4rem",
-          textShadow: "0px 1px 1px #555",
+          textAlign: "justify",
+          "@media (max-width: 600px)": {
+            fontSize: "1.1rem",
+          },
         }}
       >
         {t("landingFirstText")}
@@ -70,7 +68,10 @@ const HomeTab = (): JSX.Element => {
         sx={{
           color: "#404040",
           fontSize: "1.4rem",
-          textShadow: "0px 1px 1px #555",
+          textAlign: "justify",
+          "@media (max-width: 600px)": {
+            fontSize: "1.1rem",
+          },
         }}
       >
         {t("landingSecondText")}
@@ -154,10 +155,30 @@ const HomeTab = (): JSX.Element => {
         {t("team")}
       </Typography>
       <Divider variant="fullWidth" />
-      <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+      <Typography
+        mt={5}
+        sx={{
+          color: "#404040",
+          fontSize: "1.4rem",
+          textAlign: "justify",
+          "@media (max-width: 600px)": {
+            fontSize: "1.1rem",
+          },
+        }}
+      >
         {t("firstTextTeam")}
       </Typography>
-      <Typography mt={5} sx={{ color: "#404040", fontSize: "1.4rem" }}>
+      <Typography
+        mt={5}
+        sx={{
+          color: "#404040",
+          fontSize: "1.4rem",
+          textAlign: "justify",
+          "@media (max-width: 600px)": {
+            fontSize: "1.1rem",
+          },
+        }}
+      >
         {t("secondTextTeam")}
       </Typography>
       <Grid
