@@ -30,16 +30,16 @@ function Routing(): JSX.Element {
           }
         />
         <Route path="/login" element={<Login buttons={loginPageButtons} />} />
-        
+
         <Route path="/tables" element={<TablesView />} />
 
-        <Route 
-          path="/exams" 
+        <Route
+          path="/exams"
           element={
             <RequireAuth>
               <ExamsTab />
             </RequireAuth>
-         }
+          }
         />
 
         <Route
@@ -59,7 +59,6 @@ function Routing(): JSX.Element {
           }
         />
 
-
         <Route
           path="/examsview/:examId"
           element={
@@ -73,11 +72,11 @@ function Routing(): JSX.Element {
           path="/mainmenu"
           element={
             // <RequireAuth>
-              <TablesView />
+            <TablesView />
             // </RequireAuth>
           }
         />
-        </Routes>
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -1,23 +1,36 @@
 import React, { useState } from "react";
-import { Box, Typography, Divider, Grid, Dialog, DialogContent, DialogTitle, TextField, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
 import { Search } from "@mui/icons-material";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList";
 import Header from "../customComponents/Header";
-import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
+import {
+  mainMenuHeaderButtons,
+  mainMenuPageButtons,
+} from "../../utils/routingPropConsts";
 import Footer from "../customComponents/Footer";
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
 
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  
+
   const handleOpenFilter = (): void => {
     setOpenFilter(true);
   };
-  const handleCloseFilter= (): void => {
+  const handleCloseFilter = (): void => {
     setOpenFilter(false);
   };
 
@@ -27,15 +40,22 @@ const ExamsTab = (): JSX.Element => {
 
   return (
     <>
-      <Grid item lg={12} md={12} xs={12} 
-        marginBottom={"5%"}>
-        <Header buttons={mainMenuHeaderButtons} tabs={mainMenuPageButtons} onTabValueChange={function (index: number): void {
-          throw new Error("Function not implemented.");
-        } } />
+      <Grid item lg={12} md={12} xs={12} marginBottom={"5%"}>
+        <Header
+          buttons={mainMenuHeaderButtons}
+          tabs={mainMenuPageButtons}
+          onTabValueChange={function (index: number): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </Grid>
-      <Grid item lg={12} md={12} xs={12}
+      <Grid
+        item
+        lg={12}
+        md={12}
+        xs={12}
         mt={"7%"}
-        mb={'3%'}
+        mb={"3%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
@@ -49,7 +69,7 @@ const ExamsTab = (): JSX.Element => {
           paddingLeft={"3%"}
           display={"flex"}
           justifyContent={"flex-start"}
-          sx={{ color: "#404040", fontSize: "4rem" }}
+          sx={{ color: "#061525", fontSize: "4rem" }}
         >
           {t("exams")}
         </Typography>
@@ -61,25 +81,45 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid container lg={12} xs={12} md={12} columnSpacing={3} display={'flex'} justifyContent={'flex-end'}>
-            <Grid item lg={10} md={10} xs={10} display={'flex'} justifyContent={'flex-end'}>
-              <TextField id="folio-search" label={t("folioSearch")} variant="filled" size="small"/>
+          <Grid
+            container
+            lg={12}
+            xs={12}
+            md={12}
+            columnSpacing={3}
+            display={"flex"}
+            justifyContent={"flex-end"}
+          >
+            <Grid
+              item
+              lg={10}
+              md={10}
+              xs={10}
+              display={"flex"}
+              justifyContent={"flex-end"}
+            >
+              <TextField
+                id="folio-search"
+                label={t("folioSearch")}
+                variant="filled"
+                size="small"
+              />
               <IconButton type="button">
-                <Search/>
+                <Search />
               </IconButton>
             </Grid>
             <Grid item lg={2} md={2} xs={2}>
-              <IconButton onClick={handleOpenFilter} sx={{color: '#000'}} >
-                <FilterListIcon>{t('filter')}</FilterListIcon>
-                </IconButton>
+              <IconButton onClick={handleOpenFilter} sx={{ color: "#000" }}>
+                <FilterListIcon>{t("filter")}</FilterListIcon>
+              </IconButton>
             </Grid>
           </Grid>
-          <Dialog fullWidth open={openFilter} onClose={handleCloseFilter} >
+          <Dialog fullWidth open={openFilter} onClose={handleCloseFilter}>
             <DialogTitle>
-              <Typography fontSize={'100%'}>{t('filter')}</Typography>
+              <Typography fontSize={"100%"}>{t("filter")}</Typography>
             </DialogTitle>
-            <DialogContent >
-              <FilterComponent handleSubmit={handleSubmit} filterType="exams"/>  
+            <DialogContent>
+              <FilterComponent handleSubmit={handleSubmit} filterType="exams" />
             </DialogContent>
           </Dialog>
           <Grid
@@ -95,14 +135,8 @@ const ExamsTab = (): JSX.Element => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item
-        lg={12}
-        xs={12}
-        md={12} >
-          
-      </Grid>
+      <Grid item lg={12} xs={12} md={12}></Grid>
       <Footer footerPosition={"static"} />
-
     </>
   );
 };

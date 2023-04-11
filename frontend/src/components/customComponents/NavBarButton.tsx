@@ -66,7 +66,10 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
               color="primary"
               key={index}
               href={button.href}
-              sx={index === 0 ? { marginLeft: "auto" } : { marginLeft: "1%" }}
+              sx={{
+                width: "154px", // Set a fixed width for the button
+                marginLeft: index === 0 ? "auto" : "1%", // Use shorthand notation for marginLeft
+              }}
               variant="contained"
               onClick={(event) => {
                 handleLogOutClick(event, button.label, button.href);
@@ -81,6 +84,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
         onChange={handleLanguageChange}
         size="small"
         sx={{
+          width: "154px",
           marginLeft: "1%",
           backgroundColor: "#006a6b",
           color: "#fff",

@@ -1,7 +1,7 @@
 export const landingPageTabs = [
-  { label: "home", href: '' },
-  { label: "aboutUs", href: '' },
-  { label: "contactUs", href: '' },
+  { label: "home", href: "" },
+  { label: "aboutUs", href: "" },
+  { label: "contactUs", href: "" },
 ];
 
 export const landingPageButtons = [

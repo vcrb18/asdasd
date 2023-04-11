@@ -6,7 +6,10 @@ import DerivationsComponent from "../customComponents/DerivationsComponent";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import { getExam, getExamPredictedMarkersComputations } from "../../service/user.service";
+import {
+  getExam,
+  getExamPredictedMarkersComputations,
+} from "../../service/user.service";
 import { useParams } from "react-router-dom";
 
 interface ExamsViewProps {
@@ -44,19 +47,19 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   useEffect(() => {
     getExam(examIdNumber).then(
       (response) => {
-        setExamData(response.data)
+        setExamData(response.data);
       },
       (error) => {
         const _content =
-        (error.response && error.response.data) ||
-        error.message ||
-        error.toString();
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
         setExamData(_content);
       }
-    )
+    );
   }, []);
   let predictedExamValuesData: PredictedValuesData;
-  
+
   // let examData: ExamData = {
   //   exam_id: 1,
   //   patient_id: '',
@@ -72,16 +75,16 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   console.log(examData);
 
   const fecha = examData?.created_at.includes("T")
-                  ? examData?.created_at.replace("T", " ").split(".")[0]
-                  : examData?.created_at.split(".");
-  
+    ? examData?.created_at.replace("T", " ").split(".")[0]
+    : examData?.created_at.split(".");
+
   return (
     <>
       <Header
         tabs={tabs}
         buttons={buttons}
         onTabValueChange={(index: number) => {
-          console.log(`Landing Page: Tab index changed to ${index}`);
+          console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
       <Box marginY={"6%"} width={"100%"}>
@@ -92,14 +95,80 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Fab>
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={"75%"} color={"#404040"}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
+              >
+                <Typography
+                  fontSize={"100%"}
+                  color={"#061525"}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Folio examen:
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  fontSize: "75%",
+                  color: "#061525",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                <Typography fontSize={"85%"} color={"#061525"}>
+                  {examData?.exam_id.toString()}
+                </Typography>
+              </Box>
+            </Box>
+            {/* <Typography
+              fontSize={"75%"}
+              color={"#061525"}
+              sx={{ fontWeight: "bold" }}
+            >
               Folio examen: {examData?.exam_id.toString()}
-            </Typography>
+            </Typography> */}
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Typography fontSize={"80%"} color={"#404040"}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
+              >
+                <Typography
+                  fontSize={"100%"}
+                  color={"#061525"}
+                  sx={{ fontWeight: "bold" }}
+                >
+                  Fecha
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  fontSize: "75%",
+                  color: "#061525",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                <Typography fontSize={"85%"} color={"#061525"}>
+                  {fecha}
+                </Typography>
+              </Box>
+            </Box>
+            {/* <Typography fontSize={"80%"} color={"#404040"}>
               Fecha: {fecha}
-            </Typography>
+            </Typography> */}
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Button
@@ -118,14 +187,44 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           rowSpacing={1}
           alignItems={"center"}
         >
-          <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            padding={"2%"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
             <AnalisisBox examId={examIdNumber} />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} display={"flex"} justifyContent={"center"} alignItems={'center'} marginY={"5%"}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            marginY={"5%"}
+          >
             <DerivationsComponent examId={examIdNumber} />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} padding={"2%"} display={"flex"} justifyContent={"center"} alignItems={'center'}>
-            <PredictionBox examId={examIdNumber}/>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            padding={"2%"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <PredictionBox examId={examIdNumber} />
           </Grid>
         </Grid>
       </Box>
@@ -150,7 +249,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           fullWidth
         ></TextField>
       </Box>
-      <Footer footerPosition={"fixed"} />
+      <Footer footerPosition={"static"} />
     </>
   );
 };

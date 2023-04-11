@@ -16,9 +16,13 @@ export const getExams = async (): Promise<AxiosResponse> => {
 //   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 // }
 
-export const getExamPredictedMarkersComputations = (exam_id: number): Promise<AxiosResponse> => {
-  return axios.get(`/predicted_marker_computations/${exam_id}`, { withCredentials: true });
-}
+export const getExamPredictedMarkersComputations = (
+  exam_id: number
+): Promise<AxiosResponse> => {
+  return axios.get(`/predicted_marker_computations/${exam_id}`, {
+    withCredentials: true,
+  });
+};
 // Esto se ve de la siguiente manera:
 // {
 //   "exam_id": 107220,
@@ -33,12 +37,15 @@ export const getExamPredictedMarkersComputations = (exam_id: number): Promise<Ax
 
 export const getExam = async (exam_id: number): Promise<AxiosResponse> => {
   return await axios.get(`/exams/${exam_id}`, { withCredentials: true });
-}
+};
 
-export const getExamAllAlgorithmPredictions = (exam_id: number): Promise<AxiosResponse> => {
-  return axios.get(`/algorithm_predictions/${exam_id}`, { withCredentials: true });
-}
-
+export const getExamAllAlgorithmPredictions = (
+  exam_id: number
+): Promise<AxiosResponse> => {
+  return axios.get(`/algorithm_predictions/${exam_id}`, {
+    withCredentials: true,
+  });
+};
 
 // Esto se ve de la siguiente manera:
 // {
@@ -47,10 +54,19 @@ export const getExamAllAlgorithmPredictions = (exam_id: number): Promise<AxiosRe
 //   "created_at": "2023-03-16T14:23:46.000Z"
 // }
 
-export const getSuggestedDiagnostic = async (exam_id: number, type_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/algorithm_predictions/${exam_id}/${type_id}`, { withCredentials: true });
-}
+export const getSuggestedDiagnostic = async (
+  exam_id: number,
+  type_id: number
+): Promise<AxiosResponse> => {
+  return await axios.get(`/algorithm_predictions/${exam_id}/${type_id}`, {
+    withCredentials: true,
+  });
+};
 
-export const getExamPredictedMarkers = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/predicted_markers/${exam_id}`, {withCredentials: true})
-}
+export const getExamPredictedMarkers = async (
+  exam_id: number
+): Promise<AxiosResponse> => {
+  return await axios.get(`/predicted_markers/${exam_id}`, {
+    withCredentials: true,
+  });
+};

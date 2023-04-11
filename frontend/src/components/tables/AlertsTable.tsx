@@ -209,7 +209,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function colorSwitcher(value: number): string {
-  switch(value){
+  switch (value) {
     case 1:
       return "black";
     case 2:
@@ -276,8 +276,10 @@ function AlertTable(): JSX.Element {
                   <Brightness1RoundedIcon color={"error"} />
                 );
                 const urgenciaText = (
-                    <Typography color={colorSwitcher(row.urgencia)}>{t('urgencyLevel').concat((row.urgencia).toString())}</Typography>
-                  )
+                  <Typography color={colorSwitcher(row.urgencia)}>
+                    {t("urgencyLevel").concat(row.urgencia.toString())}
+                  </Typography>
+                );
 
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.folio}>
@@ -300,7 +302,7 @@ function AlertTable(): JSX.Element {
                           href={row.resultados}
                           color="primary"
                           variant="contained"
-                          sx={{ color: "#006a6b" }}
+                          sx={{ color: "#3d3d3d" }}
                         >
                           Acceder
                         </Button>

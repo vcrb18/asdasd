@@ -84,11 +84,14 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
             margin={"auto"}
             padding={"5%"}
             borderRadius={5}
-            boxShadow={"5px 5px 10px #ccc"}
+            // boxShadow={"5px 5px 10px #ccc"}
+            // box-shadow={"0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)"}
             sx={{
-              ":hover": {
-                boxShadow: "10px 10px 20px #ccc",
-              },
+              // ":hover": {
+              //   boxShadow: "10px 10px 20px #ccc",
+              // },
+              boxShadow:
+                "0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)",
               "background-color": "#FFFFFF",
             }}
           >
@@ -98,7 +101,8 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               textAlign={"center"}
               color="primary"
             >
-              {t("login")}
+              {/* {t("login")} */}
+              ISATEC Heart
             </Typography>
             <TextField
               margin="normal"
@@ -123,7 +127,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
             />
             <Button
               type="submit"
-              sx={{ marginTop: 3, borderRadius: 3 }}
+              sx={{ marginTop: 3, borderRadius: 3, width: "150px" }}
               variant="contained"
               color="primary"
             >

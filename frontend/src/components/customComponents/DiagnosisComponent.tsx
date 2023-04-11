@@ -87,21 +87,24 @@ const DeletableBoxItem = ({
 };
 
 interface SuggestedDiagnostic {
-  prediction_id?: number,
-  exam_id?: number,
-  algorithm_type_id?: number,
-  value_name?: string,
-  value_type?: string,
-  value?: string
+  prediction_id?: number;
+  exam_id?: number;
+  algorithm_type_id?: number;
+  value_name?: string;
+  value_type?: string;
+  value?: string;
 }
 
 interface DiagnosisProps {
   examId: number;
 }
 
-const DiagnosisComponent: React.FC<DiagnosisProps> = ({examId}): JSX.Element => {
-
-  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<SuggestedDiagnostic[]>([]);
+const DiagnosisComponent: React.FC<DiagnosisProps> = ({
+  examId,
+}): JSX.Element => {
+  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<
+    SuggestedDiagnostic[]
+  >([]);
 
   useEffect(() => {
     getSuggestedDiagnostic(examId, 3).then(
@@ -109,20 +112,18 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({examId}): JSX.Element => 
         // .map((element: string )=>{
         //   element
         // })
-        setDiagnosticosSugerido(res.data)
-
+        setDiagnosticosSugerido(res.data);
       },
       (error) => {
         const _content =
-        (error.response && error.response.data) ||
-        error.message ||
-        error.toString();
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
         setDiagnosticosSugerido(_content);
       }
-    )
+    );
   }, []);
-  console.log(DiagnosticosSugeridos)
-
+  console.log(DiagnosticosSugeridos);
 
   // const [items, setItems] = useState<string[]>([]);
   // useEffect(() => {
@@ -132,8 +133,6 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({examId}): JSX.Element => 
   //   })
   // }, [] );
 
-
-  
   const [newItem, setNewItem] = useState("");
 
   const handleDelete = (item: string): void => {
@@ -165,7 +164,10 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({examId}): JSX.Element => 
       </Box>
       <Box>
         {DiagnosticosSugeridos.map((item) => (
-          <DeletableBoxItem label={item.value? item.value : ''} onDelete={handleDelete} />
+          <DeletableBoxItem
+            label={item.value ? item.value : ""}
+            onDelete={handleDelete}
+          />
         ))}
         <IconButton size="small" edge={"end"} onClick={handleAdd}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#36c513" }} />

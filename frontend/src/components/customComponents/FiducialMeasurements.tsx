@@ -42,22 +42,21 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
     qt: 0,
     qtc: 0,
     st: 0,
-  
   });
   useEffect(() => {
     getExamPredictedMarkersComputations(props.examId).then(
       (response) => {
-        console.log(response.data)
-        setComputationPoints(response.data)
+        console.log(response.data);
+        setComputationPoints(response.data);
       },
       (error) => {
         const _content =
-        (error.response && error.response.data) ||
-        error.message ||
-        error.toString();
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
         setComputationPoints(_content);
       }
-    )
+    );
   }, []);
 
   // const rr = computationPoints? computationPoints.rr : 0;
@@ -76,7 +75,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
   const st = (25 / 1000) * (props.fidST - props.fidS);
 
-   const row = createData(props.examId, fc, rr, pq, qrs, qt, qtc, st);
+  const row = createData(props.examId, fc, rr, pq, qrs, qt, qtc, st);
 
   return (
     <TableContainer component={Paper}>
@@ -85,43 +84,49 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
           <TableRow
             sx={{
               backgroundColor: "#c7dff9",
-              color: "#404040"
+              color: "#404040",
             }}
           >
-            <TableCell align="center" sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }} > FC [lpm]</TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+            >
+              {" "}
+              FC [lpm]
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               RR [ms]
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               PQ [ms]
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               QRS [ms]
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               QT [ms]
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               QTc [ms]
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               ST [mm]
             </TableCell>
@@ -129,40 +134,45 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell align="center" sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}>{row.fc.toFixed(1)}</TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+            >
+              {row.fc.toFixed(1)}
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.rr.toFixed(1)}
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.pq.toFixed(1)}
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.qrs.toFixed(1)}
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.qt.toFixed(1)}
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.qtc.toFixed(1)}
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: '50%' }}
+              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
             >
               {row.st.toFixed(1)}
             </TableCell>

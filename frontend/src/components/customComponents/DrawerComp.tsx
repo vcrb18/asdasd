@@ -29,7 +29,9 @@ interface DrawerCompProps {
 const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
-  const onTabChange = (index: number):void => { props.onTabChange(index);}
+  const onTabChange = (index: number): void => {
+    props.onTabChange(index);
+  };
   const { t } = useTranslation();
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
 
@@ -46,7 +48,7 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
             <ListItemButton
               href={tabOrButton.href}
               onClick={() => {
-                if (props.tabs?.length && (index<props.tabs.length)){
+                if (props.tabs?.length && index < props.tabs.length) {
                   onTabChange(index);
                 }
                 setOpenDrawer(false);
