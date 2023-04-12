@@ -4,7 +4,7 @@ import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamPredictedMarkers, getTimeSeriesById} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
-import { Grid } from "@mui/joy";
+import { Grid } from "@mui/material";
 
 
 interface DerivationsProps {
@@ -685,7 +685,48 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           Derivaciones
         </Typography>
 
-      <Box
+
+      <Grid container display={'flex'} alignItems={'center'} justifyContent={'space-evenly'} marginTop={'1%'}>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+          </Grid>
+          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
+          </Grid>
+
+      </Grid>
+
+      {/* <Box
         sx={{
           display: 'grid',
           gridTemplateColumns: {
@@ -732,7 +773,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
           <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
         </Box>
-      </Box>
+      </Box> */}
       
       </Box>
       <Typography
