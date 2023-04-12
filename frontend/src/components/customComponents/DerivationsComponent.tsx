@@ -60,6 +60,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   }
   )
   console.log(fidExamId)
+  console.log(examId);
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -83,7 +84,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
         <FiducialChart
-          examId={fidExamId}
+          examId={examId}  //lo cambio, pero no la tengo clara
           fidP={fidP}
           fidQRS={fidQRS}
           fidR={fidR}

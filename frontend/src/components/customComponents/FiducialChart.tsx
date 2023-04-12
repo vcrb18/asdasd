@@ -766,41 +766,58 @@ const FiducialChart = (props: any): JSX.Element => {
 
   useEffect(()=> {
     getTimeSeries(examId).then((response) => {
-      console.log("hola estoy seteando la time series")
-      setTimeSeriesData(response.data);      
+      console.log("hola estoy seteando la time series");
+      console.log(timeseriesData);  
+      setTimeSeriesData(response.data);
+      console.log(response.data);  
   })
 })
 
-  const examId = props.examId;
-  const fidP = props.fidP;
-  const fidQRS = props.fidQRS;
-  const fidR = props.fidR;
-  const fidR2 = props.fidR2;
-  const fidS = props.fidS;
-  const fidST = props.fidST;
-  const fidT = props.fidT;
+  //const examId = props.examId;
+  let examId = props.examId;
+  let fidP = props.fidP;
+  let fidQRS = props.fidQRS;
+  let fidR = props.fidR;
+  let fidR2 = props.fidR2;
+  let fidS = props.fidS;
+  let fidST = props.fidST;
+  //let fidT = props.fidT;
+  const [fidT, setfidT] = React.useState(props.fidT);
 
-  console.log(timeseriesData.length)
+  useEffect(() => {
+    chart = ChartJS.getChart("fiduChart");
+    if (!chart) return;
+    console.log("AAAA", props);
+    setfidT(props.fidT);
+    console.log("????",fidT);
+    chart.update();
+  }, [props]);
+
+  console.log(examId);
+
+  let chart = ChartJS.getChart("fiduChart");
+  console.log(chart);
 
   const timeseriesLabels = Array.from(
     { length: timeseriesData.length },
     (_, i) => i + 1
   );
-  const pStartPoint = [{ x: fidP, y: timeseriesData[fidP] }, 1];
-  const qrsStartPoint = [{ x: fidQRS, y: timeseriesData[fidQRS] }, 2];
-  const rPoint = [{ x: fidR, y: timeseriesData[fidR] }, 3];
-  const r2Point = [{ x: fidR2, y: timeseriesData[fidR2] }, 4];
-  const qrsEndPoint = [{ x: fidS, y: timeseriesData[fidS] }, 5];
-  const tStartPoint = [{ x: fidST, y: timeseriesData[fidST] }, 6];
-  const tEndPoint = [{ x: fidT, y: timeseriesData[fidT] }, 7];
+  let pStartPoint = [{ x: fidP, y: timeseriesData[fidP] }, 1];
+  let qrsStartPoint = [{ x: fidQRS, y: timeseriesData[fidQRS] }, 2];
+  let rPoint = [{ x: fidR, y: timeseriesData[fidR] }, 3];
+  let r2Point = [{ x: fidR2, y: timeseriesData[fidR2] }, 4];
+  let qrsEndPoint = [{ x: fidS, y: timeseriesData[fidS] }, 5];
+  let tStartPoint = [{ x: fidST, y: timeseriesData[fidST] }, 6];
+  let tEndPoint = [{ x: fidT, y: timeseriesData[fidT] }, 7];
+  console.log(rPoint, fidR);
 
-  const points = [pStartPoint, qrsStartPoint, rPoint, r2Point, qrsEndPoint, tStartPoint, tEndPoint]
+  let points = [pStartPoint, qrsStartPoint, rPoint, r2Point, qrsEndPoint, tStartPoint, tEndPoint]
 
-  const minP = points.reduce(function(prev:any, curr:any) {
+  let minP = points.reduce(function(prev:any, curr:any) {
         return prev[0].x < curr[0].x ? prev : curr;
   });
 
-  const maxP = points.reduce(function(prev:any, curr:any) {
+  let maxP = points.reduce(function(prev:any, curr:any) {
     return prev[0].x > curr[0].x ? prev : curr;
 });
 
@@ -838,8 +855,21 @@ const FiducialChart = (props: any): JSX.Element => {
   let lastMovement:any;
 
   const drag = function (moveX: number, moveY: number, bubble: any): void {
-    console.log("drag");
+    console.log("drag", bubble[0].element.x, bubble[0].element.y);
     bubble[0].element.x += moveX;
+    if (!chart) return;
+    if(!chart.data.datasets[bubble[0].datasetIndex].data) return;
+    if(!chart.data.datasets[bubble[0].datasetIndex].data[0]) return;
+    //if(!chart.data.datasets[bubble[0].datasetIndex].data[0].x) return;
+    chart.data.datasets[bubble[0].datasetIndex].data[0].x +=Math.round(moveX* ((chart.boxes[3].max-chart.boxes[3].min)/chart.boxes[3].maxWidth));  //movex no esta escalado
+    const vary = chart.data.datasets[bubble[0].datasetIndex].data[0].y - timeseriesData[chart.data.datasets[bubble[0].datasetIndex].data[0].x];
+    chart.data.datasets[bubble[0].datasetIndex].data[0].y = timeseriesData[chart.data.datasets[bubble[0].datasetIndex].data[0].x];
+    console.log(chart.data.datasets[bubble[0].datasetIndex].data[0]);
+
+    //bubble[0].element.x += (vary * chart.boxes[2].height)/(chart.boxes[2].max-chart.boxes[2].min);
+    // if (typeof(chart.data.datasets[bubble[0].datasetIndex].data) == "number")
+    //   chart.data.datasets[bubble[0].datasetIndex].data += moveX;
+    // chart.update();
     //bubble[0].element.y = moveY;
     // element.x += moveX;
     // element.y += moveY;
@@ -853,13 +883,21 @@ const FiducialChart = (props: any): JSX.Element => {
     // if (!lastEvent || !element) {
     //   return;
     // }
-    const moveX = event.x - lastMovement.x;
+    const moveX2 = event.x - lastMovement.x;
+    const moveX = moveX2
     const realX = 3.5* event.x;//minX * 3/2+ event.x;
     const moveY = event.chart.height/2 - timeseriesData[event.x];
     const moveYold = event.y - lastEvent.y;
+    //console.log("puntos", fidT, tEndPoint);
     //console.log(event.x, realX, points[bubble[0].datasetIndex][0].x);
-    console.log(points);
-    console.log(timeseriesData);
+    console.log(chart);
+    //console.log(event, bubble);
+    //console.log(event.chart.boxes[3].max, event.chart.boxes[3].min, event.chart.boxes[3].maxWidth, event.x);
+    //console.log("realX?", event.chart.boxes[3].max - ((event.chart.boxes[3].width-event.x)/event.chart.boxes[3].width) * (event.chart.boxes[3].max- event.chart.boxes[3].min))
+    // console.log(minX, maxX, event.chart.width, (maxX- minX)/event.chart.width);
+    // console.log("mx", event.x *(maxX- minX)/event.chart.width);
+    // console.log("calculo", maxX - (event.x/event.chart.width)*(maxX- minX))
+    // console.log(timeseriesData);
     drag(moveX, moveY, bubble);
     lastMovement = event;
     return true;
@@ -886,6 +924,7 @@ const FiducialChart = (props: any): JSX.Element => {
           console.log("mup");
           lastEvent = undefined;
           event.native.target.style.cursor = 'default';
+          chart.update();
           break;
         case "mousedown":
           console.log("mdown");
@@ -920,7 +959,7 @@ const FiducialChart = (props: any): JSX.Element => {
     yValue: 50,
   };
 
-  const options = {
+  let options = {
     events: [
       "mousedown" as const,
       "mouseup" as const,
@@ -947,8 +986,8 @@ const FiducialChart = (props: any): JSX.Element => {
     scales: {
       y: {
         title: {
-          text: "TIEMPO [ms]",
-          display: true,
+          text: "VOLTAJE [mV]",
+          display: false,
         },
         // ticks: {
         //   display: false,
@@ -963,7 +1002,7 @@ const FiducialChart = (props: any): JSX.Element => {
       },
       x: {
         title: {
-          text: "VOLTAJE [mV]",
+          text: "TIEMPO [ms]",
           display: true,
         },
         // ticks: {
@@ -998,7 +1037,7 @@ const FiducialChart = (props: any): JSX.Element => {
 //       },
 //     }}
 
-const data1 = {
+let data1 = {
   labels: timeseriesLabels, //.slice(0, 5000)minX
   datasets: [
     {
@@ -1114,7 +1153,7 @@ console.log("R2", r2Point);
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
     <Box sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}>
-      <Chart
+      <Chart id="fiduChart"
         type="bubble"
         height="80"
         options={options}
