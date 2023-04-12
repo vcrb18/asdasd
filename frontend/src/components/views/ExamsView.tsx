@@ -150,7 +150,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           fullWidth
         ></TextField>
       </Box>
-      <Footer footerPosition={"fixed"} />
+      {/* <Footer footerPosition={"fixed"} /> */}
     </>
   );
 };
