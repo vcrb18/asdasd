@@ -5,8 +5,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      reviewFilter: "Review state:",
       review: "Review",
       reviewed: "Reviewed",
+      showAll: "Show all",
       toReview: "Waiting for Review",
       patology: "Patology",
       patologies: "Patologies",
@@ -63,8 +65,10 @@ const resources = {
   },
   es: {
     translation: {
+      reviewFilter: "Estado de revisión:",
       review: "Revisión",
       reviewed: "Revisado",
+      showAll: "Mostrar Todos",
       toReview: "Por Revisar",
       patology: "Patología",
       patologies: "Patologías",

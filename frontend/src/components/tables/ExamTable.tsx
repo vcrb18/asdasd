@@ -249,7 +249,6 @@ getExams().then((response) => {
   rows = response.data.map((exam:ExamData) => {
     return {
       ...exam, // copy all existing properties from the original object
-      review: false,
       resultados: '/examsview',
     } as ExamData; // enforce the ExamData interface on the new object
   });

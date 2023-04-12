@@ -19,7 +19,8 @@ const FilterComponent = ({handleSubmit, filterType}: FilterComponentProps) : JSX
     const [toValue, setToValue] = React.useState<Dayjs | null>(dayjs());
     const [fromDate, setFromDate] = React.useState<string>();
     const [toDate, setToDate] = React.useState<string>();
-    const [metricsValue, setMetricsValue] = React.useState<string[]>([])
+    const [metricsValue, setMetricsValue] = React.useState<string[]>([]);
+    const [reviewValue, setReviewValue] = React.useState<string[]>([]);
 
 
     const handleFromDate = (newValue: Dayjs | null ): void => {
@@ -81,6 +82,8 @@ const FilterComponent = ({handleSubmit, filterType}: FilterComponentProps) : JSX
 
     const examsUrgencies = ["1", "2", "3"]
 
+    const reviewStates=["reviewed", "toReview", "showAll" ]
+
     const metricStates = ["Aceptado", "Rechazado", "Bien Aceptado", "Bien Rechazado", "Mal Aceptado", "Mal Rechazado"];
 
     return (
@@ -101,6 +104,80 @@ const FilterComponent = ({handleSubmit, filterType}: FilterComponentProps) : JSX
                  marginY={'5%'}
                  width={'100%'}
                  >
+                    <Grid item lg={12} md={12} xs={12}>
+                        <Typography fontSize={"100%"} sx={{ color: "#000000" }}>
+                            {t('reviewFilter')}
+                        </Typography>
+                    </Grid>
+                    {reviewStates.map((review) => {
+                        return (
+                            <Grid item key={review}
+                            >
+                                <List
+                                variant="outlined"
+                                aria-label="Screens"
+                                role="group"
+                                orientation="horizontal"
+                                sx={{
+                                  bgcolor: 'background.body',
+                                  flexGrow: 0,
+                                  '--List-gap': '8px',
+                                  '--List-padding': '8px',
+                                  '--List-radius': '8px',
+                                }}
+                                >
+                                <ListItem key={review}>
+                                    <ListItemDecorator
+                                        sx={{
+                                        zIndex: 2,
+                                        pointerEvents: 'none',
+                                        borderColor: "#fff",
+                                        position: 'central',
+
+                                        ...(reviewValue.includes(review) && { color: 'text.primary' }),
+                                        }}
+                                    >
+                                        {t(review)}
+                                    </ListItemDecorator>
+                                <Checkbox
+                                    disableIcon
+                                    overlay
+                                    checked={reviewValue.includes(review)}
+                                    color="neutral"
+                                    variant={reviewValue.includes(review) ? 'outlined' : 'plain'}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        if (event.target.checked) {
+                                            setReviewValue((val) => [ ... val, review ]);
+                                        }
+                                        else {
+                                            setReviewValue((val) => val.filter((text) => text !== review))
+                                        }
+                                    }}
+                                    slotProps={{
+                                        action: ({checked}) => ({
+                                            sx: {
+                                                bgcolor: checked ? 'background.level1' : 'transparent',
+                                                boxShadow: checked ? 'sm' : 'none',
+                                            }
+                                        })
+                                    }}
+                                />
+                            </ListItem>
+                            </List>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+                <Grid
+                 container
+                 display={"flex"}
+                 justifyContent={"space-evenly"}
+                 alignItems={"center"}
+                 rowSpacing={1}
+                 marginY={'5%'}
+                 width={'100%'}
+                 >
+
                  <Grid item lg={12} md={12} xs={12}>
                      <Typography fontSize={"100%"} sx={{ color: "#000000" }}>
                      {t('urgencyLevel')}
