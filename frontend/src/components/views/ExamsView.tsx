@@ -249,7 +249,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           fullWidth
         ></TextField>
       </Box>
-      <Footer footerPosition={"static"} />
+      {/* <Footer footerPosition={"static"} /> */}
     </>
   );
 };
