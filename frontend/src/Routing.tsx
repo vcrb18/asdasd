@@ -24,12 +24,12 @@ function Routing(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="/information"
           element={
             <LandingPage tabs={landingPageTabs} buttons={landingPageButtons} />
           }
         />
-        <Route path="/login" element={<Login buttons={loginPageButtons} />} />
+        <Route path="/" element={<Login buttons={loginPageButtons} />} />
 
         <Route path="/tables" element={<TablesView />} />
 
