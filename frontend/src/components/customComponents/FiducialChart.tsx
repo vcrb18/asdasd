@@ -19,6 +19,7 @@ import {
 
 import { Chart } from "react-chartjs-2";
 import annotationPlugin from "chartjs-plugin-annotation";
+import ChartZoom from 'chartjs-plugin-zoom';
 import React, {useEffect} from "react";
 import { getTimeSeries } from "../../service/user.service";
 
@@ -36,7 +37,9 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  ChartZoom,
 );
+
 
 // TODO: consumir serie de tiempo real
 
@@ -853,6 +856,7 @@ const FiducialChart = (props: any): JSX.Element => {
   let lastEvent: any;
   let bubble: any;
   let lastMovement:any;
+  //let dragging = false as any;
 
   const drag = function (moveX: number, moveY: number, bubble: any): void {
     console.log("drag", bubble[0].element.x, bubble[0].element.y);
@@ -962,6 +966,8 @@ const FiducialChart = (props: any): JSX.Element => {
     yValue: 50,
   };
 
+  
+
   const options = {
     events: [
       "mousedown" as const,
@@ -987,6 +993,51 @@ const FiducialChart = (props: any): JSX.Element => {
       Tooltip:{
         bodyColor:'#fff',  //no funciona
       },
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: false,
+          },
+          mode: 'x',
+          scaleMode: 'xy',
+          // drag: {
+          //   enabled: false,
+          //   mode: 'x', // this enables dragging on the horizontal axis only
+          //   modifierKey:'ctrl',
+          // },
+          // pan: {
+          //   enabled: true,
+          //   // modifierKey: 'ctrl',
+          //   mode: 'xy',
+          // },
+        },
+        limits: {
+          x: {min: -100, max: timeseriesData.length + 100},
+          y: {min: -2000, max: 2000}
+        },
+        pan: {
+          enabled: true,
+          mode: 'x', // This enables panning only on the x-axis
+          modifierKey: 'ctrl',
+          onPanStart: function (chart: any, event: any, point:any) {
+            console.log(chart, event, point)
+            chart.event.target.style.cursor = 'grab';
+            // event.native.target.style.cursor = 'grab';
+            // event.native.target.style.cursor = 'default';
+          },
+          onPanComplete: function (chart: any) {
+            console.log(chart)
+            chart.chart.ctx.canvas.style.cursor = 'default';
+            // chart.event.target.style.cursor = 'grab';
+            // event.native.target.style.cursor = 'grab';
+            // event.native.target.style.cursor = 'default';
+          },
+        },
+      },
+
     },
     scales: {
       y: {
@@ -1023,7 +1074,7 @@ const FiducialChart = (props: any): JSX.Element => {
       },
     },
     
-  };
+  } as any; 
 
 // const plugins = {
 //     dragData: {
@@ -1151,7 +1202,8 @@ const plugins = [{
     //   console.log("PUEDE SER",chart.isPluginEnabled('annotation'))
     // }
   }
-}]
+},
+ChartZoom]
 
 console.log("R2", r2Point);
 
