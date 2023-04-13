@@ -12,6 +12,9 @@ export const getExams = async (page : number, order:number): Promise<AxiosRespon
   return await axios.get(`/exams?page=${page}&order=${order}`, { withCredentials: true });
 };
 
+export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams?page=${page}&order=${order}&find=${searchInt}`, { withCredentials: true })
+}
 // export const getExamPredictedMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
 //   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 // }
@@ -61,7 +64,7 @@ export const getSuggestedDiagnostic = async (
   exam_id: number,
   type_id: number
 ): Promise<AxiosResponse> => {
-  return await axios.get(`/algorithm_predictions/${exam_id}/${type_id}`, {
+  return await axios.get(`/algorithm_predictions/${exam_id}`, {
     withCredentials: true,
   });
 };
