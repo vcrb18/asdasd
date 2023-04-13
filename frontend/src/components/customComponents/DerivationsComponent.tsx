@@ -550,6 +550,7 @@ interface Fiduciales {
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
   // TODO: consumir puntos reales
+  const [fidExamId, setFidExamId] = React.useState(0);
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
   const [fidR, setFidR] = React.useState(1870);
@@ -607,13 +608,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     getExamPredictedMarkers(examId).then(
       (response) => {
         // console.log(response.data)
-        setFidP(response.data.p_start);
-        setFidQRS(response.data.qrs_start);
-        setFidR(response.data.r);
-        setFidR2(response.data.r2);
-        setFidS(response.data.qrs_end);
-        setFidST(response.data.t_start);
-        setFidT(response.data.t_end);
+        setFidExamId(response.data.examId)
+        setFidP(response.data.p_start)
+        setFidQRS(response.data.qrs_start)
+        setFidR(response.data.r)
+        setFidR2(response.data.r2)
+        setFidS(response.data.qrs_end)
+        setFidST(response.data.t_start)
+        setFidT(response.data.t_end) 
       }
 
       //   setFiduciales({
@@ -645,6 +647,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
         <FiducialChart
+          examId={examId}  //lo cambio, pero no la tengo clara
           fidP={fidP}
           fidQRS={fidQRS}
           fidR={fidR}
