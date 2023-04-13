@@ -13,14 +13,20 @@ import {
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
 import FilterComponent from "../customComponents/FilterComponent";
-import { Search } from "@mui/icons-material";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import { Folder, Search } from "@mui/icons-material";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Header from "../customComponents/Header";
 import {
   mainMenuHeaderButtons,
   mainMenuPageButtons,
 } from "../../utils/routingPropConsts";
 import Footer from "../customComponents/Footer";
+import { useForm } from "react-hook-form";
+import { truncate } from "fs";
+
+type FormInput = {
+  folioSearch: string;
+}
 
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
@@ -34,8 +40,28 @@ const ExamsTab = (): JSX.Element => {
     setOpenFilter(false);
   };
 
-  const handleSubmit = (): void => {
+  const handleFilterSubmit = (): void => {
     setOpenFilter(false);
+  };
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filterCondition, setFilterCondition] = useState<boolean>(false);
+  
+  const { register, handleSubmit } = useForm<FormInput>();
+
+  const onSubmit = (data: FormInput) : void => {
+    console.log("Input:", data.folioSearch);
+    console.log(inputValue)
+    setInputValue(inputValue);
+    if (inputValue !== "" ) {
+      setFilterCondition(true);
+    } else {
+      setFilterCondition(false);
+    }
+    // Do whatever you need with the input value here
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) : void => {
+    setInputValue(event.target.value);
   };
 
   return (
@@ -81,32 +107,21 @@ const ExamsTab = (): JSX.Element => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           padding={5}
         >
-          <Grid
-            container
-            lg={12}
-            xs={12}
-            md={12}
-            columnSpacing={3}
-            display={"flex"}
-            justifyContent={"flex-end"}
-          >
-            <Grid
-              item
-              lg={10}
-              md={10}
-              xs={10}
-              display={"flex"}
-              justifyContent={"flex-end"}
-            >
-              <TextField
+          <Grid container lg={12} xs={12} md={12} columnSpacing={3} display={'flex'} justifyContent={'flex-end'}>
+            <Grid item lg={10} md={10} xs={10} display={'flex'} justifyContent={'flex-end'}>
+              <form onSubmit={handleSubmit(onSubmit)}> 
+              <TextField 
                 id="folio-search"
-                label={t("folioSearch")}
+                label={t("folioSearch")} 
                 variant="filled"
                 size="small"
-              />
-              <IconButton type="button">
-                <Search />
+                {...register("folioSearch")} 
+                onChange={handleInputChange}/>
+              <IconButton type="submit">
+                <Search
+                onClick={handleSubmit(onSubmit)}/>
               </IconButton>
+              </form>
             </Grid>
             <Grid item lg={2} md={2} xs={2}>
               <IconButton onClick={handleOpenFilter} sx={{ color: "#000" }}>
@@ -118,8 +133,8 @@ const ExamsTab = (): JSX.Element => {
             <DialogTitle>
               <Typography fontSize={"100%"}>{t("filter")}</Typography>
             </DialogTitle>
-            <DialogContent>
-              <FilterComponent handleSubmit={handleSubmit} filterType="exams" />
+            <DialogContent >
+              <FilterComponent handleSubmit={handleFilterSubmit} filterType="exams"/>  
             </DialogContent>
           </Dialog>
           <Grid
@@ -131,7 +146,7 @@ const ExamsTab = (): JSX.Element => {
             justifyContent={"flex-start"}
             sx={{ color: "#404040", fontSize: "1.5rem" }}
           >
-            <ExamTable />
+            <ExamTable useFilter={filterCondition} filterId={inputValue}  />
           </Grid>
         </Grid>
       </Grid>
