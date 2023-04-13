@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
-import { getExams } from "../../service/user.service";
+import { getExams, getExamsCount } from "../../service/user.service";
 // import { type NavigateFunction, useNavigate } from "react-router-dom";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -237,17 +237,17 @@ function colorSwitcher(value: number): string {
 //   createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
 // ];
 
-let rows: ExamData[] = [];
-getExams().then((response) => {
-  rows = response.data.map((exam: ExamData) => {
-    return {
-      ...exam, // copy all existing properties from the original object
-      resultados: "/examsview",
-    } as ExamData; // enforce the ExamData interface on the new object
-  });
-});
+
 
 const ExamTable = (): JSX.Element => {
+  
+  const [order, setOrder] = React.useState<Order>("asc");
+  const [orderBy, setOrderBy] = React.useState<string>("fecha");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [maxRows, setMaxRows] = React.useState(20);
+  const [rows, setRows] = React.useState<ExamData[]>([]);
+
   const { t } = useTranslation();
   // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
@@ -257,10 +257,6 @@ const ExamTable = (): JSX.Element => {
       },
     },
   });
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<string>("fecha");
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   // const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ):void => {
   //     event.preventDefault();
@@ -285,6 +281,21 @@ const ExamTable = (): JSX.Element => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useEffect(()=> {
+    getExams(page + 1, rowsPerPage).then((response) => {
+      setRows(response.data)
+      // .map((exam: ExamData) => {
+      //   return {
+      //     ...exam, // copy all existing properties from the original object
+      //     resultados: "/examsview",
+      //   } as ExamData; // enforce the ExamData interface on the new object
+      // });
+    });
+    getExamsCount().then((response) => {
+      setMaxRows(response.data.count)
+    });
+  })
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer>
@@ -366,7 +377,7 @@ const ExamTable = (): JSX.Element => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={maxRows}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

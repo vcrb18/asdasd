@@ -8,13 +8,16 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
   return await axios.get(API_URL + "landingPage");
 };
 
-export const getExams = async (): Promise<AxiosResponse> => {
-  return await axios.get("/exams", { withCredentials: true });
+export const getExams = async (page : number, order:number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams?page=${page}&order=${order}`, { withCredentials: true });
 };
 
 // export const getExamPredictedMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
 //   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 // }
+export const getExamsCount = async () : Promise<AxiosResponse> => {
+  return axios.get(`/exams/count`, {withCredentials: true})
+}
 
 export const getExamPredictedMarkersComputations = (
   exam_id: number
