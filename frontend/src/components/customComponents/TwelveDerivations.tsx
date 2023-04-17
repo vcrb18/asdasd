@@ -6,9 +6,11 @@ interface LineChartProps {
   der_title: string;
   max_points: number;
   options?: ChartOptions;
+  width: number;
+  height: number;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, options }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, options, width, height }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   let n_x_ticks = max_points / 100;
   let sliced_data = data.slice(0,max_points);
@@ -91,7 +93,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, opti
     }
   }, [canvasRef, sliced_data, options]);
 
-  return <canvas ref={canvasRef} />;
+  return <canvas height={height} width={width} ref={canvasRef} />;
 };
 
 export default LineChart;

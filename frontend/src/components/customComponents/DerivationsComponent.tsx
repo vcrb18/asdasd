@@ -689,42 +689,46 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         </Typography>
 
 
-      <Grid container display={'flex'} alignItems={'center'} justifyContent={'space-evenly'} marginTop={'1%'}>
+      <Grid container sx={{    gridAutoRows: '150px',
+    }}display={'flex'} alignItems={'center'} justifyContent={'space-evenly'} marginTop={'1%'}>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesI} der_title={"I"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesII} der_title={"II"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
           </Grid>
           <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
+            <LineChart height={150} width={317} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
+          </Grid>
+          <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <LineChart height={150} width={1291} data={timeSeriesII} der_title={"II"} max_points={10000}/>
           </Grid>
 
       </Grid>
