@@ -902,13 +902,30 @@ return prev[0].y > curr[0].y ? prev : curr;
           // console.log("mup");
           lastEvent = undefined;
           event.native.target.style.cursor = 'default';
+          if(!bubble) break;
+          if(!bubble[0]) break;
+          bubble = undefined;
           chart.update();
+          const childata = {
+            fidP:fidP,
+            fidQRS:fidQRS,
+            fidR:fidR,
+            fidR2:fidR2,
+            fidS:fidS,
+            fidST:fidST,
+            fidT:fidT,
+          }
+          console.log(childata);
+          console.log("TESTS ACA");
+          console.log(pStartPoint, fidP, props);
+          props.handleFiducialChartUpdate(childata);
           break;
         case "mousedown":
           // console.log("mdown");
           lastEvent = event;
           lastMovement = event;
           bubble = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+          console.log(bubble);
           if(!bubble[0]) break;
           if (bubble[0].element) event.native.target.style.cursor = 'grab';
           else event.native.target.style.cursor = 'default';
