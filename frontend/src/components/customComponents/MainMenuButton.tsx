@@ -1,6 +1,6 @@
-import { Fab, Box, Typography, Grid, Paper } from "@mui/material";
+import { Fab, Box, Typography, Grid, Paper, Button, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { mainMenuPageButtons } from "../../utils/routingPropConsts";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const MainMenuButton = (): JSX.Element => {
   const { t } = useTranslation();
+
   return (
     <>
       <Grid
@@ -29,35 +30,37 @@ const MainMenuButton = (): JSX.Element => {
       >
         {mainMenuPageButtons != null && mainMenuPageButtons.length > 0
           ? mainMenuPageButtons.map((button, index) => (
-              <Grid item lg={6} md={6} xs={12} key={index}>
-                <Item sx={{ backgroundColor: "#ffffff" }}>
-                  <Box display={"flex"} justifyContent={"flex-start"}>
-                    <Typography
-                      fontSize={"1.5rem"}
-                      color={"#404040"}
-                      sx={{ fontWeight: "500" }}
-                    >
-                      {t(button.label)}
-                    </Typography>
-                  </Box>
-                  <Box
+              <Grid container lg={6} md={6} xs={12} key={index} padding={'0.5%'}>
+                <Button sx={{ backgroundColor: "#E4EDEF" }} href={button.href}                fullWidth >
+                  <Grid 
+                    container
                     display={"flex"}
-                    justifyContent={"flex-end"}
-                    alignItems={"flex-end"}
+                    justifyContent={"center"}
+                    alignItems={"space-arround"}
+                    sx={{
+                    width: "-webkit-fill-available",
+                    heigth: "-webkit-fill-available",
+                    }}
                   >
-                    <Fab
-                      size="small"
-                      href={button.href}
-                      sx={{
-                        backgroundColor: "#404040",
-                        color: "#c7dff9",
-                        boxShadow: "0px 0px 0px 0px",
-                      }}
+                    <Grid item lg={12} md={12} xs={12} 
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    marginTop={'2%'}>
+                      <Avatar>
+
+                      </Avatar>
+                    </Grid>
+                    <Grid item marginY={'2%'}>
+                      <Typography
+                      fontSize={"250%"}
+                      color={"#007088"}
                     >
-                      <ArrowForwardIcon sx={{ color: "#1c9093" }} />
-                    </Fab>
-                  </Box>
-                </Item>
+                    {t(button.label)}
+                    </Typography>
+                    </Grid>
+                  </Grid>
+                </Button>
               </Grid>
             ))
           : null}
