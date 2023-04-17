@@ -9,7 +9,7 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
 };
 
 export const getExams = async (page : number, order:number): Promise<AxiosResponse> => {
-  return await axios.get(`/exams?page=${page}&order=${order}`, { withCredentials: true });
+  return await axios.get(`/exams?page=${page}&order=${order}&count=25`, { withCredentials: true });
 };
 
 export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {
