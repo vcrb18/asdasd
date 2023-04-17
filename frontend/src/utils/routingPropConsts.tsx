@@ -6,7 +6,7 @@ export const landingPageTabs = [
 
 export const landingPageButtons = [
   // { label: "Contacto", href: "#" }, eliminado porque se repetia con contactanos
-  { label: "login", href: "/" },
+  { label: "login", href: "/" }
 ];
 
 export const loginPageButtons = [{ label: "home", href: "/information" }];
