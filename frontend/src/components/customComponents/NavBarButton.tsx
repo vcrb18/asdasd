@@ -4,6 +4,7 @@ import {
   Button,
   MenuItem,
   Select,
+  Typography,
   type SelectChangeEvent,
 } from "@mui/material";
 import { type ButtonProps } from "./Header";
@@ -63,19 +64,22 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
       {buttonsLabels != null && buttonsLabels.length > 0
         ? buttonsLabels.map((button, index) => (
             <Button
-              color="primary"
               key={index}
               href={button.href}
               sx={{
+                backgroundColor: '#007088',
                 width: "154px", // Set a fixed width for the button
                 marginLeft: index === 0 ? "auto" : "1%", // Use shorthand notation for marginLeft
               }}
               variant="contained"
+              fullWidth
               onClick={(event) => {
                 handleLogOutClick(event, button.label, button.href);
               }}
             >
+            <Typography>
               {t(button.label)}
+            </Typography>
             </Button>
           ))
         : null}
@@ -86,7 +90,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
         sx={{
           width: "154px",
           marginLeft: "1%",
-          backgroundColor: "#006a6b",
+          backgroundColor: "#007088",
           color: "#fff",
           borderRadius: 1,
         }}
