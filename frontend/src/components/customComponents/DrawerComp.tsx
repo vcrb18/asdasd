@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import {
+  Select,
+  MenuItem,
   Drawer,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   IconButton,
+  type SelectChangeEvent,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTranslation } from "react-i18next";
@@ -27,6 +30,8 @@ interface DrawerCompProps {
 }
 
 const DrawerComp: React.FC<DrawerCompProps> = (props) => {
+  const { i18n } = useTranslation();
+  const [language, setLanguage] = useState<string>(i18n.language);
   const [openDrawer, setOpenDrawer] = useState(false);
   const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
   const onTabChange = (index: number): void => {
@@ -34,6 +39,14 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   };
   const { t } = useTranslation();
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
+
+  const handleLanguageChange = (event: SelectChangeEvent): void => {
+    const newLanguage = event.target.value;
+    setLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage).catch((error) => {
+      console.error(error);
+    });
+  };
 
   return (
     <React.Fragment>
@@ -43,6 +56,21 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
           setOpenDrawer(false);
         }}
       >
+        <Select
+          value={language}
+          onChange={handleLanguageChange}
+          size="small"
+          sx={{
+            width: "154px",
+            marginLeft: "1%",
+            backgroundColor: "#006a6b",
+            color: "#fff",
+            borderRadius: 1,
+          }}
+        >
+          <MenuItem value="es">{t("es")}</MenuItem>
+          <MenuItem value="en">{t("en")}</MenuItem>
+        </Select>
         <List>
           {tabsAndButtons.map((tabOrButton, index) => (
             <ListItemButton
