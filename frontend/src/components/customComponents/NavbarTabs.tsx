@@ -42,7 +42,9 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
                   {t(tab.label)}
                 </Typography>
             }
-            disabled={tab.label === "aboutUs" || tab.label === "contactUs"}
+            disabled={tab.label === "aboutUs" || tab.label === "metrics" || tab.label === "alerts"
+             || tab.label === "report"
+             || tab.label === "contactUs"}
             />
           </Box>
         ))}
