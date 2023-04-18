@@ -270,9 +270,10 @@ const ExamTable = ({
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
-  const [rows, setRows] = React.useState<ExamData[]>([]);
+    const [rows, setRows] = React.useState<ExamData[]>([]);
+    console.log("Rows", rows);
   
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
@@ -333,7 +334,7 @@ const ExamTable = ({
 
   useEffect(()=> {
     console.log("ENTRE AL USE EFFECT");
-    getExams(page, rowsPerPage).then((response) => {
+    getExams(page, 10).then((response) => {
       // setRows([...response.data])
       setRows(rows => [...rows, ...response.data])
     });
@@ -378,7 +379,9 @@ const ExamTable = ({
   const paginatedRows = sortedRows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
-  );
+    );
+
+    console.log("PR", paginatedRows);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
