@@ -6,8 +6,8 @@ interface LineChartProps {
   der_title: string;
   max_points: number;
   options?: ChartOptions;
-  width: number;
-  height: number;
+  width?: number | string ;
+  height?: number | string ;
 }
 
 const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, options, width, height }) => {
@@ -72,6 +72,10 @@ const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, opti
             },
             title: {
                 display: true,
+                fullSize: true,
+                position: "top",
+                // font: "",
+                align: "start" ,
                 text: der_title,
             },
           },
