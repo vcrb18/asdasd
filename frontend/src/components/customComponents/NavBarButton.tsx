@@ -68,6 +68,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
               href={button.href}
               sx={{
                 backgroundColor: '#007088',
+                color: "#fff",
                 width: "154px", // Set a fixed width for the button
                 marginLeft: index === 0 ? "auto" : "1%", // Use shorthand notation for marginLeft
               }}
@@ -77,7 +78,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
                 handleLogOutClick(event, button.label, button.href);
               }}
             >
-            <Typography>
+            <Typography color="#fff">
               {t(button.label)}
             </Typography>
             </Button>
