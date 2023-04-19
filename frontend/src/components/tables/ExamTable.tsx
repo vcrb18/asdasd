@@ -148,6 +148,7 @@ interface ExamData {
   urgencia: number;
   reviews: boolean;
   resultados: string;
+  aceptado: boolean;
 }
 
 type Order = "asc" | "desc";
