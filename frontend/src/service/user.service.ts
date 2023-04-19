@@ -94,5 +94,5 @@ export const getTimeSeriesById = async (exam_id: number): Promise<AxiosResponse>
   return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true})
 }
 export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/time_series/${exam_id}`, {withCredentials: true});
+  return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true});
 }

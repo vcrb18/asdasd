@@ -11,6 +11,8 @@ import {
   getExamPredictedMarkersComputations,
 } from "../../service/user.service";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+
 
 interface ExamsViewProps {
   // examId: number ;
@@ -36,6 +38,7 @@ export interface ExamData {
   estado: boolean;
   urgencia: number;
   resultados: string;
+  operator_review: boolean;
 }
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
@@ -44,10 +47,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const { examId } = useParams<{ examId: string }>();
   const examIdNumber = parseInt(examId || "0", 10);
   const [examData, setExamData] = useState<ExamData>();
+  const [validatedExam, setValidatedExam] = useState<boolean>();
+
   useEffect(() => {
     getExam(examIdNumber).then(
       (response) => {
         setExamData(response.data);
+        setValidatedExam(response.data?.operator_review);
       },
       (error) => {
         const _content =
@@ -60,6 +66,22 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   }, []);
   let predictedExamValuesData: PredictedValuesData;
 
+    const validationButtonMessage: string = (validatedExam) ? 'Deshacer validación' : 'Validar mediciones';
+    const toggleValidatedExam = (): void => {
+        let urlReview;
+        if (validatedExam) {
+            urlReview = `/exams/unreview/${examIdNumber}`;
+        }
+        else {
+            urlReview = `/exams/review/${examIdNumber}`;
+        }
+        axios.put(urlReview, { withCredentials: true })
+            .then((res) => {
+                if (res.data.success) {
+                    setValidatedExam(!validatedExam);
+                }
+            });
+    };
   // let examData: ExamData = {
   //   exam_id: 1,
   //   patient_id: '',
@@ -72,7 +94,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   //   examData = response.data;
   //   console.log("EL id del Examen es = ");
   // })
-  console.log(examData);
 
   const fecha = examData?.created_at.includes("T")
     ? examData?.created_at.replace("T", " ").split(".")[0]
@@ -174,8 +195,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             <Button
               variant="contained"
               sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
+                          onClick={toggleValidatedExam}
             >
-              Validar mediciones
+                          {validationButtonMessage}
             </Button>
           </Grid>
         </Grid>

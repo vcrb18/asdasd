@@ -45,6 +45,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     estado: false,
     urgencia: 1,
     resultados: "",
+    operator_review: false
   });
   useEffect(() => {
     getExam(examId).then(

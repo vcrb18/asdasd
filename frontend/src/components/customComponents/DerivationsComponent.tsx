@@ -667,17 +667,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
 
   useEffect(()=> {
+    const offset = 640;
     getExamPredictedMarkers(examId).then(
       (response) => {
         // console.log(response.data)
         setFidExamId(response.data.examId)
-        setFidP(response.data.p_start)
-        setFidQRS(response.data.qrs_start)
-        setFidR(response.data.r)
-        setFidR2(response.data.r2)
-        setFidS(response.data.qrs_end)
-        setFidST(response.data.t_start)
-        setFidT(response.data.t_end) 
+        setFidP(response.data.p_start + offset)
+        setFidQRS(response.data.qrs_start + offset)
+        setFidR(response.data.r + offset)
+        setFidR2(response.data.r2 + offset)
+        setFidS(response.data.qrs_end + offset)
+        setFidST(response.data.t_start + offset)
+        setFidT(response.data.t_end + offset) 
       }
 
       //   setFiduciales({
