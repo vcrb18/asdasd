@@ -6,7 +6,9 @@ import Footer from "../customComponents/Footer";
 import { useTranslation } from "react-i18next";
 import { login } from "../../service/auth.service";
 import "../../styles/Login.css";
+import LogoCompleto from "../../static/images/logo_isatec_completo.png"
 import { type NavigateFunction, useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 export interface LoginProps {
   buttons: ButtonProps[];
 }
@@ -17,6 +19,7 @@ interface LoginInputs {
 }
 
 const Login: React.FC<LoginProps> = ({ buttons }) => {
+  const theme = useTheme();
   const { t } = useTranslation();
   const navigate: NavigateFunction = useNavigate();
 
@@ -85,6 +88,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
             lg={12} md={12} xs={12}
             justifyContent={"center"}
             alignItems={"center"}
+            padding={"5%"}
             >
             <Grid 
               container
@@ -92,19 +96,32 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
               display={"flex"}
               flexDirection={"column"}
               justifyContent={"center"}
-              alignItems={"flex-end"}
+              alignItems={"center"}
               >
-              <Typography
-                  variant="h2"
-                  textAlign={"center"}
+              <Grid item 
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                width={"100%"}
                 >
-                {/* {t("login")} */}
-                ISATEC Heart
-              </Typography>
-              {/* <Divider orientation="horizontal" light /> */}
-              <Typography fontSize={"80%"} align="left" >
-                {t("access")}
-              </Typography>
+                <img src={LogoCompleto} width={"75%"}/>
+              </Grid>
+
+              <Divider />
+              
+              <Grid item 
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                width={"100%"}
+                // display={"flex"}
+                // justifyContent={"center"}
+                // alignItems={"flex-end"}
+                >
+                <Typography fontSize={"180%"} color={"#82b8c2"} >
+                  {t("access")}
+                </Typography>
+              </Grid>
 
             </Grid>
             <Grid 
@@ -120,7 +137,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 display={"flex"}
                 flexDirection="column"
                 padding={"5%"}
-                borderRadius={5}
+                borderRadius={3}
                 width={"70%"}
                 
                 // boxShadow={"5px 5px 10px #ccc"}
@@ -135,7 +152,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 }}
               >
                 <Grid item
-                  borderRadius={5}
+                  borderRadius={3}
                   width={"100%"}
                 >
                 <Typography
@@ -144,7 +161,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 </Typography>
                 </Grid>
                 <Grid item
-                borderRadius={5}
+                borderRadius={3}
                 width={"100%"}
                 >
                 <TextField
@@ -162,7 +179,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 </Grid>
                 <Grid item
                   width={"100%"}
-                  borderRadius={5}
+                  borderRadius={3}
                 >
                   <Typography
                   fontSize={"120%"}>
@@ -170,7 +187,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 </Typography>
                 </Grid>
                 <Grid item 
-                  borderRadius={5}
+                  borderRadius={3}
                   width={"100%"}
                 >
 
