@@ -31,7 +31,13 @@ const MainMenuButton = (): JSX.Element => {
         {mainMenuPageButtons != null && mainMenuPageButtons.length > 0
           ? mainMenuPageButtons.map((button, index) => (
               <Grid container lg={6} md={6} xs={12} key={index} padding={'0.5%'}>
-                <Button sx={{ backgroundColor: "#E4EDEF" }} href={button.href}                fullWidth >
+                <Button 
+                  sx={{ backgroundColor: "#E4EDEF" }}
+                  href={button.href}
+                  fullWidth 
+                  disableElevation
+                  disabled={button.label === 'alerts' || button.label === 'metrics' || button.label === 'report'}
+                  >
                   <Grid 
                     container
                     display={"flex"}
