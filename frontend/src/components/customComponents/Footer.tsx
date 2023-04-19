@@ -9,10 +9,10 @@ const Footer: React.FC<FooterProps> = ({ footerPosition }) => {
   return (
     <AppBar
       position={footerPosition}
-      sx={{ top: "auto", bottom: 0, background: "#1c9093", height: "auto" }}
+      sx={{ top: "auto", bottom: 0, background: "#007088", height: "auto" }}
     >
       <Toolbar sx={{ justifyContent: "center" }}>
-        <Typography sx={{ fontSize: "1.2rem" }}>
+        <Typography sx={{ fontSize: "1.2rem" }} color="#fff" >
           Copyright@2022 ISATEC Heart. All rights reserved
         </Typography>
       </Toolbar>

@@ -16,5 +16,6 @@ code {
 }
 
 .MuiTypography-root {
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Trebuchet MS", bold !important; 
+  color: #007088;
 }
