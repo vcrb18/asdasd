@@ -36,6 +36,7 @@ export interface ExamData {
   patient_id: string | null;
   created_at: string;
   estado: boolean;
+  aceptado: boolean;
   urgencia: number;
   resultados: string;
   operator_review: boolean;

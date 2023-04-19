@@ -52,7 +52,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       (response) => {
         let data = {
           ...response.data,
-          estado: response.data.estado,
+          estado: response.data.aceptado,
           resultados: "/examsview",
         };
         setAnalisisData(data);
