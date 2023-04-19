@@ -767,16 +767,16 @@ const FiducialChart = (props: any): JSX.Element => {
     -30, -28, -28, -28, -28, -26, -26,
   ]);
 
-  useEffect(()=> {
-    getTimeSeries(examId).then((response) => {
-      console.log("hola estoy seteando la time series");
-      console.log(timeseriesData);  
-      setTimeSeriesData(response.data);
-      maxY = Math.max(...timeseriesData) + 100;
-      minY = Math.min(...timeseriesData) - 100;
-      console.log(response.data);  
-  })
-})
+    useEffect(() => {
+        getTimeSeries(examId).then((response) => {
+            console.log("hola estoy seteando la time series");
+            console.log(timeseriesData);
+            setTimeSeriesData(response.data.II);
+            maxY = Math.max(response.data.II) + 100;
+            minY = Math.min(response.data.II) - 100;
+            console.log(response.data);
+        })
+    }, []);
 
   // const examId = props.examId;
   const examId = props.examId;
