@@ -342,7 +342,7 @@ const ExamTable = ({
     // setRows(rows => [...rows, ...exams.data])
     // console.log(`exams: ${exams}`);
     
-    getExams(page, 10).then((response) => {
+    getExams(page, 11).then((response) => {
       // setRows([...response.data])
       setRows(rows => [...rows, ...response.data])
       setIsLoading(false);
