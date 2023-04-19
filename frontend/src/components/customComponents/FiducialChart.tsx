@@ -766,6 +766,7 @@ const FiducialChart = (props: any): JSX.Element => {
     -22, -22, -22, -24, -24, -26, -26, -26, -28, -28, -28, -28, -28, -30, -30,
     -30, -28, -28, -28, -28, -26, -26,
   ]);
+  
 
     useEffect(() => {
         getTimeSeries(examId).then((response) => {
@@ -867,10 +868,11 @@ return prev[0].y > curr[0].y ? prev : curr;
     // if(!chart.data.datasets[bubble[0].datasetIndex].data[0].x) return;
     let num = chart.data.datasets[bubble[0].datasetIndex].data[0] as any;
     let box = chart.boxes[4] as any;
-    // console.log(chart)
+    let line = chart.data.datasets[7] as any;
+    console.log(line.data);
     num.x += Math.round(moveX* ((box.max-box.min)/box.width));  // movex no esta escalado
     // const vary = chart.data.datasets[bubble[0].datasetIndex].data[0].y - timeseriesData[chart.data.datasets[bubble[0].datasetIndex].data[0].x];
-    num.y = timeseriesData[num.x];
+    num.y = line.data[num.x];
     // console.log(chart.data.datasets[bubble[0].datasetIndex].data[0]);
   };
 
@@ -902,13 +904,30 @@ return prev[0].y > curr[0].y ? prev : curr;
           // console.log("mup");
           lastEvent = undefined;
           event.native.target.style.cursor = 'default';
+          if(!bubble) break;
+          if(!bubble[0]) break;
+          bubble = undefined;
           chart.update();
+          const childata = {
+            fidP:fidP,
+            fidQRS:fidQRS,
+            fidR:fidR,
+            fidR2:fidR2,
+            fidS:fidS,
+            fidST:fidST,
+            fidT:fidT,
+          }
+          console.log(childata);
+          console.log("TESTS ACA");
+          console.log(pStartPoint, fidP, props);
+          props.handleFiducialChartUpdate(childata);
           break;
         case "mousedown":
           // console.log("mdown");
           lastEvent = event;
           lastMovement = event;
           bubble = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+          console.log(bubble);
           if(!bubble[0]) break;
           if (bubble[0].element) event.native.target.style.cursor = 'grab';
           else event.native.target.style.cursor = 'default';

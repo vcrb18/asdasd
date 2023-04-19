@@ -5,6 +5,7 @@ import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamPredictedMarkers, getTimeSeriesById} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
+import { postTimeSeriesById }  from "../../service/user.service"; 
 import { number } from "yup";
 
 
@@ -688,6 +689,20 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     );
   }, []);
 
+  const handleFiducialChartUpdate : Function = (childData : any) => {
+    // 👇️ take the parameter passed from the Child component
+    console.log("se recibio estos datos:", childData);
+    console.log(childData.fidP);
+    
+    // setFidP(childData.fidP);
+    // setFidQRS(childData.fidQRS);
+    // setFidR(childData.fidR);
+    // setFidR2(childData.fidR2);
+    // setFidS(childData.fidS);
+    // setFidST(childData.fidST);
+    // setFidT(childData.fidT);
+  };
+
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
     <Stack
@@ -718,6 +733,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           fidS={fidS}
           fidST={fidST}
           fidT={fidT}
+          handleFiducialChartUpdate = {handleFiducialChartUpdate}
         />
       </Box>
 
@@ -735,6 +751,16 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
             variant="contained"
             onClick={() => {
               console.log("Boton guardar cambios");
+              const newData = {
+                fidP:fidP,
+                fidQRS:fidQRS,
+                fidR:fidR,
+                fidR2:fidR2,
+                fidS:fidS,
+                fidST:fidST,
+                fidT:fidT,
+              }
+              postTimeSeriesById(examId, newData)
             }}
           >
             Guardar cambios
