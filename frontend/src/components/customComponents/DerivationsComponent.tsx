@@ -5,6 +5,7 @@ import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamPredictedMarkers, getTimeSeriesById} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
+import { number } from "yup";
 
 
 interface DerivationsProps {
@@ -568,6 +569,10 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     r2: 0,
   });
   
+  // const [timeSeriesN, setTimeSeriesN ] = React.useState([[]]);
+  // const [timeSeriesVI, setTimeSeriesVI ] = React.useState([[]]);
+  // const [timeSeriesVII, setTimeSeriesVII ] = React.useState([[]]);
+  // const [timeSeriesA, setTimeSeriesA ] = React.useState([[]]);
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
   const [timeSeriesIII, setTimeSeriesIII] = React.useState([]);
@@ -581,9 +586,62 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   const [timeSeriesaVL, setTimeSeriesaVL] = React.useState([]);
   const [timeSeriesaVR, setTimeSeriesaVR] = React.useState([]);
 
+  // function getTittle (index : number, tittleType: number ) : string {
+  //   switch(tittleType) {
+  //     case 1:
+  //       switch (index) {
+  //         case 0:
+  //           return "I"
+  //         case 1:
+  //           return "II"
+  //         case 2:
+  //           return "III"
+  //         default: 
+  //           return ""
+  //       }
+  //     case 2:
+  //       switch(index){
+  //         case 0:
+  //           return "V1"
+  //         case 1:
+  //           return "V2"
+  //         case 2:
+  //           return "V3"
+  //         default: 
+  //           return ""
+  //       }
+  //     case 3:
+  //     switch(index){
+  //       case 0:
+  //         return "V4"
+  //       case 1:
+  //         return "V5"
+  //       case 2:
+  //         return "V6"
+  //       default: 
+  //         return ""
+  //     }
+  //     case 4:
+  //     switch(index){
+  //       case 0:
+  //         return "aVF"
+  //       case 1:
+  //         return "aVL"
+  //       case 2:
+  //         return "aVR"
+  //       default: 
+  //         return ""
+  //     }
+
+  //     default:
+  //       return ""
+  //   }
+  // }
+
   useEffect(()=> {
     getTimeSeriesById(examId).then(
       response =>{
+
         setTimeSeriesI(response.data.I)
         setTimeSeriesII(response.data.II)
         setTimeSeriesIII(response.data.III)
@@ -596,6 +654,10 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         setTimeSeriesaVF(response.data.aVF)
         setTimeSeriesaVL(response.data.aVL)
         setTimeSeriesaVR(response.data.aVR)
+        // setTimeSeriesN([timeSeriesI, timeSeriesII, timeSeriesIII])
+        // setTimeSeriesVI([timeSeriesV1, timeSeriesV2, timeSeriesV3])
+        // setTimeSeriesVII([timeSeriesV4, timeSeriesV5, timeSeriesV6])
+        // setTimeSeriesA([timeSeriesaVF, timeSeriesaVL, timeSeriesaVR])
     }); 
   },[]);
 
@@ -605,17 +667,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
 
   useEffect(()=> {
+    const offset = 640;
     getExamPredictedMarkers(examId).then(
       (response) => {
         // console.log(response.data)
         setFidExamId(response.data.examId)
-        setFidP(response.data.p_start)
-        setFidQRS(response.data.qrs_start)
-        setFidR(response.data.r)
-        setFidR2(response.data.r2)
-        setFidS(response.data.qrs_end)
-        setFidST(response.data.t_start)
-        setFidT(response.data.t_end) 
+        setFidP(response.data.p_start + offset)
+        setFidQRS(response.data.qrs_start + offset)
+        setFidR(response.data.r + offset)
+        setFidR2(response.data.r2 + offset)
+        setFidS(response.data.qrs_end + offset)
+        setFidST(response.data.t_start + offset)
+        setFidT(response.data.t_end + offset) 
       }
 
       //   setFiduciales({
@@ -623,7 +686,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       //   })
       // }
     );
-  });
+  }, []);
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
@@ -689,43 +752,85 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         </Typography>
 
 
-      <Grid container display={'flex'} alignItems={'center'} justifyContent={'space-evenly'} marginTop={'1%'}>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
+      <Grid container 
+        display={'flex'}
+        alignItems={'center'} marginTop={'1%'} lg={12}>
+          {/* <Grid container display={"flex"} flexDirection={'column'} lg={3}>
+            {timeSeriesN.map((timeSeries, index) => ( 
+              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+                <LineChart data={timeSeries} der_title={getTittle(index, 1)} max_points={2500}/>
+              </Grid>
+              ))}
+            </Grid>
+          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
+            {timeSeriesVI.map((timeSeries, index) => ( 
+              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+                <LineChart data={timeSeries} der_title={getTittle(index, 2)} max_points={2500}/>
+              </Grid>
+              ))}
+            </Grid>
+          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
+            {timeSeriesVII.map((timeSeries, index) => ( 
+              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+                <LineChart data={timeSeries} der_title={getTittle(index, 3)} max_points={2500}/>
+              </Grid>
+              ))}
+            </Grid>
+          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
+            {timeSeriesA.map((timeSeries, index) => ( 
+              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+                <LineChart data={timeSeries} der_title={getTittle(index, 4)} max_points={2500}/>
+              </Grid>
+              ))}
+            </Grid> */}
+          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesI} der_title={"I"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesII} der_title={"II"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
+            </Grid>
           </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
-          </Grid>
-          <Grid item lg={3} md={6} xs={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-            <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-          </Grid>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+            </Grid>
+          </Grid> 
+          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
+            </Grid>
+          </Grid> 
+          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
+            </Grid>
+          </Grid> 
+          <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+
+            <LineChart height={150} width={1291} data={timeSeriesII} der_title={"II"} max_points={10000}/>
+          </Grid> 
 
       </Grid>
 
