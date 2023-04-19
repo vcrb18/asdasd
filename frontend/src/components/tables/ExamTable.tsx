@@ -361,7 +361,7 @@ const ExamTable = ({
       <StyledTableCell align="center">
         {formatDate(row.created_at)}
       </StyledTableCell>  
-      <StyledTableCell align="center">{getStatusIcon(row.estado)}</StyledTableCell>
+      <StyledTableCell align="center">{getStatusIcon(row.aceptado)}</StyledTableCell>
       <StyledTableCell align="center">{getUrgencyText(row.urgencia)}</StyledTableCell>
       <StyledTableCell align="center">{getReviewState(row.reviews)}</StyledTableCell>
       <StyledTableCell align="center">
