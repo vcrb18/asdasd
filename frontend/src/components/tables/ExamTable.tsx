@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import CircularProgress from "@mui/material/CircularProgress";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import {
@@ -15,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
-import { getExams, getExamsCount } from "../../service/user.service";
+import { getExams, getExamsCount, useExams } from "../../service/user.service";
 // import { type NavigateFunction, useNavigate } from "react-router-dom";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -24,6 +25,7 @@ import { useTranslation } from "react-i18next";
 // import { ReactElement } from "react";
 // import { Token } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { log } from "console";
 // import { isEmptyArray } from "formik";
 
 const API_URL = "http://localhost:8080/";
@@ -267,6 +269,7 @@ const ExamTable = ({
       },
     },
   });
+  const [isLoading, setIsLoading] = React.useState<boolean>();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
@@ -332,11 +335,19 @@ const ExamTable = ({
     setPage(0);
   };
 
+  // const { isError, isLoading, exams } = useExams(page, 10);
   useEffect(()=> {
     console.log("ENTRE AL USE EFFECT");
+    setIsLoading(true);
+    // setRows(rows => [...rows, ...exams.data])
+    // console.log(`exams: ${exams}`);
+    
     getExams(page, 10).then((response) => {
       // setRows([...response.data])
       setRows(rows => [...rows, ...response.data])
+      setIsLoading(false);
+    console.log(`response: ${response}`);
+      
     });
     getExamsCount().then((response) => {
       setMaxRows(response.data.count)
@@ -382,6 +393,8 @@ const ExamTable = ({
     );
 
     console.log("PR", paginatedRows);
+
+  // if (isLoading) return <CircularProgress />;
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
