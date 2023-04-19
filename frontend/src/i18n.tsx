@@ -5,6 +5,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      review: "Review",
+      reviewed: "Reviewed",
+      toReview: "Waiting for Review",
       user: "User",
       password: "Password",
       forgotPassword: "I forgot my password",
@@ -64,6 +67,9 @@ const resources = {
   },
   es: {
     translation: {
+      review: "Revisión",
+      reviewed: "Revisado",
+      toReview: "Por Revisar",
       user: "Usuario",
       password: "Contraseña",
       forgotPassword: "He olvidado mi contraseña",
@@ -116,7 +122,7 @@ const resources = {
       add: "Agregar",
       fiducialPoints: "Puntos fiduciales",
       applyFilter: "Aplicar Filtros",
-      folioSearch: "Buscar por Fiolio",
+      folioSearch: "Buscar por Folio",
       es: "Español",
       en: "Inglés",
     },
