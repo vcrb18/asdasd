@@ -1,20 +1,43 @@
 import axios, { type AxiosResponse } from "axios";
+import useSWR from "swr"
 import authHeader from "./auth.header";
 const API_URL = "http://localhost:8080/";
 
-// ASI LLAMO A MIS RUTAS PROTEGIDAS
-// POR EJEMPLO EXAMENES, EXAMEN, ALERTAS.
+function fetcher(url: string) {
+  console.log(`url: ${url}`);
+  return fetch(url).then((res) => res.json());
+}
+
 export const getPublicContent = async (): Promise<AxiosResponse> => {
   return await axios.get(API_URL + "landingPage");
 };
 
-export const getExams = async (): Promise<AxiosResponse> => {
-  return await axios.get("/exams", { withCredentials: true });
+export function useExams(page : number, order:number) {
+
+  const { data, error } = useSWR(`/exams?page=${page}&order=${order}&count=25`, fetcher);
+  console.log('Inside the useExams. data:');
+  console.log(data);
+  
+  
+  return {
+    exams: data,
+    isLoading: !data && !error,
+    isError: error,
+  };
+}
+export const getExams = async (page : number, order:number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams?page=${page}&order=${order}&count=25`, { withCredentials: true });
 };
 
+export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams?page=${page}&order=${order}&find=${searchInt}`, { withCredentials: true })
+}
 // export const getExamPredictedMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
 //   return await axios.get(`/predicted_markers_computations/${exam_id}`, { withCredentials: true });
 // }
+export const getExamsCount = async () : Promise<AxiosResponse> => {
+  return axios.get(`/exams/count`, {withCredentials: true})
+}
 
 export const getExamPredictedMarkersComputations = (
   exam_id: number
@@ -58,7 +81,7 @@ export const getSuggestedDiagnostic = async (
   exam_id: number,
   type_id: number
 ): Promise<AxiosResponse> => {
-  return await axios.get(`/algorithm_predictions/${exam_id}/${type_id}`, {
+  return await axios.get(`/algorithm_predictions/${exam_id}`, {
     withCredentials: true,
   });
 };
@@ -71,7 +94,7 @@ export const getTimeSeriesById = async (exam_id: number): Promise<AxiosResponse>
   return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true})
 }
 export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/time_series/${exam_id}`, {withCredentials: true});
+  return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true});
 }
 
 export const postTimeSeriesById = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid

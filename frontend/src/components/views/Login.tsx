@@ -1,6 +1,6 @@
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
 import Header, { type ButtonProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { useTranslation } from "react-i18next";
@@ -67,76 +67,148 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   };
   return (
     <>
-      <ThemeProvider theme={loginButtonTheme}>
-        <Header
+    <Box
+      width={"100%"}
+      height={"100%"}
+      >
+      {/* <ThemeProvider theme={loginButtonTheme}>   */}
+        {/* <Header
           buttons={buttons}
           onTabValueChange={(index: number) => {
             console.log(`Funcion que no hace nada en el Login`);
           }}
-        />
+        /> */}
         <form onSubmit={handleSubmit}>
-          <Box
+          <Grid 
+            container
             display={"flex"}
-            flexDirection={"column"}
-            maxWidth={"85%"}
-            alignItems={"center"}
+            lg={12} md={12} xs={12}
             justifyContent={"center"}
-            margin={"auto"}
-            padding={"5%"}
-            borderRadius={5}
-            // boxShadow={"5px 5px 10px #ccc"}
-            // box-shadow={"0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)"}
-            sx={{
-              // ":hover": {
-              //   boxShadow: "10px 10px 20px #ccc",
-              // },
-              boxShadow:
-                "0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)",
-              "background-color": "#FFFFFF",
-            }}
-          >
-            <Typography
-              variant="h2"
-              padding={3}
-              textAlign={"center"}
-              color="primary"
+            alignItems={"center"}
             >
-              {/* {t("login")} */}
-              ISATEC Heart
-            </Typography>
-            <TextField
-              margin="normal"
-              type={"text"}
-              name="username"
-              required
-              color="success"
-              variant="outlined"
-              placeholder="Usuario"
-              value={loginInputs.username}
-              onChange={handleChange}
-            />
-            <TextField
-              name="password"
-              value={loginInputs.password}
-              onChange={handleChange}
-              margin="normal"
-              type={"password"}
-              required
-              variant="outlined"
-              placeholder="Contraseña"
-            />
-            <Button
-              type="submit"
-              sx={{ marginTop: 3, borderRadius: 3, width: "150px" }}
-              variant="contained"
-              color="primary"
-            >
-              {t("login")}
-            </Button>
-          </Box>
+            <Grid 
+              container
+              lg={4} md={4} xs={12}
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"center"}
+              alignItems={"flex-end"}
+              >
+              <Typography
+                  variant="h2"
+                  textAlign={"center"}
+                >
+                {/* {t("login")} */}
+                ISATEC Heart
+              </Typography>
+              {/* <Divider orientation="horizontal" light /> */}
+              <Typography fontSize={"80%"} align="left" >
+                {t("access")}
+              </Typography>
+
+            </Grid>
+            <Grid 
+              container 
+              lg={8} md={8} xs={12}
+              display={"flex"}
+              flexDirection="column"
+              alignItems={"center"}
+              justifyContent={"center"}
+              width={"100%"}              
+              >
+              <Grid item
+                display={"flex"}
+                flexDirection="column"
+                padding={"5%"}
+                borderRadius={5}
+                width={"70%"}
+                
+                // boxShadow={"5px 5px 10px #ccc"}
+                // box-shadow={"0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)"}
+                sx={{
+                  // ":hover": {
+                  //   boxShadow: "10px 10px 20px #ccc",
+                  // },
+                  boxShadow:
+                    "0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)",
+                  "background-color": "#E4EDEF",
+                }}
+              >
+                <Grid item
+                  borderRadius={5}
+                  width={"100%"}
+                >
+                <Typography
+                  fontSize={"120%"}>
+                  {t("user")}
+                </Typography>
+                </Grid>
+                <Grid item
+                borderRadius={5}
+                width={"100%"}
+                >
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  type={"text"}
+                  name="username"
+                  sx={{backgroundColor: "#FFF"}}
+                  required
+                  color="success"
+                  variant="outlined"
+                  value={loginInputs.username}
+                  onChange={handleChange}
+                />
+                </Grid>
+                <Grid item
+                  width={"100%"}
+                  borderRadius={5}
+                >
+                  <Typography
+                  fontSize={"120%"}>
+                  {t("password")}
+                </Typography>
+                </Grid>
+                <Grid item 
+                  borderRadius={5}
+                  width={"100%"}
+                >
+
+                <TextField
+                  fullWidth
+                  name="password"
+                  margin="normal"
+                  value={loginInputs.password}
+                  onChange={handleChange}
+                  type={"password"}
+                  required
+                  sx={{backgroundColor: "#FFF", width: "100%"}}
+                />
+                </Grid>
+
+                <Grid item>
+                <Button
+                  size="large"
+                  type="submit"
+                  sx={{ color: "#FFF", backgroundColor: "#007088", lightingColor: "#007088", marginTop: "3%", borderRadius: 3 }}
+                >
+                  {t("login")}
+                </Button>
+                </Grid>
+              </Grid>
+              <Grid item mt={"2%"}>
+                <Typography fontSize={"90%"}>
+                  {t("forgotPassword")}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         </form>
-      </ThemeProvider>
-      <Footer footerPosition={"fixed"} />
+        
+      {/* </ThemeProvider> */}
+    </Box>
+
+      {/* <Footer footerPosition={"fixed"} /> */}
     </>
   );
 };

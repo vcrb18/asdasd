@@ -5,6 +5,10 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      user: "User",
+      password: "Password",
+      forgotPassword: "I forgot my password",
+      access: "Access",
       patology: "Patology",
       patologies: "Patologies",
       state: "State",
@@ -60,6 +64,10 @@ const resources = {
   },
   es: {
     translation: {
+      user: "Usuario",
+      password: "Contraseña",
+      forgotPassword: "He olvidado mi contraseña",
+      access: "Acceso",
       patology: "Patología",
       patologies: "Patologías",
       state: "Estado",

@@ -68,7 +68,7 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
           setOpenDrawer(!openDrawer);
         }}
       >
-        <MenuIcon sx={{ marginLeft: "auto" }} />
+        <MenuIcon sx={{ marginLeft: "auto", color: '#000'}} />
       </IconButton>
     </React.Fragment>
   );

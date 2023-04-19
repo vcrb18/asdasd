@@ -37,9 +37,8 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
 
   return (
     <React.Fragment>
-      <AppBar sx={{ background: "#1c9093", height: "auto" }}>
+      <AppBar color={'transparent'} elevation={0} sx={{ background: "#fff", height: "auto" }}>
         <Toolbar>
-          <Logo />
           {isMatch ? (
             <>
               {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
