@@ -7,6 +7,8 @@ import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
 import { postTimeSeriesById }  from "../../service/user.service"; 
 import { number } from "yup";
+import { useTranslation } from "react-i18next";
+
 
 
 interface DerivationsProps {
@@ -664,7 +666,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
 
   
-  
+  const { t } = useTranslation();
 
 
   useEffect(()=> {
@@ -718,7 +720,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         width={"100%"}
         sx={{ color: "#000000" }}
       >
-        Derivación II 
+        {t("derivation")} II 
       </Typography>
 
       <Box
@@ -745,7 +747,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               console.log("Boton restaurar");
             }}
           >
-            Restaurar
+            {t("restore")}
           </Button>
           <Button
             variant="contained"
@@ -763,7 +765,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               postTimeSeriesById(examId, newData)
             }}
           >
-            Guardar cambios
+            {t("saveChanges")}
           </Button>
         </Stack>
       </Box>
@@ -774,7 +776,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           width={"100%"}
           sx={{ mt: 1, color: "#000000" }}
         >
-          Derivaciones
+          {t("derivations")}
         </Typography>
 
 
@@ -916,7 +918,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         width={"100%"}
         sx={{ mt: 1, color: "#000000" }}
       >
-        Valores
+        {t("values")}
       </Typography>
 
       <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>

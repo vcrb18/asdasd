@@ -1,6 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { getExamAllAlgorithmPredictions } from "../../service/user.service";
+import { useTranslation } from "react-i18next";
 
 interface Prediccion {
   // id: "Estado" | "Urgencia" | "Arritmia" | "Tipo" | "Extrasistole" | "Bloqueo";
@@ -16,6 +17,7 @@ interface PredictionProps {
 }
 
 const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
+  const { t } = useTranslation();
   const [predicciones, setPredicciones] = useState<Prediccion[]>([]);
   const [diagnosticos, setDiagnosticos] = useState<string[]>([]);
   useEffect(() => {
@@ -201,7 +203,7 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
     >
       <Box sx={{ backgroundColor: "#fff", borderRadius: "2%" }} margin={"3%"}>
         <Typography fontSize={"80%"} color={fontColor} mt={"2%"}>
-          Predicción de Patologías
+          {t("pathologiesPrediction")}
         </Typography>
         <Box
           display={"flex"}
@@ -234,8 +236,8 @@ const PredictionBox: React.FC<PredictionProps> = ({ examId }): JSX.Element => {
                 <Typography fontSize={"80%"} color={"#000000"}>
                   {typeof prediccion.estado === "boolean"
                     ? prediccion.estado === true
-                      ? "Aceptado"
-                      : "Rechazado"
+                      ? t("accepted")
+                      : t("refused")
                     : prediccion.estado}
                 </Typography>
               </Grid>
