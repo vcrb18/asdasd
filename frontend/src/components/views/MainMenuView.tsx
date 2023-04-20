@@ -75,7 +75,7 @@ const MainMenuView = (): JSX.Element => {
             {t("mainMenu")}
           </Typography> */}
         </Grid>
-        <Grid container  lg={8} md={8} xs={12} sx={{height: '100%'}}>
+        <Grid container lg={8} md={8} xs={12}>
           <MainMenuButton />
         </Grid>
       </Grid>

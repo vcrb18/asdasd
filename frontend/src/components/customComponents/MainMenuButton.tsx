@@ -1,7 +1,11 @@
-import { Fab, Box, Typography, Grid, Paper, Button, Avatar } from "@mui/material";
+import { Typography, Grid, Paper, Button, Avatar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { MouseEventHandler, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Exam from "../../static/images/examenes.png"
+import Metric from "../../static/images/metricas.png"
+import Alert from  "../../static/images/alertas.png"
+import Report from "../../static/images/reportes.png"
 import { mainMenuPageButtons } from "../../utils/routingPropConsts";
 import { useTranslation } from "react-i18next";
 
@@ -15,13 +19,24 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const MainMenuButton = (): JSX.Element => {
   const { t } = useTranslation();
-
+  function getAvatar(avatarNumber: number) {
+    switch (avatarNumber) {
+      case 0:
+        return Exam
+      case 1:
+        return Metric
+      case 2:
+        return Alert
+      case 3:
+        return Report
+    }
+  }
   return (
     <>
       <Grid
         container
         lg={12}
-        padding={"5%"}
+        paddingX={"2%"}
         spacing={"1%"}
         sx={{
           width: "-webkit-fill-available",
@@ -50,14 +65,20 @@ const MainMenuButton = (): JSX.Element => {
                   >
                     <Grid item lg={12} md={12} xs={12} 
                     display={"flex"}
+                    flexDirection={"column"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    marginTop={'2%'}>
-                      <Avatar>
-
-                      </Avatar>
-                    </Grid>
-                    <Grid item marginY={'2%'}>
+                    marginTop={'2%'}
+                    width={"100%"}
+                    height={'100%'}>
+                      <Avatar
+                        src={getAvatar(button.img)}
+                        alt={button.label}
+                        sizes={'large'}
+                        sx={{marginBottom: "2%"}}
+                        />
+                    {/* </Grid>
+                    <Grid item marginY={'2%'}> */}
                       <Typography
                       fontSize={"250%"}
                       color={"#007088"}

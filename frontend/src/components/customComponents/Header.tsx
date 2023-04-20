@@ -9,6 +9,7 @@ import {
 import "../../styles/Header.css";
 import DrawerComp from "./DrawerComp";
 import Logo from "./Logo";
+import LogoCompleto from "../../static/images/logo_isatec_completo.png"
 import NavBarButton from "./NavBarButton";
 import NavbarTabs from "./NavbarTabs";
 
@@ -41,6 +42,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
         <Toolbar>
           {isMatch ? (
             <>
+              <img src={LogoCompleto} width={"75%"}/>
               {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
               </Typography> */}
