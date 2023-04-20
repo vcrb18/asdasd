@@ -822,6 +822,17 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           </Grid>
           <Grid container display={'flex'} flexDirection={'column'} lg={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={150} width={317} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
+            </Grid>
+          </Grid> 
+          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={150} width={317} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
@@ -840,17 +851,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={150} width={317} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
-            </Grid>
-          </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
             </Grid>
           </Grid> 
           <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>

@@ -197,8 +197,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               variant="contained"
               sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
                           onClick={toggleValidatedExam}
-            >
-                          {validationButtonMessage}
+            >{validationButtonMessage}
             </Button>
           </Grid>
         </Grid>
