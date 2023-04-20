@@ -11,6 +11,7 @@ import {
   getExamPredictedMarkersComputations,
 } from "../../service/user.service";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface ExamsViewProps {
   // examId: number ;
@@ -41,6 +42,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
 }): JSX.Element => {
+  const { t } = useTranslation();
   const { examId } = useParams<{ examId: string }>();
   const examIdNumber = parseInt(examId || "0", 10);
   const [examData, setExamData] = useState<ExamData>();
@@ -110,7 +112,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                   color={"#061525"}
                   sx={{ fontWeight: "bold" }}
                 >
-                  Folio examen:
+                  {t("folioExam")}:
                 </Typography>
               </Box>
               <Box
@@ -150,7 +152,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                   color={"#061525"}
                   sx={{ fontWeight: "bold" }}
                 >
-                  Fecha
+                  {t("date")}
                 </Typography>
               </Box>
               <Box
@@ -175,7 +177,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               variant="contained"
               sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
             >
-              Validar mediciones
+              {t("validateMeasurements")}
             </Button>
           </Grid>
         </Grid>
@@ -238,12 +240,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       >
         <Box display={"flex"} alignItems={"flex-start"}>
           <Typography fontSize={"80%"} color={"#000"}>
-            Comentarios
+            {t("comments")}
           </Typography>
         </Box>
         <TextField
           id="outlined-multiline-static"
-          label="Ingrese aquí sus comentarios"
+          label={t("commentsLabel")}
           multiline
           rows={4}
           fullWidth
