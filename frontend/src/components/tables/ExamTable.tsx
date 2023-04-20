@@ -270,7 +270,7 @@ const ExamTable = ({
       },
     },
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
@@ -282,7 +282,8 @@ const ExamTable = ({
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString();
+    // Esto extrae la zona horaria del sistema donde se ejecuta el browser, para chile es el string "America/Santiago"
+    return date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone});
   };
 
   const getStatusIcon = (estado: boolean)  => (
@@ -338,7 +339,6 @@ const ExamTable = ({
 
   // const { isError, isLoading, exams } = useExams(page, 10);
   useEffect(()=> {
-    console.log("ENTRE AL USE EFFECT");
     setIsLoading(true);
     // setRows(rows => [...rows, ...exams.data])
     // console.log(`exams: ${exams}`);
@@ -347,8 +347,6 @@ const ExamTable = ({
       // setRows([...response.data])
       setRows(rows => [...rows, ...response.data])
       setIsLoading(false);
-    console.log(`response: ${response}`);
-      
     });
     getExamsCount().then((response) => {
       setMaxRows(response.data.count)
@@ -406,18 +404,30 @@ const ExamTable = ({
              orderBy={orderBy}
              onRequestSort={handleRequestSort}
            />
+           {isLoading ? (
+            <TableBody>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'>
+                <CircularProgress/>
+              </StyledTableCell>
+            </TableBody>
+           )
+           :(
             <TableBody>
               {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
               {paginatedRows.map((row: ExamData) => renderRow(row))}
                {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
-            </TableBody>
+            </TableBody>)
+          }
           </Table>
         </TableContainer>
         <TablePagination
          rowsPerPageOptions={[25]}
         //  rowsPerPageOptions={[10, 25, 100]}
          component="div"
-         count={-1}
+         count={maxRows}
         //  count={rows.length}
          rowsPerPage={rowsPerPage}
          page={page}

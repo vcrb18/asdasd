@@ -1,6 +1,6 @@
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, TextField, Typography } from "@mui/material";
 import Header, { type ButtonProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { useTranslation } from "react-i18next";
@@ -23,9 +23,8 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   const { t } = useTranslation();
   const navigate: NavigateFunction = useNavigate();
 
-  // const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-
   const loginButtonTheme = createTheme({
     palette: {
       primary: {
@@ -49,6 +48,7 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
     event.preventDefault();
     console.log(`loginInputs.username: ${loginInputs.username}`);
     console.log(`loginInputs.password: ${loginInputs.password}`);
+    setLoading(true)
     login(loginInputs.username, loginInputs.password).then(
       () => {
         console.log("Entramos al login");
@@ -62,11 +62,16 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
         const resMessage =
           error?.response?.data?.message || error.message || error.toString();
 
-        // setLoading(false);
-        setMessage(resMessage);
-        console.log(message);
+        setLoading(false);
+        const userMessage = "Usuario o contraseña inválidos"
+        if (error.response.status == 401){
+          setMessage(userMessage);  
+        }
+        else {
+          setMessage(resMessage);
+        }
       }
-    );
+    ).then( () => setLoading(false));
   };
   return (
     <>
@@ -202,7 +207,8 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                   sx={{backgroundColor: "#FFF", width: "100%"}}
                 />
                 </Grid>
-
+                {loading ? <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress/></div> : <></>}
+                {message ? <Grid item style={{color: "#007088"}}> {message} </Grid> : <></>}
                 <Grid item>
                 <Button
                   size="large"
