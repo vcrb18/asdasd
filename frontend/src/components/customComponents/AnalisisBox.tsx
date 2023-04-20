@@ -160,7 +160,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         >
           <Grid item>
             <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              Motivo
+              {t("reason")}
             </Typography>
           </Grid>
           <Grid item>

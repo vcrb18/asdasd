@@ -63,6 +63,7 @@ const resources = {
       folioSearch: "Filter by Folio",
       es: "Spanish",
       en: "English",
+      reason: "Reason",
     },
   },
   es: {
@@ -125,6 +126,7 @@ const resources = {
       folioSearch: "Buscar por Folio",
       es: "Español",
       en: "Inglés",
+      reason: "Motivo",
     },
   },
 };
