@@ -79,7 +79,6 @@ export const getExamAllAlgorithmPredictions = (
 
 export const getSuggestedDiagnostic = async (
   exam_id: number,
-  type_id: number
 ): Promise<AxiosResponse> => {
   return await axios.get(`/algorithm_predictions/${exam_id}`, {
     withCredentials: true,
