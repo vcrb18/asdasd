@@ -274,10 +274,10 @@ const ExamTable = ({
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
+  const [maxPage, setMaxPage] = React.useState(-1);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
-    const [rows, setRows] = React.useState<ExamData[]>([]);
-    console.log("Rows", rows);
+  const [rows, setRows] = React.useState<ExamData[]>([]);
   
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
@@ -335,22 +335,29 @@ const ExamTable = ({
   ): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    setMaxPage(-1)
   };
 
-  // const { isError, isLoading, exams } = useExams(page, 10);
   useEffect(()=> {
     setIsLoading(true);
-    // setRows(rows => [...rows, ...exams.data])
-    // console.log(`exams: ${exams}`);
-    
-    getExams(page, 11).then((response) => {
-      // setRows([...response.data])
-      setRows(rows => [...rows, ...response.data])
+    let shouldLoad = false
+    if (page > maxPage) {
+      shouldLoad = true
+      setMaxPage(page)
+      getExams(page, 11).then((response) => {
+        const newExams = response.data.filter((exam: ExamData) => !rows.some(row => row.exam_id === exam.exam_id));
+        setRows([...rows, ...newExams]);
+      });
+      getExamsCount().then((response) => {
+        setMaxRows(response.data.count)
+      });
+    }
+    console.log(rows)
+    if (shouldLoad) {
+      setTimeout(() => setIsLoading(false),200)
+    } else {
       setIsLoading(false);
-    });
-    getExamsCount().then((response) => {
-      setMaxRows(response.data.count)
-    });
+    }
   }, [page])
   const renderRow = (row: ExamData) : JSX.Element => (
     
