@@ -4,10 +4,19 @@ import { useTranslation } from "react-i18next";
 import PatoGrid from "./PathologiesGrid";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
-import { getExam } from "../../service/user.service";
+import { getExam, getSuggestedDiagnostic } from "../../service/user.service";
 
 interface AnalisisProps {
   examId: number;
+}
+
+interface State {
+  confianza?: number;
+  estado?: boolean;
+  id?: string;
+  id_predicciones?: string;
+  razon_rechazo?: string;
+  razon_rechazo_confianza?: number;
 }
 
 function urgencyColorSwitcher(value: number | undefined): string {
@@ -48,6 +57,14 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     operator_review: false,
     aceptado: true
   });
+  const [state, setState] = useState<State>({
+      confianza: 0,
+      estado: false,
+      id: "",
+      id_predicciones: "",
+      razon_rechazo: "",
+      razon_rechazo_confianza: 0,
+    });
   useEffect(() => {
     getExam(examId).then(
       (response) => {
@@ -64,6 +81,23 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           error.message ||
           error.toString();
         setAnalisisData(_content);
+      }
+    );
+  }, []);
+  useEffect(() => {
+    getSuggestedDiagnostic(examId).then(
+      (response) => {
+        let data = {
+          ...response.data[0][0],
+        };
+        setState(data);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+          setState(_content);
       }
     );
   }, []);
@@ -117,6 +151,26 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             </Typography>
           </Grid>
         </Grid>
+        {state.razon_rechazo ? (
+        <Grid
+          container
+          display={"flex"}
+          justifyContent={"space-between"}
+          padding={"1%"}
+        >
+          <Grid item>
+            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
+              Motivo
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography
+              fontSize={"80%"}
+            >
+              {state.razon_rechazo}
+            </Typography>
+          </Grid>
+        </Grid>) : ("")}
         <Grid
           container
           display={"flex"}
