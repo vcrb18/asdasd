@@ -63,9 +63,7 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
           sx={{
             width: "154px",
             marginLeft: "1%",
-            backgroundColor: "#006a6b",
-            color: "#fff",
-            borderRadius: 1,
+            color: "#00000089",
           }}
         >
           <MenuItem value="es">{t("es")}</MenuItem>
