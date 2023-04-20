@@ -270,19 +270,20 @@ const ExamTable = ({
       },
     },
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
+  const [maxPage, setMaxPage] = React.useState(-1);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
-    const [rows, setRows] = React.useState<ExamData[]>([]);
-    console.log("Rows", rows);
+  const [rows, setRows] = React.useState<ExamData[]>([]);
   
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString();
+    // Esto extrae la zona horaria del sistema donde se ejecuta el browser, para chile es el string "America/Santiago"
+    return date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone});
   };
 
   const getStatusIcon = (estado: boolean)  => (
@@ -334,25 +335,29 @@ const ExamTable = ({
   ): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    setMaxPage(-1)
   };
 
-  // const { isError, isLoading, exams } = useExams(page, 10);
   useEffect(()=> {
-    console.log("ENTRE AL USE EFFECT");
     setIsLoading(true);
-    // setRows(rows => [...rows, ...exams.data])
-    // console.log(`exams: ${exams}`);
-    
-    getExams(page, 11).then((response) => {
-      // setRows([...response.data])
-      setRows(rows => [...rows, ...response.data])
+    let shouldLoad = false
+    if (page > maxPage) {
+      shouldLoad = true
+      setMaxPage(page)
+      getExams(page, 11).then((response) => {
+        const newExams = response.data.filter((exam: ExamData) => !rows.some(row => row.exam_id === exam.exam_id));
+        setRows([...rows, ...newExams]);
+      });
+      getExamsCount().then((response) => {
+        setMaxRows(response.data.count)
+      });
+    }
+    console.log(rows)
+    if (shouldLoad) {
+      setTimeout(() => setIsLoading(false),200)
+    } else {
       setIsLoading(false);
-    console.log(`response: ${response}`);
-      
-    });
-    getExamsCount().then((response) => {
-      setMaxRows(response.data.count)
-    });
+    }
   }, [page])
   const renderRow = (row: ExamData) : JSX.Element => (
     
@@ -406,18 +411,30 @@ const ExamTable = ({
              orderBy={orderBy}
              onRequestSort={handleRequestSort}
            />
+           {isLoading ? (
+            <TableBody>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'>
+                <CircularProgress/>
+              </StyledTableCell>
+            </TableBody>
+           )
+           :(
             <TableBody>
               {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
               {paginatedRows.map((row: ExamData) => renderRow(row))}
                {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
-            </TableBody>
+            </TableBody>)
+          }
           </Table>
         </TableContainer>
         <TablePagination
          rowsPerPageOptions={[25]}
         //  rowsPerPageOptions={[10, 25, 100]}
          component="div"
-         count={-1}
+         count={maxRows}
         //  count={rows.length}
          rowsPerPage={rowsPerPage}
          page={page}

@@ -85,7 +85,7 @@ const DeletableBoxItem = ({
     </>
   );
 };
-
+/*
 interface SuggestedDiagnostic {
   prediction_id?: number;
   exam_id?: number;
@@ -94,7 +94,7 @@ interface SuggestedDiagnostic {
   value_type?: string;
   value?: string;
 }
-
+*/
 interface DiagnosisProps {
   examId: number;
 }
@@ -103,7 +103,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   examId,
 }): JSX.Element => {
   const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<
-    SuggestedDiagnostic[]
+    (number | string)[][]
   >([]);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         // .map((element: string )=>{
         //   element
         // })
-        setDiagnosticosSugerido(res.data);
+        setDiagnosticosSugerido(res.data[1]);
       },
       (error) => {
         const _content =
@@ -136,7 +136,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const [newItem, setNewItem] = useState("");
 
   const handleDelete = (item: string): void => {
-    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i !== item));
+    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i[1].toString() !== item));
   };
 
   const handleAdd = (): void => {
@@ -163,9 +163,9 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box>
-        {DiagnosticosSugeridos.map((item) => (
+        {DiagnosticosSugeridos.map((item: (number | string)[]) => (
           <DeletableBoxItem
-            label={item.value ? item.value : ""}
+            label={item[1] ? item[1].toString() : ""}
             onDelete={handleDelete}
           />
         ))}
