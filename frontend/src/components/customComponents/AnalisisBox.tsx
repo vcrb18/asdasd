@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Select, MenuItem, Box, Grid } from "@mui/material";
+import { Typography, Select, MenuItem, Box, Grid, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import PatoGrid from "./PathologiesGrid";
 import DiagnosisComponent from "./DiagnosisComponent";
@@ -101,6 +101,12 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       }
     );
   }, []);
+
+  const changeStateButtonMessage: string = (false) ? 'Cambiar estado a rechazado' : 'Cambiar estado a aceptado';
+  const toggleStateOfExam = (): void => {
+    console.log("Cambio de estado");
+  };
+
   return (
     <Box
       display={"flex"}
@@ -191,6 +197,13 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             </Typography>
           </Grid>
         </Grid>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
+          onClick={toggleStateOfExam}
+        >
+          {changeStateButtonMessage}
+        </Button>
         <Grid
           container
           display={"flex"}
