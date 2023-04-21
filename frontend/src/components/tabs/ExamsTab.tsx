@@ -94,8 +94,8 @@ const ExamsTab = (): JSX.Element => {
         <Typography
           paddingLeft={"3%"}
           display={"flex"}
-          justifyContent={"flex-start"}
-          sx={{ color: "#061525", fontSize: "4rem" }}
+          justifyContent={"center"}
+          sx={{ color: "#6fb6c1", fontSize: "4rem" }}
         >
           {t("exams")}
         </Typography>
@@ -144,7 +144,7 @@ const ExamsTab = (): JSX.Element => {
             md={12}
             display={"flex"}
             justifyContent={"flex-start"}
-            sx={{ color: "#404040", fontSize: "1.5rem" }}
+            sx={{ fontSize: "1.5rem" }}
           >
             <ExamTable useFilter={filterCondition} filterId={inputValue}  />
           </Grid>

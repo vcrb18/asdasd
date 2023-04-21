@@ -32,8 +32,8 @@ const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#c6c6c5",
-    color: "#061525",
+    backgroundColor: "#E4EDEF",
+    color: "#007088",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -266,7 +266,7 @@ const ExamTable = ({
   const buttonsTheme = createTheme({
     palette: {
       primary: {
-        main: "#D4E6DA",
+        main: "#007088",
       },
     },
   });
@@ -376,13 +376,15 @@ const ExamTable = ({
             <Button
               color="primary"
               variant="contained"
-              sx={{ color: "#006a6b" }}
+              sx={{ color: "#fff" }}
               value={row.exam_id}
               // onClick={(event) => {
               //   handleSubmit(event, row.exam_id);
               // }}
             >
-              Acceder
+              <Typography fontSize={'80%'} color={'#fff'}>
+                {t("access")}
+              </Typography>
             </Button>
           </Link>
         </ThemeProvider>
