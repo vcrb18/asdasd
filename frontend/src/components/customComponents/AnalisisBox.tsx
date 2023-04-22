@@ -102,7 +102,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     );
   }, []);
 
-  const changeStateButtonMessage: string = (false) ? 'Cambiar estado a rechazado' : 'Cambiar estado a aceptado';
   const toggleStateOfExam = (): void => {
     console.log("Cambio de estado");
   };
@@ -156,7 +155,18 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               {analisisData.estado === true ? "Aceptado" : "Rechazado"}
             </Typography>
           </Grid>
+          <Grid item>
+          <Button
+          variant="contained"
+          sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
+          onClick={toggleStateOfExam}
+        >
+          Cambiar
+        </Button>
+          </Grid>
         </Grid>
+        
+        
         {state.razon_rechazo ? (
         <Grid
           container
@@ -196,14 +206,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               {analisisData?.urgencia?.toString()}
             </Typography>
           </Grid>
+          <Grid item></Grid>
         </Grid>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
-          onClick={toggleStateOfExam}
-        >
-          {changeStateButtonMessage}
-        </Button>
         <Grid
           container
           display={"flex"}
