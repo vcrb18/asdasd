@@ -161,7 +161,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
           onClick={toggleStateOfExam}
         >
-          Cambiar
+          {t("change")}
         </Button>
           </Grid>
         </Grid>

@@ -64,6 +64,7 @@ const resources = {
       es: "Spanish",
       en: "English",
       reason: "Reason",
+      change: "Change",
     },
   },
   es: {
@@ -127,6 +128,7 @@ const resources = {
       es: "Español",
       en: "Inglés",
       reason: "Motivo",
+      change: "Cambiar",
     },
   },
 };
