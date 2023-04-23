@@ -95,7 +95,7 @@ const ExamsTab = (): JSX.Element => {
           paddingLeft={"3%"}
           display={"flex"}
           justifyContent={"center"}
-          sx={{ color: "#6fb6c1", fontSize: "4rem" }}
+          sx={{ color: "#6fb6c1", fontSize: "4rem", fontWeight: "bold" }}
         >
           {t("exams")}
         </Typography>

@@ -5,7 +5,10 @@ import TableBody from "@mui/material/TableBody";
 import CircularProgress from "@mui/material/CircularProgress";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
+import Check from "../../static/images/checkVerde.png"
+import X from "../../static/images/X.png"
 import {
+  Avatar,
   Box,
   Button,
   TableContainer,
@@ -34,10 +37,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#E4EDEF",
     color: "#007088",
+    fontWeight: "bold",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     fontWeight: "bold",
+    color: "#878787", 
   },
 }));
 
@@ -234,13 +239,13 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 function colorSwitcher(value: number): string {
   switch (value) {
     case 1:
-      return "black";
+      return "#878787";
     case 2:
-      return "orange";
+      return "#FF8B00";
     case 3:
       return "red";
     default:
-      return "black";
+      return "#878787";
   }
 }
 
@@ -282,8 +287,11 @@ const ExamTable = ({
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    // Esto extrae la zona horaria del sistema donde se ejecuta el browser, para chile es el string "America/Santiago"
-    return date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone});
+    return (
+      <Typography color={"#878787"} fontWeight={"bold"}>
+        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone}}
+      </Typography>
+      )
   };
 
   const getStatusIcon = (estado: boolean)  => (
@@ -296,17 +304,24 @@ const ExamTable = ({
     </Typography>
   );
   const getReviewState = (state: boolean) : JSX.Element => {
+    console.log(state)
     if (state === true) {
       return(
-        <Typography>
-          {t("reviewed")}
-        </Typography>
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
+        </Box>
+        // <Typography>
+        //   {t("reviewed")}
+        // </Typography>
       )
     } else {
       return (
-        <Typography>
-          {t("toReview")}
-        </Typography>
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
+        </Box>
+        // <Typography>
+        //   {t("toReview")}
+        // </Typography>
         )
     }
   }
@@ -382,7 +397,7 @@ const ExamTable = ({
               //   handleSubmit(event, row.exam_id);
               // }}
             >
-              <Typography fontSize={'80%'} color={'#fff'}>
+              <Typography fontSize={'120%'} color={'#fff'}>
                 {t("access")}
               </Typography>
             </Button>
