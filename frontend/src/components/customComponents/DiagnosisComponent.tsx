@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
 import { getSuggestedDiagnostic } from "../../service/user.service";
+import { useTranslation } from "react-i18next";
 
 const DiagnosisTypes = ["Trasado dentro de los limites", "Ritmo sinusal"];
 
@@ -26,6 +27,7 @@ const DeletableBoxItem = ({
 }): JSX.Element => {
   //   const [hovered, setHovered] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleDeleteClick = (): void => {
     setDeleteDialogOpen(true);
@@ -65,20 +67,20 @@ const DeletableBoxItem = ({
         </Paper>
       </Box>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle>{t("confirmDelete")}</DialogTitle>
         <DialogContent>
           <Typography color={"#000000"}>
-            Are you sure you want to delete {label}?
+            {t("askBeforeDeleting")} {label}?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteCancel}>{t("cancel")}</Button>
           <Button
             onClick={handleDeleteConfirm}
             variant="contained"
             color="error"
           >
-            Delete
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -105,6 +107,8 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<
     (number | string)[][]
   >([]);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     getSuggestedDiagnostic(examId, 3).then(
@@ -159,7 +163,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     <>
       <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
         <Typography color={"#000000"} fontSize={"80%"}>
-          Diagnosticos sugeridos
+          {t("suggestedDiagnoses")}
         </Typography>
       </Box>
       <Box>
@@ -173,10 +177,10 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           <AddIcon fontSize={"inherit"} sx={{ color: "#36c513" }} />
         </IconButton>
         <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
-          <DialogTitle>Add Pathology</DialogTitle>
+          <DialogTitle>{t("add")}{t("patology")}</DialogTitle>
           <DialogContent>
             <TextField
-              label="New Item"
+              label={t("newItem")}
               fullWidth
               autoFocus
               value={newItem}
@@ -186,13 +190,13 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleAddDialogClose}>Cancel</Button>
+            <Button onClick={handleAddDialogClose}>{t("cancel")}</Button>
             <Button
               onClick={handleAddDialogSubmit}
               variant="contained"
               color="error"
             >
-              Submit
+              {t("submit")}
             </Button>
           </DialogActions>
         </Dialog>

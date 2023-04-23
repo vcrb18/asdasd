@@ -95,7 +95,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         margin={"3%"}
       >
         <Typography fontSize={"80%"} width={"100%"} sx={{ color: "#000000" }}>
-          Análisis
+        {t("analysis")}
         </Typography>
         <Grid
           container
@@ -105,7 +105,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         >
           <Grid item>
             <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              Estado
+            {t("state")}
             </Typography>
           </Grid>
           <Grid item>
@@ -113,7 +113,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               fontSize={"80%"}
               color={stateColorSwitcher(analisisData.estado)}
             >
-              {analisisData.estado === true ? "Aceptado" : "Rechazado"}
+              {analisisData.estado === true ? t("accepted") : t("refused")}
             </Typography>
           </Grid>
         </Grid>
@@ -125,7 +125,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         >
           <Grid item>
             <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              Urgencia
+            {t("urgency")}
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"}>
