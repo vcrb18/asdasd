@@ -43,7 +43,8 @@ const AlertsTab = (): JSX.Element => {
         <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuTabs}
-          headerPosition="relative"
+          headerPositionLg="relative"
+          headerPositionMd="relative"          
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}

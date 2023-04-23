@@ -1,14 +1,30 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import PropTypes, { type Validator } from "prop-types";
 
 interface FooterProps {
-  footerPosition: "static" | "fixed";
+  footerPositionMd: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
+  footerPositionLg: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
 }
 
-const Footer: React.FC<FooterProps> = ({ footerPosition }) => {
+const Footer: React.FC<FooterProps> = ({ footerPositionMd, footerPositionLg }) => {
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   return (
-    <AppBar
-      position={footerPosition}
+    <>
+    {isMatch ? (
+      <AppBar
+      position={footerPositionMd}
+      sx={{ top: "auto", bottom: 0, background: "#007088", height: "auto", marginTop: "2%" }}
+    >
+      <Toolbar sx={{ justifyContent: "center" }}>
+        <Typography sx={{ fontSize: "1.2rem" }} color="#fff" >
+          Copyright@2022 ISATEC Heart. All rights reserved
+        </Typography>
+      </Toolbar>
+    </AppBar>
+    ) : (   
+      <AppBar
+      position={footerPositionLg}
       sx={{ top: "auto", bottom: 0, background: "#007088", height: "auto" }}
     >
       <Toolbar sx={{ justifyContent: "center" }}>
@@ -17,13 +33,11 @@ const Footer: React.FC<FooterProps> = ({ footerPosition }) => {
         </Typography>
       </Toolbar>
     </AppBar>
+    )}
+    </>
+    
   );
 };
 
-Footer.propTypes = {
-  footerPosition: PropTypes.oneOf(["static", "fixed"]) as Validator<
-    "fixed" | "static"
-  >,
-};
 
 export default Footer;

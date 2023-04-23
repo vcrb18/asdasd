@@ -69,7 +69,8 @@ const ExamsTab = (): JSX.Element => {
       <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuPageButtons}
-          headerPosition="relative"
+          headerPositionLg="relative"
+          headerPositionMd="sticky"
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
@@ -149,7 +150,7 @@ const ExamsTab = (): JSX.Element => {
         </Grid>
       </Grid>
       <Grid item lg={12} xs={12} md={12}></Grid>
-      <Footer footerPosition={"static"} />
+      <Footer footerPositionLg={"static"} footerPositionMd="relative"/>
     </>
   );
 };

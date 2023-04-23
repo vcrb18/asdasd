@@ -26,7 +26,8 @@ const TablesView: React.FC = (): JSX.Element => {
           <Header
             buttons={mainMenuHeaderButtons}
             tabs={mainMenuPageButtons}
-            headerPosition={"relative"}
+            headerPositionLg="relative"
+            headerPositionMd="sticky"
             onTabValueChange={(index: number) => {
               handleButtonClicked(index);
             }}
@@ -41,7 +42,7 @@ const TablesView: React.FC = (): JSX.Element => {
               </>
             )}
           </Box>
-          <Footer footerPosition={"fixed"} />
+          <Footer footerPositionLg={"fixed"} footerPositionMd="relative" />
         </>
       )}
     </>
