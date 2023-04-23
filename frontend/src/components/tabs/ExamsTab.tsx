@@ -66,21 +66,19 @@ const ExamsTab = (): JSX.Element => {
 
   return (
     <>
-      <Grid item lg={12} md={12} xs={12} marginBottom={"5%"}>
-        <Header
+      <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuPageButtons}
+          headerPosition="relative"
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
-        />
-      </Grid>
+      />
       <Grid
         item
         lg={12}
         md={12}
         xs={12}
-        mt={"7%"}
         mb={"3%"}
         flexDirection={"row"}
         justifyContent={"space-between"}

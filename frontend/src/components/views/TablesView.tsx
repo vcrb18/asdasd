@@ -26,6 +26,7 @@ const TablesView: React.FC = (): JSX.Element => {
           <Header
             buttons={mainMenuHeaderButtons}
             tabs={mainMenuPageButtons}
+            headerPosition={"relative"}
             onTabValueChange={(index: number) => {
               handleButtonClicked(index);
             }}

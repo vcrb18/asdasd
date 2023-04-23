@@ -17,6 +17,7 @@ const MainMenuView = (): JSX.Element => {
     <>
       <Header
         buttons={mainMenuHeaderButtons}
+        headerPosition="relative"
         onTabValueChange={(index: number) => {
           console.log(`Main Menu: Tab index changed to ${index}`);
         }}

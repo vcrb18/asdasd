@@ -299,7 +299,7 @@ const ExamTable = ({
   );
 
   const getUrgencyText = (urgencia: number) => (
-    <Typography color={colorSwitcher(urgencia)}>
+    <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
       {t("urgencyLevel").concat(urgencia.toString())}
     </Typography>
   );

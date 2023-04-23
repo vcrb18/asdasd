@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes, { type Validator } from "prop-types";
 import {
   AppBar,
+  Box,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -26,10 +28,11 @@ export interface ButtonProps {
 interface HeaderProps {
   tabs?: TabProps[];
   buttons: ButtonProps[];
+  headerPosition: "static" | "fixed" | "relative";
   onTabValueChange: (index: number) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
+const Header: React.FC<HeaderProps> = ({ tabs, buttons,headerPosition , onTabValueChange }) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   const handleTabChange = (index: number): void => {
@@ -38,11 +41,10 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
 
   return (
     <React.Fragment>
-      <AppBar color={'transparent'} elevation={0} sx={{ background: "#fff", height: "auto" }}>
+      <AppBar color={'transparent'} position={"relative"} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
         <Toolbar>
           {isMatch ? (
             <>
-              <img src={LogoCompleto} width={"75%"}/>
               {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
                 ISATEC Heart
               </Typography> */}
@@ -74,7 +76,9 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
                   <NavBarButton buttonsLabels={buttons} />
                 </>
               ) : (
+                <>
                 <NavBarButton buttonsLabels={buttons} />
+                </>
               )}
             </>
           )}
@@ -85,3 +89,9 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, onTabValueChange }) => {
 };
 
 export default Header;
+
+Header.propTypes = {
+  headerPosition: PropTypes.oneOf(["static", "fixed", "relative"]) as Validator<
+    "fixed" | "static" | "relative"
+  >,
+};

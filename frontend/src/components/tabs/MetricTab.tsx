@@ -44,6 +44,7 @@ const MetricTabs = (): JSX.Element => {
         <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuTabs}
+          headerPosition="relative"
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
