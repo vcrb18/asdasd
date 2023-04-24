@@ -29,6 +29,7 @@ export interface ButtonProps {
 interface HeaderProps {
   tabs?: TabProps[];
   buttons: ButtonProps[];
+  headerPositionXs: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
   headerPositionMd: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
   headerPositionLg: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative';
   onTabValueChange: (index: number) => void;
@@ -36,15 +37,41 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, headerPositionLg, onTabValueChange }) => {
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMatchMd = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMatchXs = useMediaQuery(theme.breakpoints.down("md"));
   const handleTabChange = (index: number): void => {
     onTabValueChange(index);
   };
+  if (!isMatchXs && !isMatchMd){
+    return (
+      <React.Fragment>
+        <AppBar color={'transparent'} position={headerPositionLg} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
+        <Toolbar>
+        {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
+          ISATEC Heart
+        </Typography> */}
+        {tabs != null && tabs.length > 0 ? (
+          <>
+            <NavbarTabs
+              tabs={tabs}
+              onTabChange={(index: number) => {
+                handleTabChange(index);
+              }}
+              />
+            <NavBarButton buttonsLabels={buttons} />
+          </>
+        ) : (
+          <NavBarButton buttonsLabels={buttons} />
+          )}
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
+    )
+  }
+  else if (isMatchMd && !isMatchXs){
 
   return (
     <React.Fragment>
-      
-          {isMatch ? (
             <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
               <Toolbar>
               {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
@@ -65,32 +92,36 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
               )}
               </Toolbar>
             </AppBar>
-          ) : (
-            <AppBar color={'transparent'} position={headerPositionLg} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
-              <Toolbar>
-              {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                ISATEC Heart
-              </Typography> */}
-              {tabs != null && tabs.length > 0 ? (
-                <>
-                  <NavbarTabs
-                    tabs={tabs}
-                    onTabChange={(index: number) => {
-                      handleTabChange(index);
-                    }}
-                    />
-                  <NavBarButton buttonsLabels={buttons} />
-                </>
-              ) : (
-                    <NavBarButton buttonsLabels={buttons} />
-                    )}
-              </Toolbar>
-            </AppBar>
-          )}
-        
     </React.Fragment>
-  );
-};
+  )
+  }
+  else {
+    return (
+      <React.Fragment>
+              <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
+                <Toolbar>
+                {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
+                  ISATEC Heart
+                </Typography> */}
+                {tabs != null ? (
+                  
+                      <DrawerComp
+                        buttons={buttons}
+                        tabs={tabs}
+                        onTabChange={(index: number) => {
+                          handleTabChange(index);
+                        }}
+                      />
+                    
+                ) : (
+                      <DrawerComp buttons={buttons} onTabChange={() => {}} />
+                )}
+                </Toolbar>
+              </AppBar>
+      </React.Fragment>
+    )
+    }
+  };
 
 export default Header;
 

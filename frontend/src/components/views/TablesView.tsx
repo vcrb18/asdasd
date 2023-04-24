@@ -42,7 +42,7 @@ const TablesView: React.FC = (): JSX.Element => {
               </>
             )}
           </Box>
-          <Footer footerPositionLg={"fixed"} footerPositionMd="relative" />
+          <Footer footerPositionLg={"fixed"} footerPositionMd="relative" footerPositionXs="relative" />
         </>
       )}
     </>

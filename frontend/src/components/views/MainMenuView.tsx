@@ -17,8 +17,9 @@ const MainMenuView = (): JSX.Element => {
     <>
       <Header
         buttons={mainMenuHeaderButtons}
-        headerPositionLg="absolute"
+        headerPositionLg="relative"
         headerPositionMd="relative"
+        headerPositionXs="fixed"
         onTabValueChange={(index: number) => {
           console.log(`Main Menu: Tab index changed to ${index}`);
         }}
@@ -81,7 +82,7 @@ const MainMenuView = (): JSX.Element => {
           <MainMenuButton />
         </Grid>
       </Grid>
-      <Footer footerPositionLg={"absolute"} footerPositionMd="static" />
+      <Footer footerPositionLg={"absolute"} footerPositionMd="absolute" footerPositionXs="relative" />
     </>
   );
 };

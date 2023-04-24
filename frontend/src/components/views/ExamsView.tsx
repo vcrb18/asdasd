@@ -107,7 +107,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       <Header
         tabs={tabs}
         buttons={buttons}
-        headerPosition="relative"
+        headerPositionLg="absolute"
+        headerPositionMd="relative"
         onTabValueChange={(index: number) => {
           console.log(`Exams: Tab index changed to ${index}`);
         }}

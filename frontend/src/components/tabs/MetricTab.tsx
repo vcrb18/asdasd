@@ -40,16 +40,16 @@ const MetricTabs = (): JSX.Element => {
   };
   return (
     <>
-      <Grid item lg={12} md={12} xs={12} mb={"5%"}>
         <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuTabs}
-          headerPosition="relative"
+          headerPositionLg="relative"
+          headerPositionMd="relative"
+          headerPositionXs="sticky"
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
         />
-      </Grid>
       <Grid
         mt={"7%"}
         mb={"3%"}
@@ -136,7 +136,10 @@ const MetricTabs = (): JSX.Element => {
           </Grid>
         </Box>
       </Grid>
-      <Footer footerPosition={"static"} />
+      <Footer 
+        footerPositionLg={"static"}
+        footerPositionMd="static"
+        footerPositionXs="static" />
     </>
   );
 };
