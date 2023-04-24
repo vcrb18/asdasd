@@ -101,6 +101,16 @@ interface DiagnosisProps {
   examId: number;
 }
 
+const ParserDiagnostic = (diagnostics: []) => {
+  let new_diagnostics: (string | number)[][] = [];
+  diagnostics.map((item: (number | string)[])=>{
+    const number_ = item[0];
+    const text = item[1].toString().replace(/ /g, "_");
+    new_diagnostics.push([number_, text]);
+  });
+  return new_diagnostics;
+}
+
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   examId,
 }): JSX.Element => {
@@ -116,7 +126,8 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         // .map((element: string )=>{
         //   element
         // })
-        setDiagnosticosSugerido(res.data[1]);
+        const data_parser = ParserDiagnostic(res.data[1]);
+        setDiagnosticosSugerido(data_parser);
       },
       (error) => {
         const _content =
@@ -127,7 +138,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
       }
     );
   }, []);
-  console.log(DiagnosticosSugeridos);
+  //console.log(DiagnosticosSugeridos);
 
   // const [items, setItems] = useState<string[]>([]);
   // useEffect(() => {
@@ -169,7 +180,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
       <Box>
         {DiagnosticosSugeridos.map((item: (number | string)[]) => (
           <DeletableBoxItem
-            label={item[1] ? item[1].toString() : ""}
+            label={item[1] ? t(item[1].toString()) : ""}
             onDelete={handleDelete}
           />
         ))}
