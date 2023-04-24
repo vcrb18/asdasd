@@ -9,9 +9,9 @@ import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import {
   getExam,
   getExamPredictedMarkersComputations,
+  putExamReview, putExamUnreview
 } from "../../service/user.service";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import { useTranslation } from "react-i18next";
 
@@ -50,13 +50,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const { examId } = useParams<{ examId: string }>();
   const examIdNumber = parseInt(examId || "0", 10);
   const [examData, setExamData] = useState<ExamData>();
-  const [validatedExam, setValidatedExam] = useState<boolean>();
+  const [validated, setValidated] = useState<boolean>();
 
   useEffect(() => {
     getExam(examIdNumber).then(
       (response) => {
         setExamData(response.data);
-        setValidatedExam(response.data?.operator_review);
+            setValidated(response.data?.operator_review);
       },
       (error) => {
         const _content =
@@ -67,23 +67,23 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       }
     );
   }, []);
-  let predictedExamValuesData: PredictedValuesData;
 
-    const validationButtonMessage: string = (validatedExam) ? 'Deshacer validación' : 'Validar mediciones';
+    const validationButtonMessage: string = (validated) ? 'Deshacer validación' : 'Validar mediciones';
     const toggleValidatedExam = (): void => {
-        let urlReview;
-        if (validatedExam) {
-            urlReview = `/exams/unreview/${examIdNumber}`;
-        }
-        else {
-            urlReview = `/exams/review/${examIdNumber}`;
-        }
-        axios.put(urlReview, { withCredentials: true })
-            .then((res) => {
+        if (validated) {
+            putExamUnreview(examIdNumber).then((res) => {
                 if (res.data.success) {
-                    setValidatedExam(!validatedExam);
+                    setValidated(!validated);
                 }
             });
+        }
+        else {
+            putExamReview(examIdNumber).then((res) => {
+                if (res.data.success) {
+                    setValidated(!validated);
+                }
+            });
+        }
     };
   // let examData: ExamData = {
   //   exam_id: 1,

@@ -100,3 +100,11 @@ export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => 
 export const postTimeSeriesById = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
   return await axios.post(`/time_series/${exam_id}`, {withCredentials: true});
 }
+
+export const putExamReview = async (exam_id: number): Promise<AxiosResponse> => {
+    return await axios.put(`/exams/review/${exam_id}`, { withCredentials: true });
+}
+
+export const putExamUnreview = async (exam_id: number): Promise<AxiosResponse> => {
+    return await axios.put(`/exams/unreview/${exam_id}`, { withCredentials: true });
+}
