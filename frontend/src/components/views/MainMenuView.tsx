@@ -54,35 +54,25 @@ const MainMenuView = (): JSX.Element => {
                 >
                 <img src={LogoCompleto} width={"75%"}/>
               </Grid>
-              
-              {/* <Divider orientation="horizontal" light /> */}
               <Grid item 
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
                 width={"100%"}
-                // display={"flex"}
-                // justifyContent={"center"}
-                // alignItems={"flex-end"}
                 >
                 <Typography fontSize={"180%"} color={"#82b8c2"} >
                   {t("home")}
                 </Typography>
               </Grid>
-          {/* <Typography
-            align="center"
-            color={"#007088"}
-            fontSize={"4rem"}
-            sx={{ margin: "auto" }}
-            >
-            {t("mainMenu")}
-          </Typography> */}
         </Grid>
         <Grid container lg={8} md={8} xs={12}>
           <MainMenuButton />
         </Grid>
       </Grid>
-      <Footer footerPositionLg={"absolute"} footerPositionMd="absolute" footerPositionXs="relative" />
+      <Footer
+        footerPositionLg="absolute"
+        footerPositionMd="absolute" 
+        footerPositionXs="relative" />
     </>
   );
 };

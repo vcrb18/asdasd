@@ -47,9 +47,6 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
       <React.Fragment>
         <AppBar color={'transparent'} position={headerPositionLg} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
         <Toolbar>
-        {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-          ISATEC Heart
-        </Typography> */}
         {tabs != null && tabs.length > 0 ? (
           <>
             <NavbarTabs
@@ -74,21 +71,17 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
     <React.Fragment>
             <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
               <Toolbar>
-              {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                ISATEC Heart
-              </Typography> */}
               {tabs != null ? (
-                
-                    <DrawerComp
-                      buttons={buttons}
-                      tabs={tabs}
-                      onTabChange={(index: number) => {
-                        handleTabChange(index);
-                      }}
-                    />
+                <DrawerComp
+                  buttons={buttons}
+                  tabs={tabs}
+                  onTabChange={(index: number) => {
+                    handleTabChange(index);
+                  }}
+                />
                   
               ) : (
-                    <DrawerComp buttons={buttons} onTabChange={() => {}} />
+                <DrawerComp buttons={buttons} onTabChange={() => {}} />
               )}
               </Toolbar>
             </AppBar>
@@ -100,21 +93,16 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
       <React.Fragment>
               <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
                 <Toolbar>
-                {/* <Typography sx={{ fontSize: "1.2rem" }} className="ecg-title">
-                  ISATEC Heart
-                </Typography> */}
                 {tabs != null ? (
-                  
-                      <DrawerComp
-                        buttons={buttons}
-                        tabs={tabs}
-                        onTabChange={(index: number) => {
-                          handleTabChange(index);
-                        }}
-                      />
-                    
+                  <DrawerComp
+                    buttons={buttons}
+                    tabs={tabs}
+                    onTabChange={(index: number) => {
+                      handleTabChange(index);
+                    }}
+                  />
                 ) : (
-                      <DrawerComp buttons={buttons} onTabChange={() => {}} />
+                  <DrawerComp buttons={buttons} onTabChange={() => {}} />
                 )}
                 </Toolbar>
               </AppBar>

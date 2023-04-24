@@ -137,7 +137,7 @@ const MetricTabs = (): JSX.Element => {
         </Box>
       </Grid>
       <Footer 
-        footerPositionLg={"static"}
+        footerPositionLg="static"
         footerPositionMd="static"
         footerPositionXs="static" />
     </>

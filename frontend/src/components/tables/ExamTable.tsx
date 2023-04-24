@@ -24,12 +24,10 @@ import { getExams, getExamsCount, useExams } from "../../service/user.service";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
-// import axios, { type AxiosResponse } from "axios";
-// import { ReactElement } from "react";
-// import { Token } from "@mui/icons-material";
+
 import { Link } from "react-router-dom";
 import { log } from "console";
-// import { isEmptyArray } from "formik";
+
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -75,9 +73,7 @@ const columns: readonly Column[] = [
     format: (value: string) => {
       return value.replace("T", " ");
     },
-    // format: (value: number) => {
-    //   return new Date(value).toLocaleDateString();
-    // },
+
   },
   {
     id: "estado",
@@ -249,14 +245,6 @@ function colorSwitcher(value: number): string {
   }
 }
 
-// const rows = [
-//   createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 1, "false"),
-//   createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 2, "false"),
-//   createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, "false"),
-//   createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
-// ];
-
-
 interface ExamTableProps {
   useFilter: boolean;
   filterId: string; 
@@ -267,7 +255,6 @@ const ExamTable = ({
   filterId
 }: ExamTableProps) => {
   const { t } = useTranslation();
-  // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -289,7 +276,7 @@ const ExamTable = ({
     const date = new Date(dateString);
     return (
       <Typography color={"#878787"} fontWeight={"bold"}>
-        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone}}
+        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
       </Typography>
       )
   };
@@ -310,18 +297,12 @@ const ExamTable = ({
         <Box display={"flex"} justifyContent={"center"}>
           <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
         </Box>
-        // <Typography>
-        //   {t("reviewed")}
-        // </Typography>
       )
     } else {
       return (
         <Box display={"flex"} justifyContent={"center"}>
           <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
         </Box>
-        // <Typography>
-        //   {t("toReview")}
-        // </Typography>
         )
     }
   }
@@ -393,9 +374,6 @@ const ExamTable = ({
               variant="contained"
               sx={{ color: "#fff" }}
               value={row.exam_id}
-              // onClick={(event) => {
-              //   handleSubmit(event, row.exam_id);
-              // }}
             >
               <Typography fontSize={'120%'} color={'#fff'}>
                 {t("access")}
@@ -417,7 +395,6 @@ const ExamTable = ({
 
     console.log("PR", paginatedRows);
 
-  // if (isLoading) return <CircularProgress />;
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -449,7 +426,6 @@ const ExamTable = ({
         </TableContainer>
         <TablePagination
          rowsPerPageOptions={[25]}
-        //  rowsPerPageOptions={[10, 25, 100]}
          component="div"
          count={maxRows}
         //  count={rows.length}

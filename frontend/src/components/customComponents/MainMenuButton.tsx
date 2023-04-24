@@ -72,13 +72,11 @@ const MainMenuButton = (): JSX.Element => {
                     width={"100%"}
                     height={'100%'}>
                       <Avatar
-                        src={getAvatar(button.img)}
+                        src={getAvatar(index)}
                         alt={button.label}
                         sizes={'large'}
                         sx={{marginBottom: "2%"}}
                         />
-                    {/* </Grid>
-                    <Grid item marginY={'2%'}> */}
                       <Typography
                       fontSize={"250%"}
                       color={"#007088"}

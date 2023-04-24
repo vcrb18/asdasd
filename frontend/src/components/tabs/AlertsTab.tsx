@@ -39,17 +39,16 @@ const AlertsTab = (): JSX.Element => {
 
   return (
     <>
-      <Grid item lg={12} md={12} xs={12}>
         <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuTabs}
           headerPositionLg="relative"
-          headerPositionMd="relative"          
+          headerPositionMd="relative"
+          headerPositionXs="sticky"          
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
         />
-      </Grid>
 
       <Grid
         item

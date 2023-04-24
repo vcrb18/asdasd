@@ -152,7 +152,7 @@ const ExamsTab = (): JSX.Element => {
       </Grid>
       <Grid item lg={12} xs={12} md={12}></Grid>
       <Footer 
-        footerPositionLg={"static"}
+        footerPositionLg="static"
         footerPositionMd="static"
         footerPositionXs="static"/>
     </>
