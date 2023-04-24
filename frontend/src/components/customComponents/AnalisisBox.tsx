@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Select, MenuItem, Box, Grid, Button } from "@mui/material";
+import { Typography, Box, Grid, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import PatoGrid from "./PathologiesGrid";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic } from "../../service/user.service";
@@ -68,7 +67,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   useEffect(() => {
     getExam(examId).then(
       (response) => {
-        let data = {
+        const data = {
           ...response.data,
           estado: response.data.aceptado,
           resultados: "/examsview",
@@ -87,7 +86,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
       (response) => {
-        let data = {
+        const data = {
           ...response.data[0][0],
         };
         setState(data);
@@ -152,7 +151,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               fontSize={"80%"}
               color={stateColorSwitcher(analisisData.estado)}
             >
-              {analisisData.estado === true ? "Aceptado" : "Rechazado"}
+              {analisisData.estado ? "Aceptado" : "Rechazado"}
             </Typography>
           </Grid>
           <Grid item>
@@ -167,7 +166,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         </Grid>
         
         
-        {state.razon_rechazo ? (
+        {state.razon_rechazo && (
         <Grid
           container
           display={"flex"}
@@ -186,7 +185,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               {state.razon_rechazo}
             </Typography>
           </Grid>
-        </Grid>) : ("")}
+          <Grid item></Grid>
+        </Grid>)}
         <Grid
           container
           display={"flex"}
