@@ -25,6 +25,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
       <Header
         buttons={buttons}
         tabs={tabs}
+        headerPositionLg="relative"
+        headerPositionMd="relative"
+        headerPositionXs="sticky"
         onTabValueChange={(index: number) => {
           console.log(`Landing Page: Tab index changed to ${index}`);
           handleOnTabValueChange(index);
@@ -36,7 +39,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {
         {tabIndex === 1 && <AboutUsTab />}
         {tabIndex === 2 && <ContactUsTab />}
       </Box>
-      <Footer footerPosition={"static"} />
+      <Footer
+       footerPositionLg="static"
+       footerPositionMd="static"
+       footerPositionXs="static"/>
     </>
   );
 };

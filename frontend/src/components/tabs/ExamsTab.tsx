@@ -66,21 +66,21 @@ const ExamsTab = (): JSX.Element => {
 
   return (
     <>
-      <Grid item lg={12} md={12} xs={12} marginBottom={"5%"}>
-        <Header
+      <Header
           buttons={mainMenuHeaderButtons}
           tabs={mainMenuPageButtons}
+          headerPositionLg="relative"
+          headerPositionMd="relative"
+          headerPositionXs="sticky"
           onTabValueChange={function (index: number): void {
             throw new Error("Function not implemented.");
           }}
-        />
-      </Grid>
+      />
       <Grid
         item
         lg={12}
         md={12}
         xs={12}
-        mt={"7%"}
         mb={"3%"}
         flexDirection={"row"}
         justifyContent={"space-between"}
@@ -94,8 +94,8 @@ const ExamsTab = (): JSX.Element => {
         <Typography
           paddingLeft={"3%"}
           display={"flex"}
-          justifyContent={"flex-start"}
-          sx={{ color: "#061525", fontSize: "4rem" }}
+          justifyContent={"center"}
+          sx={{ color: "#6fb6c1", fontSize: "4rem", fontWeight: "bold" }}
         >
           {t("exams")}
         </Typography>
@@ -144,14 +144,17 @@ const ExamsTab = (): JSX.Element => {
             md={12}
             display={"flex"}
             justifyContent={"flex-start"}
-            sx={{ color: "#404040", fontSize: "1.5rem" }}
+            sx={{ fontSize: "1.5rem" }}
           >
             <ExamTable useFilter={filterCondition} filterId={inputValue}  />
           </Grid>
         </Grid>
       </Grid>
       <Grid item lg={12} xs={12} md={12}></Grid>
-      <Footer footerPosition={"static"} />
+      <Footer 
+        footerPositionLg="static"
+        footerPositionMd="static"
+        footerPositionXs="static"/>
     </>
   );
 };

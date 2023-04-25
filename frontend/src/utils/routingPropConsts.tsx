@@ -12,8 +12,8 @@ export const landingPageButtons = [
 export const loginPageButtons = [{ label: "home", href: "/information" }];
 
 export const mainMenuPageButtons = [
-  { label: "exams", href: "/exams" },
-  { label: "metrics", href: "/metrics" },
+  { label: "exams", href: "/exams"},
+  { label: "metrics", href: "/metrics"},
   { label: "alerts", href: "/alerts" },
   { label: "report", href: "/reports" },
 ];

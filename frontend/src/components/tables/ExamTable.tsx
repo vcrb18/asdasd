@@ -5,7 +5,10 @@ import TableBody from "@mui/material/TableBody";
 import CircularProgress from "@mui/material/CircularProgress";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
+import Check from "../../static/images/checkVerde.png"
+import X from "../../static/images/X.png"
 import {
+  Avatar,
   Box,
   Button,
   TableContainer,
@@ -21,23 +24,23 @@ import { getExams, getExamsCount, useExams } from "../../service/user.service";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
-// import axios, { type AxiosResponse } from "axios";
-// import { ReactElement } from "react";
-// import { Token } from "@mui/icons-material";
+
 import { Link } from "react-router-dom";
 import { log } from "console";
-// import { isEmptyArray } from "formik";
+
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#c6c6c5",
-    color: "#061525",
+    backgroundColor: "#E4EDEF",
+    color: "#007088",
+    fontWeight: "bold",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     fontWeight: "bold",
+    color: "#878787", 
   },
 }));
 
@@ -70,9 +73,7 @@ const columns: readonly Column[] = [
     format: (value: string) => {
       return value.replace("T", " ");
     },
-    // format: (value: number) => {
-    //   return new Date(value).toLocaleDateString();
-    // },
+
   },
   {
     id: "estado",
@@ -234,23 +235,15 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 function colorSwitcher(value: number): string {
   switch (value) {
     case 1:
-      return "black";
+      return "#878787";
     case 2:
-      return "orange";
+      return "#FF8B00";
     case 3:
       return "red";
     default:
-      return "black";
+      return "#878787";
   }
 }
-
-// const rows = [
-//   createData("1", "Juan", "2023-01-20T17:38:06.664148", true, 1, "false"),
-//   createData("2", "Ana", "2020-02-01T02:39:46.671206", true, 2, "false"),
-//   createData("3", "Roberto", "2020-03-01T04:39:46.671206", false, 1, "false"),
-//   createData("4", "Vicente", "2020-01-13T16:39:46.671206", true, 3, "false"),
-// ];
-
 
 interface ExamTableProps {
   useFilter: boolean;
@@ -262,11 +255,10 @@ const ExamTable = ({
   filterId
 }: ExamTableProps) => {
   const { t } = useTranslation();
-  // const navigate: NavigateFunction = useNavigate();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
-        main: "#D4E6DA",
+        main: "#007088",
       },
     },
   });
@@ -282,8 +274,11 @@ const ExamTable = ({
   const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    // Esto extrae la zona horaria del sistema donde se ejecuta el browser, para chile es el string "America/Santiago"
-    return date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone});
+    return (
+      <Typography color={"#878787"} fontWeight={"bold"}>
+        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
+      </Typography>
+      )
   };
 
   const getStatusIcon = (estado: boolean)  => (
@@ -291,22 +286,23 @@ const ExamTable = ({
   );
 
   const getUrgencyText = (urgencia: number) => (
-    <Typography color={colorSwitcher(urgencia)}>
+    <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
       {t("urgencyLevel").concat(urgencia.toString())}
     </Typography>
   );
   const getReviewState = (state: boolean) : JSX.Element => {
+    console.log(state)
     if (state === true) {
       return(
-        <Typography>
-          {t("reviewed")}
-        </Typography>
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
+        </Box>
       )
     } else {
       return (
-        <Typography>
-          {t("toReview")}
-        </Typography>
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
+        </Box>
         )
     }
   }
@@ -376,13 +372,12 @@ const ExamTable = ({
             <Button
               color="primary"
               variant="contained"
-              sx={{ color: "#006a6b" }}
+              sx={{ color: "#fff" }}
               value={row.exam_id}
-              // onClick={(event) => {
-              //   handleSubmit(event, row.exam_id);
-              // }}
             >
-              Acceder
+              <Typography fontSize={'120%'} color={'#fff'}>
+                {t("access")}
+              </Typography>
             </Button>
           </Link>
         </ThemeProvider>
@@ -400,7 +395,6 @@ const ExamTable = ({
 
     console.log("PR", paginatedRows);
 
-  // if (isLoading) return <CircularProgress />;
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -432,7 +426,6 @@ const ExamTable = ({
         </TableContainer>
         <TablePagination
          rowsPerPageOptions={[25]}
-        //  rowsPerPageOptions={[10, 25, 100]}
          component="div"
          count={maxRows}
         //  count={rows.length}
