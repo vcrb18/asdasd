@@ -102,80 +102,82 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
+      {/* Box que contiene todo lo de la vista del examen */}
       <Box marginY={"6%"} width={"100%"}>
+        {/* Grid que contiene la parte de la informacion del examen */}
         <Grid container display={"flex"} mt={"1%"} mb={"4%"}>
-          <Grid item xs={12} sm={12} md={3} lg={3}>
+          {/* Grid que contiene la flecha para volver a la tabla de examenes */}
+          <Grid item xs={12} sm={12} md={1} lg={1}>
             <Fab size="small" href="/mainmenu">
               <ArrowCircleLeftIcon />
             </Fab>
           </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
-              >
-                <Typography
-                  fontSize={"100%"}
-                  color={"#061525"}
-                  sx={{ fontWeight: "bold" }}
+          {/* Grid que contiene la información del examen (incluyendo el análisis de este) */}
+          <Grid container xs={12} sm={12} md={3} lg={3} display={"flex"} flexDirection={"column"}>
+            {/* Grid container que contiene el los datos del exámen */}
+            <Grid container>
+              {/* Grid item que contiene el título "Examen" */}
+              <Grid item 
+                display={"flex"}
+                justifyContent={"center"} 
+                xs={12} sm={12} md={12} lg={12} >
+                <Typography 
+                  fontSize={"150%"}
+                  fontWeight={"bold" }>
+                  {t("exam")}
+                </Typography>
+              </Grid>
+              {/* Grid container que contiene el numero de folio */}
+              <Grid container>
+                <Grid item
+                  display={"flex"}
+                  justifyContent={"center"} 
+                  xs={12} sm={12} md={6} lg={6}
                 >
-                  {t("folioExam")}:
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  fontSize: "75%",
-                  color: "#061525",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                <Typography fontSize={"85%"} color={"#061525"}>
-                  {examData?.exam_id.toString()}
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3} lg={3}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{ fontSize: "75%", color: "#061525", fontWeight: "bold" }}
-              >
-                <Typography
-                  fontSize={"100%"}
-                  color={"#061525"}
-                  sx={{ fontWeight: "bold" }}
-                >
-                  {t("date")}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  fontSize: "75%",
-                  color: "#061525",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                <Typography fontSize={"85%"} color={"#061525"}>
-                  {fecha}
-                </Typography>
-              </Box>
-            </Box>
+                  <Typography
+                    fontSize={"100%"}
+                    fontWeight={"bold"}
+                    >
+                      {t("folio")}:
+                    </Typography>
+                </Grid>
+                  <Grid item
+                    xs={12} sm={12} md={6} lg={6}
+                    >
+                    <Typography 
+                      fontSize={"100%"}
+                      fontWeight={"bold"}
+                      >
+                      {examData?.exam_id.toString()}
+                    </Typography>
+                  </Grid>
+              </Grid>
+              {/* Grid container que contiene la fecha de creación */}
+              <Grid container>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <Typography
+                      fontSize={"100%"}
+                      fontWeight={"bold"}
+                    >
+                      {t("date")}
+                    </Typography>
+                <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <Typography fontSize={"85%"} fontWeight={"bold"}>
+                      {fecha}
+                    </Typography>
+                </Grid>
+
+                </Grid>
+              </Grid>
+              {/* Grid que contiene el análisis del examen */}
+              <Grid container>
+                
+              </Grid>
+            </Grid>
 
           </Grid>
+        </Grid>
+          
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Button
               variant="contained"
@@ -184,7 +186,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             >{validationButtonMessage}
             </Button>
           </Grid>
-        </Grid>
 
         <Grid
           container

@@ -5,6 +5,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      exam: "Exam",
       review: "Review",
       reviewed: "Reviewed",
       toReview: "Waiting for Review",
@@ -63,7 +64,7 @@ const resources = {
       folioSearch: "Filter by Folio",
       es: "Spanish",
       en: "English",
-      folioExam: "Folio exam",
+      folio: "Folio",
       validateMeasurements: "Validate measurements",
       analysis: "Analysis",
       accepted: "Accepted",
@@ -86,6 +87,7 @@ const resources = {
   },
   es: {
     translation: {
+      exam: "Examen",
       review: "Revisión",
       reviewed: "Revisado",
       toReview: "Por Revisar",
@@ -144,7 +146,7 @@ const resources = {
       folioSearch: "Buscar por Folio",
       es: "Español",
       en: "Inglés",
-      folioExam: "Folio examen",
+      folio: "Folio",
       validateMeasurements: "Validar mediciones",
       analysis: "Análisis",
       accepted: "Aceptado",
