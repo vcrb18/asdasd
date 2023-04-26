@@ -2,10 +2,9 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
-import { getExamPredictedMarkers, getTimeSeriesById} from "../../service/user.service";
+import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
-import { postTimeSeriesById }  from "../../service/user.service"; 
 import { number } from "yup";
 import { useTranslation } from "react-i18next";
 
@@ -666,43 +665,63 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
 
   
+  let callUseEffect = 0;
   const { t } = useTranslation();
+  const [count, setCount] = React.useState(0); 
 
+  const offset = 640;
 
   useEffect(()=> {
-    const offset = 640;
-    getExamPredictedMarkers(examId).then(
+    getExamOperatorMarkers(examId).then(
       (response) => {
-        // console.log(response.data)
-        setFidExamId(response.data.examId)
-        setFidP(response.data.p_start + offset)
-        setFidQRS(response.data.qrs_start + offset)
-        setFidR(response.data.r + offset)
-        setFidR2(response.data.r2 + offset)
-        setFidS(response.data.qrs_end + offset)
-        setFidST(response.data.t_start + offset)
-        setFidT(response.data.t_end + offset) 
-      }
+        console.log("SE HACE EL GET");
+        if (response.status ==  200){
+          console.log("USANDO DATOS DOCTOR");
+          setFidExamId(response.data.examId)
+          setFidP(response.data.p_start + offset)
+          setFidQRS(response.data.qrs_start + offset)
+          setFidR(response.data.r + offset)
+          setFidR2(response.data.r2 + offset)
+          setFidS(response.data.qrs_end + offset)
+          setFidST(response.data.t_start + offset)
+          setFidT(response.data.t_end + offset) 
+        }
+        else{
+          console.log("USANDO DATOS PREDICCIONES");
+          getExamPredictedMarkers(examId).then(
+            (response) => {
+              console.log("reespuesta2", response)
+              setFidExamId(response.data.examId)
+              setFidP(response.data.p_start + offset)
+              setFidQRS(response.data.qrs_start + offset)
+              setFidR(response.data.r + offset)
+              setFidR2(response.data.r2 + offset)
+              setFidS(response.data.qrs_end + offset)
+              setFidST(response.data.t_start + offset)
+              setFidT(response.data.t_end + offset) 
+            }
+          );
+        }
+    });
+  }, [count]);
 
-      //   setFiduciales({
-      //     ...response.data
-      //   })
-      // }
-    );
-  }, []);
+
+
+  const [received_child_data, setRCD] = React.useState(false);
 
   const handleFiducialChartUpdate : Function = (childData : any) => {
-    // 👇️ take the parameter passed from the Child component
+    setRCD(true);
     console.log("se recibio estos datos:", childData);
-    console.log(childData.fidP);
-    
-    // setFidP(childData.fidP);
-    // setFidQRS(childData.fidQRS);
-    // setFidR(childData.fidR);
-    // setFidR2(childData.fidR2);
-    // setFidS(childData.fidS);
-    // setFidST(childData.fidST);
-    // setFidT(childData.fidT);
+    const obj2 = { ...childData };
+    setFidP(childData.p_start);
+    setFidQRS(childData.qrs_start);
+    setFidR(childData.r);
+    setFidR2(childData.r2);
+    setFidS(childData.qrs_end);
+    setFidST(childData.t_start);
+    setFidT(childData.t_end);
+    console.log(fidP);
+    console.log(childData.p_start)
   };
 
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
@@ -744,7 +763,9 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           <Button
             variant="contained"
             onClick={() => {
-              console.log("Boton restaurar");
+              deleteOperatorMarkers(examId);
+              deleteOperatorMarkersComputations(examId);
+              setCount(count+1);
             }}
           >
             {t("restore")}
@@ -752,17 +773,20 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           <Button
             variant="contained"
             onClick={() => {
-              console.log("Boton guardar cambios");
-              const newData = {
-                fidP:fidP,
-                fidQRS:fidQRS,
-                fidR:fidR,
-                fidR2:fidR2,
-                fidS:fidS,
-                fidST:fidST,
-                fidT:fidT,
+              const newData = 
+              {
+                exam_id:examId - offset,
+                p_start:fidP - offset,
+                qrs_start:fidQRS - offset,
+                r:fidR - offset,
+                r2:fidR2 - offset,
+                qrs_end:fidS - offset,
+                t_start:fidST - offset,
+                t_end:fidT - offset,
               }
-              postTimeSeriesById(examId, newData)
+              postOperatorMarkers(examId, newData);
+              postOperatorMarkersComputations(examId, newData)
+              callUseEffect +=1;
             }}
           >
             {t("saveChanges")}
