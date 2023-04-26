@@ -85,18 +85,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             });
         }
     };
-  // let examData: ExamData = {
-  //   exam_id: 1,
-  //   patient_id: '',
-  //   created_at: '',
-  //   estado: false,
-  //   urgencia: 1,
-  //   resultados: '',
-  // };
-  // getExam(exam_id).then((response) => {
-  //   examData = response.data;
-  //   console.log("EL id del Examen es = ");
-  // })
 
   const fecha = examData?.created_at.includes("T")
     ? examData?.created_at.replace("T", " ").split(".")[0]
@@ -153,13 +141,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 </Typography>
               </Box>
             </Box>
-            {/* <Typography
-              fontSize={"75%"}
-              color={"#061525"}
-              sx={{ fontWeight: "bold" }}
-            >
-              Folio examen: {examData?.exam_id.toString()}
-            </Typography> */}
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
             <Box
@@ -193,9 +174,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 </Typography>
               </Box>
             </Box>
-            {/* <Typography fontSize={"80%"} color={"#404040"}>
-              Fecha: {fecha}
-            </Typography> */}
+
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Button
@@ -276,7 +255,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           fullWidth
         ></TextField>
       </Box>
-      {/* <Footer footerPosition={"static"} /> */}
+
     </>
   );
 };
