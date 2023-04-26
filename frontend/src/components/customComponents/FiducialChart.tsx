@@ -770,32 +770,35 @@ const FiducialChart = (props: any): JSX.Element => {
 
     useEffect(() => {
         getTimeSeries(examId).then((response) => {
-            console.log("hola estoy seteando la time series");
-            console.log(timeseriesData);
             setTimeSeriesData(response.data.II);
             maxY = Math.max(response.data.II) + 100;
             minY = Math.min(response.data.II) - 100;
-            console.log(response.data);
         })
     }, []);
 
-  // const examId = props.examId;
-  const examId = props.examId;
-  const fidP = props.fidP;
-  const fidQRS = props.fidQRS;
-  const fidR = props.fidR;
-  const fidR2 = props.fidR2;
-  const fidS = props.fidS;
-  const fidST = props.fidST;
-  const fidT = props.fidT;
-  // const [fidT, setfidT] = React.useState(props.fidT);
+  const [examId, setexamId] = React.useState<number>(props.examId);
+  const [fidP, setfidP] = React.useState<number>(0);
+  const [fidQRS, setfidQRS] = React.useState<number>(0);
+  const [fidR, setfidR] = React.useState<number>(0);
+  const [fidR2, setfidR2] = React.useState<number>(0);
+  const [fidS, setfidS] = React.useState<number>(0);
+  const [fidST, setfidST] = React.useState<number>(0);
+  const [fidT, setfidT] = React.useState<number>(0);
 
   useEffect(() => {
+    console.log("update tabla fiduciales")
+    setexamId(props.examId);
+    setfidP(props.fidP);
+    setfidQRS(props.fidQRS);
+    setfidR(props.fidR);
+    setfidR2(props.fidR2);
+    setfidS(props.fidS);
+    setfidST(props.fidST);
+    setfidT(props.fidT);
     chart = ChartJS.getChart("fiduChart");
     if (!chart) return;
-    // setfidT(props.fidT);
     chart.update();
-  }, [props]);
+}, [props]);
 
   let chart = ChartJS.getChart("fiduChart");
 
@@ -810,7 +813,6 @@ const FiducialChart = (props: any): JSX.Element => {
   const qrsEndPoint = [{ x: fidS, y: timeseriesData[fidS] }, 5];
   const tStartPoint = [{ x: fidST, y: timeseriesData[fidST] }, 6];
   const tEndPoint = [{ x: fidT, y: timeseriesData[fidT] }, 7];
-  // console.log(rPoint, fidR);
 
   const points = [pStartPoint, qrsStartPoint, rPoint, r2Point, qrsEndPoint, tStartPoint, tEndPoint]
 
@@ -846,8 +848,6 @@ return prev[0].y > curr[0].y ? prev : curr;
   else{
     minX = minP[0].x - (maxP[0].x - minP[0].x)/2;
     maxX = maxP[0].x + (maxP[0].x - minP[0].x)/2;
-    // bordeIzq = minX.toString();
-    // bordeDer = maxX.toString();
   }
 
   minY = Math.min(...timeseriesData) -100;
@@ -856,39 +856,46 @@ return prev[0].y > curr[0].y ? prev : curr;
   let lastEvent: any;
   let bubble: any;
   let lastMovement:any;
-  //let dragging = false as any;
+  let linePos = 0;
 
-  const drag = function (moveX: number, moveY: number, bubble: any): void {
-    // console.log("drag", bubble[0].element.x, bubble[0].element.y);
+  const drag = function (event: any, moveX: number, moveY: number, bubble: any): void {
     bubble[0].element.x += moveX;
     bubble[0].element.y += moveY;
     if (!chart) return;
     if(!chart.data.datasets[bubble[0].datasetIndex].data) return;
     if(!chart.data.datasets[bubble[0].datasetIndex].data[0]) return;
-    // if(!chart.data.datasets[bubble[0].datasetIndex].data[0].x) return;
     let num = chart.data.datasets[bubble[0].datasetIndex].data[0] as any;
     let box = chart.boxes[4] as any;
     let line = chart.data.datasets[7] as any;
-    console.log(line.data);
-    num.x += Math.round(moveX* ((box.max-box.min)/box.width));  // movex no esta escalado
-    // const vary = chart.data.datasets[bubble[0].datasetIndex].data[0].y - timeseriesData[chart.data.datasets[bubble[0].datasetIndex].data[0].x];
+    //let vline = chart.config._config.options.plugins.annotation.annotations.line1 as any;
+    console.log(chart);
+    // console.log(vline);
+    //vline.value = event.x;
+    // vline.xMin = event.x;
+
+    num.x += Math.round(moveX* ((box.max-box.min)/box.width));
+
     num.y = line.data[num.x];
-    // console.log(chart.data.datasets[bubble[0].datasetIndex].data[0]);
+
   };
 
   const handleElementDragging = function (event: any, bubble:any): any {
     const moveX2 = event.x - lastMovement.x;
     const moveX = moveX2
     const moveY = event.y - lastMovement.y;
-    drag(moveX, moveY, bubble);
+    drag(event, moveX, moveY, bubble);
     lastMovement = event;
     return true;
   };
 
+
+  const handleParent = props.handleFiducialChartUpdate;
+
   const handleDrag = function (event: any, chart : any): any {
     if (true) {
+
       switch (event.type) {
-        case "mousemove":
+        case "mousemove" || "touchmove":
           if(!bubble) break;
           if(!bubble[0]) break;
           if (!lastEvent || !bubble[0].element) break;
@@ -897,37 +904,32 @@ return prev[0].y > curr[0].y ? prev : curr;
           }
           break;
         case "mouseout":
-          // console.log("mouseout");
           lastEvent = undefined;
           break;
         case "mouseup":
-          // console.log("mup");
           lastEvent = undefined;
           event.native.target.style.cursor = 'default';
           if(!bubble) break;
           if(!bubble[0]) break;
           bubble = undefined;
-          chart.update();
           const childata = {
-            fidP:fidP,
-            fidQRS:fidQRS,
-            fidR:fidR,
-            fidR2:fidR2,
-            fidS:fidS,
-            fidST:fidST,
-            fidT:fidT,
+            exam_id:examId,
+            p_start:chart.data.datasets[0].data[0].x,
+            qrs_start:chart.data.datasets[1].data[0].x,
+            r:chart.data.datasets[2].data[0].x,
+            r2:chart.data.datasets[6].data[0].x,
+            qrs_end:chart.data.datasets[3].data[0].x,
+            t_start:chart.data.datasets[4].data[0].x,
+            t_end:chart.data.datasets[5].data[0].x,
           }
-          console.log(childata);
-          console.log("TESTS ACA");
-          console.log(pStartPoint, fidP, props);
-          props.handleFiducialChartUpdate(childata);
+          handleParent(JSON.parse(JSON.stringify(childata, )), chart);
+          chart.update();
           break;
         case "mousedown":
-          // console.log("mdown");
+          // console.log(navigator.userAgent); 
           lastEvent = event;
           lastMovement = event;
           bubble = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-          console.log(bubble);
           if(!bubble[0]) break;
           if (bubble[0].element) event.native.target.style.cursor = 'grab';
           else event.native.target.style.cursor = 'default';
@@ -937,14 +939,6 @@ return prev[0].y > curr[0].y ? prev : curr;
     }
   };
 
-  // const dragger = {
-  //   id: "dragger",
-  //   beforeEvent(chart: any, args: any, options: any): void {
-  //     if (handleDrag(args.event)) {
-  //       args.changed = true;
-  //     }
-  //   },
-  // };
 
   const annotation3 = {
     type: "point" as const,
@@ -961,9 +955,13 @@ return prev[0].y > curr[0].y ? prev : curr;
   const options = {
     events: [
       "mousedown" as const,
+      //"touchstart" as const,
       "mouseup" as const,
+      //"touchend" as const,
       "mousemove" as const,
+      //"touchmove" as const,
       "mouseout" as const,
+      
     ],
     dragData: true,
     responsive: true,
@@ -987,22 +985,13 @@ return prev[0].y > curr[0].y ? prev : curr;
         zoom: {
           wheel: {
             enabled: true,
+            modifierKey: 'ctrl',
           },
           pinch: {
             enabled: false,
           },
           mode: 'x',
           scaleMode: 'xy',
-          // drag: {
-          //   enabled: false,
-          //   mode: 'x', // this enables dragging on the horizontal axis only
-          //   modifierKey:'ctrl',
-          // },
-          // pan: {
-          //   enabled: true,
-          //   // modifierKey: 'ctrl',
-          //   mode: 'xy',
-          // },
         },
         limits: {
           x: {min: -100, max: timeseriesData.length + 100},
@@ -1012,31 +1001,25 @@ return prev[0].y > curr[0].y ? prev : curr;
           enabled: true,
           mode: 'x', // This enables panning only on the x-axis
           modifierKey: 'ctrl',
-          onPanStart: function (chart: any, event: any, point:any) {
-            // console.log(chart, event, point)
-            // chart.event.target.style.cursor = 'grab';
-            // event.native.target.style.cursor = 'grab';
-            // event.native.target.style.cursor = 'default';
-          },
-          onPanComplete: function (chart: any) {
-            // console.log(chart)
-            // chart.chart.ctx.canvas.style.cursor = 'default';
-            // chart.event.target.style.cursor = 'grab';
-            // event.native.target.style.cursor = 'grab';
-            // event.native.target.style.cursor = 'default';
-          },
         },
       },
       annotation: {
         annotations: {
           line1: {
             type: 'line',
-            yMin: minY,
-            yMax: maxY,
-            xMin: 0,
-            xMax: 0,
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 2,
+            borderColor: 'red',
+            borderWidth: 3,
+            display:false,
+            label: {
+              display: false,
+              content: 'Poner datos del punto aca',
+              rotation: 0
+            },
+            scaleID: 'x',
+            value: 5500,
+            // beforeDraw: function (ctx: any) {
+            //   console.log("se dibuja la linea");
+            // }
           }
         }
       }

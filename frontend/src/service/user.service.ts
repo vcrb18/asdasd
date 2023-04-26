@@ -90,6 +90,17 @@ export const getExamPredictedMarkers = async (exam_id: number): Promise<AxiosRes
   return await axios.get(`/predicted_markers/${exam_id}`, {withCredentials: true})
 }
 
+export const getExamOperatorMarkers = async (exam_id: number): Promise<AxiosResponse> => {
+  try{
+    let res = await axios.get(`/operator_markers/${exam_id}`, {withCredentials: true})
+    return res;
+  }
+  catch(error : any){
+    console.log(error.response);
+    return error.response;
+  }
+}
+
 export const getTimeSeriesById = async (exam_id: number): Promise<AxiosResponse> => {
   return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true})
 }
@@ -97,10 +108,34 @@ export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => 
   return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true});
 }
 
-export const postTimeSeriesById = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
-  return await axios.post(`/time_series/${exam_id}`, {withCredentials: true});
+export const postOperatorMarkers = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
+  return await axios(
+    {
+      method: 'put',
+      url: `/operator_markers/edit/${exam_id}`,
+      data: newData,
+      withCredentials: true,
+    });
 }
 
+export const postOperatorMarkersComputations = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
+  return await axios(
+    {
+      method: 'put',
+      url: `/operator_marker_computations/edit/${exam_id}`,
+      data: newData,
+      withCredentials: true,
+    });
+}
+
+
+export const deleteOperatorMarkers = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.delete(`/operator_markers/delete/${exam_id}`, {withCredentials: true});
+}
+
+export const deleteOperatorMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.delete(`/operator_marker_computations/delete/${exam_id}`, {withCredentials: true});
+}
 export const putExamReview = async (exam_id: number): Promise<AxiosResponse> => {
     return await axios.put(`/exams/review/${exam_id}`, { withCredentials: true });
 }
