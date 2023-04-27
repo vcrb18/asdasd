@@ -114,9 +114,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         }}
       />
       {/* Box que contiene todo lo de la vista del examen */}
-      <Box marginY={"6%"} width={"100%"}>
+      <Box marginY={"6%"} width={"100%"} 
+        
+        >
         {/* Grid que contiene la parte de la informacion del examen */}
-        <Grid container display={"flex"} mt={"1%"} mb={"4%"}>
+        <Grid container display={"flex"} mt={"1%"} mb={"4%"}
+        >
           {/* Grid que contiene la flecha para volver a la tabla de examenes */}
           <Grid item xs={12} sm={12} md={1} lg={1}>
             <Fab size="small" href="/mainmenu">
@@ -124,7 +127,16 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Fab>
           </Grid>
           {/* Grid que contiene la información del examen (incluyendo el análisis de este) */}
-          <Grid container xs={12} sm={12} md={3} lg={3} display={"flex"} flexDirection={"column"}>
+          <Grid container xs={12} sm={12} md={3} lg={3} display={"flex"} flexDirection={"column"}
+          sx={{
+            borderRadius: "1%",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+            transition: "box-shadow 0.3s ease-in-out",
+            "&:hover": {
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+            },
+          }}
+          >
             {/* Grid container que contiene el los datos del exámen */}
             <Grid container>
               {/* Grid item que contiene el título "Examen" */}
@@ -142,11 +154,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               <Grid container>
                 <Grid item
                   display={"flex"}
-                  justifyContent={"center"} 
+                  justifyContent={"flex-start"} 
                   xs={12} sm={12} md={6} lg={6}
+                  paddingLeft={"5%"}
                 >
                   <Typography
-                    fontSize={"100%"}
+                    fontSize={"80%"}
                     fontWeight={"bold"}
                     >
                       {t("folio")}:
@@ -156,7 +169,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                     xs={12} sm={12} md={6} lg={6}
                     >
                     <Typography 
-                      fontSize={"100%"}
+                      fontSize={"65%"}
                       fontWeight={"bold"}
                       >
                       {examData?.exam_id.toString()}
@@ -165,36 +178,38 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               </Grid>
               {/* Grid container que contiene la fecha de creación */}
               <Grid container>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
                     <Typography
-                      fontSize={"100%"}
+                      fontSize={"80%"}
                       fontWeight={"bold"}
                     >
                       {t("date")}
                     </Typography>
+                </Grid>
                 <Grid item xs={12} sm={12} md={6} lg={6}>
-                    <Typography fontSize={"85%"} fontWeight={"bold"}>
+                    <Typography fontSize={"65%"} fontWeight={"bold"}>
                       {fecha}
                     </Typography>
                 </Grid>
 
-                </Grid>
               </Grid>
               {/* Grid que contiene el análisis del examen */}
-              <Grid container>
-                
+              <Grid container mb={"2%"}>
+                <AnalisisBox examId={examIdNumber} />
               </Grid>
             </Grid>
-
           </Grid>
         </Grid>
-          
+          {/* <Grid container>
+            <DiagnosisComponent examId={examId} />
+          </Grid> */}
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Button
               variant="contained"
               sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
-                          onClick={toggleValidatedExam}
-            >{validationButtonMessage}
+              onClick={toggleValidatedExam}
+            >
+              {validationButtonMessage}
             </Button>
           </Grid>
 
@@ -216,7 +231,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             justifyContent={"center"}
             alignItems={"center"}
           >
-            <AnalisisBox examId={examIdNumber} />
           </Grid>
           <Grid
             item
