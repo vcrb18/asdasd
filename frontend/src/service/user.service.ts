@@ -100,10 +100,10 @@ export const postTimeSeriesById = async (exam_id: number, newData : any): Promis
   return await axios.post(`/time_series/${exam_id}`, {withCredentials: true});
 }
 
-export const markExamIdAsReviewed = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.put(`/review/${exam_id}`, {withCredentials: true})
+export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exam/accept//${exam_id}`, {withCredentials: true})
 }
 
-export const markExamIdAsNotReviewed = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.put(`/unreview/${exam_id}`, {withCredentials: true})
+export const markExamIdAsRejected = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exam/reject/${exam_id}`, {withCredentials: true})
 }
