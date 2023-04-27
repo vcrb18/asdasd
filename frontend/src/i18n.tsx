@@ -82,6 +82,8 @@ const resources = {
       pathologiesPrediction: "Pathologies Prediction",
       comments: "Comments",
       commentsLabel: "Enter your comments here",
+      reason: "Reason",
+      change: "Change",
     },
   },
   es: {
@@ -163,6 +165,8 @@ const resources = {
       pathologiesPrediction: "Predicción de Patologías",
       comments: "Comentarios",
       commentsLabel: "Ingrese aquí sus comentarios",
+      reason: "Motivo",
+      change: "Cambiar",
     },
   },
 };
