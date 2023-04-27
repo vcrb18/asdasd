@@ -10,12 +10,11 @@ interface AnalisisProps {
 }
 
 interface State {
-  confianza?: number;
-  estado?: boolean;
+  confidence?: number;
+  status?: boolean;
   id?: string;
-  id_predicciones?: string;
-  razon_rechazo?: string;
-  razon_rechazo_confianza?: number;
+  rejectionReason?: string;
+  rejectionReasonConfidence?: number;
 }
 
 function urgencyColorSwitcher(value: number | undefined): string {
@@ -57,12 +56,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     aceptado: true
   });
   const [state, setState] = useState<State>({
-      confianza: 0,
-      estado: false,
+      confidence: 0,
+      status: false,
       id: "",
-      id_predicciones: "",
-      razon_rechazo: "",
-      razon_rechazo_confianza: 0,
+      rejectionReason: "",
+      rejectionReasonConfidence: 0,
     });
   useEffect(() => {
     getExam(examId).then(
@@ -86,8 +84,13 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
       (response) => {
+        console.log(response.data[0][0]);
         const data = {
-          ...response.data[0][0],
+          confidence: response.data[0][0].confidence,
+          status: response.data[0][0].estado,
+          id: response.data[0][0].id,
+          rejectionReason: response.data[0][0].razon_rechazo,
+          rejectionReasonConfidence: response.data[0][0].razon_rechazo_confianza,
         };
         setState(data);
       },
@@ -166,7 +169,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         </Grid>
         
         
-        {state.razon_rechazo && (
+        {state.rejectionReason && (
         <Grid
           container
           display={"flex"}
@@ -182,7 +185,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             <Typography
               fontSize={"80%"}
             >
-              {state.razon_rechazo}
+              {state.rejectionReason}
             </Typography>
           </Grid>
           <Grid item></Grid>
