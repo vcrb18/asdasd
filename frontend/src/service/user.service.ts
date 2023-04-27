@@ -79,7 +79,6 @@ export const getExamAllAlgorithmPredictions = (
 
 export const getSuggestedDiagnostic = async (
   exam_id: number,
-  type_id: number
 ): Promise<AxiosResponse> => {
   return await axios.get(`/algorithm_predictions/${exam_id}`, {
     withCredentials: true,
@@ -142,4 +141,12 @@ export const putExamReview = async (exam_id: number): Promise<AxiosResponse> => 
 
 export const putExamUnreview = async (exam_id: number): Promise<AxiosResponse> => {
     return await axios.put(`/exams/unreview/${exam_id}`, { withCredentials: true });
+}
+
+export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exam/accept//${exam_id}`, {withCredentials: true})
+}
+
+export const markExamIdAsRejected = async (exam_id: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exam/reject/${exam_id}`, {withCredentials: true})
 }

@@ -111,7 +111,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    getSuggestedDiagnostic(examId, 3).then(
+    getSuggestedDiagnostic(examId).then(
       (res) => {
         // .map((element: string )=>{
         //   element
