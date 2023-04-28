@@ -41,6 +41,7 @@ export interface ExamData {
   urgencia: number;
   resultados: string;
   operator_review: boolean;
+  operator_accept: boolean | null;
 }
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
