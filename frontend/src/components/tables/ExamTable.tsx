@@ -150,6 +150,7 @@ interface ExamData {
   reviews: boolean;
   resultados: string;
   aceptado: boolean;
+  operator_accept: boolean | null;
 }
 
 type Order = "asc" | "desc";
@@ -363,7 +364,7 @@ const ExamTable = ({
       <StyledTableCell align="center">
         {formatDate(row.created_at)}
       </StyledTableCell>  
-      <StyledTableCell align="center">{getStatusIcon(row.aceptado)}</StyledTableCell>
+      <StyledTableCell align="center">{getStatusIcon(row.operator_accept != null ? row.operator_accept : row.aceptado)}</StyledTableCell>
       <StyledTableCell align="center">{getUrgencyText(row.urgencia)}</StyledTableCell>
       <StyledTableCell align="center">{getReviewState(row.reviews)}</StyledTableCell>
       <StyledTableCell align="center">
