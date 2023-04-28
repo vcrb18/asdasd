@@ -46,15 +46,15 @@ function stateColorSwitcher(value: boolean | undefined): string {
 const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   const { t } = useTranslation();
   const [analisisData, setAnalisisData] = useState<ExamData>({
-    exam_id: 0,
-    patient_id: null,
-    created_at: "",
-    estado: false,
-    urgencia: 1,
-    resultados: "",
-    operator_review: false,
-    aceptado: true,
-    operator_accept: null
+    examId: 0,
+    patientId: null,
+    createdAt: "",
+    status: false,
+    urgency: 1,
+    results: "",
+    operatorReview: false,
+    accepted: true,
+    operatorAccept: null
   });
   const [state, setState] = useState<State>({
       confidence: 0,
@@ -68,8 +68,15 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     getExam(examId).then(
       (response) => {
         const data = {
-          ...response.data,
-          estado: response.data.aceptado,
+          examId: response.data.exam_id,
+          patientId: response.data.patient_id,
+          createdAt: response.data.created_at,
+          status: response.data.aceptado,
+          accepted: response.data.aceptado,
+          urgency: response.data.urgencia,
+          results: response.data.resultados,
+          operatorReview: response.data.operator_review,
+          operatorAccept: response.data.operator_accept,
           resultados: "/examsview",
         };
         setAnalisisData(data);
@@ -106,9 +113,9 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   }, []);
 
   const toggleStateOfExam = (): void => {
-    if (analisisData.operator_accept != null){
+    if (analisisData.operatorAccept != null){
       //cambiar estado al contrario de analisisData.operator_accept
-      analisisData.operator_accept === true ? markExamIdAsRejected(examId).then((res) => {
+      analisisData.operatorAccept === true ? markExamIdAsRejected(examId).then((res) => {
         if (res.data.success) {
           setAccepted(false);
         }
@@ -119,7 +126,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   });
     } else {
       //cambiar estado al contrario de analisisData.estado
-      analisisData.estado === true ? markExamIdAsRejected(examId).then((res) => {
+      analisisData.status === true ? markExamIdAsRejected(examId).then((res) => {
         if (res.data.success) {
           setAccepted(false);
         }
@@ -176,11 +183,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           <Grid item>
             <Typography
               fontSize={"80%"}
-              color={stateColorSwitcher(analisisData.operator_accept != null ? analisisData.operator_accept : analisisData.estado)}
+              color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
-              {analisisData.operator_accept != null ? 
-              (analisisData.operator_accept === true ? t("accepted") : t("refused")) : 
-              (analisisData.estado === true ? t("accepted") : t("refused"))}
+              {analisisData.operatorAccept != null ? 
+              (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
+              (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>
           <Grid item>
@@ -230,9 +237,9 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           <Grid item display={"flex"} justifyContent={"flex-end"}>
             <Typography
               fontSize={"80%"}
-              color={urgencyColorSwitcher(analisisData?.urgencia)}
+              color={urgencyColorSwitcher(analisisData?.urgency)}
             >
-              {analisisData?.urgencia?.toString()}
+              {analisisData?.urgency?.toString()}
             </Typography>
           </Grid>
           <Grid item></Grid>

@@ -142,15 +142,15 @@ function createData(
 }
 
 interface ExamData {
-  exam_id: number;
-  patient_id: string | null;
-  created_at: string;
-  estado: boolean;
-  urgencia: number;
+  examId: number;
+  patientId: string | null;
+  createdAt: string;
+  status: boolean;
+  urgency: number;
   reviews: boolean;
-  resultados: string;
-  aceptado: boolean;
-  operator_accept: boolean | null;
+  results: string;
+  accepted: boolean;
+  operatorAccept: boolean | null;
 }
 
 type Order = "asc" | "desc";
@@ -272,7 +272,7 @@ const ExamTable = ({
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
   
-  const filteredFolio = rows.filter(row => row.exam_id.toString().includes(filterId));  
+  const filteredFolio = rows.filter(row => row.examId.toString().includes(filterId));  
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return (
@@ -342,8 +342,22 @@ const ExamTable = ({
       shouldLoad = true
       setMaxPage(page)
       getExams(page, 11).then((response) => {
-        const newExams = response.data.filter((exam: ExamData) => !rows.some(row => row.exam_id === exam.exam_id));
-        setRows([...rows, ...newExams]);
+        const newExams: ExamData[] = [];
+        response.data.map((examData: any) => {
+          newExams.push({
+            examId: examData.exam_id,
+            patientId: examData.patient_id,
+            createdAt: examData.created_at,
+            status: examData.estado,
+            urgency: examData.urgencia,
+            reviews: examData.reviews,
+            results: examData.resultados,
+            accepted: examData.aceptado,
+            operatorAccept: examData.operator_accept,
+          });
+        });
+        const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
+        setRows([...rows, ...newExamsFiltered]);
       });
       getExamsCount().then((response) => {
         setMaxRows(response.data.count)
@@ -358,23 +372,23 @@ const ExamTable = ({
   }, [page])
   const renderRow = (row: ExamData) : JSX.Element => (
     
-    <TableRow hover role="checkbox" tabIndex={-1} key={row.exam_id}>
-      <StyledTableCell align="center">{row.exam_id}</StyledTableCell>
-      <StyledTableCell align="center">{row.patient_id}</StyledTableCell>
+    <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
+      <StyledTableCell align="center">{row.examId}</StyledTableCell>
+      <StyledTableCell align="center">{row.patientId}</StyledTableCell>
       <StyledTableCell align="center">
-        {formatDate(row.created_at)}
+        {formatDate(row.createdAt)}
       </StyledTableCell>  
-      <StyledTableCell align="center">{getStatusIcon(row.operator_accept != null ? row.operator_accept : row.aceptado)}</StyledTableCell>
-      <StyledTableCell align="center">{getUrgencyText(row.urgencia)}</StyledTableCell>
+      <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
+      <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
       <StyledTableCell align="center">{getReviewState(row.reviews)}</StyledTableCell>
       <StyledTableCell align="center">
         <ThemeProvider theme={buttonsTheme}>
-          <Link to={`/examsview/${row.exam_id}`}>
+          <Link to={`/examsview/${row.examId}`}>
             <Button
               color="primary"
               variant="contained"
               sx={{ color: "#fff" }}
-              value={row.exam_id}
+              value={row.examId}
             >
               <Typography fontSize={'120%'} color={'#fff'}>
                 {t("access")}

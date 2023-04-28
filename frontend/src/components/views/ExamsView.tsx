@@ -33,15 +33,15 @@ interface PredictedValuesData {
 }
 
 export interface ExamData {
-  exam_id: number;
-  patient_id: string | null;
-  created_at: string;
-  estado: boolean;
-  aceptado: boolean;
-  urgencia: number;
-  resultados: string;
-  operator_review: boolean;
-  operator_accept: boolean | null;
+  examId: number;
+  patientId: string | null;
+  createdAt: string;
+  status: boolean;
+  accepted: boolean;
+  urgency: number;
+  results: string;
+  operatorReview: boolean;
+  operatorAccept: boolean | null;
 }
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
@@ -56,8 +56,18 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   useEffect(() => {
     getExam(examIdNumber).then(
       (response) => {
-        setExamData(response.data);
-            setValidated(response.data?.operator_review);
+        setExamData({
+          examId: response.data.exam_id,
+          patientId: response.data.patient_id,
+          createdAt: response.data.created_at,
+          status: response.data.estado,
+          accepted: response.data.aceptado,
+          urgency: response.data.urgencia,
+          results: response.data.resultados,
+          operatorReview: response.data.operator_review,
+          operatorAccept: response.data.operator_accept,
+        });
+        setValidated(response.data?.operator_review);
       },
       (error) => {
         const _content =
@@ -99,9 +109,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   //   console.log("EL id del Examen es = ");
   // })
 
-  const fecha = examData?.created_at.includes("T")
-    ? examData?.created_at.replace("T", " ").split(".")[0]
-    : examData?.created_at.split(".");
+  const fecha = examData?.createdAt.includes("T")
+    ? examData?.createdAt.replace("T", " ").split(".")[0]
+    : examData?.createdAt.split(".");
 
   return (
     <>
@@ -150,7 +160,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 }}
               >
                 <Typography fontSize={"85%"} color={"#061525"}>
-                  {examData?.exam_id.toString()}
+                  {examData?.examId.toString()}
                 </Typography>
               </Box>
             </Box>
