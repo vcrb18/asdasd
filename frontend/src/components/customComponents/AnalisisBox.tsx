@@ -3,7 +3,7 @@ import { Typography, Box, Grid, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
-import { getExam, getSuggestedDiagnostic } from "../../service/user.service";
+import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 
 interface AnalisisProps {
   examId: number;
@@ -53,7 +53,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     urgencia: 1,
     resultados: "",
     operator_review: false,
-    aceptado: true
+    aceptado: true,
+    operator_accept: null
   });
   const [state, setState] = useState<State>({
       confidence: 0,
@@ -62,6 +63,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       rejectionReason: "",
       rejectionReasonConfidence: 0,
     });
+  const [accepted, setAccepted] = useState<boolean | null>(null);
   useEffect(() => {
     getExam(examId).then(
       (response) => {
@@ -80,11 +82,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         setAnalisisData(_content);
       }
     );
-  }, []);
+  }, [accepted]);
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
       (response) => {
-        console.log(response.data[0][0]);
         const data = {
           confidence: response.data[0][0].confidence,
           status: response.data[0][0].estado,
@@ -105,8 +106,31 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   }, []);
 
   const toggleStateOfExam = (): void => {
-    console.log("Cambio de estado");
+    if (analisisData.operator_accept != null){
+      //cambiar estado al contrario de analisisData.operator_accept
+      analisisData.operator_accept === true ? markExamIdAsRejected(examId).then((res) => {
+        if (res.data.success) {
+          setAccepted(false);
+        }
+    }) : markExamIdAsAccepted(examId).then((res) => {
+      if (res.data.success) {
+        setAccepted(true);
+      }
+  });
+    } else {
+      //cambiar estado al contrario de analisisData.estado
+      analisisData.estado === true ? markExamIdAsRejected(examId).then((res) => {
+        if (res.data.success) {
+          setAccepted(false);
+        }
+    }) : markExamIdAsAccepted(examId).then((res) => {
+      if (res.data.success) {
+        setAccepted(true);
+      }
+    });
+    }
   };
+
 
   return (
     <Box
@@ -152,9 +176,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           <Grid item>
             <Typography
               fontSize={"80%"}
-              color={stateColorSwitcher(analisisData.estado)}
+              color={stateColorSwitcher(analisisData.operator_accept != null ? analisisData.operator_accept : analisisData.estado)}
             >
-              {analisisData.estado === true ? t("accepted") : t("refused")}
+              {analisisData.operator_accept != null ? 
+              (analisisData.operator_accept === true ? t("accepted") : t("refused")) : 
+              (analisisData.estado === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>
           <Grid item>
