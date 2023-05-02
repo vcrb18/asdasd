@@ -114,7 +114,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
 
   const toggleStateOfExam = (): void => {
     if (analisisData.operatorAccept != null){
-      //cambiar estado al contrario de analisisData.operator_accept
       analisisData.operatorAccept === true ? markExamIdAsRejected(examId).then((res) => {
         if (res.data.success) {
           setAccepted(false);
@@ -125,7 +124,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       }
   });
     } else {
-      //cambiar estado al contrario de analisisData.estado
       analisisData.status === true ? markExamIdAsRejected(examId).then((res) => {
         if (res.data.success) {
           setAccepted(false);
