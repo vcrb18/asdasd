@@ -144,9 +144,9 @@ export const putExamUnreview = async (exam_id: number): Promise<AxiosResponse> =
 }
 
 export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.put(`/exam/accept//${exam_id}`, {withCredentials: true})
+  return await axios.put(`/exams/accept//${exam_id}`, {withCredentials: true})
 }
 
 export const markExamIdAsRejected = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.put(`/exam/reject/${exam_id}`, {withCredentials: true})
+  return await axios.put(`/exams/reject/${exam_id}`, {withCredentials: true})
 }

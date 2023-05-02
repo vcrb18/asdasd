@@ -3,7 +3,7 @@ import { Typography, Box, Grid, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
-import { getExam, getSuggestedDiagnostic } from "../../service/user.service";
+import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 
 interface AnalisisProps {
   examId: number;
@@ -46,14 +46,15 @@ function stateColorSwitcher(value: boolean | undefined): string {
 const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   const { t } = useTranslation();
   const [analisisData, setAnalisisData] = useState<ExamData>({
-    exam_id: 0,
-    patient_id: null,
-    created_at: "",
-    estado: false,
-    urgencia: 1,
-    resultados: "",
-    operator_review: false,
-    aceptado: true
+    examId: 0,
+    patientId: null,
+    createdAt: "",
+    status: false,
+    urgency: 1,
+    results: "",
+    operatorReview: false,
+    accepted: true,
+    operatorAccept: null
   });
   const [state, setState] = useState<State>({
       confidence: 0,
@@ -62,12 +63,20 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       rejectionReason: "",
       rejectionReasonConfidence: 0,
     });
+  const [accepted, setAccepted] = useState<boolean | null>(null);
   useEffect(() => {
     getExam(examId).then(
       (response) => {
         const data = {
-          ...response.data,
-          estado: response.data.aceptado,
+          examId: response.data.exam_id,
+          patientId: response.data.patient_id,
+          createdAt: response.data.created_at,
+          status: response.data.aceptado,
+          accepted: response.data.aceptado,
+          urgency: response.data.urgencia,
+          results: response.data.resultados,
+          operatorReview: response.data.operator_review,
+          operatorAccept: response.data.operator_accept,
           resultados: "/examsview",
         };
         setAnalisisData(data);
@@ -80,11 +89,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         setAnalisisData(_content);
       }
     );
-  }, []);
+  }, [accepted]);
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
       (response) => {
-        console.log(response.data[0][0]);
         const data = {
           confidence: response.data[0][0].confidence,
           status: response.data[0][0].estado,
@@ -105,8 +113,29 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   }, []);
 
   const toggleStateOfExam = (): void => {
-    console.log("Cambio de estado");
+    if (analisisData.operatorAccept != null){
+      analisisData.operatorAccept === true ? markExamIdAsRejected(examId).then((res) => {
+        if (res.data.success) {
+          setAccepted(false);
+        }
+    }) : markExamIdAsAccepted(examId).then((res) => {
+      if (res.data.success) {
+        setAccepted(true);
+      }
+  });
+    } else {
+      analisisData.status === true ? markExamIdAsRejected(examId).then((res) => {
+        if (res.data.success) {
+          setAccepted(false);
+        }
+    }) : markExamIdAsAccepted(examId).then((res) => {
+      if (res.data.success) {
+        setAccepted(true);
+      }
+    });
+    }
   };
+
 
   return (
     <Box
@@ -152,9 +181,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           <Grid item>
             <Typography
               fontSize={"80%"}
-              color={stateColorSwitcher(analisisData.estado)}
+              color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
-              {analisisData.estado === true ? t("accepted") : t("refused")}
+              {analisisData.operatorAccept != null ? 
+              (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
+              (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>
           <Grid item>
@@ -204,9 +235,9 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           <Grid item display={"flex"} justifyContent={"flex-end"}>
             <Typography
               fontSize={"80%"}
-              color={urgencyColorSwitcher(analisisData?.urgencia)}
+              color={urgencyColorSwitcher(analisisData?.urgency)}
             >
-              {analisisData?.urgencia?.toString()}
+              {analisisData?.urgency?.toString()}
             </Typography>
           </Grid>
           <Grid item></Grid>
