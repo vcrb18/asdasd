@@ -159,8 +159,8 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         // .map((element: string )=>{
         //   element
         // })
-        const dataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
-        setDiagnosticosSugerido(dataParser);
+        const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
+        setDiagnosticosSugerido(diagnosticDataParser);
       },
       (error) => {
         const _content =
