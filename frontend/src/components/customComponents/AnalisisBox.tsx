@@ -64,8 +64,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       rejectionReasonConfidence: 0,
     });
   const [accepted, setAccepted] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
-    getExam(examId).then(
+    setIsLoading(true);
+    getExam(examId).then(      
       (response) => {
         const data = {
           examId: response.data.exam_id,
@@ -80,6 +83,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           resultados: "/examsview",
         };
         setAnalisisData(data);
+        setIsLoading(false);
       },
       (error) => {
         const _content =
@@ -178,7 +182,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             {t("state")}
             </Typography>
           </Grid>
-          <Grid item>
+          {!isLoading &&
+          (<Grid item>
             <Typography
               fontSize={"80%"}
               color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
@@ -187,13 +192,13 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
               (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
-          </Grid>
-          <Grid item>
+          </Grid>)}
+        <Grid item>
           <Button
           variant="contained"
           sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
           onClick={toggleStateOfExam}
-        >
+          >
           {t("change")}
         </Button>
           </Grid>
@@ -232,14 +237,15 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             {t("urgency")}
             </Typography>
           </Grid>
-          <Grid item display={"flex"} justifyContent={"flex-end"}>
+          {!isLoading &&
+          (<Grid item display={"flex"} justifyContent={"flex-end"}>
             <Typography
               fontSize={"80%"}
               color={urgencyColorSwitcher(analisisData?.urgency)}
             >
               {analisisData?.urgency?.toString()}
             </Typography>
-          </Grid>
+          </Grid>)}
           <Grid item></Grid>
         </Grid>
         <Grid
