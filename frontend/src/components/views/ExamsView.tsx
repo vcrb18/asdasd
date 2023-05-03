@@ -69,7 +69,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   }, []);
   let predictedExamValuesData: PredictedValuesData;
 
-    const validationButtonMessage: string = (validatedExam) ? 'Deshacer validación' : 'Validar mediciones';
+    const validationButtonMessage: string = (validatedExam) ? t("undoValidation") : t("validateMeasurements");
     const toggleValidatedExam = (): void => {
         let urlReview;
         if (validatedExam) {
