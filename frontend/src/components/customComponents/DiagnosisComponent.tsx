@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Dialog,
@@ -13,7 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
-import { getSuggestedDiagnostic, getDiagnosticTypes } from "../../service/user.service";
+import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 
 interface Diagnostic {
@@ -21,12 +22,19 @@ interface Diagnostic {
   diagnostic: string,
 }
 
+interface DoctorDiagnostic{
+  examId: number,
+  diagnosticId: number,
+}
+
 const DeletableBoxItem = ({
+  id,
   label,
   onDelete,
 }: {
+  id: number;
   label: string;
-  onDelete: (item: string) => void;
+  onDelete: (item: string, id: number) => void;
 }): JSX.Element => {
   //   const [hovered, setHovered] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -38,7 +46,7 @@ const DeletableBoxItem = ({
 
   const handleDeleteConfirm = (): void => {
     setDeleteDialogOpen(false);
-    onDelete(label);
+    onDelete(label, id);
   };
 
   const handleDeleteCancel = (): void => {
@@ -149,6 +157,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   }, []);
 
   const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<(Diagnostic)[]>([]);
+  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
 
   const { t } = useTranslation();
 
@@ -156,9 +165,6 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     if(diagnosticTypes.length === 0) return;
     getSuggestedDiagnostic(examId).then(
       (res) => {
-        // .map((element: string )=>{
-        //   element
-        // })
         const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
         setDiagnosticosSugerido(diagnosticDataParser);
       },
@@ -171,36 +177,58 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
       }
     );
   }, [diagnosticTypes]);
-  //console.log(DiagnosticosSugeridos);
 
-  // const [items, setItems] = useState<string[]>([]);
-  // useEffect(() => {
-  //   DiagnosticosSugeridos.map((item) =>
-  //   {
-  //     item.value? setItems([...items, item.value]) : null
-  //   })
-  // }, [] );
+  useEffect(() => {
+    getDoctorDiagnostics(examId).then(
+      (res) => {
+        let newDoctorDiagnostics: DoctorDiagnostic[] = [];
+        res.data.map((doctorDiagnostic: { exam_id: any; diagnostic_id: any; }) => {
+          newDoctorDiagnostics.push({
+            examId: doctorDiagnostic.exam_id,
+            diagnosticId: doctorDiagnostic.diagnostic_id,
+          });
+        });
+        setDoctorDiagnostics(newDoctorDiagnostics);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+          setDoctorDiagnostics(_content);
+      }
+    );
+  }, []);  
 
-  const [newItem, setNewItem] = useState("");
+  const [newItem, setNewItem] = useState<Diagnostic | null>();
 
-  const handleDelete = (item: string): void => {
+  const handleDeleteDiagnosticoSugerido = (item: string): void => {
     setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
   };
 
+  const handleDeleteDoctorDiagnostic = (item: string, id: number): void => {
+    setDoctorDiagnostics(doctorDiagnostics.filter((i) => i?.diagnosticId !== id));
+    deleteDoctorDiagnostics(examId, id);
+  };
+
   const handleAdd = (): void => {
-    setNewItem("");
     setOpenAddDialog(true);
   };
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  
+  const handleOptionSelect = (event: any, newValue: Diagnostic | null) => {
+    setNewItem(newValue);
+  };
   const handleAddDialogClose = (): void => {
     setOpenAddDialog(false);
+    setNewItem(null);
   };
   const handleAddDialogSubmit = (): void => {
-    // if (newItem !== '') {
-    //   setDiagnosticosSugerido([...DiagnosticosSugeridos, newItem]);
-    // }
-    setNewItem("");
+    if(newItem){
+      createDoctorDiagnostic(examId, newItem.diagnosticId);
+      setDoctorDiagnostics([...doctorDiagnostics, {examId: examId, diagnosticId: newItem.diagnosticId}]);
+    }
     setOpenAddDialog(false);
   };
   return (
@@ -211,27 +239,37 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box>
-        {DiagnosticosSugeridos.map((item: Diagnostic | undefined) => (
+        {DiagnosticosSugeridos.length>0 && DiagnosticosSugeridos.map((item: Diagnostic) => (
           <DeletableBoxItem
-            key={item?.diagnosticId}
-            label={item?.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
-            onDelete={handleDelete}
+            key={item.diagnosticId}
+            id={item.diagnosticId}
+            label={item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
+            onDelete={handleDeleteDiagnosticoSugerido}
+          />
+        ))}
+        {DiagnosticosSugeridos.length>0 && doctorDiagnostics.map((item: DoctorDiagnostic) => (
+          <DeletableBoxItem
+            key={item.diagnosticId}
+            id={item.diagnosticId}
+            label={item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
+            onDelete={handleDeleteDoctorDiagnostic}
           />
         ))}
         <IconButton size="small" edge={"end"} onClick={handleAdd}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#36c513" }} />
         </IconButton>
-        <Dialog open={openAddDialog} onClose={handleAddDialogClose}>
-          <DialogTitle>{t("add")}{t("patology")}</DialogTitle>
+        <Dialog fullWidth={false} maxWidth={"sm"}  open={openAddDialog} onClose={handleAddDialogClose}>
+          <DialogTitle>{t("add")} {t("patology")}</DialogTitle>
           <DialogContent>
-            <TextField
-              label={t("newItem")}
-              fullWidth
-              autoFocus
-              value={newItem}
-              onChange={(event) => {
-                setNewItem(event.target.value);
-              }}
+            <Autocomplete
+              isOptionEqualToValue={(option, value) => option.diagnostic === value.diagnostic}
+              getOptionLabel={(option) => option.diagnostic}
+              value={newItem || null}
+              onChange={handleOptionSelect}
+              id="select-diagnostic"
+              options={diagnosticTypes}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params}/>}
             />
           </DialogContent>
           <DialogActions>
