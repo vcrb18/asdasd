@@ -157,3 +157,15 @@ export const getDiagnosticTypeByDiagnostic = async (diagnostic: string,): Promis
 export const getDiagnosticTypes = async (): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_types/`, {withCredentials: true,});
 }
+
+export const createDoctorDiagnostic = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
+  return await axios.post(`/doctor_diagnostics/create`, {exam_id: examId, diagnostic_id: diagnosticId, withCredentials: true,});
+}
+
+export const getDoctorDiagnostics = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/doctor_diagnostics/${examId}`, {withCredentials: true,});
+}
+
+export const deleteDoctorDiagnostics = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
+  return await axios.delete(`/doctor_diagnostics/delete/${examId}/${diagnosticId}`, {withCredentials: true,});
+}
