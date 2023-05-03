@@ -104,3 +104,7 @@ export const postTimeSeriesById = async (exam_id: number, newData : any): Promis
 export const getDiagnosticTypeByDiagnostic = async (diagnostic: string,): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_types/${diagnostic}`, {withCredentials: true,});
 }
+
+export const getDiagnosticTypes = async (): Promise<AxiosResponse> => {
+  return await axios.get(`/diagnostic_types/`, {withCredentials: true,});
+}
