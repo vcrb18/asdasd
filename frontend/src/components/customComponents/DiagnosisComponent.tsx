@@ -117,13 +117,9 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
   diagnostics.map((item: (number | string)[])=>{
     const text = item[1].toString();
     let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnostic == text);
-    if (!newObject){
-      newObject = {
-        diagnosticId: 404,
-        diagnostic: "Diagnóstico no registrado",
-      }
+    if (newObject){
+      newDiagnostics.push(newObject);
     }
-    newDiagnostics.push(newObject);
   });
   return newDiagnostics;
 }
@@ -247,7 +243,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
             onDelete={handleDeleteDiagnosticoSugerido}
           />
         ))}
-        {DiagnosticosSugeridos.length>0 && doctorDiagnostics.map((item: DoctorDiagnostic) => (
+        {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: DoctorDiagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
