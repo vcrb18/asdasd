@@ -13,10 +13,13 @@ import {
 import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
-import { getSuggestedDiagnostic } from "../../service/user.service";
+import { getSuggestedDiagnostic, getDiagnosticTypes } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 
-const DiagnosisTypes = ["Trasado dentro de los limites", "Ritmo sinusal"];
+interface Diagnostic {
+  diagnosticId: number,
+  diagnostic: string,
+}
 
 const DeletableBoxItem = ({
   label,
@@ -101,22 +104,63 @@ interface DiagnosisProps {
   examId: number;
 }
 
+const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
+  let newDiagnostics: (Diagnostic)[] = [];
+  diagnostics.map((item: (number | string)[])=>{
+    const text = item[1].toString();
+    let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnostic == text);
+    if (!newObject){
+      newObject = {
+        diagnosticId: 404,
+        diagnostic: "Diagnóstico no registrado",
+      }
+    }
+    newDiagnostics.push(newObject);
+  });
+  return newDiagnostics;
+}
+
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   examId,
 }): JSX.Element => {
-  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<
-    (number | string)[][]
-  >([]);
+
+  const [diagnosticTypes, setDiagnosticTypes] = useState<(Diagnostic)[]>([]);
+
+  useEffect(() => {
+    getDiagnosticTypes().then(
+      (res) => {
+        let diagnostics: (Diagnostic)[] = []
+        res.data.map((diagnostic: { diagnostic_id: any; diagnostic: any; }) => {
+          diagnostics.push({
+            diagnosticId: diagnostic.diagnostic_id,
+            diagnostic: diagnostic.diagnostic,
+          });
+        });
+        setDiagnosticTypes(diagnostics);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+          setDiagnosticTypes(_content);
+      }
+    );
+  }, []);
+
+  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<(Diagnostic)[]>([]);
 
   const { t } = useTranslation();
 
   useEffect(() => {
+    if(diagnosticTypes.length === 0) return;
     getSuggestedDiagnostic(examId).then(
       (res) => {
         // .map((element: string )=>{
         //   element
         // })
-        setDiagnosticosSugerido(res.data[1]);
+        const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
+        setDiagnosticosSugerido(diagnosticDataParser);
       },
       (error) => {
         const _content =
@@ -126,8 +170,8 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         setDiagnosticosSugerido(_content);
       }
     );
-  }, []);
-  console.log(DiagnosticosSugeridos);
+  }, [diagnosticTypes]);
+  //console.log(DiagnosticosSugeridos);
 
   // const [items, setItems] = useState<string[]>([]);
   // useEffect(() => {
@@ -140,7 +184,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const [newItem, setNewItem] = useState("");
 
   const handleDelete = (item: string): void => {
-    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i[1].toString() !== item));
+    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
   };
 
   const handleAdd = (): void => {
@@ -167,9 +211,10 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box>
-        {DiagnosticosSugeridos.map((item: (number | string)[]) => (
+        {DiagnosticosSugeridos.map((item: Diagnostic | undefined) => (
           <DeletableBoxItem
-            label={item[1] ? item[1].toString() : ""}
+            key={item?.diagnosticId}
+            label={item?.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
             onDelete={handleDelete}
           />
         ))}

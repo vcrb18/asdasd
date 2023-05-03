@@ -79,7 +79,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     );
   }, []);
 
-    const validationButtonMessage: string = (validated) ? 'Deshacer validación' : 'Validar mediciones';
+    const validationButtonMessage: string = (validated) ? t("undoValidation") : t("validateMeasurements");
     const toggleValidatedExam = (): void => {
         if (validated) {
             putExamUnreview(examIdNumber).then((res) => {
