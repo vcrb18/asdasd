@@ -149,6 +149,7 @@ export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosRespon
 
 export const markExamIdAsRejected = async (exam_id: number): Promise<AxiosResponse> => {
   return await axios.put(`/exams/reject/${exam_id}`, {withCredentials: true})
+}
 export const getDiagnosticTypeByDiagnostic = async (diagnostic: string,): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_types/${diagnostic}`, {withCredentials: true,});
 }
