@@ -874,7 +874,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               <LineChart height={"25%"} width={"25%"} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
             </Grid>
           </Grid>
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={"25%"} width={"25%"} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
             </Grid>
@@ -885,7 +885,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               <LineChart height={"25%"} width={"25%"} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
             </Grid>
           </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={"25%"} width={"25%"} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
             </Grid>
@@ -896,7 +896,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               <LineChart height={"25%"} width={"25%"} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
             </Grid>
           </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={"25%"} width={"25%"} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
             </Grid>

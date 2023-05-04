@@ -120,10 +120,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     const getReviewState = (state: boolean) : JSX.Element => {
     if (state === true) {
       return(
-          <Avatar src={Check} alt={"checkVerde"} variant={"square"} sx={{maxWidth: "85%", maxHeight: "85%"}}/>      )
+          <Avatar src={Check} alt={"checkVerde"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>      )
     } else {
       return (
-          <Avatar src={X} alt={"checkRojo"} variant={"square"} sx={{maxWidth: "85%", maxHeight: "85%"}}/>
+          <Avatar src={X} alt={"checkRojo"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>
         )
     }
   }
@@ -153,6 +153,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   };
 
 
+  const date = analisisData?.created_at.includes("T")
+    ? analisisData?.created_at.replace("T", " ").split(".")[0]
+    : analisisData?.created_at.split(".");
+
   return (
     <Grid container>
     {/* Sector de los datos del exámen */}
@@ -168,7 +172,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       {/* contenedor del folio */}
       <Grid container>
         <Grid item  
-            xs={12} sm={12} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("folio")}
             </Typography>
@@ -182,14 +186,14 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       {/* contenedor de la fecha */}
       <Grid container>
       <Grid item  
-            xs={12} sm={12} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("date")}
             </Typography>
         </Grid>
         <Grid item xs={7} sm={7} md={7} lg={7}>
           <Typography fontSize={"65%"} fontWeight={"bold"}>
-            {analisisData?.created_at}
+            {date}
           </Typography>
         </Grid>
       </Grid>
@@ -214,7 +218,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         >
           <Grid item  
             xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
-            <Typography fontSize={"80%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("state")}
             </Typography>
           </Grid>
