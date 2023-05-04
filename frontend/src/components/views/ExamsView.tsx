@@ -134,6 +134,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         <ThemeProvider theme={buttonsTheme}>
           <Button
           variant="contained"
+          href="/exams"
           sx={{
             backgroundColor: '#007088',
             color: "#fff",
@@ -286,6 +287,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         <ThemeProvider theme={buttonsTheme}>
           <Button
           variant="contained"
+          href="/exams"
           sx={{
             position: "fixed",
             left: "2%",

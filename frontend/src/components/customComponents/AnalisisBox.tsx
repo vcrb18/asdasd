@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Select, MenuItem, Box, Grid, Avatar, Button } from "@mui/material";
+import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
@@ -153,9 +153,17 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   };
 
 
-  const date = analisisData?.created_at.includes("T")
-    ? analisisData?.created_at.replace("T", " ").split(".")[0]
-    : analisisData?.created_at.split(".");
+  const date = analisisData?.createdAt.includes("T")
+    ? analisisData?.createdAt.replace("T", " ").split(".")[0]
+    : analisisData?.createdAt.split(".");
+
+    const buttonsTheme = createTheme({
+      palette: {
+        primary: {
+          main: "#007088",
+        },
+      },
+    });
 
   return (
     <Grid container>
@@ -179,7 +187,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         </Grid>
         <Grid item xs={7} sm={7} md={7} lg={7}>
           <Typography fontSize={"65%"} fontWeight={"bold"}>
-            {analisisData?.exam_id}
+            {analisisData?.examId}
           </Typography>
         </Grid>
       </Grid>
@@ -215,6 +223,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         <Grid
           container
           display={"flex"}
+          alignItems={"center"}
         >
           <Grid item  
             xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
@@ -223,9 +232,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item xs={4} sm={4} md={4} lg={4}>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
             <Typography
-              fontSize={"80%"}
+              fontSize={"65%"}
+              fontWeight={"bold"}
               color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
               {analisisData.operatorAccept != null ? 
@@ -234,13 +244,17 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             </Typography>
           </Grid>)}
         <Grid item xs={3} sm={3} md={3} lg={3}>
+          <ThemeProvider theme={buttonsTheme}>
           <Button
           variant="contained"
-          sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
           onClick={toggleStateOfExam}
           >
-          {t("change")}
+            <Typography fontWeight={"bold"} color={"#ffffff"}>
+              {t("change")}
+            </Typography>
         </Button>
+        </ThemeProvider>
+
           </Grid>
         </Grid>
         
@@ -250,15 +264,16 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           container
           display={"flex"}
           justifyContent={"space-between"}
+          alignItems={"center"}
         >
           <Grid item>
-            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
+            <Typography fontSize={"65%"} sx={{ color: "#000000" }}>
               {t("reason")}
             </Typography>
           </Grid>
           <Grid item>
             <Typography
-              fontSize={"80%"}
+              fontSize={"65%"}
             >
               {state.rejectionReason}
             </Typography>
@@ -269,23 +284,23 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           container
           display={"flex"}
           justifyContent={"space-between"}
-          padding={"1%"}
         >
           <Grid item xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
-            <Typography fontSize={"80%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("urgency")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"flex-end"} xs={7} sm={7} md={7} lg={7}>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
             <Typography
-              fontSize={"80%"}
+              fontSize={"70%"}
+              fontWeight={"bold"}
               color={urgencyColorSwitcher(analisisData?.urgency)}
             >
               {analisisData?.urgency?.toString()}
             </Typography>
           </Grid>)}
-          <Grid item></Grid>
+          <Grid item xs={3} sm={3} md={3} lg={3}></Grid>
         </Grid>
     </Grid>
     </Grid>
