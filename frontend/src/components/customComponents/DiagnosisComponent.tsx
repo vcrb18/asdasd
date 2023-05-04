@@ -65,9 +65,10 @@ const DeletableBoxItem = ({
       }}>
           <Grid container
             display={"flex"}
+            marginLeft={"1%"}
           >
-            <Grid item xs={9} sm={9} md={9} lg={9} display={'flex'} justifyContent={'flex-start'} alignItems={"center"} >
-            <Typography fontSize={"65%"} fontWeight={"bold"}>
+            <Grid item xs={9} sm={9} md={9} lg={9} display={'flex'} justifyContent={'center'} alignItems={"center"} >
+            <Typography fontSize={"65%"} fontWeight={"bold"} align="left">
               {label}
             </Typography>
             </Grid>
