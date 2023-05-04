@@ -69,7 +69,7 @@ const resources = {
       en: "English",
       folio: "Folio",
       validateMeasurements: "Validate measurements",
-      analysis: "Analysis",
+      analysis: "Analisis",
       accepted: "Accepted",
       refused: "Refused",
       confirmDelete: "Confirm Delete",
