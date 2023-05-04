@@ -478,7 +478,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "es", // Set the default language
+    lng: localStorage.getItem("language") || "es", // Set the default language
     fallbackLng: "en", // Use English as the fallback language
     interpolation: {
       escapeValue: false,

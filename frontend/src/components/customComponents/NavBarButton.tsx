@@ -33,6 +33,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
 
   const handleLanguageChange = (event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
+    localStorage.setItem("language", newLanguage);
     setLanguage(newLanguage);
     i18n.changeLanguage(newLanguage).catch((error) => {
       console.error(error);

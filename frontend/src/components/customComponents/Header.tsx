@@ -3,6 +3,7 @@ import PropTypes, { type Validator } from "prop-types";
 import {
   AppBar,
   Box,
+  Grid,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -10,11 +11,12 @@ import {
 } from "@mui/material";
 import "../../styles/Header.css";
 import DrawerComp from "./DrawerComp";
-import Logo from "./Logo";
-import LogoCompleto from "../../static/images/logo_isatec_completo.png"
+import Logo from "../../static/images/logo_isatec_sin_subtitulo.png"
 import NavBarButton from "./NavBarButton";
 import NavbarTabs from "./NavbarTabs";
 import App from "../../App";
+import {Link} from "react-router-dom";
+
 
 export interface TabProps {
   label: string;
@@ -49,6 +51,9 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
         <Toolbar>
         {tabs != null && tabs.length > 0 ? (
           <>
+            <Link to={"/mainmenu"} style={{display: "flex", alignItems: "initial", width: "35%"}}>
+            <img src={Logo} width={"35%"}/>
+            </Link>
             <NavbarTabs
               tabs={tabs}
               onTabChange={(index: number) => {
