@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { getExamPredictedMarkersComputations } from "../../service/user.service";
+import { Typography } from "@mui/material";
 
 interface Measurements {
   exam_id: number;
@@ -83,52 +84,65 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
         <TableHead>
           <TableRow
             sx={{
-              backgroundColor: "#c7dff9",
-              color: "#404040",
+              backgroundColor: "#E4EDEF",
+              color: "#007088",
             }}
           >
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD",}}
             >
-              {" "}
-              FC [lpm]
+              <Typography fontWeight={"bold"} color={"#007088"}>
+                FC [lpm]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              RR [ms]
+              <Typography fontWeight={"bold"}>
+                RR [ms]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              PQ [ms]
+              <Typography fontWeight={"bold"}>
+                PQ [ms]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              QRS [ms]
+              <Typography fontWeight={"bold"}>
+                QRS [ms]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              QT [ms]
+              <Typography fontWeight={"bold"}>
+                QT [ms]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              QTc [ms]
+              <Typography fontWeight={"bold"}>
+                QTc [ms]
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              ST [mm]
+              <Typography fontWeight={"bold"}>
+                ST [mm]
+              </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -136,45 +150,59 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
           <TableRow>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.fc.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.fc.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.rr.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.rr.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.pq.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.pq.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.qrs.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.qrs.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.qt.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.qt.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.qtc.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.qtc.toFixed(1)}
+              </Typography>
             </TableCell>
             <TableCell
               align="center"
-              sx={{ border: 1, borderColor: "#DDDDDD", fontSize: "50%" }}
+              sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
-              {row.st.toFixed(1)}
+              <Typography fontWeight={"bold"}>
+                {row.st.toFixed(1)}
+              </Typography>
             </TableCell>
           </TableRow>
         </TableBody>
