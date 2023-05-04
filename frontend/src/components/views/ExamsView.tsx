@@ -1,4 +1,4 @@
-import { Box, Button, Fab, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Fab, Grid, Paper, TextField, ThemeProvider, Typography, createTheme, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
@@ -14,6 +14,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import DiagnosisComponent from "../customComponents/DiagnosisComponent";
 
 interface ExamsViewProps {
   // examId: number ;
@@ -68,7 +69,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     );
   }, []);
 
-    const validationButtonMessage: string = (validated) ? 'Deshacer validación' : 'Validar mediciones';
+    const validationButtonMessage: string = (validated) ? t('undoValidation') : 'Validar mediciones';
     const toggleValidatedExam = (): void => {
         if (validated) {
             putExamUnreview(examIdNumber).then((res) => {
@@ -86,9 +87,17 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         }
     };
 
-  const fecha = examData?.created_at.includes("T")
-    ? examData?.created_at.replace("T", " ").split(".")[0]
-    : examData?.created_at.split(".");
+
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#006a6b",
+      },
+    },
+  });
+  const theme = useTheme();
+  
+  const isMatchXs = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
@@ -102,125 +111,68 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
-      {/* Box que contiene todo lo de la vista del examen */}
-      <Box marginY={"6%"} width={"100%"} 
-        
+      {/* Grid que contiene todo lo de la vista del examen */}
+      <Grid container marginY={"1%"} width={"100%"} 
         >
-        {/* Grid que contiene la parte de la informacion del examen */}
-        <Grid container display={"flex"} mt={"1%"} mb={"4%"}
-        >
-          {/* Grid que contiene la flecha para volver a la tabla de examenes */}
-          <Grid item xs={12} sm={12} md={1} lg={1}>
-            <Fab size="small" href="/mainmenu">
-              <ArrowCircleLeftIcon />
-            </Fab>
-          </Grid>
-          {/* Grid que contiene la información del examen (incluyendo el análisis de este) */}
-          <Grid container xs={12} sm={12} md={3} lg={3} display={"flex"} flexDirection={"column"}
+        {/* Contenedor del boton para volver a la tabla de exámenes*/}
+        <Grid item xs={6} sm={6} md={2} lg={2} width={"80%"} >
+        <ThemeProvider theme={buttonsTheme}>
+          <Button
+          variant="contained"
           sx={{
-            borderRadius: "1%",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-            transition: "box-shadow 0.3s ease-in-out",
-            "&:hover": {
-              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
-            },
+            backgroundColor: '#007088',
+            color: "#fff",
+            width: "154px", // Set a fixed width for the button, // Use shorthand notation for marginLeft
           }}
           >
-            {/* Grid container que contiene el los datos del exámen */}
-            <Grid container>
-              {/* Grid item que contiene el título "Examen" */}
-              <Grid item 
-                display={"flex"}
-                justifyContent={"center"} 
-                xs={12} sm={12} md={12} lg={12} >
-                <Typography 
-                  fontSize={"150%"}
-                  fontWeight={"bold" }>
-                  {t("exam")}
-                </Typography>
-              </Grid>
-              {/* Grid container que contiene el numero de folio */}
-              <Grid container>
-                <Grid item
-                  display={"flex"}
-                  justifyContent={"flex-start"} 
-                  xs={12} sm={12} md={6} lg={6}
-                  paddingLeft={"5%"}
-                >
-                  <Typography
-                    fontSize={"80%"}
-                    fontWeight={"bold"}
-                    >
-                      {t("folio")}:
-                    </Typography>
-                </Grid>
-                  <Grid item
-                    xs={12} sm={12} md={6} lg={6}
-                    >
-                    <Typography 
-                      fontSize={"65%"}
-                      fontWeight={"bold"}
-                      >
-                      {examData?.exam_id.toString()}
-                    </Typography>
-                  </Grid>
-              </Grid>
-              {/* Grid container que contiene la fecha de creación */}
-              <Grid container>
-                <Grid item xs={12} sm={12} md={6} lg={6} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
-                    <Typography
-                      fontSize={"80%"}
-                      fontWeight={"bold"}
-                    >
-                      {t("date")}
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6}>
-                    <Typography fontSize={"65%"} fontWeight={"bold"}>
-                      {fecha}
-                    </Typography>
-                </Grid>
-
-              </Grid>
-              {/* Grid que contiene el análisis del examen */}
-              <Grid container mb={"2%"}>
+            <Typography color="#ffffff" fontWeight={"bold"} >
+              {t("goBack")}
+            </Typography>
+          </Button>
+        </ThemeProvider>
+        </Grid>
+        {/* Grid que contiene la parte de la informacion del examen */}
+        <Grid container display={"flex"}  mb={"4%"} item xs={12} sm={12} md={8} lg={8} flexDirection={"column"}>
+          {/* Grid que contiene la información del examen (incluyendo el análisis de este) */}
+          <Grid container display={"flex"} justifyContent={"space-around"} >
+            <Grid container xs={12} sm={12} md={5} lg={5} padding={"2%"}
+              sx={{
+                border: 4,
+                borderColor: "#E4EDEF",
+                borderRadius: "1%",
+                boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
+                transition: "box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  boxShadow: "0px 8px 16px rgba(0,0,0,0.3)",
+                },
+              }}
+            >
                 <AnalisisBox examId={examIdNumber} />
               </Grid>
+            <Grid container xs={12} sm={12} md={6} lg={6} padding={"2%"}
+              sx={{
+                border: 4,
+                borderColor: "#E4EDEF",
+                borderRadius: "1%",
+                boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
+                transition: "box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  boxShadow: "0px 8px 16px rgba(0,0,0,0.3)",
+                },
+              }}
+            >
+                <DiagnosisComponent examId={examIdNumber}/>
             </Grid>
           </Grid>
-        </Grid>
-          {/* <Grid container>
-            <DiagnosisComponent examId={examId} />
-          </Grid> */}
-          <Grid item xs={12} sm={12} md={3} lg={3}>
-            <Button
-              variant="contained"
-              sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
-              onClick={toggleValidatedExam}
-            >
-              {validationButtonMessage}
-            </Button>
-          </Grid>
 
-        <Grid
+      <Grid
           container
           display={"flex"}
           width={"100%"}
           rowSpacing={1}
           alignItems={"center"}
         >
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            padding={"2%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-          </Grid>
+          
           <Grid
             item
             xs={12}
@@ -230,11 +182,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             display={"flex"}
             justifyContent={"center"}
             alignItems={"center"}
+            width={"100%"}
             marginY={"5%"}
           >
             <DerivationsComponent examId={examIdNumber} />
           </Grid>
-          <Grid
+          {/* <Grid
             item
             xs={12}
             sm={12}
@@ -246,31 +199,52 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             alignItems={"center"}
           >
             <PredictionBox examId={examIdNumber} />
-          </Grid>
+          </Grid> */}
+          <Grid item
+            display={"flex"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+            marginBottom={"3%"}
+            width={"100%"}
+            marginX={"3%"}
+          >
+            <Box display={"flex"} alignItems={"flex-start"}>
+              <Typography fontSize={"80%"} fontWeight={"bold"}>
+                {t("comments")}
+              </Typography>
+            </Box>
+            <TextField
+              id="outlined-multiline-static"
+              label={t("commentsLabel")}
+              multiline
+              rows={4}
+              fullWidth
+            ></TextField>
         </Grid>
-      </Box>
-      <Box
-        display={"flex"}
-        justifyContent={"center"}
-        flexDirection={"column"}
-        marginBottom={"3%"}
-        width={"80%"}
-        marginX={"3%"}
-      >
-        <Box display={"flex"} alignItems={"flex-start"}>
-          <Typography fontSize={"80%"} color={"#000"}>
-            {t("comments")}
-          </Typography>
-        </Box>
-        <TextField
-          id="outlined-multiline-static"
-          label={t("commentsLabel")}
-          multiline
-          rows={4}
-          fullWidth
-        ></TextField>
-      </Box>
+      </Grid>
 
+      </Grid>
+
+
+      {/* Contenedor del botón de validación */}
+      <Grid item xs={12} sm={12} md={2} lg={2}>
+        <ThemeProvider theme={buttonsTheme}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#007088',
+              color: "#fff",
+              width: "154px", // Set a fixed width for the button, // Use shorthand notation for marginLeft
+            }}
+            onClick={toggleValidatedExam}
+            >
+            <Typography fontStyle={"bold"} color={"#ffffff"}>
+              {validationButtonMessage}
+            </Typography>
+          </Button>
+        </ThemeProvider>
+      </Grid>
+    </Grid>
     </>
   );
 };

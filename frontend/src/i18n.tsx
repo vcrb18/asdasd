@@ -5,6 +5,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      undoValidation: "Undo Validation",
+      doValidation: "Save Validation",
+      goBack: "Go back",
       exam: "Exam",
       review: "Review",
       reviewed: "Reviewed",
@@ -87,6 +90,9 @@ const resources = {
   },
   es: {
     translation: {
+      undoValidation: "Deshacer Validación",
+      doValidation: "Guardar Validación", 
+      goBack: "Volver",
       exam: "Examen",
       review: "Revisión",
       reviewed: "Revisado",
