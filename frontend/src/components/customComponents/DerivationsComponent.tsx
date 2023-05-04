@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, createTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
@@ -7,6 +7,7 @@ import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
 import { number } from "yup";
 import { useTranslation } from "react-i18next";
+import { ThemeProvider } from "@emotion/react";
 
 
 
@@ -723,25 +724,41 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     console.log(fidP);
     console.log(childData.p_start)
   };
-
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#006a6b",
+      },
+    },
+  });
   // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
   return (
     <Stack
       display={"flex"}
       flexDirection={"column"}
       alignItems="left"
-      width={"80%"}
+      width={"100%"}
       spacing={1}
     >
-      <Typography
-        align="left"
-        fontSize={"80%"}
-        width={"100%"}
-        sx={{ color: "#000000" }}
-      >
-        {t("derivation")} II 
-      </Typography>
-
+      <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
+        <FiducialMeasurementsTable
+          fidP={fidP}
+          fidQRS={fidQRS}
+          fidR={fidR}
+          fidR2={fidR2}
+          fidS={fidS}
+          fidST={fidST}
+          fidT={fidT}
+          // fidP={fiduciales.p_start}
+          // fidQRS={fiduciales.qrs_start}
+          // fidR={fiduciales.r}
+          // fidR2={fiduciales.r2}
+          // fidS={fiduciales.qrs_end}
+          // fidST={fiduciales.t_end}
+          // fidT={fiduciales.t_start}
+          examId={examId}
+        />
+      </Box>
       <Box
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
@@ -760,17 +777,26 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
       <Box>
         <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
+          <ThemeProvider theme={buttonsTheme}>
           <Button
+           sx={{
+            backgroundColor: '#007088',
+            color: "#fff",
+          }}
             variant="contained"
             onClick={() => {
               deleteOperatorMarkers(examId);
               deleteOperatorMarkersComputations(examId);
               setCount(count+1);
             }}
-          >
+            >
             {t("restore")}
           </Button>
           <Button
+          sx={{
+            backgroundColor: '#007088',
+            color: "#fff",
+          }}
             variant="contained"
             onClick={() => {
               const newData = 
@@ -788,17 +814,19 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               postOperatorMarkersComputations(examId, newData)
               callUseEffect +=1;
             }}
-          >
+            >
             {t("saveChanges")}
           </Button>
+        </ThemeProvider>
         </Stack>
       </Box>
       <Box>
         <Typography
           align="left"
           fontSize={"80%"}
+          fontWeight={"bold"}
           width={"100%"}
-          sx={{ mt: 1, color: "#000000" }}
+          sx={{ mt: 1}}
         >
           {t("derivations")}
         </Typography>
@@ -835,53 +863,53 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
               </Grid>
               ))}
             </Grid> */}
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesI} der_title={"I"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesI} der_title={"I"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesII} der_title={"II"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesII} der_title={"II"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
             </Grid>
           </Grid>
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-            </Grid>
-          </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
             </Grid>
           </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3}>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
             </Grid>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={150} width={317} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+            </Grid>
+          </Grid> 
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+            </Grid>
+            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+              <LineChart height={"25%"} width={"25%"} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
             </Grid>
           </Grid> 
           <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
 
-            <LineChart height={150} width={1291} data={timeSeriesII} der_title={"II"} max_points={10000}/>
+            <LineChart height={"25%"} width={"100%"} data={timeSeriesII} der_title={"II"} max_points={10000}/>
           </Grid> 
 
       </Grid>
@@ -936,34 +964,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       </Box> */}
       
       </Box>
-      <Typography
-        align="left"
-        fontSize={"80%"}
-        width={"100%"}
-        sx={{ mt: 1, color: "#000000" }}
-      >
-        {t("values")}
-      </Typography>
-
-      <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
-        <FiducialMeasurementsTable
-          fidP={fidP}
-          fidQRS={fidQRS}
-          fidR={fidR}
-          fidR2={fidR2}
-          fidS={fidS}
-          fidST={fidST}
-          fidT={fidT}
-          // fidP={fiduciales.p_start}
-          // fidQRS={fiduciales.qrs_start}
-          // fidR={fiduciales.r}
-          // fidR2={fiduciales.r2}
-          // fidS={fiduciales.qrs_end}
-          // fidST={fiduciales.t_end}
-          // fidT={fiduciales.t_start}
-          examId={examId}
-        />
-      </Box>
+      
     </Stack>
   );
 };

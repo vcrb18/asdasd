@@ -1,11 +1,13 @@
 import {
   Autocomplete,
+  Avatar,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
   IconButton,
   Paper,
   TextField,
@@ -16,6 +18,7 @@ import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
 import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
+import xButton from "../../static/images/xButton.png"
 
 interface Diagnostic {
   diagnosticId: number,
@@ -55,32 +58,33 @@ const DeletableBoxItem = ({
 
   return (
     <>
-      <Box display={"flex"} flexDirection={"row"}>
-        <Paper sx={{ width: "98%", margin: "1%" }}>
-          <Box
+      <Box display={"flex"} flexDirection={"row"} maxWidth={"100%"} marginY={"1%"}
+      sx={{border: 1,
+        borderColor: "#E4EDEF",
+        borderRadius: "1%",
+      }}>
+          <Grid container
             display={"flex"}
-            justifyContent={"space-between"}
-            width={"100%"}
-            marginRight={"3%"}
+            marginLeft={"1%"}
           >
-            <Typography fontSize={"70%"} sx={{ color: "#000000" }}>
+            <Grid item xs={9} sm={9} md={9} lg={9} display={'flex'} justifyContent={'center'} alignItems={"center"} >
+            <Typography fontSize={"65%"} fontWeight={"bold"} align="left">
               {label}
             </Typography>
-            <IconButton
-              size="small"
-              edge={"end"}
-              onClick={handleDeleteClick}
-              sx={{ color: "#e45c64" }}
-            >
-              <ClearSharpIcon fontSize={"inherit"} />
-            </IconButton>
-          </Box>
-        </Paper>
+            </Grid>
+            <Grid item xs={3} sm={3} md={3} lg={3} display={'flex'} justifyContent={'flex-end'} alignItems={"center"}>
+              <Button
+                onClick={handleDeleteClick}
+              >
+                <Avatar src={xButton} alt={"checkVerde"} variant={"circular"}  />
+              </Button>
+            </Grid>
+          </Grid>
       </Box>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>{t("confirmDelete")}</DialogTitle>
         <DialogContent>
-          <Typography color={"#000000"}>
+          <Typography fontWeight={"bold"}>
             {t("askBeforeDeleting")} {label}?
           </Typography>
         </DialogContent>
@@ -91,7 +95,10 @@ const DeletableBoxItem = ({
             variant="contained"
             color="error"
           >
+          <Typography fontWeight={"bold"} color={"#ffffff"}>
             {t("delete")}
+          </Typography>
+
           </Button>
         </DialogActions>
       </Dialog>
@@ -230,11 +237,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   return (
     <>
       <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
-        <Typography color={"#000000"} fontSize={"80%"}>
+        <Typography fontWeight={"bold"} fontSize={"130%"}>
           {t("suggestedDiagnoses")}
         </Typography>
       </Box>
-      <Box>
+      <Box width={"100%"}>
         {DiagnosticosSugeridos.length>0 && DiagnosticosSugeridos.map((item: Diagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
@@ -252,7 +259,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           />
         ))}
         <IconButton size="small" edge={"end"} onClick={handleAdd}>
-          <AddIcon fontSize={"inherit"} sx={{ color: "#36c513" }} />
+          <AddIcon fontSize={"inherit"} sx={{ color: "#007088" }} />
         </IconButton>
         <Dialog fullWidth={false} maxWidth={"sm"}  open={openAddDialog} onClose={handleAddDialogClose}>
           <DialogTitle>{t("add")} {t("patology")}</DialogTitle>

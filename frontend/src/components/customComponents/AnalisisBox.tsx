@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Grid, Button } from "@mui/material";
+import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
+import Check from "../../static/images/checkVerde.png"
+import X from "../../static/images/X.png"
 
 interface AnalisisProps {
   examId: number;
@@ -115,6 +117,16 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       }
     );
   }, []);
+    const getReviewState = (state: boolean) : JSX.Element => {
+    if (state === true) {
+      return(
+          <Avatar src={Check} alt={"checkVerde"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>      )
+    } else {
+      return (
+          <Avatar src={X} alt={"checkRojo"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>
+        )
+    }
+  }
 
   const toggleStateOfExam = (): void => {
     if (analisisData.operatorAccept != null){
@@ -141,51 +153,89 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   };
 
 
+  const date = analisisData?.createdAt.includes("T")
+    ? analisisData?.createdAt.replace("T", " ").split(".")[0]
+    : analisisData?.createdAt.split(".");
+
+    const buttonsTheme = createTheme({
+      palette: {
+        primary: {
+          main: "#007088",
+        },
+      },
+    });
+
   return (
-    <Box
+    <Grid container>
+    {/* Sector de los datos del exámen */}
+    <Grid container
+    display={"flex"}
+    flexDirection={"row"}
+    justifyContent={"center"}>
+      <Grid item>
+        <Typography fontSize={"130%"} fontWeight={"bold"}>
+          {t("exam")}
+        </Typography>
+      </Grid>
+      {/* contenedor del folio */}
+      <Grid container>
+        <Grid item  
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
+            {t("folio")}
+            </Typography>
+        </Grid>
+        <Grid item xs={7} sm={7} md={7} lg={7}>
+          <Typography fontSize={"65%"} fontWeight={"bold"}>
+            {analisisData?.examId}
+          </Typography>
+        </Grid>
+      </Grid>
+      {/* contenedor de la fecha */}
+      <Grid container>
+      <Grid item  
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
+            {t("date")}
+            </Typography>
+        </Grid>
+        <Grid item xs={7} sm={7} md={7} lg={7}>
+          <Typography fontSize={"65%"} fontWeight={"bold"}>
+            {date}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Grid>
+    {/* Sector del análisis */}
+    <Grid container
       display={"flex"}
       flexDirection={"row"}
       justifyContent={"center"}
-      width={"80%"}
-      height={"100%"}
-      sx={{
-        backgroundColor: "#F2FAFA",
-        borderRadius: "1%",
-        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-        transition: "box-shadow 0.3s ease-in-out",
-        "&:hover": {
-          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
-        },
-      }}
+      
     >
-      <Box
-        sx={{
-          backgroundColor: "#ffffff",
-          border: "2.5px solid #000000",
-          borderRadius: "1%",
-          padding: "2%",
-        }}
-        width={"45%"}
-        margin={"3%"}
-      >
-        <Typography fontSize={"80%"} width={"100%"} sx={{ color: "#000000" }}>
+      <Grid item>
+        {/* Titulo de análisis */}
+        <Typography fontSize={"130%"} fontWeight={"bold"}>
         {t("analysis")}
         </Typography>
+      </Grid>
+        {/* Estado */}
         <Grid
           container
           display={"flex"}
-          justifyContent={"space-between"}
-          padding={"1%"}
+          alignItems={"center"}
         >
-          <Grid item>
-            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
+          <Grid item  
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("state")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
             <Typography
-              fontSize={"80%"}
+              fontSize={"65%"}
+              fontWeight={"bold"}
               color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
               {analisisData.operatorAccept != null ? 
@@ -193,14 +243,18 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>)}
-        <Grid item>
+        <Grid item xs={3} sm={3} md={3} lg={3}>
+          <ThemeProvider theme={buttonsTheme}>
           <Button
           variant="contained"
-          sx={{ backgroundColor: "#006a6b", color: "#ffffff" }}
           onClick={toggleStateOfExam}
           >
-          {t("change")}
+            <Typography fontWeight={"bold"} color={"#ffffff"}>
+              {t("change")}
+            </Typography>
         </Button>
+        </ThemeProvider>
+
           </Grid>
         </Grid>
         
@@ -210,16 +264,16 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           container
           display={"flex"}
           justifyContent={"space-between"}
-          padding={"1%"}
+          alignItems={"center"}
         >
           <Grid item>
-            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
+            <Typography fontSize={"65%"} sx={{ color: "#000000" }}>
               {t("reason")}
             </Typography>
           </Grid>
           <Grid item>
             <Typography
-              fontSize={"80%"}
+              fontSize={"65%"}
             >
               {state.rejectionReason}
             </Typography>
@@ -230,54 +284,27 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           container
           display={"flex"}
           justifyContent={"space-between"}
-          padding={"1%"}
         >
-          <Grid item>
-            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
+          <Grid item xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("urgency")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"flex-end"}>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
             <Typography
-              fontSize={"80%"}
+              fontSize={"70%"}
+              fontWeight={"bold"}
               color={urgencyColorSwitcher(analisisData?.urgency)}
             >
               {analisisData?.urgency?.toString()}
             </Typography>
           </Grid>)}
-          <Grid item></Grid>
+          <Grid item xs={3} sm={3} md={3} lg={3}></Grid>
         </Grid>
-        <Grid
-          container
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          padding={"1%"}
-        >
-          {/* <Grid item xs={12} sm={12} md={12} lg={12} marginX={"2%"}>
-            <Typography fontSize={"80%"} sx={{ color: "#000000" }}>
-              Patologías
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={12} marginX={"2%"}>
-            <PatoGrid />
-          </Grid> */}
-        </Grid>
-      </Box>
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          border: "2.5px solid #000000",
-          borderRadius: "1%",
-          padding: "2%",
-        }}
-        margin={"3%"}
-        width={"45%"}
-      >
-        <DiagnosisComponent examId={examId} />
-      </Box>
-    </Box>
+    </Grid>
+    </Grid>
+    
   );
 };
 
