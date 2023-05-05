@@ -147,7 +147,7 @@ interface ExamData {
   createdAt: string;
   status: boolean;
   urgency: number;
-  reviews: boolean;
+  operatorReview: boolean;
   results: string;
   accepted: boolean;
   operatorAccept: boolean | null;
@@ -350,7 +350,7 @@ const ExamTable = ({
             createdAt: examData.created_at,
             status: examData.estado,
             urgency: examData.urgencia,
-            reviews: examData.reviews,
+            operatorReview: examData.operator_review,
             results: examData.resultados,
             accepted: examData.aceptado,
             operatorAccept: examData.operator_accept,
@@ -380,7 +380,7 @@ const ExamTable = ({
       </StyledTableCell>  
       <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
       <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
-      <StyledTableCell align="center">{getReviewState(row.reviews)}</StyledTableCell>
+      <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
       <StyledTableCell align="center">
         <ThemeProvider theme={buttonsTheme}>
           <Link to={`/examsview/${row.examId}`}>
