@@ -194,7 +194,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       {/* contenedor de la fecha */}
       <Grid container>
       <Grid item  
-            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} alignItems={"center"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("date")}
             </Typography>
@@ -211,7 +211,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       display={"flex"}
       flexDirection={"row"}
       justifyContent={"center"}
-      
+      xs={12} sm={12} md={12} lg={12} 
     >
       <Grid item>
         {/* Titulo de análisis */}
@@ -226,15 +226,17 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           alignItems={"center"}
         >
           <Grid item  
-            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
-            {t("state")}
+              {t("state")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
+          (<>
+          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={6} sm={6} md={6} lg={6}>
             <Typography
               fontSize={"65%"}
+              align="left"
               fontWeight={"bold"}
               color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
@@ -242,20 +244,23 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
               (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
-          </Grid>)}
-        <Grid item xs={3} sm={3} md={3} lg={3}>
-          <ThemeProvider theme={buttonsTheme}>
-          <Button
-          variant="contained"
-          onClick={toggleStateOfExam}
-          >
-            <Typography fontWeight={"bold"} color={"#ffffff"}>
-              {t("change")}
-            </Typography>
-        </Button>
-        </ThemeProvider>
-
           </Grid>
+          <Grid item display={"flex"} justifyContent={"flex-end"} xs={2} sm={2} md={2} lg={2}>
+            <ThemeProvider theme={buttonsTheme}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={toggleStateOfExam}
+                >
+                <Typography fontWeight={"bold"} fontSize={"80%"} color={"#ffffff"}>
+                  {t("change")}
+                </Typography>
+              </Button>
+            </ThemeProvider>
+            </Grid>
+          </>
+          )}
+          
         </Grid>
         
         
@@ -266,41 +271,42 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Grid item>
-            <Typography fontSize={"65%"} sx={{ color: "#000000" }}>
+          <Grid  xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
               {t("reason")}
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid item  xs={8} sm={8} md={8} lg={8} display={"flex"} justifyContent={"flex-start"}>
             <Typography
               fontSize={"65%"}
+              fontWeight={"bold"}
+              align="left"
             >
               {state.rejectionReason}
             </Typography>
           </Grid>
-          <Grid item></Grid>
         </Grid>)}
         <Grid
           container
           display={"flex"}
           justifyContent={"space-between"}
         >
-          <Grid item xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+          <Grid item  xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("urgency")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"center"} xs={4} sm={4} md={4} lg={4}>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={8} sm={8} md={8} lg={8}>
             <Typography
               fontSize={"70%"}
               fontWeight={"bold"}
+              align="left"
               color={urgencyColorSwitcher(analisisData?.urgency)}
             >
               {analisisData?.urgency?.toString()}
             </Typography>
           </Grid>)}
-          <Grid item xs={3} sm={3} md={3} lg={3}></Grid>
         </Grid>
     </Grid>
     </Grid>
