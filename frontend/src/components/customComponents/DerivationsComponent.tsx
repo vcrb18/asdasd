@@ -706,13 +706,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     });
   }, [count]);
 
-
-
-  const [received_child_data, setRCD] = React.useState(false);
-
   const handleFiducialChartUpdate : Function = (childData : any) => {
-    setRCD(true);
-    console.log("se recibio estos datos:", childData);
     const obj2 = { ...childData };
     setFidP(childData.p_start);
     setFidQRS(childData.qrs_start);
@@ -721,8 +715,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     setFidS(childData.qrs_end);
     setFidST(childData.t_start);
     setFidT(childData.t_end);
-    console.log(fidP);
-    console.log(childData.p_start)
   };
   const buttonsTheme = createTheme({
     palette: {
