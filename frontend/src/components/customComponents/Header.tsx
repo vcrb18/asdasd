@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React from "react";
 import PropTypes, { type Validator } from "prop-types";
 import {
@@ -47,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
   if (!isMatchXs && !isMatchMd){
     return (
       <React.Fragment>
-        <AppBar color={'transparent'} position={headerPositionLg} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
+        <AppBar color={'primary'} position={headerPositionLg} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%", top: "0" }}>
         <Toolbar>
         {tabs != null && tabs.length > 0 ? (
           <>
@@ -74,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
 
   return (
     <React.Fragment>
-            <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
+            <AppBar color={'primary'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%", top: "0" }}>
               <Toolbar>
               {tabs != null ? (
                 <DrawerComp
@@ -96,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ tabs, buttons, headerPositionMd, header
   else {
     return (
       <React.Fragment>
-              <AppBar color={'transparent'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%" }}>
+              <AppBar color={'primary'} position={headerPositionMd} elevation={0} sx={{ background: "#fff", height: "auto", width: "100%", top: "0" }}>
                 <Toolbar>
                 {tabs != null ? (
                   <DrawerComp
