@@ -71,9 +71,9 @@ function Routing(): JSX.Element {
         <Route
           path="/mainmenu"
           element={
-            // <RequireAuth>
+            <RequireAuth>
             <TablesView />
-            // </RequireAuth>
+            </RequireAuth>
           }
         />
       </Routes>
