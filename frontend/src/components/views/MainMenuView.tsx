@@ -33,7 +33,8 @@ const MainMenuView = (): JSX.Element => {
           width: "-webkit-fill-available",
           height: "-webkit-fill-available",
         }}
-        mt={"5%"}
+        margin={"auto"}
+        minHeight={"100vh"}
         lg={12}
         md={12}
         xs={12}
