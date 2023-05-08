@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider } from "@mui/material";
+import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
+
+interface RejectionReason {
+  id: number;
+  reason: string;
+}
+
+const rejectionReasons: RejectionReason[] = [
+  {id: 1, reason: "DERIVACION INCOMPLETA"},
+  {id: 2, reason: "examenes mal tomados"},
+  {id: 3, reason: "ARTEFACTOS POR LINEA BASE FIBRILADA"},
+  {id: 4, reason: "ARTEFACTOS"},
+  {id: 5, reason: "CABLES INVERTIDOS"},
+  {id: 6, reason: "DERIVACION PLANA"},
+  {id: 7, reason: "EXAMEN REPETIDO"},
+  {id: 8, reason: "EXAMEN TOMADO EN MENOS DE 10 SEGUNDOS"},
+  {id: 9, reason: "DATOS INCOMPLETOS"},
+  {id: 10, reason: "DATOS ERRONEOS"},
+  {id: 11, reason: "TRAZADO DIFUSO"},
+]
 
 interface AnalisisProps {
   examId: number;
@@ -107,6 +126,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           rejectionReasonConfidence: response.data[0][0].razon_rechazo_confianza,
         };
         setState(data);
+        let newRejectionReason: undefined | RejectionReason = rejectionReasons.find(object => object.reason == data.rejectionReason);
+        setRejectionReason(newRejectionReason);
       },
       (error) => {
         const _content =
@@ -128,25 +149,50 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
     }
   }
 
-  const toggleStateOfExam = (): void => {
-    if (analisisData.operatorAccept != null){
-      analisisData.operatorAccept === true ? markExamIdAsRejected(examId).then((res) => {
+  const [rejectionReason, setRejectionReason] = useState<RejectionReason | null>();
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [possibleNewRejectionReason, setPossibleNewRejectionReason] = useState<RejectionReason | null>();
+
+  const handleAddDialogClose = (): void => {
+    setOpenAddDialog(false);
+    setRejectionReason(null);
+    setPossibleNewRejectionReason(null);
+  };
+
+  const handleOptionSelect = (event: any, newValue: RejectionReason | null) => {
+    setPossibleNewRejectionReason(newValue);
+  };
+
+  const handleAddDialogSubmit = (): void => {
+    if(possibleNewRejectionReason){
+      markExamIdAsRejected(examId).then((res) => {
         if (res.data.success) {
           setAccepted(false);
+          setRejectionReason(possibleNewRejectionReason);
+          setPossibleNewRejectionReason(null);
         }
-    }) : markExamIdAsAccepted(examId).then((res) => {
+      });
+    }
+    setOpenAddDialog(false);
+  };
+
+  const toggleStateOfExam = (): void => {
+    if (analisisData.operatorAccept != null){
+      analisisData.operatorAccept === true ? 
+      setOpenAddDialog(true) 
+      : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
+        setRejectionReason(null);
       }
   });
     } else {
-      analisisData.status === true ? markExamIdAsRejected(examId).then((res) => {
-        if (res.data.success) {
-          setAccepted(false);
-        }
-    }) : markExamIdAsAccepted(examId).then((res) => {
+      analisisData.status === true ? 
+      setOpenAddDialog(true) 
+      : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
+        setRejectionReason(null);
       }
     });
     }
@@ -257,14 +303,39 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
                 </Typography>
               </Button>
             </ThemeProvider>
-            </Grid>
+            <Dialog fullWidth={false} maxWidth={"sm"}  open={openAddDialog} onClose={handleAddDialogClose}>
+              <DialogTitle>{t("add")} {t("reason")}</DialogTitle>
+              <DialogContent>
+                <Autocomplete
+                isOptionEqualToValue={(option, value) => option.reason === value.reason}
+                getOptionLabel={(option) => option.reason}
+                value={rejectionReason || null}
+                onChange={handleOptionSelect}
+                id="select-diagnostic"
+                options={rejectionReasons}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params}/>}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleAddDialogClose}>{t("cancel")}</Button>
+                <Button
+                onClick={handleAddDialogSubmit}
+                variant="contained"
+                color="error"
+                >
+                  {t("submit")}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
           </>
           )}
           
         </Grid>
         
         
-        {state.rejectionReason && (
+        {rejectionReason && (
         <Grid
           container
           display={"flex"}
@@ -282,7 +353,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               fontWeight={"bold"}
               align="left"
             >
-              {state.rejectionReason}
+              {rejectionReason.reason}
             </Typography>
           </Grid>
         </Grid>)}
