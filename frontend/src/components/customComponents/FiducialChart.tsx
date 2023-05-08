@@ -34,19 +34,6 @@ ChartJS.register(
   ChartZoom,
 );
 
-
-// TODO: consumir serie de tiempo real
-
-interface Indexable {
-  [id: number]: { id: number, name: string, };
-  [name: string]: { id: number, name: string };
-}
-
-const fidutialDataPoints: Indexable = {
-  1: { id: 1, name: "John" },
-  "Jane": { id: 2, name: "Jane" }
-};
-
 interface fidutialChartPoint {
   name:string;
   x:number;
@@ -68,16 +55,6 @@ const FiducialChart = (props: any): JSX.Element => {
   const pointRadious = 4;
 
   const [timeseriesData, setTimeSeriesData] = React.useState<number[]> ([]);
-
-
-    useEffect(() => {
-        getTimeSeries(examId).then((response) => {
-            setTimeSeriesData(response.data.II);
-        })
-    }, []);
-
-
-  
   const [examId, setexamId] = React.useState<number>(props.examId);
   const [fidP, setfidP] = React.useState<number>(0);
   const [fidQRS, setfidQRS] = React.useState<number>(0);
@@ -87,12 +64,10 @@ const FiducialChart = (props: any): JSX.Element => {
   const [fidST, setfidST] = React.useState<number>(0);
   const [fidT, setfidT] = React.useState<number>(0);
 
-  const [referencePointX, setReferencePointX] = React.useState<number>(0);
 
-  
 
   const points = [props.fidP, props.fidQRS, props.fidR, props.fidR2, props.fidS, props.fidST, props.fidT]
-  
+
 
 
   const [maxX, setmaxX] = React.useState<number>(timeseriesData.length);
@@ -101,14 +76,14 @@ const FiducialChart = (props: any): JSX.Element => {
   const [maxY, setmaxY] = React.useState<number>(1000);
 
   const [minY, setminY] = React.useState<number>(-1000);
-  
+
 
 
   const [changedZoom, setChangedZoom] = React.useState<boolean>(false);
 
   useEffect(() => {
     console.log("update tabla fiduciales")
-    
+
     setexamId(props.examId);
     setfidP(props.fidP);
     setfidQRS(props.fidQRS);
@@ -117,20 +92,29 @@ const FiducialChart = (props: any): JSX.Element => {
     setfidS(props.fidS);
     setfidST(props.fidST);
     setfidT(props.fidT);
-    setReferencePointX(props.fidR2);
+    setTimeSeriesData(props.timeSeries);
     if (!changedZoom){
-    const maP = Math.max(...points);
-    const miP = Math.min(...points);
-    setmaxX(maP + (maP - miP)/2);
-    setminX(miP - (maP - miP)/2);
+    const maxP = Math.max(...points);
+    const minP = Math.min(...points);
+    setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
+    setminX(minP-100);
     setmaxY(Math.max(...timeseriesData) + 100);
     setminY(Math.min(...timeseriesData) -100);
-    
+
     }
     chart = ChartJS.getChart("fiduChart");
     if (!chart) return;
     chart.update();
 }, [props]);
+
+useEffect(() => {
+  const maxP = Math.max(...points);
+  const minP = Math.min(...points);
+  setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
+  setminX(minP-100);
+  setmaxY(Math.max(...props.timeSeries) + 100);
+  setminY(Math.min(...props.timeSeries) -100);
+}, [props.timeSeries]);
 
   let chart = ChartJS.getChart("fiduChart");
 
@@ -149,6 +133,7 @@ const FiducialChart = (props: any): JSX.Element => {
   let refLine:any;
 
   let lastEvent: any;
+  let justUpdated = false as any;
   let bubble: any;
   let lastMovement:any;
 
@@ -156,6 +141,7 @@ const FiducialChart = (props: any): JSX.Element => {
   const drag = function (event: any, moveX: number, moveY: number, bubble: any): void {
     bubble[0].element.x += moveX;
     bubble[0].element.y += moveY;
+    chart = ChartJS.getChart("fiduChart");
     if (!chart) return;
     if(!chart.data.datasets[bubble[0].datasetIndex].data) return;
     if(!chart.data.datasets[bubble[0].datasetIndex].data[0]) return;
@@ -177,6 +163,8 @@ const FiducialChart = (props: any): JSX.Element => {
 
     refLine.element.elements[0].options.content = num.x;
 
+    refLine.element.elements[0].y = bubble[0].element.y -50;
+
   };
 
   const handleElementDragging = function (event: any, bubble:any): any {
@@ -192,7 +180,6 @@ const FiducialChart = (props: any): JSX.Element => {
 
   const handleDrag = function (event: any, chart : any): any {
     if (true) {
-
       switch (event.type) {
         case "mousemove" || "touchmove":
           if(!bubble) break;
@@ -206,10 +193,12 @@ const FiducialChart = (props: any): JSX.Element => {
           lastEvent = undefined;
           break;
         case "mouseup" || "touchend":
-          
           lastEvent = undefined;
           event.native.target.style.cursor = 'default';
-          if(!bubble) break;
+          if(!bubble){
+            chart.update();
+            break;
+          }
           if(!bubble[0]) break;
           bubble = undefined;
 
@@ -240,6 +229,7 @@ const FiducialChart = (props: any): JSX.Element => {
           }
 
           handleParent(childata);
+          chart.update();
 
           break;
         case "mousedown" || "touchstart":
@@ -248,8 +238,15 @@ const FiducialChart = (props: any): JSX.Element => {
           bubble = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
           if(!bubble[0]) break;
           if (bubble[0].element){
+            chart.config.options.plugins.tooltip.enabled = false;
+            chart.config.options.plugins.zoom.pan.enabled = false;
+            if (!justUpdated){
+              justUpdated = true;
+              chart.update();
+            }
+            justUpdated = false;
             event.native.target.style.cursor = 'grab';
-          } 
+          }
           else event.native.target.style.cursor = 'default';
           break;
         default:
@@ -266,7 +263,7 @@ const FiducialChart = (props: any): JSX.Element => {
       "mousemove" as const,
       "touchmove" as const,
       "mouseout" as const,
-      
+
     ],
     maintainAspectRatio: false,
     dragData: true,
@@ -284,8 +281,9 @@ const FiducialChart = (props: any): JSX.Element => {
         display: false,
         text: "Puntos fiduciales",
       },
-      Tooltip:{
-        bodyColor:'#fff', 
+      tooltip:{
+        bodyColor:'#fff',
+        enabled: true,
       },
       zoom: {
         zoom: {
@@ -311,35 +309,40 @@ const FiducialChart = (props: any): JSX.Element => {
           mode: 'x',
           modifierKey: 'ctrl',
           onPanStart: function (ctx: any) {
+
             setChangedZoom(true);
-            // console.log("panea");
-            // if(ctx.chart.getElementsAtEventForMode(ctx.event, 'nearest', { intersect: true }, true)[0] == undefined) return true;
-            // return false;
+            if(ctx.chart.getElementsAtEventForMode(ctx.event, 'nearest', { intersect: true }, true)[0] == undefined) return true;
+            return false;
           }
         },
       },
       annotation: {
         annotations: [{
-          
+
             type: 'line',
             id: 'referenceLine',
             borderColor: 'transparent',
             borderWidth: 1,
             display:true,
+            drawTime:'beforeDatasetsDraw',
             label: {
               display: true,
               content: '',
               rotation: 0,
             },
             scaleID: 'x',
-            value: 9500,
+            value: points.reduce((a,b) => a + b, 0) / points.length,
             beforeDraw: function (context:any) {
               refLine = context;
-            }
-          
-        }] as any
+            },
+            z:1,
+        }] as any,
+        animation:false,
       }
 
+    },
+    tooltips: {
+      enabled: false,
     },
     scales: {
       y: {
@@ -365,8 +368,8 @@ const FiducialChart = (props: any): JSX.Element => {
         max: maxX
       },
     },
-    
-  } as any; 
+
+  } as any;
 
 const data1 = {
   labels: timeseriesLabels,
@@ -380,6 +383,7 @@ const data1 = {
       borderColor: "rgb(237, 28, 36)",
       backgroundColor: "rgb(237, 28, 36)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -390,6 +394,7 @@ const data1 = {
       borderColor: "rgb(255, 127, 39)",
       backgroundColor: "rgb(255, 127, 39)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -400,6 +405,7 @@ const data1 = {
       borderColor: "rgb(0, 162, 232)",
       backgroundColor: "rgb(0, 162, 232)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -410,6 +416,7 @@ const data1 = {
       borderColor: "rgb(63, 72, 204)",
       backgroundColor: "rgb(63, 72, 204)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -420,6 +427,7 @@ const data1 = {
       borderColor: "rgb(255, 174, 201)",
       backgroundColor: "rgb(255, 174, 201)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -430,6 +438,7 @@ const data1 = {
       borderColor: "rgb(163, 73, 164)",
       backgroundColor: "rgb(163, 73, 164)",
       dragData: true,
+      z:3,
     },
     {
       type: "bubble" as const,
@@ -441,18 +450,20 @@ const data1 = {
       backgroundColor: "rgb(30, 30, 30)",
       dragData: true,
       dragX: true,
+      z:3,
     },
     {
-      
+
       type: "line" as const,
       label: "ECG",
-      data: timeseriesData, // .slice(0, 5000)
+      data: timeseriesData,
       backgroundColor: "rgb(139,139,139)",
       pointRadius: 0,
       pointHitRadius: 0,
       borderColor: "rgb(34,139,34)",
       borderWidth: 1.5,
-      
+      z:2,
+
     },
   ],
 };
