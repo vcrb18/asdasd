@@ -26,7 +26,7 @@ import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
 
 import { Link } from "react-router-dom";
-import { log } from "console";
+import Footer from "../customComponents/Footer"
 
 
 const API_URL = "http://localhost:8080/";
@@ -254,7 +254,7 @@ interface ExamTableProps {
 const ExamTable = ({
   useFilter,
   filterId
-}: ExamTableProps) => {
+}: ExamTableProps): JSX.Element => {
   const { t } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
@@ -273,7 +273,7 @@ const ExamTable = ({
   const [rows, setRows] = React.useState<ExamData[]>([]);
   
   const filteredFolio = rows.filter(row => row.examId.toString().includes(filterId));  
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): JSX.Element => {
     const date = new Date(dateString);
     return (
       <Typography color={"#878787"} fontWeight={"bold"}>
@@ -282,11 +282,11 @@ const ExamTable = ({
       )
   };
 
-  const getStatusIcon = (estado: boolean)  => (
+  const getStatusIcon = (estado: boolean): JSX.Element  => (
     <Brightness1RoundedIcon color={estado ? "success" : "error"} />
   );
 
-  const getUrgencyText = (urgencia: number) => (
+  const getUrgencyText = (urgencia: number): JSX.Element => (
     <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
       {t("urgencyLevel").concat(urgencia.toString())}
     </Typography>
@@ -358,14 +358,21 @@ const ExamTable = ({
         });
         const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
         setRows([...rows, ...newExamsFiltered]);
+        return Promise
+      }).catch((error) => {
+        console.error(error);
       });
       getExamsCount().then((response) => {
         setMaxRows(response.data.count)
+      }).catch((error) => {
+        console.error(error)
       });
     }
     console.log(rows)
     if (shouldLoad) {
-      setTimeout(() => setIsLoading(false),200)
+      setTimeout(() => {
+        setIsLoading(false)
+      },200)
     } else {
       setIsLoading(false);
     }
@@ -412,7 +419,9 @@ const ExamTable = ({
 
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <>
+    <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+    <Paper sx={{ width: "100%" }}>
        <TableContainer>
          <Table stickyHeader aria-label="Examenes">
            <ExamTableHead
@@ -428,6 +437,9 @@ const ExamTable = ({
               <StyledTableCell align='center'>
                 <CircularProgress/>
               </StyledTableCell>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
             </TableBody>
            )
            :(
@@ -450,6 +462,8 @@ const ExamTable = ({
          onRowsPerPageChange={handleChangeRowsPerPage}
        />
     </Paper>
+    </div>
+    </>
   )
 };
 

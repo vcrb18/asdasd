@@ -54,8 +54,8 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
         console.log("Entramos al login");
         navigate("/mainmenu");
         window.location.reload();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Entramos al error");
         console.log(error.response.data);
 
@@ -63,29 +63,32 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
           error?.response?.data?.message || error.message || error.toString();
 
         setLoading(false);
-        const userMessage = "Usuario o contraseña inválidos"
-        if (error.response.status == 401){
+        const userMessage = t("wrongCredentials")
+        if (error.response.status === 401){
           setMessage(userMessage);  
         }
         else {
           setMessage(resMessage);
         }
       }
-    ).then( () => setLoading(false));
+    ).finally( () => {setLoading(false)});
   };
   return (
     <>
-    <Box
-      width={"100%"}
-      height={"100%"}
-      >
-      {/* <ThemeProvider theme={loginButtonTheme}>   */}
-        {/* <Header
+    <Header
+          headerPositionLg="sticky"
+          headerPositionMd="sticky"
+          headerPositionXs="sticky"
           buttons={buttons}
           onTabValueChange={(index: number) => {
             console.log(`Funcion que no hace nada en el Login`);
           }}
-        /> */}
+        />
+    <Box
+      width={"100%"}
+      height={"100%"}
+      paddingTop={"5%"}
+      >
         <form onSubmit={handleSubmit}>
           <Grid 
             container
@@ -119,9 +122,6 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
                 justifyContent={"center"}
                 alignItems={"center"}
                 width={"100%"}
-                // display={"flex"}
-                // justifyContent={"center"}
-                // alignItems={"flex-end"}
                 >
                 <Typography fontSize={"180%"} color={"#82b8c2"} >
                   {t("access")}
@@ -229,9 +229,13 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
         </form>
         
       {/* </ThemeProvider> */}
-    </Box>
-
-      {/* <Footer footerPosition={"fixed"} /> */}
+      </Box>
+    <div style={{width: "100%", bottom: 0, position: "absolute"}}>
+    <Footer 
+      footerPositionLg="fixed"
+      footerPositionMd="fixed"
+      footerPositionXs="sticky" />
+      </div>
     </>
   );
 };

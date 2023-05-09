@@ -272,8 +272,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       <Header
         tabs={tabs}
         buttons={buttons}
-        headerPositionLg="relative"
-        headerPositionMd="relative"
+        headerPositionLg="sticky"
+        headerPositionMd="sticky"
         headerPositionXs="sticky"
         onTabValueChange={(index: number) => {
           console.log(`Exams: Tab index changed to ${index}`);
@@ -405,6 +405,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         </ThemeProvider>
       </Grid>
     </Grid>
+    <div style={{width: "100%", bottom: 0, position: "relative"}}>
+    <Footer 
+      footerPositionLg="sticky"
+      footerPositionMd="sticky"
+      footerPositionXs="sticky" />
+      </div>
     </>
     )
   }

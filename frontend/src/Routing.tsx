@@ -62,18 +62,20 @@ function Routing(): JSX.Element {
         <Route
           path="/examsview/:examId"
           element={
+            <RequireAuth>
             <ExamsView
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
             />
+            </RequireAuth>
           }
         />
         <Route
           path="/mainmenu"
           element={
-            // <RequireAuth>
+            <RequireAuth>
             <TablesView />
-            // </RequireAuth>
+            </RequireAuth>
           }
         />
       </Routes>
