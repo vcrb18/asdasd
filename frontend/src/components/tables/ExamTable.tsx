@@ -227,7 +227,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
                 direction={orderBy === columns.id ? order : "asc"}
                 onClick={createSortHandler(columns.id)}
               >
-                <Typography fontWeight={"bold"}>
+                <Typography fontSize={"100%"} fontWeight={"bold"}>
                   {t(columns.label)}
                 </Typography>
                 {orderBy === columns.id ? (
@@ -255,7 +255,7 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
                 direction={orderBy === columns.id ? order : "asc"}
                 onClick={createSortHandler(columns.id)}
               >
-                <Typography fontWeight={"bold"}>
+                <Typography fontSize={"100%"} fontWeight={"bold"}>
                   {t(columns.label)}
                 </Typography>
                 {orderBy === columns.id ? (
@@ -290,7 +290,14 @@ const ExamTable = ({
   useFilter,
   filterId
 }: ExamTableProps): JSX.Element => {
-  
+  const { t } = useTranslation();
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#007088",
+      },
+    },
+  });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
@@ -365,6 +372,9 @@ const ExamTable = ({
   const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
   };
+
+  
+
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -372,6 +382,7 @@ const ExamTable = ({
     setPage(0);
     setMaxPage(-1)
   };
+
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
@@ -506,58 +517,18 @@ const ExamTable = ({
 
 const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
   const [open, setOpen] = React.useState(false);
-  const { t } = useTranslation();
-  const buttonsTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#007088",
-      },
-    },
-  });
-  const formatDate = (dateString: string): JSX.Element => {
-    const date = new Date(dateString);
-    return (
-      <Typography color={"#878787"} fontWeight={"bold"}>
-        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
-      </Typography>
-      )
-  };
+  function renderRow(row: ExamData, isMatchMd: boolean) : JSX.Element {
 
-  const getStatusIcon = (state: boolean): JSX.Element  => (
-    <Brightness1RoundedIcon color={state ? "success" : "error"} />
-  );
-
-  const getUrgencyText = (urgencia: number): JSX.Element => (
-    <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
-      {t("urgencyLevel").concat(urgencia.toString())}
-    </Typography>
-  );
-  const getReviewState = (state: boolean) : JSX.Element => {
-    console.log(state)
-    if (state === true) {
-      return(
-        <Box display={"flex"} justifyContent={"center"}>
-          <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
-        </Box>
-      )
-    } else {
-      return (
-        <Box display={"flex"} justifyContent={"center"}>
-          <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
-        </Box>
-        )
-    }
-  }
   if (isMatchMd) {
     return (    
     <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
       <StyledTableCell align="center">
-        <Typography fontWeight={"bold"}>
+        <Typography fontSize={"100%"} fontWeight={"bold"}>
           {row.examId}
         </Typography>
       </StyledTableCell>
       <StyledTableCell align="center">
-        <Typography fontWeight={"bold"}>
+        <Typography fontSize={"100%"} fontWeight={"bold"}>
           {row.patientId}
         </Typography>
       </StyledTableCell>
@@ -576,7 +547,7 @@ const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
               sx={{ color: "#fff" }}
               value={row.examId}
             >
-              <Typography fontSize={'120%'} color={'#fff'}>
+              <Typography fontSize={'100%'} color={'#fff'}>
                 {t("access")}
               </Typography>
             </Button>
@@ -624,27 +595,27 @@ const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
           <Collapse in={open} timeout="auto" unmountOnExit>
                 <Grid container>
                   <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {t("pacient")}
                     </Typography>
                   </Grid>
                   <Grid item xs={6} sm={6} md={6} lg={6}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {row.patientId}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {t("folio")}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {row.examId}
                     </Typography>
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {t("date")}
                     </Typography>
                   </Grid>
@@ -652,7 +623,7 @@ const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
                     {formatDate(row.createdAt)}
                   </Grid>
                   <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontWeight={"bold"}>
+                    <Typography fontSize={"100%"} fontWeight={"bold"}>
                       {t("state")}
                     </Typography>
                   </Grid>
@@ -667,6 +638,68 @@ const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
     )
   }
   };
+  
+  
 
+  const sortedRows = useFilter
+    ? stableSort(filteredFolio, getComparator(order, orderBy))
+    : stableSort(rows, getComparator(order, orderBy));
+
+  const paginatedRows = sortedRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+    );
+
+    console.log("PR", paginatedRows);
+
+  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
+  return (
+    <>
+    <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+    <Paper sx={{ width: "100%" }}>
+       <TableContainer>
+         <Table stickyHeader aria-label="Examenes">
+           <ExamTableHead
+             order={order}
+             orderBy={orderBy}
+             onRequestSort={handleRequestSort}
+           />
+           {isLoading ? (
+            <TableBody>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'>
+                <CircularProgress/>
+              </StyledTableCell>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+              <StyledTableCell align='center'/>
+            </TableBody>
+           )
+           :(
+            <TableBody>
+              {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
+              {paginatedRows.map((row: ExamData) => renderRow(row, isMatchMd))}
+              {/* : <Typography>No hay resutados para {filterId} </Typography>}*/}
+            </TableBody>)
+          }
+          </Table>
+        </TableContainer>
+        <TablePagination
+         rowsPerPageOptions={[25]}
+         component="div"
+         count={maxRows}
+        //  count={rows.length}
+         rowsPerPage={rowsPerPage}
+         page={page}
+         onPageChange={handleChangePage}
+         onRowsPerPageChange={handleChangeRowsPerPage}
+       />
+    </Paper>
+    </div>
+    </>
+  )
+};
 
 export default ExamTable;

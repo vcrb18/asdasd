@@ -5,6 +5,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      timeLeft: "Time Left",
       goBack: "Go back",
       exam: "Exam",
       review: "Review",
@@ -242,6 +243,7 @@ const resources = {
   },
   es: {
     translation: {
+      timeLeft: "Tiempo restante",
       goBack: "Volver",
       exam: "Examen",
       review: "Revisión",
