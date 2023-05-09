@@ -41,20 +41,21 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
   };
 
   const handleLogOutClick = (
-    event: React.MouseEvent<HTMLAnchorElement>,
+    event: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>,
     label: string,
     href: string
   ): void => {
     event.preventDefault();
-    console.log("Entramos al handleLogOutClick");
-    console.log("label");
     console.log(label);
 
-    // USAR CON LA LLAVE DE LA TRADUCCION!@!!!
-    if (label === "Cerrar Sesión" || label === "Log Out") {
-      logout();
+    if (label === "logOut") {
+      logout().then(() => {
       navigate("/");
       window.location.reload();
+      }).catch((error) => {
+        console.error(error)
+        navigate("/")
+      })
     } else {
       navigate(href);
     }
@@ -62,8 +63,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
 
   return (
     <ThemeProvider theme={buttonsTheme}>
-      {buttonsLabels != null && buttonsLabels.length > 0
-        ? buttonsLabels.map((button, index) => (
+      {buttonsLabels.map((button, index) => (
             <Button
               key={index}
               href={button.href}
@@ -83,8 +83,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
               {t(button.label)}
             </Typography>
             </Button>
-          ))
-        : null}
+          ))}
       <Select
         value={language}
         onChange={handleLanguageChange}

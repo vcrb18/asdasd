@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTranslation } from "react-i18next";
-
+import { logout } from "../../service/auth.service";
+import { type NavigateFunction, useNavigate } from "react-router-dom";
 interface DrawerTabItems {
   label: string;
   href: string;
@@ -39,6 +40,7 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
   };
   const { t } = useTranslation();
   // const tabsAndButtons = [...(props.tabs || []), ...props.buttons];
+  const navigate: NavigateFunction = useNavigate();
 
   const handleLanguageChange = (event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
@@ -46,6 +48,25 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
     i18n.changeLanguage(newLanguage).catch((error) => {
       console.error(error);
     });
+  };
+  const handleLogOutClick = (
+    event: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>,
+    label: string,
+    href: string
+  ): void => {
+    event.preventDefault();
+
+    if (label === "logOut") {
+      logout().then(() => {
+      navigate("/");
+      window.location.reload();
+      }).catch((error) => {
+        console.error(error)
+        navigate("/")
+      })
+    } else {
+      navigate(href);
+    }
   };
 
   return (
@@ -73,11 +94,12 @@ const DrawerComp: React.FC<DrawerCompProps> = (props) => {
           {tabsAndButtons.map((tabOrButton, index) => (
             <ListItemButton
               href={tabOrButton.href}
-              onClick={() => {
+              onClick={(event) => {
                 if (props.tabs?.length && index < props.tabs.length) {
                   onTabChange(index);
                 }
-                setOpenDrawer(false);
+                setOpenDrawer(false)
+                handleLogOutClick(event,tabOrButton.label,tabOrButton.href);
               }}
               key={index}
             >
