@@ -4,19 +4,23 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import CircularProgress from "@mui/material/CircularProgress";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
+import { ThemeProvider, createTheme, styled, useTheme } from "@mui/material/styles";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
 import {
   Avatar,
   Box,
   Button,
+  Collapse,
+  Grid,
+  IconButton,
   TableContainer,
   TableHead,
   TablePagination,
   TableRow,
   TableSortLabel,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
 import { getExams, getExamsCount, useExams } from "../../service/user.service";
@@ -24,7 +28,8 @@ import { getExams, getExamsCount, useExams } from "../../service/user.service";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Link } from "react-router-dom";
 import Footer from "../customComponents/Footer"
 
@@ -47,7 +52,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 // Nombres de las columnas que tendremos que
 // obtener desde la base de datos
 interface Column {
-  id: "folio" | "paciente" | "fecha" | "estado" | "urgencia" | "review"| "resultados";
+  id: "folio"| "timeLeft" | "paciente" | "fecha" | "estado" | "urgencia" | "review"| "resultados";
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
@@ -63,12 +68,10 @@ const columns: readonly Column[] = [
     id: "paciente",
     label: "pacient",
     align: "center",
-    minWidth: "30%",
   },
   {
     id: "fecha",
     label: "date",
-    minWidth: "20%",
     align: "center",
     format: (value: string) => {
       return value.replace("T", " ");
@@ -78,7 +81,6 @@ const columns: readonly Column[] = [
   {
     id: "estado",
     label: "state",
-    minWidth: "10%",
     align: "center",
     format: (value: boolean) => {
       const returnValue = value ? "Aceptado" : "Rechazado";
@@ -88,7 +90,6 @@ const columns: readonly Column[] = [
   {
     id: "urgencia",
     label: "urgency",
-    minWidth: "20%",
     align: "center",
     format: (value: number) => {
       const returnValue = value === 1 ? "Urgente" : "Normal";
@@ -98,16 +99,41 @@ const columns: readonly Column[] = [
   {
     id: "review",
     label: "review",
-    minWidth: "10%",
     align: "center",
   },
   {
     id: "resultados",
     label: "results",
-    minWidth: "30%",
     align: "center",
   },
 ];
+
+const mobileColumns: readonly Column[] =[
+  {
+    id: "urgencia",
+    label: "urgency",
+    align: "center",
+    format: (value: number) => {
+      const returnValue = value === 1 ? "Urgente" : "Normal";
+      return returnValue;
+    },
+  },
+  {
+    id: "review",
+    label: "review",
+    align: "center",
+  },
+  {
+    id: "timeLeft",
+    label: "timeLeft",
+    align: "center",
+  },
+  {
+    id: "resultados",
+    label: "results",
+    align: "center",
+  },
+]
 
 // Chekear los typos de cada una de las categorias
 // depediendo de como llegan desde la base de datos
@@ -119,26 +145,6 @@ interface Data {
   urgencia: number;
   review: boolean;
   resultados: string;
-}
-
-function createData(
-  folio: string,
-  paciente: string,
-  fecha: string,
-  estado: boolean,
-  urgencia: number,
-  review: boolean,
-  resultados: string
-): Data {
-  return {
-    folio,
-    paciente,
-    fecha,
-    estado,
-    urgencia,
-    review,
-    resultados,
-  };
 }
 
 interface ExamData {
@@ -209,28 +215,61 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
     (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
-  return (
-    <TableHead>
-      <TableRow>
-        {columns.map((columns) => (
-          <StyledTableCell key={columns.id} align={columns.align}>
-            <TableSortLabel
-              active={orderBy === columns.id}
-              direction={orderBy === columns.id ? order : "asc"}
-              onClick={createSortHandler(columns.id)}
-            >
-              {t(columns.label)}
-              {orderBy === columns.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"));
+  if (isMatchMd){ 
+    return (
+      <TableHead>
+        <TableRow>
+          {columns.map((columns) => (
+            <StyledTableCell key={columns.id} align={columns.align}>
+              <TableSortLabel
+                active={orderBy === columns.id}
+                direction={orderBy === columns.id ? order : "asc"}
+                onClick={createSortHandler(columns.id)}
+              >
+                <Typography fontWeight={"bold"}>
+                  {t(columns.label)}
+                </Typography>
+                {orderBy === columns.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </StyledTableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    );
+  }
+  else {
+    return (
+      <TableHead>
+        <TableRow>
+          <StyledTableCell align={"center"}>
           </StyledTableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
+          {mobileColumns.map((columns) => (
+            <StyledTableCell key={columns.id} align={columns.align}>
+              <TableSortLabel
+                active={orderBy === columns.id}
+                direction={orderBy === columns.id ? order : "asc"}
+                onClick={createSortHandler(columns.id)}
+              >
+                <Typography fontWeight={"bold"}>
+                  {t(columns.label)}
+                </Typography>
+                {orderBy === columns.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </StyledTableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    );
+  }
 }
 
 function colorSwitcher(value: boolean): string {
@@ -243,24 +282,15 @@ function colorSwitcher(value: boolean): string {
       return "red";
   }
 }
-
 interface ExamTableProps {
   useFilter: boolean;
   filterId: string; 
 }
-
 const ExamTable = ({
   useFilter,
   filterId
 }: ExamTableProps): JSX.Element => {
-  const { t } = useTranslation();
-  const buttonsTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#007088",
-      },
-    },
-  });
+  
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
@@ -335,9 +365,6 @@ const ExamTable = ({
   const handleChangePage = (event: unknown, newPage: number): void => {
     setPage(newPage);
   };
-
-  
-
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -345,7 +372,6 @@ const ExamTable = ({
     setPage(0);
     setMaxPage(-1)
   };
-
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
@@ -428,7 +454,7 @@ const ExamTable = ({
 
     console.log("PR", paginatedRows);
 
-
+  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
   return (
     <>
     <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
@@ -456,8 +482,8 @@ const ExamTable = ({
            :(
             <TableBody>
               {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
-              {paginatedRows.map((row: ExamData) => renderRow(row))}
-               {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
+              {paginatedRows.map((row: ExamData) => ExamRows(row, isMatchMd))}
+              {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
             </TableBody>)
           }
           </Table>
@@ -477,5 +503,170 @@ const ExamTable = ({
     </>
   )
 };
+
+const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
+  const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#007088",
+      },
+    },
+  });
+  const formatDate = (dateString: string): JSX.Element => {
+    const date = new Date(dateString);
+    return (
+      <Typography color={"#878787"} fontWeight={"bold"}>
+        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
+      </Typography>
+      )
+  };
+
+  const getStatusIcon = (state: boolean): JSX.Element  => (
+    <Brightness1RoundedIcon color={state ? "success" : "error"} />
+  );
+
+  const getUrgencyText = (urgencia: number): JSX.Element => (
+    <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
+      {t("urgencyLevel").concat(urgencia.toString())}
+    </Typography>
+  );
+  const getReviewState = (state: boolean) : JSX.Element => {
+    console.log(state)
+    if (state === true) {
+      return(
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
+        </Box>
+      )
+    } else {
+      return (
+        <Box display={"flex"} justifyContent={"center"}>
+          <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
+        </Box>
+        )
+    }
+  }
+  if (isMatchMd) {
+    return (    
+    <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
+      <StyledTableCell align="center">
+        <Typography fontWeight={"bold"}>
+          {row.examId}
+        </Typography>
+      </StyledTableCell>
+      <StyledTableCell align="center">
+        <Typography fontWeight={"bold"}>
+          {row.patientId}
+        </Typography>
+      </StyledTableCell>
+      <StyledTableCell align="center">
+        {formatDate(row.createdAt)}
+      </StyledTableCell>  
+      <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
+      <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
+      <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
+      <StyledTableCell align="center">
+        <ThemeProvider theme={buttonsTheme}>
+          <Link to={`/examsview/${row.examId}`}>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ color: "#fff" }}
+              value={row.examId}
+            >
+              <Typography fontSize={'120%'} color={'#fff'}>
+                {t("access")}
+              </Typography>
+            </Button>
+          </Link>
+        </ThemeProvider>
+      </StyledTableCell>
+    </TableRow>
+  )
+}
+  else {
+    return(
+      <React.Fragment>
+        <TableRow hover role="checkbox" tabIndex={-1} key={row.examId} sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <StyledTableCell>
+            <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+                >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </StyledTableCell>
+          <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
+          <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
+          <StyledTableCell align="center"></StyledTableCell>
+          <StyledTableCell align="center">
+            <ThemeProvider theme={buttonsTheme}>
+              <Link to={`/examsview/${row.examId}`}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  sx={{ color: "#fff" }}
+                  value={row.examId}
+                >
+                  <Typography fontSize={'120%'} color={'#fff'}>
+                    {t("access")}
+                  </Typography>
+                </Button>
+              </Link>
+            </ThemeProvider>
+          </StyledTableCell>
+        </TableRow>
+        <TableRow>
+          <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+                <Grid container>
+                  <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Typography fontWeight={"bold"}>
+                      {t("pacient")}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Typography fontWeight={"bold"}>
+                      {row.patientId}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Typography fontWeight={"bold"}>
+                      {t("folio")}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Typography fontWeight={"bold"}>
+                      {row.examId}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Typography fontWeight={"bold"}>
+                      {t("date")}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6}>
+                    {formatDate(row.createdAt)}
+                  </Grid>
+                  <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Typography fontWeight={"bold"}>
+                      {t("state")}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    {getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}
+                  </Grid>
+                </Grid>
+              </Collapse>
+          </StyledTableCell>
+        </TableRow>
+      </React.Fragment>
+    )
+  }
+  };
+
 
 export default ExamTable;
