@@ -16,8 +16,9 @@ import {
 import { Chart } from "react-chartjs-2";
 import annotationPlugin from "chartjs-plugin-annotation";
 import ChartZoom from 'chartjs-plugin-zoom';
-import React, {useState, useEffect, useRef} from "react";
-import { getTimeSeries } from "../../service/user.service";
+import React, {useEffect} from "react";
+import { getExam} from "../../service/user.service";
+
 
 
 ChartJS.register(
@@ -81,6 +82,26 @@ const FiducialChart = (props: any): JSX.Element => {
 
   const [changedZoom, setChangedZoom] = React.useState<boolean>(false);
 
+  const [lineColor, setLineColor] = React.useState<string>("rgb(105,105,105)");
+
+
+  function urgencyColorSwitcher(value: number | undefined): string {
+    console.log(value);
+    switch (value) {
+      case undefined:
+        return "black";
+      case 1:
+        return "green";
+      case 2:
+        return "orange";
+      case 3:
+        return "red";
+      default:
+        return "black";
+    }
+  }
+
+
   useEffect(() => {
     console.log("update tabla fiduciales")
 
@@ -115,6 +136,14 @@ useEffect(() => {
   setmaxY(Math.max(...props.timeSeries) + 100);
   setminY(Math.min(...props.timeSeries) -100);
 }, [props.timeSeries]);
+
+useEffect(() => {
+  getExam(examId).then(      
+    (response) => {
+      setLineColor(urgencyColorSwitcher(response.data.urgencia))
+    }
+  );
+}, []);
 
   let chart = ChartJS.getChart("fiduChart");
 
@@ -298,7 +327,7 @@ useEffect(() => {
           scaleMode: 'xy',
           onZoomStart: function (ctx: any) {
             setChangedZoom(true);
-          }
+          },
         },
         limits: {
           x: {min: -100, max: timeseriesData.length + 100},
@@ -326,6 +355,7 @@ useEffect(() => {
             display:true,
             drawTime:'beforeDatasetsDraw',
             label: {
+              drawTime:'afterDatasetsDraw',
               display: true,
               content: '',
               rotation: 0,
@@ -460,7 +490,7 @@ const data1 = {
       backgroundColor: "rgb(139,139,139)",
       pointRadius: 0,
       pointHitRadius: 0,
-      borderColor: "rgb(34,139,34)",
+      borderColor: lineColor,
       borderWidth: 1.5,
       z:2,
 
