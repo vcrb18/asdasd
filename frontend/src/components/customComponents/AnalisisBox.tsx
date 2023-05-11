@@ -6,6 +6,7 @@ import { type ExamData } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
+import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 
 interface RejectionReason {
   id: number;
@@ -210,6 +211,23 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
         },
       },
     });
+  
+  const displayUrgency = (nivel: number) => {
+    switch (nivel) {
+      case 1:
+        return(
+          <Brightness1RoundedIcon color={"success"} />
+      )
+      case 2:
+        return (
+          <Brightness1RoundedIcon color={"warning"} />
+        )
+      case 3:
+        return(
+          <Brightness1RoundedIcon color={"error"} />
+        )
+      }
+  }
 
   return (
     <Grid container>
@@ -368,15 +386,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"center"} xs={8} sm={8} md={8} lg={8}>
-            <Typography
-              fontSize={"70%"}
-              fontWeight={"bold"}
-              align="left"
-              color={urgencyColorSwitcher(analisisData?.urgency)}
-            >
-              {analisisData?.urgency?.toString()}
-            </Typography>
+          (<Grid item display={"flex"} justifyContent={"center"} alignItems={"center"} xs={8} sm={8} md={8} lg={8}>
+            {displayUrgency(analisisData?.urgency)}
           </Grid>)}
         </Grid>
     </Grid>

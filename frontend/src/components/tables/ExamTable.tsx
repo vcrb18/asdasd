@@ -233,16 +233,14 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   );
 }
 
-function colorSwitcher(value: number): string {
+function colorSwitcher(value: boolean): string {
   switch (value) {
-    case 1:
-      return "#878787";
-    case 2:
-      return "#FF8B00";
-    case 3:
+    case true:
+      return "green";
+    case false:
       return "red";
     default:
-      return "#878787";
+      return "red";
   }
 }
 
@@ -282,15 +280,32 @@ const ExamTable = ({
       )
   };
 
-  const getStatusIcon = (estado: boolean): JSX.Element  => (
-    <Brightness1RoundedIcon color={estado ? "success" : "error"} />
+  const getStatus = (state: boolean)=> (
+    <Typography
+      fontWeight={"bold"}
+      color={colorSwitcher(state)}
+      >
+        {state?  t("accepted") : t("refused")}
+  </Typography>
   );
 
-  const getUrgencyText = (urgencia: number): JSX.Element => (
-    <Typography color={colorSwitcher(urgencia)} fontWeight={"bold"}>
-      {t("urgencyLevel").concat(urgencia.toString())}
-    </Typography>
-  );
+  const getUrgency= (urgency: number) => {
+    switch (urgency) {
+        case 1:
+          return(
+            <Brightness1RoundedIcon color={"success"} />
+        )
+        case 2:
+          return (
+            <Brightness1RoundedIcon color={"warning"} />
+          )
+        case 3:
+          return(
+            <Brightness1RoundedIcon color={"error"} />
+          )
+        }
+    }
+   
   const getReviewState = (state: boolean) : JSX.Element => {
     console.log(state)
     if (state === true) {
@@ -306,10 +321,6 @@ const ExamTable = ({
         </Box>
         )
     }
-  }
-  const handleSubmit = (event:  React.MouseEvent<HTMLAnchorElement>, examId: string ) : void => {
-  //     event.preventDefault();
-  //     navigate('/exams'.concat(examId))
   }
 
   const handleRequestSort = (
@@ -385,8 +396,8 @@ const ExamTable = ({
       <StyledTableCell align="center">
         {formatDate(row.createdAt)}
       </StyledTableCell>  
-      <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
-      <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
+      <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
+      <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
       <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
       <StyledTableCell align="center">
         <ThemeProvider theme={buttonsTheme}>
