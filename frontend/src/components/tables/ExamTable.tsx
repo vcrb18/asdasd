@@ -458,186 +458,139 @@ const ExamTable = ({
     ? stableSort(filteredFolio, getComparator(order, orderBy))
     : stableSort(rows, getComparator(order, orderBy));
 
-  const paginatedRows = sortedRows.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-    );
-
-    console.log("PR", paginatedRows);
-
-  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
-  return (
-    <>
-    <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-    <Paper sx={{ width: "100%" }}>
-       <TableContainer>
-         <Table stickyHeader aria-label="Examenes">
-           <ExamTableHead
-             order={order}
-             orderBy={orderBy}
-             onRequestSort={handleRequestSort}
-           />
-           {isLoading ? (
-            <TableBody>
-              <StyledTableCell align='center'/>
-              <StyledTableCell align='center'/>
-              <StyledTableCell align='center'/>
-              <StyledTableCell align='center'>
-                <CircularProgress/>
-              </StyledTableCell>
-              <StyledTableCell align='center'/>
-              <StyledTableCell align='center'/>
-              <StyledTableCell align='center'/>
-            </TableBody>
-           )
-           :(
-            <TableBody>
-              {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
-              {paginatedRows.map((row: ExamData) => ExamRows(row, isMatchMd))}
-              {/* : <Typography>No hay resutados para {filterId} </Typography>}   */}
-            </TableBody>)
-          }
-          </Table>
-        </TableContainer>
-        <TablePagination
-         rowsPerPageOptions={[25]}
-         component="div"
-         count={maxRows}
-        //  count={rows.length}
-         rowsPerPage={rowsPerPage}
-         page={page}
-         onPageChange={handleChangePage}
-         onRowsPerPageChange={handleChangeRowsPerPage}
-       />
-    </Paper>
-    </div>
-    </>
-  )
-};
-
-const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
+  // function renderRow(row: ExamData, isMatchMd: boolean) : JSX.Element {
+  // function Row({ row, isMatch}) : JSX.Element {
+  interface RowProps {
+    row: ExamData;
+    isMatch: boolean
+  }
+  
+  
+  const Row: React.FC<RowProps> = ({ row, isMatch }) => {
+      
   const [open, setOpen] = React.useState(false);
-  function renderRow(row: ExamData, isMatchMd: boolean) : JSX.Element {
-
-  if (isMatchMd) {
-    return (    
-    <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
-      <StyledTableCell align="center">
-        <Typography fontSize={"100%"} fontWeight={"bold"}>
-          {row.examId}
-        </Typography>
-      </StyledTableCell>
-      <StyledTableCell align="center">
-        <Typography fontSize={"100%"} fontWeight={"bold"}>
-          {row.patientId}
-        </Typography>
-      </StyledTableCell>
-      <StyledTableCell align="center">
-        {formatDate(row.createdAt)}
-      </StyledTableCell>  
-      <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
-      <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
-      <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
-      <StyledTableCell align="center">
-        <ThemeProvider theme={buttonsTheme}>
-          <Link to={`/examsview/${row.examId}`}>
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{ color: "#fff" }}
-              value={row.examId}
-            >
-              <Typography fontSize={'100%'} color={'#fff'}>
-                {t("access")}
-              </Typography>
-            </Button>
-          </Link>
-        </ThemeProvider>
-      </StyledTableCell>
-    </TableRow>
-  )
-}
-  else {
-    return(
+    if (isMatch) {
+      return (    
       <React.Fragment>
-        <TableRow hover role="checkbox" tabIndex={-1} key={row.examId} sx={{ '& > *': { borderBottom: 'unset' } }}>
-          <StyledTableCell>
-            <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setOpen(!open)}
-                >
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </StyledTableCell>
-          <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
-          <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
-          <StyledTableCell align="center"></StyledTableCell>
-          <StyledTableCell align="center">
-            <ThemeProvider theme={buttonsTheme}>
-              <Link to={`/examsview/${row.examId}`}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  sx={{ color: "#fff" }}
-                  value={row.examId}
-                >
-                  <Typography fontSize={'120%'} color={'#fff'}>
-                    {t("access")}
-                  </Typography>
-                </Button>
-              </Link>
-            </ThemeProvider>
-          </StyledTableCell>
-        </TableRow>
-        <TableRow>
-          <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-                <Grid container>
-                  <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {t("pacient")}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={6} lg={6}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {row.patientId}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {t("folio")}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {row.examId}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {t("date")}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={6} lg={6}>
-                    {formatDate(row.createdAt)}
-                  </Grid>
-                  <Grid item xs={2} sm={2} md={2} lg={2}>
-                    <Typography fontSize={"100%"} fontWeight={"bold"}>
-                      {t("state")}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    {getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}
-                  </Grid>
-                </Grid>
-              </Collapse>
-          </StyledTableCell>
-        </TableRow>
+      <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
+        <StyledTableCell align="center">
+          <Typography fontSize={"100%"} fontWeight={"bold"}>
+            {row.examId}
+          </Typography>
+        </StyledTableCell>
+        <StyledTableCell align="center">
+          <Typography fontSize={"100%"} fontWeight={"bold"}>
+            {row.patientId}
+          </Typography>
+        </StyledTableCell>
+        <StyledTableCell align="center">
+          {formatDate(row.createdAt)}
+        </StyledTableCell>  
+        <StyledTableCell align="center">{getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
+        <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
+        <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
+        <StyledTableCell align="center">
+          <ThemeProvider theme={buttonsTheme}>
+            <Link to={`/examsview/${row.examId}`}>
+              <Button
+                color="primary"
+                variant="contained"
+                sx={{ color: "#fff" }}
+                value={row.examId}
+              >
+                <Typography fontSize={'100%'} color={'#fff'}>
+                  {t("access")}
+                </Typography>
+              </Button>
+            </Link>
+          </ThemeProvider>
+        </StyledTableCell>
+      </TableRow>
       </React.Fragment>
     )
   }
+    else {
+      return(
+        <React.Fragment>
+          <TableRow hover role="checkbox" tabIndex={-1} key={row.examId} sx={{ '& > *': { borderBottom: 'unset' } }}>
+            <StyledTableCell>
+              <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                  >
+                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">{getUrgencyText(row.urgency)}</StyledTableCell>
+            <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
+            <StyledTableCell align="center">
+              <ThemeProvider theme={buttonsTheme}>
+                <Link to={`/examsview/${row.examId}`}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{ color: "#fff" }}
+                    value={row.examId}
+                  >
+                    <Typography fontSize={'120%'} color={'#fff'}>
+                      {t("access")}
+                    </Typography>
+                  </Button>
+                </Link>
+              </ThemeProvider>
+            </StyledTableCell>
+          </TableRow>
+          <TableRow>
+            <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Grid container>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("pacient")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {row.patientId}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("folio")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {row.examId}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("date")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                      {formatDate(row.createdAt)}
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("state")}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      {getStatusIcon(row.operatorAccept != null ? row.operatorAccept : row.accepted)}
+                    </Grid>
+                  </Grid>
+                </Collapse>
+            </StyledTableCell>
+          </TableRow>
+        </React.Fragment>
+      )
+    }
   };
+
   
   
 
@@ -680,7 +633,8 @@ const ExamRows = (row: ExamData, isMatchMd: boolean) : JSX.Element => {
            :(
             <TableBody>
               {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
-              {paginatedRows.map((row: ExamData) => renderRow(row, isMatchMd))}
+              {paginatedRows.map((row: ExamData) => <Row row={row} isMatch={isMatchMd} />)}
+              {/* {paginatedRows.map((row: ExamData) => renderRow(row, isMatchMd))} */}
               {/* : <Typography>No hay resutados para {filterId} </Typography>}*/}
             </TableBody>)
           }
