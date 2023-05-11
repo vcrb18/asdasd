@@ -295,6 +295,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
             >
               {analisisData.operatorAccept != null ? 
               (analisisData.operatorAccept === true ? displayState(true) :  displayState(false) ) :
+                // t("accepted") : t("refused")) : 
+                // t("accepted") : t("refused"))}
               (analisisData.status === true ?  displayState(true) :  displayState(false))}
             </Typography>
           </Grid>
