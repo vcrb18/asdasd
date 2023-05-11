@@ -6,8 +6,6 @@ import { type ExamData } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-
 
 interface RejectionReason {
   id: number;
@@ -213,11 +211,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       },
     });
 
-
-  function displayState(state: boolean) : JSX.Element {
-    return(
-    <Brightness1RoundedIcon color={state ? "success" : "error"} />
-  )}
   return (
     <Grid container>
     {/* Sector de los datos del exámen */}
@@ -279,14 +272,14 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           alignItems={"center"}
         >
           <Grid item  
-            xs={6} sm={6} md={6} lg={6} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+            xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
               {t("state")}
             </Typography>
           </Grid>
           {!isLoading &&
           (<>
-          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={4} sm={4} md={4} lg={4}>
+          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={6} sm={6} md={6} lg={6}>
             <Typography
               fontSize={"65%"}
               align="left"
@@ -294,10 +287,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
             >
               {analisisData.operatorAccept != null ? 
-              (analisisData.operatorAccept === true ? displayState(true) :  displayState(false) ) :
-                // t("accepted") : t("refused")) : 
-                // t("accepted") : t("refused"))}
-              (analisisData.status === true ?  displayState(true) :  displayState(false))}
+              (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
+              (analisisData.status === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"} xs={2} sm={2} md={2} lg={2}>
@@ -371,13 +362,13 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           display={"flex"}
           justifyContent={"space-between"}
         >
-          <Grid item  xs={6} sm={6} md={6} lg={6} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
+          <Grid item  xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
             {t("urgency")}
             </Typography>
           </Grid>
           {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"felx-start"} xs={6} sm={6} md={6} lg={6}>
+          (<Grid item display={"flex"} justifyContent={"center"} xs={8} sm={8} md={8} lg={8}>
             <Typography
               fontSize={"70%"}
               fontWeight={"bold"}
