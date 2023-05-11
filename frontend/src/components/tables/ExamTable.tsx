@@ -458,6 +458,7 @@ const ExamTable = ({
     ? stableSort(filteredFolio, getComparator(order, orderBy))
     : stableSort(rows, getComparator(order, orderBy));
 
+
   interface RowProps {
     row: ExamData;
     isMatch: boolean
@@ -605,8 +606,14 @@ const ExamTable = ({
 
   const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
   return (
-    <>              {/* {paginatedRows.map((row: ExamData) => renderRow(row, isMatchMd))} */}
-
+    <>
+    <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+    <Paper sx={{ width: "100%" }}>
+       <TableContainer>
+         <Table stickyHeader aria-label="Examenes">
+           <ExamTableHead
+             order={order}
+             orderBy={orderBy}
              onRequestSort={handleRequestSort}
            />
            {isLoading ? (
@@ -624,9 +631,7 @@ const ExamTable = ({
            )
            :(
             <TableBody>
-              {/* {isEmptyArray(filteredFolio) && (filterId !== "") &&? */}
               {paginatedRows.map((row: ExamData) => <Row row={row} isMatch={isMatchMd} />)}
-              {/* : <Typography>No hay resutados para {filterId} </Typography>}*/}
             </TableBody>)
           }
           </Table>
