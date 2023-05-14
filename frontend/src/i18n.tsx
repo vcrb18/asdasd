@@ -5,6 +5,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      timeLeft: "Time Left",
       goBack: "Go back",
       exam: "Exam",
       review: "Review",
@@ -55,7 +56,7 @@ const resources = {
       normal: "Normal",
       results: "Results",
       date: "Date",
-      pacient: "Pacient",
+      patient: "Patient",
       from: "From",
       to: "To",
       cancel: "Cancel",
@@ -242,6 +243,7 @@ const resources = {
   },
   es: {
     translation: {
+      timeLeft: "Tiempo restante",
       goBack: "Volver",
       exam: "Examen",
       review: "Revisión",
@@ -291,7 +293,7 @@ const resources = {
       otherFilters: "Otros Filtros",
       normal: "Normal",
       results: "Resultados",
-      pacient: "Paciente",
+      patient: "Paciente",
       date: "Fecha",
       from: "Desde",
       to: "Hasta",

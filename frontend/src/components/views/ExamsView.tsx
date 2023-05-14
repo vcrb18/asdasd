@@ -221,19 +221,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           >
             <DerivationsComponent examId={examIdNumber} />
           </Grid>
-          {/* <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            padding={"2%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <PredictionBox examId={examIdNumber} />
-          </Grid> */}
+         
           <Grid item
             display={"flex"}
             justifyContent={"center"}
