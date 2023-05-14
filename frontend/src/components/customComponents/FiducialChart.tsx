@@ -54,7 +54,7 @@ interface fidutialChartPoints {
 
 const FiducialChart = (props: any): JSX.Element => {
   const pointRadious = 10;
-  const pointLineLength = 100;
+  const pointLineLength = 300;
   
 
   const [timeseriesData, setTimeSeriesData] = React.useState<number[]> ([]);
@@ -139,12 +139,31 @@ const FiducialChart = (props: any): JSX.Element => {
 
     setTimeSeriesData(props.timeSeries);
     if (!changedZoom){
-    const maxP = Math.max(...points);
-    const minP = Math.min(...points);
-    setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
-    setminX(minP-100);
-    setmaxY(Math.max(...timeseriesData) + 200);
-    setminY(Math.min(...timeseriesData) - 200);
+    const maxPoint = Math.max(...points);
+    const minPoint = Math.min(...points);
+    let xAxisOffsetLeft = (5000 - (maxPoint - minPoint))/2;
+    let xAxisOffsetRight = (5000 - (maxPoint - minPoint))/2;
+
+    if(minPoint-xAxisOffsetLeft<0)
+    {
+      xAxisOffsetRight-= minPoint-xAxisOffsetLeft;
+      xAxisOffsetLeft = minPoint;
+    }
+
+    if(maxPoint+xAxisOffsetRight > timeseriesData.length)
+    {
+      xAxisOffsetLeft += maxPoint + xAxisOffsetRight - timeseriesData.length;
+      xAxisOffsetRight = timeseriesData.length- maxPoint;
+    }
+    
+
+    const maxTimeSeries = Math.max(...timeseriesData);
+    const minTimeSeries = Math.min(...timeseriesData);
+    const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
+    setmaxX(maxPoint + xAxisOffsetRight);
+    setminX(minPoint - xAxisOffsetLeft);
+    setmaxY(1500);
+    setminY(-1000);
 
     }
     chart = ChartJS.getChart("fiduChart");
@@ -153,12 +172,32 @@ const FiducialChart = (props: any): JSX.Element => {
 }, [props]);
 
 useEffect(() => {
-  const maxP = Math.max(...points);
-  const minP = Math.min(...points);
-  setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
-  setminX(minP-100);
-  setmaxY(Math.max(...props.timeSeries) + 200);
-  setminY(Math.min(...props.timeSeries) - 200);
+
+  const maxPoint = Math.max(...points);
+  const minPoint = Math.min(...points);
+  let xAxisOffsetLeft = (5000 - (maxPoint - minPoint))/2;
+  let xAxisOffsetRight = (5000 - (maxPoint - minPoint))/2;
+
+  if(minPoint-xAxisOffsetLeft<0)
+  {
+    xAxisOffsetRight-= minPoint-xAxisOffsetLeft;
+    xAxisOffsetLeft = minPoint;
+  }
+
+  if(maxPoint + xAxisOffsetRight>props.timeSeries.length)
+  {
+    xAxisOffsetLeft += maxPoint + xAxisOffsetRight - props.timeSeries.length;
+    xAxisOffsetRight = props.timeSeries.length - maxPoint;
+  }
+
+
+  const maxTimeSeries = Math.max(...props.timeSeries);
+  const minTimeSeries = Math.min(...props.timeSeries);
+  const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
+  setmaxX(maxPoint + xAxisOffsetRight);
+  setminX(minPoint - xAxisOffsetLeft);
+  setmaxY(1500);
+  setminY(-1000);
 }, [props.timeSeries]);
 
 useEffect(() => {
@@ -871,7 +910,13 @@ useEffect(() => {
         max: maxX,
         ticks: {
           maxTicksLimit: n_x_ticks,
-          stepSize: 200
+          stepSize: 200,
+          callback: function (value:any, index:any, values:any) {
+            if (Math.floor(value) === value) {
+              return value;
+            }
+            return value.toFixed(0);
+          }
         }
       },
     },
