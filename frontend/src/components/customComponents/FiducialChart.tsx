@@ -53,10 +53,13 @@ interface fidutialChartPoints {
 }
 
 const FiducialChart = (props: any): JSX.Element => {
-  const pointRadious = 4;
+  const pointRadious = 10;
+  const pointLineLength = 100;
+  
 
   const [timeseriesData, setTimeSeriesData] = React.useState<number[]> ([]);
   const [examId, setexamId] = React.useState<number>(props.examId);
+
   const [fidP, setfidP] = React.useState<number>(0);
   const [fidQRS, setfidQRS] = React.useState<number>(0);
   const [fidR, setfidR] = React.useState<number>(0);
@@ -65,9 +68,21 @@ const FiducialChart = (props: any): JSX.Element => {
   const [fidST, setfidST] = React.useState<number>(0);
   const [fidT, setfidT] = React.useState<number>(0);
 
+  const [fidPY, setfidPY] = React.useState<number>(0);
+  const [fidQRSY, setfidQRSY] = React.useState<number>(0);
+  const [fidRY, setfidRY] = React.useState<number>(0);
+  const [fidR2Y, setfidR2Y] = React.useState<number>(0);
+  const [fidSY, setfidSY] = React.useState<number>(0);
+  const [fidSTY, setfidSTY] = React.useState<number>(0);
+  const [fidTY, setfidTY] = React.useState<number>(0);
+
+  
+
 
 
   const points = [props.fidP, props.fidQRS, props.fidR, props.fidR2, props.fidS, props.fidST, props.fidT]
+  
+  const allPoints = [fidP, fidQRS, fidR, fidR2, fidS, fidST, fidT]
 
 
 
@@ -86,7 +101,6 @@ const FiducialChart = (props: any): JSX.Element => {
 
 
   function urgencyColorSwitcher(value: number | undefined): string {
-    console.log(value);
     switch (value) {
       case undefined:
         return "black";
@@ -106,6 +120,7 @@ const FiducialChart = (props: any): JSX.Element => {
     console.log("update tabla fiduciales")
 
     setexamId(props.examId);
+
     setfidP(props.fidP);
     setfidQRS(props.fidQRS);
     setfidR(props.fidR);
@@ -113,14 +128,23 @@ const FiducialChart = (props: any): JSX.Element => {
     setfidS(props.fidS);
     setfidST(props.fidST);
     setfidT(props.fidT);
+
+    setfidPY(timeseriesData[props.fidP] + pointLineLength);
+    setfidQRSY(timeseriesData[props.fidQRS] + pointLineLength);
+    setfidRY(timeseriesData[props.fidR] + pointLineLength);
+    setfidR2Y(timeseriesData[props.fidR2] + pointLineLength);
+    setfidSY(timeseriesData[props.fidS] + pointLineLength);
+    setfidSTY(timeseriesData[props.fidST] + pointLineLength);
+    setfidTY(timeseriesData[props.fidT] + pointLineLength);
+
     setTimeSeriesData(props.timeSeries);
     if (!changedZoom){
     const maxP = Math.max(...points);
     const minP = Math.min(...points);
     setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
     setminX(minP-100);
-    setmaxY(Math.max(...timeseriesData) + 100);
-    setminY(Math.min(...timeseriesData) -100);
+    setmaxY(Math.max(...timeseriesData) + 200);
+    setminY(Math.min(...timeseriesData) - 200);
 
     }
     chart = ChartJS.getChart("fiduChart");
@@ -133,8 +157,8 @@ useEffect(() => {
   const minP = Math.min(...points);
   setmaxX(maxP+100);  //si hay un punto que se pasa del largo de la time series se pasa del grafico
   setminX(minP-100);
-  setmaxY(Math.max(...props.timeSeries) + 100);
-  setminY(Math.min(...props.timeSeries) -100);
+  setmaxY(Math.max(...props.timeSeries) + 200);
+  setminY(Math.min(...props.timeSeries) - 200);
 }, [props.timeSeries]);
 
 useEffect(() => {
@@ -151,20 +175,160 @@ useEffect(() => {
     { length: timeseriesData.length },
     (_, i) => i + 1
   );
-  const pStartPoint = [{ x: fidP, y: timeseriesData[fidP] }, 1];
-  const qrsStartPoint = [{ x: fidQRS, y: timeseriesData[fidQRS] }, 2];
-  const rPoint = [{ x: fidR, y: timeseriesData[fidR] }, 3];
-  const r2Point = [{ x: fidR2, y: timeseriesData[fidR2] }, 4];
-  const qrsEndPoint = [{ x: fidS, y: timeseriesData[fidS] }, 5];
-  const tStartPoint = [{ x: fidST, y: timeseriesData[fidST] }, 6];
-  const tEndPoint = [{ x: fidT, y: timeseriesData[fidT] }, 7];
+  const pStartPoint = [{ x: fidP, y: fidPY} as any, 1];
+  const qrsStartPoint = [{ x: fidQRS, y: fidQRSY} as any, 2];
+  const rPoint = [{ x: fidR, y: fidRY} as any, 3];
+  const r2Point = [{ x: fidR2, y: fidR2Y} as any, 4];
+  const qrsEndPoint = [{ x: fidS, y: fidSY} as any, 5];
+  const tStartPoint = [{ x: fidST, y: fidSTY} as any, 6];
+  const tEndPoint = [{ x: fidT, y: fidTY} as any, 7];
+
+  let n_x_ticks = timeseriesData.length / 100;
 
   let refLine:any;
+
+  let leftBorderArea : any;
+  let rightBorderArea : any;
+
+
+  let pointLines = [] as any;
+  let pointLabels = [] as any;
 
   let lastEvent: any;
   let justUpdated = false as any;
   let bubble: any;
   let lastMovement:any;
+
+  let lastData = {
+    exam_id:examId,
+    p_start:props.fidP,
+    qrs_start:props.fidQRS,
+    r:props.fidR,
+    r2:props.fidR2,
+    qrs_end:props.fidS,
+    t_start:props.fidT,
+    t_end:props.fidST,
+  } as any;
+
+  
+
+
+
+  const getBubble = function (event: any, chart : any): any {
+    const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+    return(elements);
+  }
+
+  const moveOnePoint = function (chart: any): any 
+  {
+    setmaxX(chart.scales.x.max);
+    setminX(chart.scales.x.min);
+
+    setfidP(chart.data.datasets[0].data[0].x);
+    setfidQRS(chart.data.datasets[1].data[0].x);
+    setfidR(chart.data.datasets[2].data[0].x);
+    setfidR2(chart.data.datasets[6].data[0].x);
+    setfidS(chart.data.datasets[3].data[0].x);
+    setfidST(chart.data.datasets[4].data[0].x);
+    setfidT(chart.data.datasets[5].data[0].x);
+
+    const childata = {
+      exam_id:examId,
+      p_start:chart.data.datasets[0].data[0].x,
+      qrs_start:chart.data.datasets[1].data[0].x,
+      r:chart.data.datasets[2].data[0].x,
+      r2:chart.data.datasets[6].data[0].x,
+      qrs_end:chart.data.datasets[3].data[0].x,
+      t_start:chart.data.datasets[4].data[0].x,
+      t_end:chart.data.datasets[5].data[0].x,
+    }
+
+    return childata;
+  }
+
+  const moveAllPoints = function (event: any, direction: string, chart:any): any {
+    let movement = 0;
+
+    if (direction == 'left')
+      movement = -1000;
+    else if (direction == 'right')
+      movement = 1000;
+    else return;
+
+    const values = Object.values(lastData) as any;
+
+    if (Math.max(...values.slice(1,7)) + movement > timeseriesData.length ||  Math.min(...values.slice(1,7)) + movement < 0) 
+      movement = 0;
+
+    let scaleMovement = movement;
+    if (chart.scales.x.max + movement >= timeseriesData.length)
+      scaleMovement = timeseriesData.length + 100 - chart.scales.x.max;
+    if (chart.scales.x.min + movement <= 0)
+      scaleMovement = - 100 - chart.scales.x.min;
+
+    setmaxX(chart.scales.x.max + scaleMovement);
+    setminX(chart.scales.x.min + scaleMovement);
+
+    
+
+    setfidP(lastData.p_start + movement);
+    setfidQRS(lastData.qrs_start + movement);
+    setfidR(lastData.r + movement);
+    setfidR2(lastData.r2 + movement);
+    setfidS(lastData.qrs_end + movement);
+    setfidST(lastData.t_end + movement);
+    setfidT(lastData.t_start + movement);
+
+    const childata = {
+      exam_id: examId,
+      p_start: lastData.p_start + movement,
+      qrs_start: lastData.qrs_start + movement,
+      r: lastData.r + movement,
+      r2: lastData.r2 + movement,
+      qrs_end: lastData.qrs_end + movement,
+      t_start: lastData.t_end + movement,
+      t_end: lastData.t_start + movement,
+    }
+
+    return childata;
+  }
+
+  const checkForBorderHover = function (event:any, chart:any)
+  {
+    const movement = 1000;
+    let hoveredBackgroundColor = 'rgba(0, 214, 176, 0.58)';
+    let hoveredBorderColor = 'rgba(11, 175, 146, 0.58)';
+    const values = Object.values(lastData) as any;
+    
+    if (event.x <= chart.chartArea.left + chart.chartArea.width/20)
+    {
+      if (Math.min(...values.slice(1,7)) - movement < 0)
+      {
+        hoveredBackgroundColor = 'rgba(255, 11, 11, 0.53)';
+        hoveredBorderColor = 'rgba(237, 9, 9, 0.72)';
+      }
+      leftBorderArea.element.options.backgroundColor = hoveredBackgroundColor;
+      leftBorderArea.element.options.borderColor = hoveredBorderColor;
+    }
+    else if (event.x >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20)
+    {
+      if (Math.max(...values.slice(1,7)) + movement > timeseriesData.length)
+      {
+        hoveredBackgroundColor = 'rgba(255, 11, 11, 0.53)';
+        hoveredBorderColor = 'rgba(237, 9, 9, 0.72)';
+      }
+      rightBorderArea.element.options.backgroundColor = hoveredBackgroundColor;
+      rightBorderArea.element.options.borderColor = hoveredBorderColor;
+    }
+    else
+    {
+      leftBorderArea.element.options.backgroundColor = 'rgba(243, 167, 144, 0.15)';
+      rightBorderArea.element.options.backgroundColor = 'rgba(243, 167, 144, 0.15)';
+      leftBorderArea.element.options.borderColor = 'rgba(243, 167, 144, 0.58)';
+      rightBorderArea.element.options.borderColor = 'rgba(243, 167, 144, 0.58)';
+    }
+  }
+
 
 
   const drag = function (event: any, moveX: number, moveY: number, bubble: any): void {
@@ -172,17 +336,17 @@ useEffect(() => {
     bubble[0].element.y += moveY;
     chart = ChartJS.getChart("fiduChart");
     if (!chart) return;
+    checkForBorderHover(event, chart);
     if(!chart.data.datasets[bubble[0].datasetIndex].data) return;
     if(!chart.data.datasets[bubble[0].datasetIndex].data[0]) return;
     let num = chart.data.datasets[bubble[0].datasetIndex].data[0] as any;
-    let box = chart.boxes[4] as any;
     let line = chart.data.datasets[7] as any;
+    const index = bubble[0].datasetIndex;
+    const realX = chart.scales.x.getValueForPixel(bubble[0].element.x) as number;
+    const realY = chart.scales.y.getValueForPixel(bubble[0].element.y) as number;
+    num.x = Math.round(realX);
 
-    num.x += Math.round(moveX* ((box.max-box.min)/box.width));
-
-    num.y = line.data[num.x];
-
-    refLine.element.options.borderColor = "red";
+    num.y = Math.round(realY);
 
     refLine.element.x = bubble[0].element.x;
     refLine.element.x2 = bubble[0].element.x;
@@ -194,6 +358,11 @@ useEffect(() => {
 
     refLine.element.elements[0].y = bubble[0].element.y -50;
 
+    pointLines[index].element.y2 += moveY;
+    pointLines[index].element.x = bubble[0].element.x;
+    pointLines[index].element.x2 = bubble[0].element.x;
+    pointLines[index].element.y = chart.scales.y.getPixelForValue(line.data[num.x]);
+    pointLabels[index].element.options.content = '';
   };
 
   const handleElementDragging = function (event: any, bubble:any): any {
@@ -232,39 +401,32 @@ useEffect(() => {
           bubble = undefined;
 
           setChangedZoom(true);
-
-          setmaxX(chart.scales.x.max);
-          setminX(chart.scales.x.min);
           setminY(chart.scales.y.min);
           setmaxY(chart.scales.y.max);
 
-          setfidP(chart.data.datasets[0].data[0].x);
-          setfidQRS(chart.data.datasets[1].data[0].x);
-          setfidR(chart.data.datasets[2].data[0].x);
-          setfidR2(chart.data.datasets[6].data[0].x);
-          setfidS(chart.data.datasets[3].data[0].x);
-          setfidST(chart.data.datasets[4].data[0].x);
-          setfidT(chart.data.datasets[5].data[0].x);
+          let childata;
 
-          const childata = {
-            exam_id:examId,
-            p_start:chart.data.datasets[0].data[0].x,
-            qrs_start:chart.data.datasets[1].data[0].x,
-            r:chart.data.datasets[2].data[0].x,
-            r2:chart.data.datasets[6].data[0].x,
-            qrs_end:chart.data.datasets[3].data[0].x,
-            t_start:chart.data.datasets[4].data[0].x,
-            t_end:chart.data.datasets[5].data[0].x,
+          if (event.x <= chart.chartArea.left + chart.chartArea.width/20)
+          {
+            childata = moveAllPoints(event, 'left', chart);
           }
+          else if (event.x >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20)
+          {
+            childata = moveAllPoints(event, 'right', chart);
+          }
+          else
+          {
+            childata = moveOnePoint(chart);
+          }
+          lastData = childata;
 
           handleParent(childata);
-          chart.update();
 
           break;
         case "mousedown" || "touchstart":
           lastEvent = event;
           lastMovement = event;
-          bubble = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+          bubble = getBubble(event, chart);
           if(!bubble[0]) break;
           if (bubble[0].element){
             chart.config.options.plugins.tooltip.enabled = false;
@@ -346,7 +508,8 @@ useEffect(() => {
         },
       },
       annotation: {
-        annotations: [{
+        annotations: [
+          {
 
             type: 'line',
             id: 'referenceLine',
@@ -366,7 +529,313 @@ useEffect(() => {
               refLine = context;
             },
             z:1,
-        }] as any,
+          },
+
+          {
+            type: 'box',
+            xMin: function (context:any) {
+              if (chart)
+                return(chart.scales.x.getValueForPixel(chart.chartArea.left))
+              return(0);
+            },
+            xMax: function (context:any) {
+              if (chart)
+                return(chart.scales.x.getValueForPixel(chart.chartArea.left + chart.chartArea.width/20))
+              return(0);
+            },
+            yMin: function (context:any) {
+              if (chart)
+                return(chart.scales.y.getValueForPixel(0))
+              return(0);
+            },
+            yMax: function (context:any) {
+              if (chart)
+                return(chart.scales.y.getValueForPixel(chart.height))
+              return(0);
+            },
+            backgroundColor: 'rgba(243, 167, 144, 0.15)',
+            borderColor:'rgba(243, 167, 144, 0.58)',
+            beforeDraw: function (context:any) {
+              leftBorderArea = context;
+            },
+          },
+
+          {
+            type: 'box',
+            xMin: function (context:any) {
+              if (chart)
+                return(chart.scales.x.getValueForPixel(chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20))
+              return(0);
+            },
+            xMax: function (context:any) {
+              if (chart)
+                return(chart.scales.x.getValueForPixel(chart.chartArea.right))
+              return(0);
+            },
+            yMin: function (context:any) {
+              if (chart)
+                return(chart.scales.y.getValueForPixel(0))
+              return(0);
+            },
+            yMax: function (context:any) {
+              if (chart)
+                return(chart.scales.y.getValueForPixel(chart.height))
+              return(0);
+            },
+            backgroundColor: 'rgba(243, 167, 144, 0.15)',
+            borderColor:'rgba(243, 167, 144, 0.58)',
+            beforeDraw: function (context:any) {
+              rightBorderArea = context;
+            },
+          },
+
+          {
+            type: 'line',
+            id: 'lineP',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: pStartPoint[0].x,
+            xMax: pStartPoint[0].x,
+            yMax: pStartPoint[0].y,
+            yMin: pStartPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[0] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: pStartPoint[0].x,
+            yValue: pStartPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'P',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[0] = context;
+            },
+          },
+
+          {
+            type: 'line',
+            id: 'lineQ',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: qrsStartPoint[0].x,
+            xMax: qrsStartPoint[0].x,
+            yMax: qrsStartPoint[0].y,
+            yMin: qrsStartPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[1] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: qrsStartPoint[0].x,
+            yValue: qrsStartPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'Q',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[1] = context;
+            },
+          },
+          {
+            type: 'line',
+            id: 'lineR',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: rPoint[0].x,
+            xMax: rPoint[0].x,
+            yMax: rPoint[0].y,
+            yMin: rPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[2] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: rPoint[0].x,
+            yValue: rPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'R',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[2] = context;
+            },
+          },
+          {
+            type: 'line',
+            id: 'lineS',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: qrsEndPoint[0].x,
+            xMax: qrsEndPoint[0].x,
+            yMax: qrsEndPoint[0].y,
+            yMin: qrsEndPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[3] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: qrsEndPoint[0].x,
+            yValue: qrsEndPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'S',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[3] = context;
+            },
+          },
+          {
+            type: 'line',
+            id: 'lineS',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: tStartPoint[0].x,
+            xMax: tStartPoint[0].x,
+            yMax: tStartPoint[0].y,
+            yMin: tStartPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[4] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: tStartPoint[0].x,
+            yValue: tStartPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'ST',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[4] = context;
+            },
+          },
+          {
+            type: 'line',
+            id: 'lineT',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: tEndPoint[0].x,
+            xMax: tEndPoint[0].x,
+            yMax: tEndPoint[0].y,
+            yMin: tEndPoint[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[5] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: tEndPoint[0].x,
+            yValue: tEndPoint[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'T',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[5] = context;
+            },
+          },
+          {
+            type: 'line',
+            id: 'lineR',
+            borderColor: 'black',
+            borderWidth: 1,
+            display:true,
+            drawTime:'beforeDatasetsDraw',
+            xMin: r2Point[0].x,
+            xMax: r2Point[0].x,
+            yMax: r2Point[0].y,
+            yMin: r2Point[0].y-pointLineLength,
+            beforeDraw: function (context:any) {
+              pointLines[6] = context;
+            },
+            z:1,
+          },
+          {
+            type: 'label',
+            xValue: r2Point[0].x,
+            yValue: r2Point[0].y,
+            font: {
+              size: pointRadious,
+            },
+            content: 'R2',
+            fontColor: '#fff',
+            padding: {
+              left: 5,
+              right: 5,
+              top: 2,
+              bottom: 2,
+            },
+            beforeDraw: function (context:any) {
+              pointLabels[6] = context;
+            },
+          },
+    ] as any,
         animation:false,
       }
 
@@ -385,6 +854,10 @@ useEffect(() => {
         },
         min: minY,
         max: maxY,
+        ticks: {
+          stepSize: 500,
+          maxTicksLimit: 10
+        }
       },
       x: {
         title: {
@@ -395,7 +868,11 @@ useEffect(() => {
           display: true,
         },
         min: minX,
-        max: maxX
+        max: maxX,
+        ticks: {
+          maxTicksLimit: n_x_ticks,
+          stepSize: 200
+        }
       },
     },
 
@@ -406,78 +883,85 @@ const data1 = {
   datasets: [
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "P",
       data: pStartPoint,
       spanGaps: true,
-      borderColor: "rgb(237, 28, 36)",
+      borderColor: "black",
       backgroundColor: "rgb(237, 28, 36)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "Q",
       data: qrsStartPoint,
       spanGaps: true,
-      borderColor: "rgb(255, 127, 39)",
+      borderColor: "black",
       backgroundColor: "rgb(255, 127, 39)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "R",
       data: rPoint,
       spanGaps: true,
-      borderColor: "rgb(0, 162, 232)",
+      borderColor: "black",
       backgroundColor: "rgb(0, 162, 232)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "S",
       data: qrsEndPoint,
       spanGaps: true,
-      borderColor: "rgb(63, 72, 204)",
+      borderColor: "black",
       backgroundColor: "rgb(63, 72, 204)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "ST",
       data: tStartPoint,
       spanGaps: true,
-      borderColor: "rgb(255, 174, 201)",
+      borderColor: "black",
       backgroundColor: "rgb(255, 174, 201)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "T",
       data: tEndPoint,
       spanGaps: true,
-      borderColor: "rgb(163, 73, 164)",
+      borderColor: "black",
       backgroundColor: "rgb(163, 73, 164)",
       dragData: true,
       z:3,
     },
     {
       type: "bubble" as const,
+      pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "R2",
       data: r2Point,
       spanGaps: true,
-      borderColor: "rgb(30, 30, 30)",
-      backgroundColor: "rgb(30, 30, 30)",
+      borderColor: "black",
+      backgroundColor: "green",
       dragData: true,
       dragX: true,
       z:3,
@@ -487,7 +971,7 @@ const data1 = {
       type: "line" as const,
       label: "ECG",
       data: timeseriesData,
-      backgroundColor: "rgb(139,139,139)",
+      backgroundColor: "black",
       pointRadius: 0,
       pointHitRadius: 0,
       borderColor: lineColor,
