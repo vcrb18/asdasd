@@ -83,6 +83,16 @@ const columns: readonly Column[] = [
 
   },
   {
+    id: "timeLeft",
+    id: "restante",
+    label: "Remaning time",
+    minWidth: "20%",
+    align: "center",
+    format: (value: string) => {
+      return value.replace("T", " ");
+    },
+  },
+  {
     id: "state",
     label: "state",
     align: "center",
@@ -141,6 +151,7 @@ interface ExamData {
   examId: number;
   patientId: string | null;
   createdAt: string;
+  deadline: string;
   status: boolean;
   urgency: number;
   operatorReview: boolean;
@@ -308,6 +319,37 @@ const ExamTable = ({
       )
   };
 
+  const getRemainingTime = (deadline: string): JSX.Element => {
+    const deadlineDate = new Date(deadline);
+    const hardcodedExtraTime = 5
+    deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
+    const currentDate = new Date();
+    const remaningTime = deadlineDate.getTime() - currentDate.getTime();
+    let ago = ''
+    let remaningTimeColor = "green";
+    const elapsedTime = remaningTime;
+    const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+    if (days < 0 || hours < 0 || seconds < 0)
+    {
+      ago = 'ago';
+      remaningTimeColor = 'red';
+    }
+    let remainingTimeString = `${Math.abs(days)} days ${ago}`;
+    if (days === 0)
+      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} hours ${ago}`;
+    if (days === 0 && hours === 0)
+      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} minutes ${ago}`;
+    if (days === 0 && hours === 0 && minutes <= 0)
+      remainingTimeString = `${Math.abs(seconds)} seconds ${ago}`;
+    return (
+      <Typography color={remaningTimeColor} fontWeight={"bold"}>
+        {remainingTimeString}
+      </Typography>
+      )
+  };
   const getStatus = (state: boolean)=> (
     <Typography
       fontWeight={"bold"}
@@ -385,6 +427,7 @@ const ExamTable = ({
             examId: examData.exam_id,
             patientId: examData.patient_id,
             createdAt: examData.created_at,
+            deadline: examData.created_at,
             status: examData.estado,
             urgency: examData.urgencia,
             operatorReview: examData.operator_review,
@@ -433,7 +476,8 @@ const ExamTable = ({
           </StyledTableCell>
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
-          </StyledTableCell>  
+          </StyledTableCell> 
+          <StyledTableCell align="center">{getRemainingTime(row.createdAt)}</StyledTableCell>  
           <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
           <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
           <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
