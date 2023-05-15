@@ -84,7 +84,6 @@ const columns: readonly Column[] = [
   },
   {
     id: "timeLeft",
-    id: "restante",
     label: "Remaning time",
     minWidth: "20%",
     align: "center",
