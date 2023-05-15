@@ -147,6 +147,10 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
       }
   }
 
+  const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
+    (analisisData?.operatorAccept === true ? true : false) : 
+      (analisisData?.status === true ? true : false);
+
   return (
     <Grid container>
     {/* Sector de los datos del exámen */}
@@ -222,9 +226,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
               fontWeight={"bold"}
               color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.status)}
             >
-              {analisisData?.operatorAccept != undefined ? 
-              (analisisData?.operatorAccept === true ? t("accepted") : t("refused")) : 
-              (analisisData?.status === true ? t("accepted") : t("refused"))}
+              { displayAccepted ? t("accepted") : t("refused") }
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"} xs={2} sm={2} md={2} lg={2}>
@@ -271,7 +273,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
         </Grid>
         
         
-        {rejectionReason && (
+        {rejectionReason && !displayAccepted &&  (
         <Grid
           container
           display={"flex"}
