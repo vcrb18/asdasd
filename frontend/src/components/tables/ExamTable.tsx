@@ -302,6 +302,7 @@ const ExamTable = ({
       },
     },
   });
+  
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
@@ -322,35 +323,60 @@ const ExamTable = ({
       )
   };
 
-  const getRemainingTime = (deadline: string): JSX.Element => {
+  const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
+    switch (colorNumber) {
+      case 1:
+        return(
+          "success"
+      )
+      case 2:
+        return (
+          "warning"
+        )
+      case 3:
+        return(
+          "error"
+        )
+      default:
+        return ("error")
+      }
+  }
+  const getRemainingTime = (deadline: string): [JSX.Element, number] => {
     const deadlineDate = new Date(deadline);
-    const hardcodedExtraTime = 5
+    const hardcodedExtraTime = 1
     deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
     const currentDate = new Date();
     const remaningTime = deadlineDate.getTime() - currentDate.getTime();
-    let ago = ''
-    let remaningTimeColor = "green";
+    let ago = t('examTimeRemaining');
+    let remaningTimeColor = 1;
     const elapsedTime = remaningTime;
     const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
     const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-    if (days < 0 || hours < 0 || seconds < 0)
-    {
-      ago = 'ago';
-      remaningTimeColor = 'red';
+    if (days < 0 || hours < 0 || minutes < 0 ||seconds < 0) {
+      ago = t('examTimeAgo');
+      remaningTimeColor = 3;
+    } else {
+      if (hours < 0 && minutes <= 15) {
+        ago = t('examTimeRemaining');
+        remaningTimeColor = 2;
+      }
     }
-    let remainingTimeString = `${Math.abs(days)} days ${ago}`;
+    let remainingTimeString = `${Math.abs(days)} ${t('days')} ${ago}`;
     if (days === 0)
-      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} hours ${ago}`;
+      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} ${t('hours')} ${ago}`;
     if (days === 0 && hours === 0)
-      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} minutes ${ago}`;
+      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} ${t('minutes')} ${ago}`;
     if (days === 0 && hours === 0 && minutes <= 0)
-      remainingTimeString = `${Math.abs(seconds)} seconds ${ago}`;
+      remainingTimeString = `${Math.abs(seconds)} ${t('seconds')} ${ago}`;
     return (
-      <Typography color={remaningTimeColor} fontWeight={"bold"}>
+      [
+      (<Typography color={getRemainingTimeColor(remaningTimeColor)} fontWeight={"bold"}>
         {remainingTimeString}
-      </Typography>
+      </Typography>),
+       remaningTimeColor
+      ]
       )
   };
   const getStatus = (state: boolean)=> (
@@ -362,21 +388,12 @@ const ExamTable = ({
   </Typography>
   );
 
-  const getUrgency= (urgency: number) => {
-    switch (urgency) {
-        case 1:
-          return(
-            <Brightness1RoundedIcon color={"success"} />
-        )
-        case 2:
-          return (
-            <Brightness1RoundedIcon color={"warning"} />
-          )
-        case 3:
-          return(
-            <Brightness1RoundedIcon color={"error"} />
-          )
-        }
+  const getUrgency= (urgency: number) : JSX.Element  => {
+    return(
+    <>
+      <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
+    </>
+    )
     }
    
   const getReviewState = (state: boolean) : JSX.Element => {
@@ -487,9 +504,10 @@ const ExamTable = ({
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
-          <StyledTableCell align="center">{getRemainingTime(row.createdAt)}</StyledTableCell>  
+          <StyledTableCell align="center">{getRemainingTime(row.createdAt)[0]}</StyledTableCell>  
           <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
-          <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
+          {/* <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell> */}
+          <StyledTableCell align="center">{getUrgency(getRemainingTime(row.createdAt)[1])}</StyledTableCell>
           <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
           <StyledTableCell align="center">
             <ThemeProvider theme={buttonsTheme}>
