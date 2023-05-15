@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
+import { RejectionReason } from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 
-interface RejectionReason {
-  id: number;
-  reason: string;
-}
 
 const rejectionReasons: RejectionReason[] = [
   {id: 1, reason: "DERIVACION INCOMPLETA"},
@@ -28,30 +25,12 @@ const rejectionReasons: RejectionReason[] = [
 ]
 
 interface AnalisisProps {
-  examId: number;
-}
-
-interface State {
-  confidence?: number;
-  status?: boolean;
-  id?: string;
-  rejectionReason?: string;
-  rejectionReasonConfidence?: number;
-}
-
-function urgencyColorSwitcher(value: number | undefined): string {
-  switch (value) {
-    case undefined:
-      return "black";
-    case 1:
-      return "black";
-    case 2:
-      return "orange";
-    case 3:
-      return "red";
-    default:
-      return "black";
-  }
+    examId: number;
+    analisisData: ExamData | null;
+    isLoading: boolean;
+    setAccepted: Dispatch<boolean>;
+    rejectionReason: RejectionReason | undefined;
+    setRejectionReason: Dispatch<SetStateAction<RejectionReason | undefined> >;
 }
 
 function stateColorSwitcher(value: boolean | undefined): string {
@@ -65,57 +44,12 @@ function stateColorSwitcher(value: boolean | undefined): string {
   }
 }
 
-const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
+const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading, setAccepted, rejectionReason, setRejectionReason }): JSX.Element => {
   const { t } = useTranslation();
-  const [analisisData, setAnalisisData] = useState<ExamData>({
-    examId: 0,
-    patientId: null,
-    createdAt: "",
-    status: false,
-    urgency: 1,
-    results: "",
-    operatorReview: false,
-    accepted: true,
-    operatorAccept: null
-  });
-  const [state, setState] = useState<State>({
-      confidence: 0,
-      status: false,
-      id: "",
-      rejectionReason: "",
-      rejectionReasonConfidence: 0,
-    });
-  const [accepted, setAccepted] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getExam(examId).then(      
-      (response) => {
-        const data = {
-          examId: response.data.exam_id,
-          patientId: response.data.patient_id,
-          createdAt: response.data.created_at,
-          status: response.data.aceptado,
-          accepted: response.data.aceptado,
-          urgency: response.data.urgencia,
-          results: response.data.resultados,
-          operatorReview: response.data.operator_review,
-          operatorAccept: response.data.operator_accept,
-          resultados: "/examsview",
-        };
-        setAnalisisData(data);
-        setIsLoading(false);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-        setAnalisisData(_content);
-      }
-    );
-  }, [accepted]);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [possibleNewRejectionReason, setPossibleNewRejectionReason] = useState<RejectionReason | null>();
+
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
       (response) => {
@@ -126,7 +60,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           rejectionReason: response.data[0][0].razon_rechazo,
           rejectionReasonConfidence: response.data[0][0].razon_rechazo_confianza,
         };
-        setState(data);
         let newRejectionReason: undefined | RejectionReason = rejectionReasons.find(object => object.reason == data.rejectionReason);
         setRejectionReason(newRejectionReason);
       },
@@ -135,28 +68,13 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
           (error.response && error.response.data) ||
           error.message ||
           error.toString();
-          setState(_content);
       }
     );
-  }, []);
-    const getReviewState = (state: boolean) : JSX.Element => {
-    if (state === true) {
-      return(
-          <Avatar src={Check} alt={"checkVerde"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>      )
-    } else {
-      return (
-          <Avatar src={X} alt={"checkRojo"} variant={"square"} sx={{maxWidth: "65%", maxHeight: "65%"}}/>
-        )
-    }
-  }
-
-  const [rejectionReason, setRejectionReason] = useState<RejectionReason | null>();
-  const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [possibleNewRejectionReason, setPossibleNewRejectionReason] = useState<RejectionReason | null>();
+    }, []);
 
   const handleAddDialogClose = (): void => {
     setOpenAddDialog(false);
-    setRejectionReason(null);
+    setRejectionReason(undefined);
     setPossibleNewRejectionReason(null);
   };
 
@@ -178,22 +96,22 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
   };
 
   const toggleStateOfExam = (): void => {
-    if (analisisData.operatorAccept != null){
+    if (analisisData?.operatorAccept != undefined){
       analisisData.operatorAccept === true ? 
       setOpenAddDialog(true) 
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
-        setRejectionReason(null);
+        setRejectionReason(undefined);
       }
   });
     } else {
-      analisisData.status === true ? 
+      analisisData?.status === true ? 
       setOpenAddDialog(true) 
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
-        setRejectionReason(null);
+        setRejectionReason(undefined);
       }
     });
     }
@@ -212,7 +130,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
       },
     });
   
-  const displayUrgency = (nivel: number) => {
+  const displayUrgency = (nivel: number | undefined) => {
     switch (nivel) {
       case 1:
         return(
@@ -302,11 +220,11 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId }): JSX.Element => {
               fontSize={"65%"}
               align="left"
               fontWeight={"bold"}
-              color={stateColorSwitcher(analisisData.operatorAccept != null ? analisisData.operatorAccept : analisisData.status)}
+              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.status)}
             >
-              {analisisData.operatorAccept != null ? 
-              (analisisData.operatorAccept === true ? t("accepted") : t("refused")) : 
-              (analisisData.status === true ? t("accepted") : t("refused"))}
+              {analisisData?.operatorAccept != undefined ? 
+              (analisisData?.operatorAccept === true ? t("accepted") : t("refused")) : 
+              (analisisData?.status === true ? t("accepted") : t("refused"))}
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"} xs={2} sm={2} md={2} lg={2}>

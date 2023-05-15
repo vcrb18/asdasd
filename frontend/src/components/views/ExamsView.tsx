@@ -44,6 +44,12 @@ export interface ExamData {
   operatorReview: boolean;
   operatorAccept: boolean | null;
 }
+
+export interface RejectionReason {
+  id: number;
+  reason: string;
+}
+
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
@@ -51,10 +57,16 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const { t } = useTranslation();
   const { examId } = useParams<{ examId: string }>();
   const examIdNumber = parseInt(examId || "0", 10);
-  const [examData, setExamData] = useState<ExamData>();
+
+  const [examData, setExamData] = useState<ExamData | null>(null);
+  const [isLoadingExamData, setIsLoadingExamData] = useState<boolean>(true);
+  const [acceptedExam, setAcceptedExam] = useState<boolean | null>(null);
+  const [rejectionReason, setRejectionReason] = useState<RejectionReason | undefined>();
+
   const [validated, setValidated] = useState<boolean>();
 
   useEffect(() => {
+    setIsLoadingExamData(true);
     getExam(examIdNumber).then(
       (response) => {
         setExamData({
@@ -69,6 +81,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           operatorAccept: response.data.operator_accept,
         });
         setValidated(response.data?.operator_review);
+        setIsLoadingExamData(false);
       },
       (error) => {
         const _content =
@@ -78,7 +91,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         setExamData(_content);
       }
     );
-  }, []);
+  }, [acceptedExam]);
 
     const validationButtonMessage: string = (validated) ? t("undoValidation") : t("validateMeasurements");
     const toggleValidatedExam = (): void => {
@@ -181,7 +194,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <AnalisisBox examId={examIdNumber} />
+                <AnalisisBox examId={examIdNumber} 
+                             analisisData={examData} 
+                             isLoading={isLoadingExamData} 
+                             setAccepted={setAcceptedExam}
+                             rejectionReason={rejectionReason} 
+                             setRejectionReason={setRejectionReason}/>
               </Grid>
             <Grid container xs={12} sm={12} md={6} lg={6} padding={"2%"}
               sx={{
@@ -306,7 +324,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <AnalisisBox examId={examIdNumber} />
+                <AnalisisBox examId={examIdNumber} 
+                             analisisData={examData}
+                             isLoading={isLoadingExamData} 
+                             setAccepted={setAcceptedExam} 
+                             rejectionReason={rejectionReason} 
+                             setRejectionReason={setRejectionReason} />
               </Grid>
             <Grid container xs={12} sm={12} md={6} lg={6} padding={"2%"}
               sx={{
