@@ -25,7 +25,7 @@ import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
 
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import Footer from "../customComponents/Footer"
 
 
@@ -151,6 +151,8 @@ interface ExamData {
   results: string;
   accepted: boolean;
   operatorAccept: boolean | null;
+  locked: boolean | null;
+  lockedBy: string;
 }
 
 type Order = "asc" | "desc";
@@ -307,7 +309,6 @@ const ExamTable = ({
     }
    
   const getReviewState = (state: boolean) : JSX.Element => {
-    console.log(state)
     if (state === true) {
       return(
         <Box display={"flex"} justifyContent={"center"}>
@@ -365,6 +366,8 @@ const ExamTable = ({
             results: examData.resultados,
             accepted: examData.aceptado,
             operatorAccept: examData.operator_accept,
+            locked: examData.locked,
+            lockedBy: examData.lockedBy,
           });
         });
         const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
@@ -379,7 +382,6 @@ const ExamTable = ({
         console.error(error)
       });
     }
-    console.log(rows)
     if (shouldLoad) {
       setTimeout(() => {
         setIsLoading(false)
@@ -388,6 +390,15 @@ const ExamTable = ({
       setIsLoading(false);
     }
   }, [page])
+
+  const navigate: NavigateFunction = useNavigate();
+
+  const handleAccess = (examId: number, locked: boolean | null) => {
+    if(!locked){
+      navigate(`/examsview/${examId}`);
+    }
+  }
+
   const renderRow = (row: ExamData) : JSX.Element => (
     
     <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
@@ -401,18 +412,17 @@ const ExamTable = ({
       <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
       <StyledTableCell align="center">
         <ThemeProvider theme={buttonsTheme}>
-          <Link to={`/examsview/${row.examId}`}>
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{ color: "#fff" }}
-              value={row.examId}
-            >
-              <Typography fontSize={'120%'} color={'#fff'}>
-                {t("access")}
-              </Typography>
-            </Button>
-          </Link>
+          <Button
+            onClick={() => handleAccess(row.examId, row.locked)}
+            color="primary"
+            variant="contained"
+            sx={{ color: "#fff" }}
+            value={row.examId}
+          >
+            <Typography fontSize={'120%'} color={'#fff'}>
+              {row.locked === true ? "Bloqueado" : t("access")}
+            </Typography>
+          </Button>
         </ThemeProvider>
       </StyledTableCell>
     </TableRow>
@@ -426,7 +436,6 @@ const ExamTable = ({
     page * rowsPerPage + rowsPerPage
     );
 
-    console.log("PR", paginatedRows);
 
 
   return (
