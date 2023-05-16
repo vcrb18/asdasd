@@ -15,18 +15,6 @@ interface DerivationsProps {
 }
 
 
-
-interface Fiduciales {
-  p_start: number; // fidP
-  qrs_start: number; // fidQRS
-  r: number; // fidR
-  qrs_end: number; // fidS
-  t_start: number; // fidT
-  t_end: number; // fidST
-  r2: number; // fidR2
-}
-
-
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
   // TODO: consumir puntos reales
   const [fidExamId, setFidExamId] = React.useState(0);
@@ -37,15 +25,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
-  const [fiduciales, setFiduciales] = React.useState<Fiduciales>({
-    p_start: 0, // fidP
-    qrs_start: 0, // fidQRS
-    r: 0, // fidR
-    qrs_end: 0,
-    t_start: 0,
-    t_end: 0,
-    r2: 0,
-  });
   
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
