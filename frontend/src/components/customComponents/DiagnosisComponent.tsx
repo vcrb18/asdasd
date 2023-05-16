@@ -176,7 +176,6 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           (error.response && error.response.data) ||
           error.message ||
           error.toString();
-        setDiagnosticosSugerido(_content);
         setDiagnosticosSugeridos(_content);
       }
     );
@@ -207,7 +206,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const [newItem, setNewItem] = useState<Diagnostic | null>();
 
   const handleDeleteDiagnosticoSugerido = (item: string): void => {
-    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
+    setDiagnosticosSugeridos(diagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
   };
 
   const handleDeleteDoctorDiagnostic = (item: string, id: number): void => {
@@ -243,7 +242,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box width={"100%"}>
-        {DiagnosticosSugeridos.length>0 && DiagnosticosSugeridos.map((item: Diagnostic) => (
+        {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: Diagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
