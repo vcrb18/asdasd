@@ -67,6 +67,23 @@ export interface FiducialStates {
     setFidT: Dispatch<number>;
 }
 
+export interface Diagnostic {
+    diagnosticId: number,
+    diagnostic: string,
+}
+
+export interface DoctorDiagnostic {
+    examId: number,
+    diagnosticId: number,
+}
+
+export interface DiagnosticStates {
+    diagnosticosSugeridos: Diagnostic[];
+    setDiagnosticosSugeridos: Dispatch<Diagnostic[]>;
+    doctorDiagnostics: DoctorDiagnostic[];
+    setDoctorDiagnostics: Dispatch<DoctorDiagnostic[]>;
+}
+
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
@@ -87,7 +104,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
-  const fiducialStates = {
+  const fiducialStates: FiducialStates = {
     fidP: fidP, setFidP: setFidP,
     fidQRS: fidQRS, setFidQRS: setFidQRS,
     fidR: fidR, setFidR: setFidR,
@@ -95,6 +112,15 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     fidS: fidS, setFidS: setFidS,
     fidST: fidST, setFidST: setFidST,
     fidT: fidT, setFidT: setFidT
+  };
+
+  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
+  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
+  const diagnosticStates: DiagnosticStates = {
+    diagnosticosSugeridos: diagnosticosSugeridos,
+    setDiagnosticosSugeridos: setDiagnosticosSugeridos,
+    doctorDiagnostics: doctorDiagnostics,
+    setDoctorDiagnostics: setDoctorDiagnostics
   };
 
   const [validated, setValidated] = useState<boolean>();
@@ -247,7 +273,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <DiagnosisComponent examId={examIdNumber}/>
+                <DiagnosisComponent examId={examIdNumber} diagnosticStates={diagnosticStates} />
             </Grid>
           </Grid>
 
@@ -377,7 +403,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <DiagnosisComponent examId={examIdNumber}/>
+                <DiagnosisComponent examId={examIdNumber} diagnosticStates={diagnosticStates} />
             </Grid>
           </Grid>
 

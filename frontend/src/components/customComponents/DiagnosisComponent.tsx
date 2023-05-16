@@ -19,16 +19,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import xButton from "../../static/images/xButton.png"
+import { Diagnostic, DoctorDiagnostic, DiagnosticStates } from "../views/ExamsView";
 
-interface Diagnostic {
-  diagnosticId: number,
-  diagnostic: string,
-}
-
-interface DoctorDiagnostic{
-  examId: number,
-  diagnosticId: number,
-}
 
 const DeletableBoxItem = ({
   id,
@@ -117,6 +109,7 @@ interface SuggestedDiagnostic {
 */
 interface DiagnosisProps {
   examId: number;
+  diagnosticStates: DiagnosticStates;
 }
 
 const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
@@ -132,7 +125,7 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
 }
 
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
-  examId,
+  examId, diagnosticStates
 }): JSX.Element => {
 
   const [diagnosticTypes, setDiagnosticTypes] = useState<(Diagnostic)[]>([]);
@@ -159,8 +152,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     );
   }, []);
 
-  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
-  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
+  const {
+    diagnosticosSugeridos,
+    setDiagnosticosSugeridos,
+    doctorDiagnostics,
+    setDoctorDiagnostics } = diagnosticStates;
 
   const { t } = useTranslation();
 
