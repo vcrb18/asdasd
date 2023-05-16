@@ -61,15 +61,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
   useEffect(
     () => {
-      //llamar función que hace la request para bloquear posiblemente con algún setTimeout para que se repita cada cierto tiempo
       markExamIdAsLocked(examIdNumber).then(
         (response) => {
           setIsLocked(false);
-          console.log("RESPONSE LOCKED = ", response);
         },
         (error) => {
           if(error.response.status === 423){
-            console.log("RESPONSE ERROR = ", error.response.data);
             setIsLocked(true);
             const timeRemaining = error.response.data.timeRemaining;
             const expTime = new Date(timeRemaining);
@@ -78,18 +75,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             ${error.response.data.lockedBy} lo prolongue o lo deje de visualizar.`
             setErrorMessage(msg);
             setReloadTime(asTimestamp.getTime());
-            console.log("RELOAD TIME = ", reloadTime);
           }
         }
       )
       return () => {
-        //llamar función que hace la request para desbloquear
         markExamIdAsUnlocked(examIdNumber).then(
           (response) => {
-            console.log("RESPONSE UNLOCKED: ", response);
           },
           (error) => {
-            console.error('Error al liberar el bloqueo:', error);
           }
         );
       }
@@ -100,13 +93,11 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       const timeoutId = setTimeout(()=>{
         navigate(0);
       }, reloadTime);
-      console.log("Se setea el timeout con id = ", timeoutId);
       return () => clearTimeout(timeoutId);
     } else{
       const intervalId = setInterval(()=>{
         markExamIdAsLocked(examIdNumber);
       }, 55000);
-      console.log("Se setea el interval con id = ", intervalId);
 
       return () => clearInterval(intervalId);
     }
@@ -178,11 +169,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const handleGoBack = (): void => {
     markExamIdAsUnlocked(examIdNumber).then(
       (response) => {
-        console.log("RESPONSE UNLOCKED: ", response);
         setIsLocked(false);
       },
       (error) => {
-        console.error('Error al liberar el bloqueo:', error);
       }
     );
     navigate("/exams");
@@ -198,7 +187,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           headerPositionMd="sticky"
           headerPositionXs="sticky"
           onTabValueChange={(index: number) => {
-            console.log(`Exams: Tab index changed to ${index}`);
           }}
         />
         {/* Grid que contiene todo lo de la vista del examen */}
@@ -266,7 +254,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           headerPositionMd="relative"
           headerPositionXs="sticky"
           onTabValueChange={(index: number) => {
-            console.log(`Exams: Tab index changed to ${index}`);
           }}
         />
         {/* Grid que contiene todo lo de la vista del examen */}
@@ -327,7 +314,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         headerPositionMd="relative"
         headerPositionXs="sticky"
         onTabValueChange={(index: number) => {
-          console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
       {/* Grid que contiene todo lo de la vista del examen */}
@@ -480,7 +466,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         headerPositionMd="sticky"
         headerPositionXs="sticky"
         onTabValueChange={(index: number) => {
-          console.log(`Exams: Tab index changed to ${index}`);
         }}
       />
       {/* Grid que contiene todo lo de la vista del examen */}
