@@ -60,9 +60,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   } as any;
 
 
-
-
-  const [selectedDerivation, setSelectedDerivation] = React.useState('');
+  const [selectedDerivation, setSelectedDerivation] = React.useState('II');
   
   const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
     setSelectedDerivation(event.target.value as string);
