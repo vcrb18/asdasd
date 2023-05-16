@@ -16,8 +16,6 @@ interface DerivationsProps {
 
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
-  // TODO: consumir puntos reales
-  const [fidExamId, setFidExamId] = React.useState(0);
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
   const [fidR, setFidR] = React.useState(1870);
@@ -100,7 +98,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     getExamOperatorMarkers(examId).then(
       (response) => {
         if (response.status ==  200){
-          setFidExamId(response.data.examId)
           setFidP(response.data.p_start + offset)
           setFidQRS(response.data.qrs_start + offset)
           setFidR(response.data.r + offset)
@@ -112,7 +109,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         else{
           getExamPredictedMarkers(examId).then(
             (response) => {
-              setFidExamId(response.data.examId)
               setFidP(response.data.p_start + offset)
               setFidQRS(response.data.qrs_start + offset)
               setFidR(response.data.r + offset)
@@ -127,7 +123,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   }, [count]);
 
   const handleFiducialChartUpdate : Function = (childData : any) => {
-    const obj2 = { ...childData };
     setFidP(childData.p_start);
     setFidQRS(childData.qrs_start);
     setFidR(childData.r);
