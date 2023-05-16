@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography, createTheme, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import React, { useEffect } from "react";
+import { FiducialStates } from "../views/ExamsView";
 import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
@@ -12,17 +13,19 @@ import { ThemeProvider } from "@emotion/react";
 
 interface DerivationsProps {
   examId: number;
+  fiducialStates: FiducialStates;
 }
 
 
-const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
-  const [fidP, setFidP] = React.useState(1500);
-  const [fidQRS, setFidQRS] = React.useState(1700);
-  const [fidR, setFidR] = React.useState(1870);
-  const [fidR2, setFidR2] = React.useState(2760);
-  const [fidS, setFidS] = React.useState(1900);
-  const [fidST, setFidST] = React.useState(2000);
-  const [fidT, setFidT] = React.useState(2100);
+const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialStates}): JSX.Element => {
+  const {
+    fidP, setFidP,
+    fidQRS, setFidQRS,
+    fidR, setFidR,
+    fidR2, setFidR2,
+    fidS, setFidS,
+    fidST, setFidST,
+    fidT, setFidT } = fiducialStates;
   
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);

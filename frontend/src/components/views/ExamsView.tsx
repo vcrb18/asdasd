@@ -1,5 +1,5 @@
 import { Box, Button, Fab, Grid, Paper, TextField, ThemeProvider, Typography, createTheme, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
@@ -50,6 +50,23 @@ export interface RejectionReason {
   reason: string;
 }
 
+export interface FiducialStates {
+    fidP: number;
+    setFidP: Dispatch<number>;
+    fidQRS: number;
+    setFidQRS: Dispatch<number>;
+    fidR: number;
+    setFidR: Dispatch<number>;
+    fidR2: number;
+    setFidR2: Dispatch<number>;
+    fidS: number;
+    setFidS: Dispatch<number>;
+    fidST: number;
+    setFidST: Dispatch<number>;
+    fidT: number;
+    setFidT: Dispatch<number>;
+}
+
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
@@ -62,6 +79,23 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [isLoadingExamData, setIsLoadingExamData] = useState<boolean>(true);
   const [acceptedExam, setAcceptedExam] = useState<boolean | null>(null);
   const [rejectionReason, setRejectionReason] = useState<RejectionReason | undefined>();
+
+  const [fidP, setFidP] = React.useState(1500);
+  const [fidQRS, setFidQRS] = React.useState(1700);
+  const [fidR, setFidR] = React.useState(1870);
+  const [fidR2, setFidR2] = React.useState(2760);
+  const [fidS, setFidS] = React.useState(1900);
+  const [fidST, setFidST] = React.useState(2000);
+  const [fidT, setFidT] = React.useState(2100);
+  const fiducialStates = {
+    fidP: fidP, setFidP: setFidP,
+    fidQRS: fidQRS, setFidQRS: setFidQRS,
+    fidR: fidR, setFidR: setFidR,
+    fidR2: fidR2, setFidR2: setFidR2,
+    fidS: fidS, setFidS: setFidS,
+    fidST: fidST, setFidST: setFidST,
+    fidT: fidT, setFidT: setFidT
+  };
 
   const [validated, setValidated] = useState<boolean>();
 
@@ -237,7 +271,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             width={"100%"}
             marginY={"5%"}
           >
-            <DerivationsComponent examId={examIdNumber} />
+            <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
          
           <Grid item
@@ -367,7 +401,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             width={"100%"}
             marginY={"5%"}
           >
-            <DerivationsComponent examId={examIdNumber} />
+            <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
           <Grid item
             display={"flex"}
