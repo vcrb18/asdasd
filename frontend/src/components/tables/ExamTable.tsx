@@ -502,7 +502,7 @@ const ExamTable = ({
                 value={row.examId}
               >
                 <Typography fontSize={'120%'} color={'#fff'}>
-                  {row.locked === true ? "Bloqueado" : t("access")}
+                  {row.locked === true ? t("locked") : t("access")}
                 </Typography>
               </Button>
             </ThemeProvider>
