@@ -118,9 +118,9 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
   };
 
 
-  const date = analisisData?.createdAt.includes("T")
-    ? analisisData?.createdAt.replace("T", " ").split(".")[0]
-    : analisisData?.createdAt.split(".");
+  const date = analisisData?.createdAt == undefined
+    ? '' 
+    : (new Date(analisisData.createdAt)).toLocaleString('es-CL', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
 
     const buttonsTheme = createTheme({
       palette: {
