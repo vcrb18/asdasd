@@ -159,7 +159,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     );
   }, []);
 
-  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<(Diagnostic)[]>([]);
+  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
   const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
 
   const { t } = useTranslation();
@@ -169,7 +169,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getSuggestedDiagnostic(examId).then(
       (res) => {
         const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
-        setDiagnosticosSugerido(diagnosticDataParser);
+        setDiagnosticosSugeridos(diagnosticDataParser);
       },
       (error) => {
         const _content =
@@ -177,6 +177,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           error.message ||
           error.toString();
         setDiagnosticosSugerido(_content);
+        setDiagnosticosSugeridos(_content);
       }
     );
   }, [diagnosticTypes]);
