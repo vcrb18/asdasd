@@ -10,8 +10,6 @@ import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@emotion/react";
 
 
-
-
 interface DerivationsProps {
   examId: number;
 }
@@ -49,10 +47,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     r2: 0,
   });
   
-  // const [timeSeriesN, setTimeSeriesN ] = React.useState([[]]);
-  // const [timeSeriesVI, setTimeSeriesVI ] = React.useState([[]]);
-  // const [timeSeriesVII, setTimeSeriesVII ] = React.useState([[]]);
-  // const [timeSeriesA, setTimeSeriesA ] = React.useState([[]]);
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
   const [timeSeriesIII, setTimeSeriesIII] = React.useState([]);
@@ -96,58 +90,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
   };
 
-  // function getTittle (index : number, tittleType: number ) : string {
-  //   switch(tittleType) {
-  //     case 1:
-  //       switch (index) {
-  //         case 0:
-  //           return "I"
-  //         case 1:
-  //           return "II"
-  //         case 2:
-  //           return "III"
-  //         default: 
-  //           return ""
-  //       }
-  //     case 2:
-  //       switch(index){
-  //         case 0:
-  //           return "V1"
-  //         case 1:
-  //           return "V2"
-  //         case 2:
-  //           return "V3"
-  //         default: 
-  //           return ""
-  //       }
-  //     case 3:
-  //     switch(index){
-  //       case 0:
-  //         return "V4"
-  //       case 1:
-  //         return "V5"
-  //       case 2:
-  //         return "V6"
-  //       default: 
-  //         return ""
-  //     }
-  //     case 4:
-  //     switch(index){
-  //       case 0:
-  //         return "aVF"
-  //       case 1:
-  //         return "aVL"
-  //       case 2:
-  //         return "aVR"
-  //       default: 
-  //         return ""
-  //     }
-
-  //     default:
-  //       return ""
-  //   }
-  // }
-
   useEffect(()=> {
     getTimeSeriesById(examId).then(
       response =>{
@@ -166,10 +108,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         setTimeSeriesaVR(response.data.aVR)
 
         setSelectedTimeSeries(response.data.II)
-        // setTimeSeriesN([timeSeriesI, timeSeriesII, timeSeriesIII])
-        // setTimeSeriesVI([timeSeriesV1, timeSeriesV2, timeSeriesV3])
-        // setTimeSeriesVII([timeSeriesV4, timeSeriesV5, timeSeriesV6])
-        // setTimeSeriesA([timeSeriesaVF, timeSeriesaVL, timeSeriesaVR])
     }); 
   },[]);
 
@@ -249,13 +187,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           fidS={fidS}
           fidST={fidST}
           fidT={fidT}
-          // fidP={fiduciales.p_start}
-          // fidQRS={fiduciales.qrs_start}
-          // fidR={fiduciales.r}
-          // fidR2={fiduciales.r2}
-          // fidS={fiduciales.qrs_end}
-          // fidST={fiduciales.t_end}
-          // fidT={fiduciales.t_start}
           examId={examId}
         />
       </Box>
@@ -356,34 +287,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       <Grid container 
         display={'flex'}
         alignItems={'center'} marginTop={'1%'} lg={12}>
-          {/* <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesN.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 1)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesVI.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 2)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesVII.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 3)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesA.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 4)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid> */}
+
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
               <LineChart height={"25%"} width={"25%"} data={timeSeriesI} der_title={"I"} max_points={2500}/>
@@ -434,55 +338,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           </Grid> 
 
       </Grid>
-
-      {/* <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            sm: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          },
-          
-        }}
-      >
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-        </Box>
-      </Box> */}
       
       </Box>
       
