@@ -310,6 +310,7 @@ const ExamTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
+  const [oldFolio, setOldFolio] = React.useState<string>(filterId);
   const [filteredRows, setFilteredRows] = React.useState<ExamData[]>([]);
   const formatDate = (dateString: string): JSX.Element => {
     const date = new Date(dateString);
@@ -418,27 +419,43 @@ const ExamTable = ({
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
-    if (page > maxPage) {
+    if (page > maxPage || useFilter)  {
       shouldLoad = true
       setMaxPage(page)
-      if (useFilter){
+      if (useFilter && (filterId != "")){
+        console.log(page)
+        console.log(filterId)
+        console.log(oldFolio)
         getExamsById(filterId, page, 11).then((response) => {
           const newExams: ExamData[] = [];
+          console.log("estoy retornando un examen filtrado")
+          console.log(response)
+
           response.data.map((examData: any) => {
             newExams.push({
               examId: examData.exam_id,
               patientId: examData.patient_id,
               createdAt: examData.created_at,
+              deadline: examData.created_at,
               status: examData.estado,
               urgency: examData.urgencia,
               operatorReview: examData.operator_review,
               results: examData.resultados,
               accepted: examData.aceptado,
               operatorAccept: examData.operator_accept,
+              locked: examData.locked,
+              lockedBy: examData.lockedBy,
             });
           });
-          const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
-          setFilteredRows([...filteredRows, ...newExamsFiltered]);
+          if (filterId == oldFolio){
+            setOldFolio(filterId)
+            setFilteredRows([...filteredRows, ...newExams]);
+          }
+          else {
+            setOldFolio(filterId);
+            setFilteredRows(newExams);
+          }
+
           return Promise
         }).catch((error) => {
           console.error(error);
@@ -483,7 +500,7 @@ const ExamTable = ({
     } else {
       setIsLoading(false);
     }
-  }, [page])
+  }, [page, filterId, useFilter])
   const navigate: NavigateFunction = useNavigate();
 
   const handleAccess = (examId: number, locked: boolean | null) => {
@@ -615,7 +632,7 @@ const ExamTable = ({
     }
   };
 
-  const sortedRows = useFilter
+  const sortedRows = (useFilter && (filterId != ""))
     ? stableSort(filteredRows, getComparator(order, orderBy))
     : stableSort(rows, getComparator(order, orderBy));
 
