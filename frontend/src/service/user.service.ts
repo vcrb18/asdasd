@@ -169,3 +169,11 @@ export const getDoctorDiagnostics = async (examId: number): Promise<AxiosRespons
 export const deleteDoctorDiagnostics = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
   return await axios.delete(`/doctor_diagnostics/delete/${examId}/${diagnosticId}`, {withCredentials: true,});
 }
+
+export const markExamIdAsLocked = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exams/lock/${examId}`, {withCredentials: true,});
+}
+
+export const markExamIdAsUnlocked = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.put(`/exams/unlock/${examId}`, {withCredentials: true,});
+}
