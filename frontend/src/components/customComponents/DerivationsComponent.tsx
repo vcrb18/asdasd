@@ -299,10 +299,10 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
                 border: 3,
                 borderColor: "#E4EDEF",
                 borderRadius: "2%",
-                boxShadow: "0px 4px 8px rgba(0,255,0,0.5)",
+                boxShadow: "4px 4px 4px rgba(0,0,0,0.5)",
                 transition: "box-shadow 0.3s ease-in-out",
                 "&:hover": {
-                  boxShadow: "0px 8px 16px rgba(0,255,0,0.5)",
+                  boxShadow: "16px 16px 16px rgba(0,255,0,0.5)",
                 },
               }}
             >
@@ -377,57 +377,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
             <LineChart id={"II"} height={"25%"} width={"100%"} data={timeSeriesII} max_points={10000}/>
             </Box>
           </Grid> 
-
       </Grid>
-
-      {/* <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            sm: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          },
-          
-        }}
-      >
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-        </Box>
-      </Box> */}
       
       </Box>
       
