@@ -460,7 +460,6 @@ const ExamTable = ({
       setIsLoading(false);
     }
   }, [page])
-  
   const navigate: NavigateFunction = useNavigate();
 
   const handleAccess = (examId: number, locked: boolean | null) => {
@@ -529,18 +528,17 @@ const ExamTable = ({
             <StyledTableCell align="center"></StyledTableCell>
             <StyledTableCell align="center">
               <ThemeProvider theme={buttonsTheme}>
-                <Link to={`/examsview/${row.examId}`}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    sx={{ color: "#fff" }}
-                    value={row.examId}
-                  >
-                    <Typography fontSize={'120%'} color={'#fff'}>
-                      {t("access")}
-                    </Typography>
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => handleAccess(row.examId, row.locked)}
+                  color="primary"
+                  variant="contained"
+                  sx={{ color: "#fff" }}
+                  value={row.examId}
+                >
+                  <Typography fontSize={'120%'} color={'#fff'}>
+                    {row.locked === true ? t("locked") : t("access")}
+                  </Typography>
+                </Button>
               </ThemeProvider>
             </StyledTableCell>
           </TableRow>
