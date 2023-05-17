@@ -32,6 +32,9 @@ const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
 
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filterCondition, setFilterCondition] = useState<boolean>(false);
+  const { register, handleSubmit } = useForm<FormInput>();
 
   const handleOpenFilter = (): void => {
     setOpenFilter(true);
@@ -43,16 +46,13 @@ const ExamsTab = (): JSX.Element => {
   const handleFilterSubmit = (): void => {
     setOpenFilter(false);
   };
-  const [inputValue, setInputValue] = useState<string>("");
-  const [filterCondition, setFilterCondition] = useState<boolean>(false);
   
-  const { register, handleSubmit } = useForm<FormInput>();
 
   const onSubmit = (data: FormInput) : void => {
     console.log("Input:", data.folioSearch);
+    setInputValue(data.folioSearch);
     console.log(inputValue)
-    setInputValue(inputValue);
-    if (inputValue !== "" ) {
+    if (inputValue !== "") {
       setFilterCondition(true);
     } else {
       setFilterCondition(false);
@@ -60,9 +60,6 @@ const ExamsTab = (): JSX.Element => {
     // Do whatever you need with the input value here
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) : void => {
-    setInputValue(event.target.value);
-  };
 
   return (
     <>
@@ -116,12 +113,8 @@ const ExamsTab = (): JSX.Element => {
                 label={t("folioSearch")} 
                 variant="filled"
                 size="small"
-                {...register("folioSearch")} 
-                onChange={handleInputChange}/>
-              <IconButton type="submit">
-                <Search
-                onClick={handleSubmit(onSubmit)}/>
-              </IconButton>
+                {...register("folioSearch")}
+                />
               </form>
             </Grid>
             <Grid item lg={2} md={2} xs={2}>

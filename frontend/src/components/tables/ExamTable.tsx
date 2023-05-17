@@ -23,7 +23,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
-import { getExams, getExamsCount, useExams } from "../../service/user.service";
+import { getExams, getExamsById, getExamsCount, useExams } from "../../service/user.service";
 // import { type NavigateFunction, useNavigate } from "react-router-dom";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -310,9 +310,8 @@ const ExamTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
-  
-  const filteredFolio = rows.filter(row => row.examId.toString().includes(filterId));
-
+  const [oldFolio, setOldFolio] = React.useState<string>(filterId);
+  const [filteredRows, setFilteredRows] = React.useState<ExamData[]>([]);
   const formatDate = (dateString: string): JSX.Element => {
     const date = new Date(dateString);
     return (
@@ -395,6 +394,7 @@ const ExamTable = ({
     }
   }
 
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: string  
@@ -419,9 +419,49 @@ const ExamTable = ({
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
-    if (page > maxPage) {
+    if (page > maxPage || useFilter)  {
       shouldLoad = true
       setMaxPage(page)
+      if (useFilter && (filterId != "")){
+        console.log(page)
+        console.log(filterId)
+        console.log(oldFolio)
+        getExamsById(filterId, page, 11).then((response) => {
+          const newExams: ExamData[] = [];
+          console.log("estoy retornando un examen filtrado")
+          console.log(response)
+
+          response.data.map((examData: any) => {
+            newExams.push({
+              examId: examData.exam_id,
+              patientId: examData.patient_id,
+              createdAt: examData.created_at,
+              deadline: examData.created_at,
+              status: examData.estado,
+              urgency: examData.urgencia,
+              operatorReview: examData.operator_review,
+              results: examData.resultados,
+              accepted: examData.aceptado,
+              operatorAccept: examData.operator_accept,
+              locked: examData.locked,
+              lockedBy: examData.lockedBy,
+            });
+          });
+          if (filterId == oldFolio){
+            setOldFolio(filterId)
+            setFilteredRows([...filteredRows, ...newExams]);
+          }
+          else {
+            setOldFolio(filterId);
+            setFilteredRows(newExams);
+          }
+
+          return Promise
+        }).catch((error) => {
+          console.error(error);
+        })
+       }
+      else{
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
         response.data.map((examData: any) => {
@@ -446,6 +486,7 @@ const ExamTable = ({
       }).catch((error) => {
         console.error(error);
       });
+    }
       getExamsCount().then((response) => {
         setMaxRows(response.data.count)
       }).catch((error) => {
@@ -459,7 +500,7 @@ const ExamTable = ({
     } else {
       setIsLoading(false);
     }
-  }, [page])
+  }, [page, filterId, useFilter])
   const navigate: NavigateFunction = useNavigate();
 
   const handleAccess = (examId: number, locked: boolean | null) => {
@@ -591,8 +632,8 @@ const ExamTable = ({
     }
   };
 
-  const sortedRows = useFilter
-    ? stableSort(filteredFolio, getComparator(order, orderBy))
+  const sortedRows = (useFilter && (filterId != ""))
+    ? stableSort(filteredRows, getComparator(order, orderBy))
     : stableSort(rows, getComparator(order, orderBy));
 
   const paginatedRows = sortedRows.slice(
