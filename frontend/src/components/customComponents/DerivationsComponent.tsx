@@ -8,6 +8,8 @@ import { Grid } from "@mui/material";
 import { number } from "yup";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@emotion/react";
+import { Element } from "react-scroll"
+import { scroller } from "react-scroll"
 
 interface DerivationsProps {
   examId: number;
@@ -165,6 +167,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     console.log();
     setSelectedDerivation(event.target.id);
     setSelectedTimeSeries(allTimeSeriesObject[event.target.id])
+    const scrollType = {
+      duration: 500,
+      delay: 0,
+      smooth: true, // linear “easeInQuint” “easeOutCubic” 
+      offset: -100,
+   };
+    scroller.scrollTo("graphic", scrollType);
   }
  
   const buttonsTheme = createTheme({
@@ -182,6 +191,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       width={"100%"}
       spacing={1}
     >
+      <Element name="graphic">
       <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
         <FiducialMeasurementsTable
           fidP={fidP}
@@ -210,6 +220,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           timeSeries = {selectedTimeSeries}
         />
       </Box>
+      </Element>
 
       <Box>
         <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
