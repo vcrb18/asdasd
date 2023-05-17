@@ -239,6 +239,7 @@ const resources = {
       diagnostic149: "Infarction with ST Supra-ST Level in Anterior Wall",
       diagnostic150: "Sinus rhythm, Normal AV conduction, Normal complexes",
       diagnostic404: "Diagnosis not registered in the DB",
+      locked: "Locked",
     },
   },
   es: {
@@ -477,6 +478,7 @@ const resources = {
       diagnostic149: "Infarto con Supradesnivel de ST en Pared Anterior.",
       diagnostic150: "Ritmo sinusal, Conducción AV normal, Complejos normales",
       diagnostic404: "Diagnóstico no registrado en la BD",
+      locked: "Bloqueado",
     },
   },
 };
