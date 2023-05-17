@@ -169,7 +169,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     setSelectedTimeSeries(allTimeSeriesObject[event.target.id])
     const scrollType = {
       duration: 500,
-      delay: 0,
+      delay: 1,
       smooth: true, // linear “easeInQuint” “easeOutCubic” 
       offset: -100,
    };
