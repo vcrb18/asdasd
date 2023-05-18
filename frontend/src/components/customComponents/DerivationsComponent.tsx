@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography, createTheme, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 import FiducialChart from "./FiducialChart";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
@@ -8,15 +8,12 @@ import { Grid } from "@mui/material";
 import { number } from "yup";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@emotion/react";
-
-
-
+import { Element } from "react-scroll"
+import { scroller } from "react-scroll"
 
 interface DerivationsProps {
   examId: number;
 }
-
-
 
 interface Fiduciales {
   p_start: number; // fidP
@@ -27,7 +24,6 @@ interface Fiduciales {
   t_end: number; // fidST
   r2: number; // fidR2
 }
-
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
   // TODO: consumir puntos reales
@@ -89,64 +85,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
 
 
 
-  const [selectedDerivation, setSelectedDerivation] = React.useState('');
+  const [selectedDerivation, setSelectedDerivation] = React.useState('II');
   
+
   const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
     setSelectedDerivation(event.target.value as string);
     setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
   };
-
-  // function getTittle (index : number, tittleType: number ) : string {
-  //   switch(tittleType) {
-  //     case 1:
-  //       switch (index) {
-  //         case 0:
-  //           return "I"
-  //         case 1:
-  //           return "II"
-  //         case 2:
-  //           return "III"
-  //         default: 
-  //           return ""
-  //       }
-  //     case 2:
-  //       switch(index){
-  //         case 0:
-  //           return "V1"
-  //         case 1:
-  //           return "V2"
-  //         case 2:
-  //           return "V3"
-  //         default: 
-  //           return ""
-  //       }
-  //     case 3:
-  //     switch(index){
-  //       case 0:
-  //         return "V4"
-  //       case 1:
-  //         return "V5"
-  //       case 2:
-  //         return "V6"
-  //       default: 
-  //         return ""
-  //     }
-  //     case 4:
-  //     switch(index){
-  //       case 0:
-  //         return "aVF"
-  //       case 1:
-  //         return "aVL"
-  //       case 2:
-  //         return "aVR"
-  //       default: 
-  //         return ""
-  //     }
-
-  //     default:
-  //       return ""
-  //   }
-  // }
 
   useEffect(()=> {
     getTimeSeriesById(examId).then(
@@ -166,10 +111,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         setTimeSeriesaVR(response.data.aVR)
 
         setSelectedTimeSeries(response.data.II)
-        // setTimeSeriesN([timeSeriesI, timeSeriesII, timeSeriesIII])
-        // setTimeSeriesVI([timeSeriesV1, timeSeriesV2, timeSeriesV3])
-        // setTimeSeriesVII([timeSeriesV4, timeSeriesV5, timeSeriesV6])
-        // setTimeSeriesA([timeSeriesaVF, timeSeriesaVL, timeSeriesaVR])
     }); 
   },[]);
 
@@ -222,8 +163,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     setFidT(childData.t_end);
   };
 
-
-
+  const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
+    setSelectedDerivation(event.target.id);
+    setSelectedTimeSeries(allTimeSeriesObject[event.target.id])
+    const scrollType = {
+      duration: 500,
+      delay: 1,
+      smooth: true,
+      offset: -100,
+   };
+    scroller.scrollTo("graphic", scrollType);
+  }
+ 
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -231,7 +182,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       },
     },
   });
-  // : React.FC<Predicciones> = ({predicciones}): JSX.Element => {
+
+  const styleToGraphics = {
+    margin: "4px",
+    border: "2px solid black",
+    borderRadius: "5px",
+    "&:hover": {
+      borderRadius: "5px",
+      boxShadow: "0 0 15px green",
+      background: "#fff",
+    },
+  }
+
   return (
     <Stack
       display={"flex"}
@@ -240,6 +202,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       width={"100%"}
       spacing={1}
     >
+      <Element name="graphic">
       <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
         <FiducialMeasurementsTable
           fidP={fidP}
@@ -249,13 +212,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           fidS={fidS}
           fidST={fidST}
           fidT={fidT}
-          // fidP={fiduciales.p_start}
-          // fidQRS={fiduciales.qrs_start}
-          // fidR={fiduciales.r}
-          // fidR2={fiduciales.r2}
-          // fidS={fiduciales.qrs_end}
-          // fidST={fiduciales.t_end}
-          // fidT={fiduciales.t_start}
           examId={examId}
         />
       </Box>
@@ -275,6 +231,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
           timeSeries = {selectedTimeSeries}
         />
       </Box>
+      </Element>
 
       <Box>
         <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
@@ -356,133 +313,81 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       <Grid container 
         display={'flex'}
         alignItems={'center'} marginTop={'1%'} lg={12}>
-          {/* <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesN.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 1)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesVI.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 2)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesVII.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 3)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid>
-          <Grid container display={"flex"} flexDirection={'column'} lg={3}>
-            {timeSeriesA.map((timeSeries, index) => ( 
-              <Grid item sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-                <LineChart data={timeSeries} der_title={getTittle(index, 4)} max_points={2500}/>
-              </Grid>
-              ))}
-            </Grid> */}
+
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesI} der_title={"I"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation} >
+                <LineChart id={"I"}  height={"25%"} width={"25%"} data={timeSeriesI} max_points={2500} />
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesII} der_title={"II"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"II"} height={"25%"} width={"25%"} data={timeSeriesII} max_points={2500}/>
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesIII} der_title={"III"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+                <LineChart id={"III"} height={"25%"} width={"25%"} data={timeSeriesIII} max_points={2500}/>
+              </Box>
             </Grid>
           </Grid>
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"VF"} height={"25%"} width={"25%"} data={timeSeriesaVF} max_points={2500}/>
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"VL"} height={"25%"} width={"25%"} data={timeSeriesaVL} max_points={2500}/>
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-            </Grid>
-          </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-            </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"VR"} height={"25%"} width={"25%"} data={timeSeriesaVR} max_points={2500}/>
+              </Box>
             </Grid>
           </Grid> 
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V1"} height={"25%"} width={"25%"} data={timeSeriesV1} max_points={2500}/>
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V2"} height={"25%"} width={"25%"} data={timeSeriesV2} max_points={2500}/>
+              </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-              <LineChart height={"25%"} width={"25%"} data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V3"} height={"25%"} width={"25%"} data={timeSeriesV3} max_points={2500}/>
+              </Box>
             </Grid>
           </Grid> 
-          <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
-
-            <LineChart height={"25%"} width={"100%"} data={timeSeriesII} der_title={"II"} max_points={10000}/>
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V4"} height={"25%"} width={"25%"} data={timeSeriesV4} max_points={2500}/>
+              </Box>
+            </Grid>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V5"} height={"25%"} width={"25%"} data={timeSeriesV5} max_points={2500}/>
+              </Box>
+            </Grid>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+                <LineChart id={"V6"} height={"25%"} width={"25%"} data={timeSeriesV6} max_points={2500}/>
+              </Box>
+            </Grid>
           </Grid> 
-
+          <Grid item xs={12} md={12} lg={12} padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+            <Box onClick={handleOpenDerivation}>
+            <LineChart id={"II"} height={"25%"} width={"100%"} data={timeSeriesII} max_points={10000}/>
+            </Box>
+          </Grid> 
       </Grid>
-
-      {/* <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            sm: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          },
-          
-        }}
-      >
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesI} der_title={"I"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesII} der_title={"II"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesIII} der_title={"III"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV1} der_title={"V1"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV2} der_title={"V2"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV3} der_title={"V3"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV4} der_title={"V4"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV5} der_title={"V5"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesV6} der_title={"V6"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVF} der_title={"aVF"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVL} der_title={"aVL"} max_points={2500}/>
-        </Box>
-        <Box sx={{ bgcolor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-          <LineChart data={timeSeriesaVR} der_title={"aVR"} max_points={2500}/>
-        </Box>
-      </Box> */}
       
       </Box>
       
