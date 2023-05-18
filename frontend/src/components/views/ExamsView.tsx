@@ -45,6 +45,8 @@ export interface ExamData {
   results: string;
   operatorReview: boolean;
   operatorAccept: boolean | null;
+  rejectionId: number | null;
+  rejectedDerivation: string | null;
 }
 
 export interface RejectionReason {
@@ -85,6 +87,20 @@ export interface DiagnosticStates {
     doctorDiagnostics: DoctorDiagnostic[];
     setDoctorDiagnostics: Dispatch<DoctorDiagnostic[]>;
 }
+
+export const rejectionReasons: RejectionReason[] = [
+  {id: 1, reason: "DERIVACION INCOMPLETA"},
+  {id: 2, reason: "examenes mal tomados"},
+  {id: 3, reason: "ARTEFACTOS POR LINEA BASE FIBRILADA"},
+  {id: 4, reason: "ARTEFACTOS"},
+  {id: 5, reason: "CABLES INVERTIDOS"},
+  {id: 6, reason: "DERIVACION PLANA"},
+  {id: 7, reason: "EXAMEN REPETIDO"},
+  {id: 8, reason: "EXAMEN TOMADO EN MENOS DE 10 SEGUNDOS"},
+  {id: 9, reason: "DATOS INCOMPLETOS"},
+  {id: 10, reason: "DATOS ERRONEOS"},
+  {id: 11, reason: "TRAZADO DIFUSO"},
+]
 
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
@@ -179,6 +195,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     setIsLoadingExamData(true);
     getExam(examIdNumber).then(
       (response) => {
+        console.log("EXAM DATAAA = ", response.data);
         setExamData({
           examId: response.data.exam_id,
           patientId: response.data.patient_id,
@@ -189,8 +206,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           results: response.data.resultados,
           operatorReview: response.data.operator_review,
           operatorAccept: response.data.operator_accept,
+          rejectionId: response.data.rejection_id,
+          rejectedDerivation: response.data.rejected_derivation,
         });
         setValidated(response.data?.operator_review);
+        let newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejection_id);
+        setRejectionReason(newRejectionReason);
         setIsLoadingExamData(false);
       },
       (error) => {
