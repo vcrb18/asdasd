@@ -1,6 +1,7 @@
 import { Box, Button, Stack, Typography, createTheme, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import React, { MouseEventHandler, useEffect } from "react";
 import FiducialChart from "./FiducialChart";
+import { FiducialStates } from "../views/ExamsView";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
