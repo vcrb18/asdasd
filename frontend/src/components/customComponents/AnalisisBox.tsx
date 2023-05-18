@@ -190,10 +190,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
     (analisisData?.operatorAccept === true ? true : false) : 
       (analisisData?.status === true ? true : false);
 
-    useEffect(() => {
-    console.log("REJECTION REASOOON = ", rejectionReason);
-    }, [isLoading]);
-
   return (
     <Grid container>
     {/* Sector de los datos del exámen */}

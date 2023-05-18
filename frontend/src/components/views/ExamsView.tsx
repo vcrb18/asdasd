@@ -195,7 +195,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     setIsLoadingExamData(true);
     getExam(examIdNumber).then(
       (response) => {
-        console.log("EXAM DATAAA = ", response.data);
         setExamData({
           examId: response.data.exam_id,
           patientId: response.data.patient_id,
