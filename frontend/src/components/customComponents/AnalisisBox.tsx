@@ -165,7 +165,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
         return ("error")
       }
   }
-  const getRemainingTime = (deadline: string): number => {
+  const getRemainingTime = (deadline: string | undefined): number => {
+    if(!deadline) return 0;
     const deadlineDate = new Date(deadline);
     const hardcodedExtraTime = 1
     deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
