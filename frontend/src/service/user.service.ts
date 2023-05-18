@@ -147,8 +147,8 @@ export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosRespon
   return await axios.post(`/exams/accept//${exam_id}`, {withCredentials: true}) //changed
 }
 
-export const markExamIdAsRejected = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.post(`/exams/reject/${exam_id}`, {withCredentials: true}) //changed
+export const markExamIdAsRejected = async (exam_id: number, reasonId: number, derivation: string): Promise<AxiosResponse> => {
+  return await axios.post(`/exams/reject/${exam_id}?reason=${reasonId}&derivation=${derivation}`, {withCredentials: true}) //changed
 }
 export const getDiagnosticTypeByDiagnostic = async (diagnostic: string,): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_types/${diagnostic}`, {withCredentials: true,});
