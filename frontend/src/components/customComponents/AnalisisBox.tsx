@@ -3,26 +3,11 @@ import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, T
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
 import { type ExamData } from "../views/ExamsView";
-import { RejectionReason } from "../views/ExamsView";
+import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
 import X from "../../static/images/X.png"
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-
-
-const rejectionReasons: RejectionReason[] = [
-  {id: 1, reason: "DERIVACION INCOMPLETA"},
-  {id: 2, reason: "examenes mal tomados"},
-  {id: 3, reason: "ARTEFACTOS POR LINEA BASE FIBRILADA"},
-  {id: 4, reason: "ARTEFACTOS"},
-  {id: 5, reason: "CABLES INVERTIDOS"},
-  {id: 6, reason: "DERIVACION PLANA"},
-  {id: 7, reason: "EXAMEN REPETIDO"},
-  {id: 8, reason: "EXAMEN TOMADO EN MENOS DE 10 SEGUNDOS"},
-  {id: 9, reason: "DATOS INCOMPLETOS"},
-  {id: 10, reason: "DATOS ERRONEOS"},
-  {id: 11, reason: "TRAZADO DIFUSO"},
-]
 
 interface AnalisisProps {
     examId: number;
@@ -84,7 +69,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
 
   const handleAddDialogSubmit = (): void => {
     if(possibleNewRejectionReason){
-      markExamIdAsRejected(examId).then((res) => {
+      markExamIdAsRejected(examId, possibleNewRejectionReason.id, "I").then((res) => {
         if (res.data.success) {
           setAccepted(false);
           setRejectionReason(possibleNewRejectionReason);
@@ -98,7 +83,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
   const toggleStateOfExam = (): void => {
     if (analisisData?.operatorAccept != undefined){
       analisisData.operatorAccept === true ? 
-      setOpenAddDialog(true) 
+      setOpenAddDialog(true)
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
@@ -106,7 +91,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
       }
   });
     } else {
-      analisisData?.status === true ? 
+      analisisData?.accepted === true ? 
       setOpenAddDialog(true) 
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
@@ -165,7 +150,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
         return ("error")
       }
   }
-  const getRemainingTime = (deadline: string): number => {
+  const getRemainingTime = (deadline: string | undefined): number => {
+    if(!deadline) return 0;
     const deadlineDate = new Date(deadline);
     const hardcodedExtraTime = 1
     deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
@@ -202,7 +188,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
 
   const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
     (analisisData?.operatorAccept === true ? true : false) : 
-      (analisisData?.status === true ? true : false);
+      (analisisData?.accepted === true ? true : false);
 
   return (
     <Grid container>
@@ -277,7 +263,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
               fontSize={"65%"}
               align="left"
               fontWeight={"bold"}
-              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.status)}
+              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
             >
               { displayAccepted ? t("accepted") : t("refused") }
             </Typography>
