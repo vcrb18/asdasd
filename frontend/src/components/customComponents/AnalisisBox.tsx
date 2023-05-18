@@ -84,7 +84,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
 
   const handleAddDialogSubmit = (): void => {
     if(possibleNewRejectionReason){
-      markExamIdAsRejected(examId).then((res) => {
+      markExamIdAsRejected(examId, possibleNewRejectionReason.id, "I").then((res) => {
         if (res.data.success) {
           setAccepted(false);
           setRejectionReason(possibleNewRejectionReason);
@@ -98,7 +98,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
   const toggleStateOfExam = (): void => {
     if (analisisData?.operatorAccept != undefined){
       analisisData.operatorAccept === true ? 
-      setOpenAddDialog(true) 
+      setOpenAddDialog(true)
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
         setAccepted(true);
