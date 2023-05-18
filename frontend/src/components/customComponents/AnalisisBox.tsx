@@ -91,7 +91,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
       }
   });
     } else {
-      analisisData?.status === true ? 
+      analisisData?.accepted === true ? 
       setOpenAddDialog(true) 
       : markExamIdAsAccepted(examId).then((res) => {
       if (res.data.success) {
@@ -188,7 +188,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
 
   const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
     (analisisData?.operatorAccept === true ? true : false) : 
-      (analisisData?.status === true ? true : false);
+      (analisisData?.accepted === true ? true : false);
 
   return (
     <Grid container>
@@ -263,7 +263,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
               fontSize={"65%"}
               align="left"
               fontWeight={"bold"}
-              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.status)}
+              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
             >
               { displayAccepted ? t("accepted") : t("refused") }
             </Typography>
