@@ -3,14 +3,14 @@ import Chart, { ChartData, ChartOptions } from 'chart.js/auto';
 
 interface LineChartProps {
   data: number[];
-  der_title: string;
+  id: string;
   max_points: number;
   options?: ChartOptions;
   width?: number | string ;
   height?: number | string ;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, options, width, height }) => {
+const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, width, height }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   let n_x_ticks = max_points / 100;
   let sliced_data = data.slice(0,max_points);
@@ -76,7 +76,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, opti
                 position: "top",
                 // font: "",
                 align: "start" ,
-                text: der_title,
+                text: id,
             },
           },
           layout: {
@@ -97,7 +97,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, der_title, max_points, opti
     }
   }, [canvasRef, sliced_data, options]);
 
-  return <canvas height={height} width={width} ref={canvasRef} />;
+  return <canvas id={id} height={height} width={width} ref={canvasRef} />;
 };
 
 export default LineChart;

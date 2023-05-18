@@ -130,22 +130,75 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
       },
     });
   
-  const displayUrgency = (nivel: number | undefined) => {
-    switch (nivel) {
+  // const displayUrgency = (nivel: number) => {
+  //   switch (nivel) {
+  //     case 1:
+  //       return(
+  //         <Brightness1RoundedIcon color={"success"} />
+  //     )
+  //     case 2:
+  //       return (
+  //         <Brightness1RoundedIcon color={"warning"} />
+  //       )
+  //     case 3:
+  //       return(
+  //         <Brightness1RoundedIcon color={"error"} />
+  //       )
+  //     }
+  // }
+
+  const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
+    switch (colorNumber) {
       case 1:
         return(
-          <Brightness1RoundedIcon color={"success"} />
+          "success"
       )
       case 2:
         return (
-          <Brightness1RoundedIcon color={"warning"} />
+          "warning"
         )
       case 3:
         return(
-          <Brightness1RoundedIcon color={"error"} />
+          "error"
         )
+      default:
+        return ("error")
       }
   }
+  const getRemainingTime = (deadline: string): number => {
+    const deadlineDate = new Date(deadline);
+    const hardcodedExtraTime = 1
+    deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
+    const currentDate = new Date();
+    const remaningTime = deadlineDate.getTime() - currentDate.getTime();
+    let ago = t('examTimeRemaining');
+    let remaningTimeColor = 1;
+    const elapsedTime = remaningTime;
+    const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+    if (days < 0 || hours < 0 || minutes < 0 ||seconds < 0) {
+      ago = t('examTimeAgo');
+      remaningTimeColor = 3;
+    } else {
+      if (hours < 0 && minutes <= 15) {
+        ago = t('examTimeRemaining');
+        remaningTimeColor = 2;
+      }
+    }
+    return (
+       remaningTimeColor
+      )
+  };
+
+  const displayUrgency= (urgency: number) : JSX.Element  => {
+    return(
+    <>
+      <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
+    </>
+    )
+    }
 
   const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
     (analisisData?.operatorAccept === true ? true : false) : 
@@ -307,7 +360,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
           </Grid>
           {!isLoading &&
           (<Grid item display={"flex"} justifyContent={"center"} alignItems={"center"} xs={8} sm={8} md={8} lg={8}>
-            {displayUrgency(analisisData?.urgency)}
+            {/* {displayUrgency(analisisData?.urgency)} */}
+            {displayUrgency(getRemainingTime(analisisData?.createdAt))}
           </Grid>)}
         </Grid>
     </Grid>

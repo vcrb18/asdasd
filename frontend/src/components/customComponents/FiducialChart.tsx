@@ -53,8 +53,8 @@ interface fidutialChartPoints {
 }
 
 const FiducialChart = (props: any): JSX.Element => {
-  const pointRadious = 10;
-  const pointLineLength = 300;
+  const pointRadious = 15;
+  const pointLineLength = 500;
   
 
   const [timeseriesData, setTimeSeriesData] = React.useState<number[]> ([]);
@@ -237,6 +237,9 @@ useEffect(() => {
   let justUpdated = false as any;
   let bubble: any;
   let lastMovement:any;
+  let lastX = -1;
+
+  let lastMovedIndex = 0;
 
   let lastData = {
     exam_id:examId,
@@ -286,13 +289,7 @@ useEffect(() => {
   }
 
   const moveAllPoints = function (event: any, direction: string, chart:any): any {
-    let movement = 0;
-
-    if (direction == 'left')
-      movement = -1000;
-    else if (direction == 'right')
-      movement = 1000;
-    else return;
+    let movement = chart.data.datasets[lastMovedIndex].data[0].x - lastData[chart.data.datasets[lastMovedIndex].altLabel];
 
     const values = Object.values(lastData) as any;
 
@@ -334,14 +331,14 @@ useEffect(() => {
 
   const checkForBorderHover = function (event:any, chart:any)
   {
-    const movement = 1000;
+    const movement = chart.data.datasets[lastMovedIndex].data[0].x - lastData[chart.data.datasets[lastMovedIndex].altLabel];
     let hoveredBackgroundColor = 'rgba(0, 214, 176, 0.58)';
     let hoveredBorderColor = 'rgba(11, 175, 146, 0.58)';
     const values = Object.values(lastData) as any;
     
-    if (event.x <= chart.chartArea.left + chart.chartArea.width/20)
+    if (event.x <= chart.chartArea.left + chart.chartArea.width/8)
     {
-      if (Math.min(...values.slice(1,7)) - movement < 0)
+      if (Math.min(...values.slice(1,7)) + movement < 0)
       {
         hoveredBackgroundColor = 'rgba(255, 11, 11, 0.53)';
         hoveredBorderColor = 'rgba(237, 9, 9, 0.72)';
@@ -349,7 +346,7 @@ useEffect(() => {
       leftBorderArea.element.options.backgroundColor = hoveredBackgroundColor;
       leftBorderArea.element.options.borderColor = hoveredBorderColor;
     }
-    else if (event.x >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20)
+    else if (event.x >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/8)
     {
       if (Math.max(...values.slice(1,7)) + movement > timeseriesData.length)
       {
@@ -381,6 +378,7 @@ useEffect(() => {
     let num = chart.data.datasets[bubble[0].datasetIndex].data[0] as any;
     let line = chart.data.datasets[7] as any;
     const index = bubble[0].datasetIndex;
+    lastMovedIndex = index;
     const realX = chart.scales.x.getValueForPixel(bubble[0].element.x) as number;
     const realY = chart.scales.y.getValueForPixel(bubble[0].element.y) as number;
     num.x = Math.round(realX);
@@ -410,6 +408,7 @@ useEffect(() => {
     const moveY = event.y - lastMovement.y;
     drag(event, moveX, moveY, bubble);
     lastMovement = event;
+    lastX = event.x
     return true;
   };
 
@@ -445,11 +444,13 @@ useEffect(() => {
 
           let childata;
 
-          if (event.x <= chart.chartArea.left + chart.chartArea.width/20)
+          if (lastX < 0) break;
+
+          if (lastX <= chart.chartArea.left + chart.chartArea.width/8)
           {
             childata = moveAllPoints(event, 'left', chart);
           }
-          else if (event.x >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20)
+          else if (lastX >= chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/8)
           {
             childata = moveAllPoints(event, 'right', chart);
           }
@@ -458,6 +459,7 @@ useEffect(() => {
             childata = moveOnePoint(chart);
           }
           lastData = childata;
+          lastX = -1
 
           handleParent(childata);
 
@@ -579,7 +581,7 @@ useEffect(() => {
             },
             xMax: function (context:any) {
               if (chart)
-                return(chart.scales.x.getValueForPixel(chart.chartArea.left + chart.chartArea.width/20))
+                return(chart.scales.x.getValueForPixel(chart.chartArea.left + chart.chartArea.width/8))
               return(0);
             },
             yMin: function (context:any) {
@@ -603,7 +605,7 @@ useEffect(() => {
             type: 'box',
             xMin: function (context:any) {
               if (chart)
-                return(chart.scales.x.getValueForPixel(chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/20))
+                return(chart.scales.x.getValueForPixel(chart.chartArea.width + chart.chartArea.left - chart.chartArea.width/8))
               return(0);
             },
             xMax: function (context:any) {
@@ -873,6 +875,7 @@ useEffect(() => {
             beforeDraw: function (context:any) {
               pointLabels[6] = context;
             },
+            z:7,
           },
     ] as any,
         animation:false,
@@ -931,30 +934,33 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "P",
+      altLabel:"p_start",
       data: pStartPoint,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "rgb(237, 28, 36)",
       dragData: true,
-      z:3,
+      z:1,
     },
     {
       type: "bubble" as const,
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "Q",
+      altLabel:"qrs_start",
       data: qrsStartPoint,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "rgb(255, 127, 39)",
       dragData: true,
-      z:3,
+      z:2,
     },
     {
       type: "bubble" as const,
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "R",
+      altLabel:"r",
       data: rPoint,
       spanGaps: true,
       borderColor: "black",
@@ -967,49 +973,53 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "S",
+      altLabel:"qrs_end",
       data: qrsEndPoint,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "rgb(63, 72, 204)",
       dragData: true,
-      z:3,
+      z:4,
     },
     {
       type: "bubble" as const,
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "ST",
+      altLabel:"t_end",
       data: tStartPoint,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "rgb(255, 174, 201)",
       dragData: true,
-      z:3,
+      z:5,
     },
     {
       type: "bubble" as const,
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "T",
+      altLabel:"t_start",
       data: tEndPoint,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "rgb(163, 73, 164)",
       dragData: true,
-      z:3,
+      z:6,
     },
     {
       type: "bubble" as const,
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "R2",
+      altLabel:"r2",
       data: r2Point,
       spanGaps: true,
       borderColor: "black",
       backgroundColor: "green",
       dragData: true,
       dragX: true,
-      z:3,
+      z:7,
     },
     {
 

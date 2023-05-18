@@ -23,14 +23,16 @@ import {
   useMediaQuery,
 } from "@mui/material";
 // import authHeader from "../../service/auth.header";
-import { getExams, getExamsCount, useExams } from "../../service/user.service";
+import { getExams, getExamsById, getExamsCount, useExams } from "../../service/user.service";
 // import { type NavigateFunction, useNavigate } from "react-router-dom";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
+import Footer from "../customComponents/Footer"
+
 
 const API_URL = "http://localhost:8080/";
 // Styled head bar on the table
@@ -157,6 +159,8 @@ interface ExamData {
   results: string;
   accepted: boolean;
   operatorAccept: boolean | null;
+  locked: boolean | null;
+  lockedBy: string;
 }
 
 type Order = "asc" | "desc";
@@ -298,6 +302,7 @@ const ExamTable = ({
       },
     },
   });
+  
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
@@ -306,9 +311,8 @@ const ExamTable = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
-  
-  const filteredFolio = rows.filter(row => row.examId.toString().includes(filterId));
-
+  const [oldFolio, setOldFolio] = React.useState<string>(filterId);
+  const [filteredRows, setFilteredRows] = React.useState<ExamData[]>([]);
   const formatDate = (dateString: string): JSX.Element => {
     const date = new Date(dateString);
     return (
@@ -318,35 +322,60 @@ const ExamTable = ({
       )
   };
 
-  const getRemainingTime = (deadline: string): JSX.Element => {
+  const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
+    switch (colorNumber) {
+      case 1:
+        return(
+          "success"
+      )
+      case 2:
+        return (
+          "warning"
+        )
+      case 3:
+        return(
+          "error"
+        )
+      default:
+        return ("error")
+      }
+  }
+  const getRemainingTime = (deadline: string): [JSX.Element, number] => {
     const deadlineDate = new Date(deadline);
-    const hardcodedExtraTime = 5
+    const hardcodedExtraTime = 1
     deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
     const currentDate = new Date();
     const remaningTime = deadlineDate.getTime() - currentDate.getTime();
-    let ago = ''
-    let remaningTimeColor = "green";
+    let ago = t('examTimeRemaining');
+    let remaningTimeColor = 1;
     const elapsedTime = remaningTime;
     const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
     const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-    if (days < 0 || hours < 0 || seconds < 0)
-    {
-      ago = 'ago';
-      remaningTimeColor = 'red';
+    if (days < 0 || hours < 0 || minutes < 0 ||seconds < 0) {
+      ago = t('examTimeAgo');
+      remaningTimeColor = 3;
+    } else {
+      if (hours < 0 && minutes <= 15) {
+        ago = t('examTimeRemaining');
+        remaningTimeColor = 2;
+      }
     }
-    let remainingTimeString = `${Math.abs(days)} days ${ago}`;
+    let remainingTimeString = `${Math.abs(days)} ${t('days')} ${ago}`;
     if (days === 0)
-      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} hours ${ago}`;
+      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} ${t('hours')} ${ago}`;
     if (days === 0 && hours === 0)
-      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} minutes ${ago}`;
+      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} ${t('minutes')} ${ago}`;
     if (days === 0 && hours === 0 && minutes <= 0)
-      remainingTimeString = `${Math.abs(seconds)} seconds ${ago}`;
+      remainingTimeString = `${Math.abs(seconds)} ${t('seconds')} ${ago}`;
     return (
-      <Typography color={remaningTimeColor} fontWeight={"bold"}>
+      [
+      (<Typography color={getRemainingTimeColor(remaningTimeColor)} fontWeight={"bold"}>
         {remainingTimeString}
-      </Typography>
+      </Typography>),
+       remaningTimeColor
+      ]
       )
   };
   const getStatus = (state: boolean)=> (
@@ -358,25 +387,15 @@ const ExamTable = ({
   </Typography>
   );
 
-  const getUrgency= (urgency: number) => {
-    switch (urgency) {
-        case 1:
-          return(
-            <Brightness1RoundedIcon color={"success"} />
-        )
-        case 2:
-          return (
-            <Brightness1RoundedIcon color={"warning"} />
-          )
-        case 3:
-          return(
-            <Brightness1RoundedIcon color={"error"} />
-          )
-        }
+  const getUrgency= (urgency: number) : JSX.Element  => {
+    return(
+    <>
+      <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
+    </>
+    )
     }
    
   const getReviewState = (state: boolean) : JSX.Element => {
-    console.log(state)
     if (state === true) {
       return(
         <Box display={"flex"} justifyContent={"center"}>
@@ -391,6 +410,7 @@ const ExamTable = ({
         )
     }
   }
+
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -416,12 +436,55 @@ const ExamTable = ({
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
-    if (page > maxPage) {
+    if (page > maxPage || useFilter)  {
       shouldLoad = true
       setMaxPage(page)
+      if (useFilter && (filterId != "")){
+        console.log(page)
+        console.log(filterId)
+        console.log(oldFolio)
+        getExamsById(filterId, page, 11).then((response) => {
+          const newExams: ExamData[] = [];
+          console.log("estoy retornando un examen filtrado")
+          console.log(response)
+
+          response.data.rows.map((examData: any) => {
+            setMaxRows(response.data.count)
+            newExams.push({
+              examId: examData.exam_id,
+              patientId: examData.patient_id,
+              createdAt: examData.created_at,
+              deadline: examData.created_at,
+              status: examData.estado,
+              urgency: examData.urgencia,
+              operatorReview: examData.operator_review,
+              results: examData.resultados,
+              accepted: examData.aceptado,
+              operatorAccept: examData.operator_accept,
+              locked: examData.locked,
+              lockedBy: examData.lockedBy,
+            });
+          });
+          if (filterId == oldFolio){
+            setOldFolio(filterId)
+            setFilteredRows([...filteredRows, ...newExams]);
+          }
+          else {
+            setOldFolio(filterId);
+            setFilteredRows(newExams);
+          }
+
+          return Promise
+        }).catch((error) => {
+          console.error(error);
+        })
+       }
+      else{
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
-        response.data.map((examData: any) => {
+        console.log(response);
+        response.data.rows.map((examData: any) => {
+          setMaxRows(response.data.count)
           newExams.push({
             examId: examData.exam_id,
             patientId: examData.patient_id,
@@ -433,6 +496,8 @@ const ExamTable = ({
             results: examData.resultados,
             accepted: examData.aceptado,
             operatorAccept: examData.operator_accept,
+            locked: examData.locked,
+            lockedBy: examData.lockedBy,
           });
         });
         const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
@@ -441,13 +506,13 @@ const ExamTable = ({
       }).catch((error) => {
         console.error(error);
       });
-      getExamsCount().then((response) => {
-        setMaxRows(response.data.count)
-      }).catch((error) => {
-        console.error(error)
-      });
     }
-    console.log(rows)
+      // getExamsCount().then((response) => {
+      //   setMaxRows(response.data.count)
+      // }).catch((error) => {
+      //   console.error(error)
+      // });
+    }
     if (shouldLoad) {
       setTimeout(() => {
         setIsLoading(false)
@@ -455,8 +520,15 @@ const ExamTable = ({
     } else {
       setIsLoading(false);
     }
-  }, [page])
-  
+  }, [page, filterId, useFilter])
+  const navigate: NavigateFunction = useNavigate();
+
+  const handleAccess = (examId: number, locked: boolean | null) => {
+    if(!locked){
+      navigate(`/examsview/${examId}`);
+    }
+  }
+
   const Row: React.FC<RowProps> = ({ row, isMatch }) => {  
     const [open, setOpen] = React.useState(false);
     if (isMatch) {
@@ -476,24 +548,24 @@ const ExamTable = ({
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
-          <StyledTableCell align="center">{getRemainingTime(row.createdAt)}</StyledTableCell>  
+          <StyledTableCell align="center">{getRemainingTime(row.createdAt)[0]}</StyledTableCell>  
           <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
-          <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
+          {/* <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell> */}
+          <StyledTableCell align="center">{getUrgency(getRemainingTime(row.createdAt)[1])}</StyledTableCell>
           <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
           <StyledTableCell align="center">
             <ThemeProvider theme={buttonsTheme}>
-              <Link to={`/examsview/${row.examId}`}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  sx={{ color: "#fff" }}
-                  value={row.examId}
-                >
-                  <Typography fontSize={'100%'} color={'#fff'}>
-                    {t("access")}
-                  </Typography>
-                </Button>
-              </Link>
+              <Button
+                onClick={() => handleAccess(row.examId, row.locked)}
+                color="primary"
+                variant="contained"
+                sx={{ color: "#fff" }}
+                value={row.examId}
+              >
+                <Typography fontSize={'120%'} color={'#fff'}>
+                  {row.locked === true ? t("locked") : t("access")}
+                </Typography>
+              </Button>
             </ThemeProvider>
           </StyledTableCell>
         </TableRow>
@@ -518,18 +590,17 @@ const ExamTable = ({
             <StyledTableCell align="center"></StyledTableCell>
             <StyledTableCell align="center">
               <ThemeProvider theme={buttonsTheme}>
-                <Link to={`/examsview/${row.examId}`}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    sx={{ color: "#fff" }}
-                    value={row.examId}
-                  >
-                    <Typography fontSize={'120%'} color={'#fff'}>
-                      {t("access")}
-                    </Typography>
-                  </Button>
-                </Link>
+                <Button
+                  onClick={() => handleAccess(row.examId, row.locked)}
+                  color="primary"
+                  variant="contained"
+                  sx={{ color: "#fff" }}
+                  value={row.examId}
+                >
+                  <Typography fontSize={'120%'} color={'#fff'}>
+                    {row.locked === true ? t("locked") : t("access")}
+                  </Typography>
+                </Button>
               </ThemeProvider>
             </StyledTableCell>
           </TableRow>
@@ -582,8 +653,8 @@ const ExamTable = ({
     }
   };
 
-  const sortedRows = useFilter
-    ? stableSort(filteredFolio, getComparator(order, orderBy))
+  const sortedRows = (useFilter && (filterId != ""))
+    ? stableSort(filteredRows, getComparator(order, orderBy))
     : stableSort(rows, getComparator(order, orderBy));
 
   const paginatedRows = sortedRows.slice(
@@ -591,7 +662,6 @@ const ExamTable = ({
     page * rowsPerPage + rowsPerPage
     );
 
-    console.log("PR", paginatedRows);
 
   const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
   return (
