@@ -448,7 +448,8 @@ const ExamTable = ({
           console.log("estoy retornando un examen filtrado")
           console.log(response)
 
-          response.data.map((examData: any) => {
+          response.data.rows.map((examData: any) => {
+            setMaxRows(response.data.count)
             newExams.push({
               examId: examData.exam_id,
               patientId: examData.patient_id,
@@ -481,7 +482,9 @@ const ExamTable = ({
       else{
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
-        response.data.map((examData: any) => {
+        console.log(response);
+        response.data.rows.map((examData: any) => {
+          setMaxRows(response.data.count)
           newExams.push({
             examId: examData.exam_id,
             patientId: examData.patient_id,
@@ -504,11 +507,11 @@ const ExamTable = ({
         console.error(error);
       });
     }
-      getExamsCount().then((response) => {
-        setMaxRows(response.data.count)
-      }).catch((error) => {
-        console.error(error)
-      });
+      // getExamsCount().then((response) => {
+      //   setMaxRows(response.data.count)
+      // }).catch((error) => {
+      //   console.error(error)
+      // });
     }
     if (shouldLoad) {
       setTimeout(() => {
