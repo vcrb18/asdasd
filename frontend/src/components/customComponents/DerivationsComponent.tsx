@@ -1,6 +1,7 @@
 import { Box, Button, Stack, Typography, createTheme, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import React, { MouseEventHandler, useEffect } from "react";
 import FiducialChart from "./FiducialChart";
+import { FiducialStates } from "../views/ExamsView";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
@@ -13,42 +14,20 @@ import { scroller } from "react-scroll"
 
 interface DerivationsProps {
   examId: number;
+  fiducialStates: FiducialStates;
 }
 
-interface Fiduciales {
-  p_start: number; // fidP
-  qrs_start: number; // fidQRS
-  r: number; // fidR
-  qrs_end: number; // fidS
-  t_start: number; // fidT
-  t_end: number; // fidST
-  r2: number; // fidR2
-}
 
-const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element => {
-  // TODO: consumir puntos reales
-  const [fidExamId, setFidExamId] = React.useState(0);
-  const [fidP, setFidP] = React.useState(1500);
-  const [fidQRS, setFidQRS] = React.useState(1700);
-  const [fidR, setFidR] = React.useState(1870);
-  const [fidR2, setFidR2] = React.useState(2760);
-  const [fidS, setFidS] = React.useState(1900);
-  const [fidST, setFidST] = React.useState(2000);
-  const [fidT, setFidT] = React.useState(2100);
-  const [fiduciales, setFiduciales] = React.useState<Fiduciales>({
-    p_start: 0, // fidP
-    qrs_start: 0, // fidQRS
-    r: 0, // fidR
-    qrs_end: 0,
-    t_start: 0,
-    t_end: 0,
-    r2: 0,
-  });
+const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialStates}): JSX.Element => {
+  const {
+    fidP, setFidP,
+    fidQRS, setFidQRS,
+    fidR, setFidR,
+    fidR2, setFidR2,
+    fidS, setFidS,
+    fidST, setFidST,
+    fidT, setFidT } = fiducialStates;
   
-  // const [timeSeriesN, setTimeSeriesN ] = React.useState([[]]);
-  // const [timeSeriesVI, setTimeSeriesVI ] = React.useState([[]]);
-  // const [timeSeriesVII, setTimeSeriesVII ] = React.useState([[]]);
-  // const [timeSeriesA, setTimeSeriesA ] = React.useState([[]]);
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
   const [timeSeriesIII, setTimeSeriesIII] = React.useState([]);
@@ -126,7 +105,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
     getExamOperatorMarkers(examId).then(
       (response) => {
         if (response.status ==  200){
-          setFidExamId(response.data.examId)
           setFidP(response.data.p_start + offset)
           setFidQRS(response.data.qrs_start + offset)
           setFidR(response.data.r + offset)
@@ -138,7 +116,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         else{
           getExamPredictedMarkers(examId).then(
             (response) => {
-              setFidExamId(response.data.examId)
               setFidP(response.data.p_start + offset)
               setFidQRS(response.data.qrs_start + offset)
               setFidR(response.data.r + offset)
@@ -153,7 +130,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   }, [count]);
 
   const handleFiducialChartUpdate : Function = (childData : any) => {
-    const obj2 = { ...childData };
     setFidP(childData.p_start);
     setFidQRS(childData.qrs_start);
     setFidR(childData.r);

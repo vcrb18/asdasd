@@ -19,16 +19,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import xButton from "../../static/images/xButton.png"
+import { Diagnostic, DoctorDiagnostic, DiagnosticStates } from "../views/ExamsView";
 
-interface Diagnostic {
-  diagnosticId: number,
-  diagnostic: string,
-}
-
-interface DoctorDiagnostic{
-  examId: number,
-  diagnosticId: number,
-}
 
 const DeletableBoxItem = ({
   id,
@@ -117,6 +109,7 @@ interface SuggestedDiagnostic {
 */
 interface DiagnosisProps {
   examId: number;
+  diagnosticStates: DiagnosticStates;
 }
 
 const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
@@ -132,7 +125,7 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
 }
 
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
-  examId,
+  examId, diagnosticStates
 }): JSX.Element => {
 
   const [diagnosticTypes, setDiagnosticTypes] = useState<(Diagnostic)[]>([]);
@@ -159,8 +152,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     );
   }, []);
 
-  const [DiagnosticosSugeridos, setDiagnosticosSugerido] = useState<(Diagnostic)[]>([]);
-  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
+  const {
+    diagnosticosSugeridos,
+    setDiagnosticosSugeridos,
+    doctorDiagnostics,
+    setDoctorDiagnostics } = diagnosticStates;
 
   const { t } = useTranslation();
 
@@ -169,14 +165,14 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getSuggestedDiagnostic(examId).then(
       (res) => {
         const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
-        setDiagnosticosSugerido(diagnosticDataParser);
+        setDiagnosticosSugeridos(diagnosticDataParser);
       },
       (error) => {
         const _content =
           (error.response && error.response.data) ||
           error.message ||
           error.toString();
-        setDiagnosticosSugerido(_content);
+        setDiagnosticosSugeridos(_content);
       }
     );
   }, [diagnosticTypes]);
@@ -206,7 +202,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const [newItem, setNewItem] = useState<Diagnostic | null>();
 
   const handleDeleteDiagnosticoSugerido = (item: string): void => {
-    setDiagnosticosSugerido(DiagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
+    setDiagnosticosSugeridos(diagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
   };
 
   const handleDeleteDoctorDiagnostic = (item: string, id: number): void => {
@@ -242,7 +238,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box width={"100%"}>
-        {DiagnosticosSugeridos.length>0 && DiagnosticosSugeridos.map((item: Diagnostic) => (
+        {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: Diagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
