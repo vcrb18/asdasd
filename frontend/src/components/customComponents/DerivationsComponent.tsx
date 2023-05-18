@@ -164,13 +164,12 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
-    console.log();
     setSelectedDerivation(event.target.id);
     setSelectedTimeSeries(allTimeSeriesObject[event.target.id])
     const scrollType = {
       duration: 500,
       delay: 1,
-      smooth: true, // linear “easeInQuint” “easeOutCubic” 
+      smooth: true,
       offset: -100,
    };
     scroller.scrollTo("graphic", scrollType);
@@ -183,6 +182,18 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
       },
     },
   });
+
+  const styleToGraphics = {
+    margin: "4px",
+    border: "2px solid black",
+    borderRadius: "5px",
+    "&:hover": {
+      borderRadius: "5px",
+      boxShadow: "0 0 15px green",
+      background: "#fff",
+    },
+  }
+
   return (
     <Stack
       display={"flex"}
@@ -304,86 +315,74 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId}): JSX.Element
         alignItems={'center'} marginTop={'1%'} lg={12}>
 
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'}
-              sx={{
-                bgcolor: 'white',
-                border: 3,
-                borderColor: "#E4EDEF",
-                borderRadius: "2%",
-                boxShadow: "4px 4px 4px rgba(0,0,0,0.5)",
-                transition: "box-shadow 0.3s ease-in-out",
-                "&:hover": {
-                  boxShadow: "16px 16px 16px rgba(0,255,0,0.5)",
-                },
-              }}
-            >
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation} >
                 <LineChart id={"I"}  height={"25%"} width={"25%"} data={timeSeriesI} max_points={2500} />
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'} >
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"II"} height={"25%"} width={"25%"} data={timeSeriesII} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
                 <LineChart id={"III"} height={"25%"} width={"25%"} data={timeSeriesIII} max_points={2500}/>
               </Box>
             </Grid>
           </Grid>
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"VF"} height={"25%"} width={"25%"} data={timeSeriesaVF} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"VL"} height={"25%"} width={"25%"} data={timeSeriesaVL} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"VR"} height={"25%"} width={"25%"} data={timeSeriesaVR} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"V1"} height={"25%"} width={"25%"} data={timeSeriesV1} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"V2"} height={"25%"} width={"25%"} data={timeSeriesV2} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"V3"} height={"25%"} width={"25%"} data={timeSeriesV3} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"V4"} height={"25%"} width={"25%"} data={timeSeriesV4} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
               <LineChart id={"V5"} height={"25%"} width={"25%"} data={timeSeriesV5} max_points={2500}/>
               </Box>
             </Grid>
-            <Grid item padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
                 <LineChart id={"V6"} height={"25%"} width={"25%"} data={timeSeriesV6} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
-          <Grid item xs={12} md={12} lg={12} padding={'1%'} sx={{bgcolor: 'white'}} alignItems={'center'} justifyContent={'space-evenly'}>
+          <Grid item xs={12} md={12} lg={12} padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
             <Box onClick={handleOpenDerivation}>
             <LineChart id={"II"} height={"25%"} width={"100%"} data={timeSeriesII} max_points={10000}/>
             </Box>
