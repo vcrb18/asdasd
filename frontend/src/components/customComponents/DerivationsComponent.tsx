@@ -140,8 +140,9 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
-    setSelectedDerivation(event.target.id);
-    setSelectedTimeSeries(allTimeSeriesObject[event.target.id])
+    const target = event.target as HTMLDivElement;
+    setSelectedDerivation(target.id);
+    setSelectedTimeSeries(allTimeSeriesObject[target.id]);
     const scrollType = {
       duration: 500,
       delay: 1,
