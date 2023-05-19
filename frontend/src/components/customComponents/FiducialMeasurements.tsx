@@ -161,7 +161,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.rr.toFixed(1)}
+                {row.rr.toFixed(0)}
               </Typography>
             </TableCell>
             <TableCell
@@ -169,7 +169,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.pq.toFixed(1)}
+                {row.pq.toFixed(0)}
               </Typography>
             </TableCell>
             <TableCell
@@ -177,7 +177,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.qrs.toFixed(1)}
+                {row.qrs.toFixed(0)}
               </Typography>
             </TableCell>
             <TableCell
@@ -185,7 +185,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.qt.toFixed(1)}
+                {row.qt.toFixed(0)}
               </Typography>
             </TableCell>
             <TableCell
@@ -193,7 +193,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.qtc.toFixed(1)}
+                {row.qtc.toFixed(0)}
               </Typography>
             </TableCell>
             <TableCell
