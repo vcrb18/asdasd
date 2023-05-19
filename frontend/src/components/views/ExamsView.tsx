@@ -236,6 +236,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             putExamReview(examIdNumber).then((res) => {
                 if (res.data.success) {
                     setValidated(!validated);
+                    handleGoBack();
                 }
             });
         }
