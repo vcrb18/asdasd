@@ -163,6 +163,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     margin: "4px",
     border: "2px solid black",
     borderRadius: "5px",
+    cursor: "pointer",
     "&:hover": {
       borderRadius: "5px",
       boxShadow: "0 0 15px green",
