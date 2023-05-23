@@ -124,6 +124,18 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
   return newDiagnostics;
 }
 
+const ParserDoctorDiagnostic = (doctorDiagnostics: any, listOfDiagnostics: (Diagnostic)[]) => {
+  let newDiagnostics: (Diagnostic)[] = [];
+  doctorDiagnostics.map((item: any)=>{
+    let newObject: Diagnostic | undefined = listOfDiagnostics.find(object => object.diagnosticId === item.diagnostic_id);
+    if (newObject){
+      newDiagnostics.push(newObject);
+    }
+  });
+  return newDiagnostics;
+}
+
+
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   examId, diagnosticStates
 }): JSX.Element => {
@@ -180,15 +192,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   }, [diagnosticTypes]);
 
   useEffect(() => {
+    if(diagnosticTypes.length === 0) return;
     getDoctorDiagnostics(examId).then(
       (res) => {
-        let newDoctorDiagnostics: DoctorDiagnostic[] = [];
-        res.data.map((doctorDiagnostic: { exam_id: any; diagnostic_id: any; }) => {
-          newDoctorDiagnostics.push({
-            examId: doctorDiagnostic.exam_id,
-            diagnosticId: doctorDiagnostic.diagnostic_id,
-          });
-        });
+        const newDoctorDiagnostics: (Diagnostic)[] = ParserDoctorDiagnostic(res.data, diagnosticTypes);
+        newDoctorDiagnostics.sort(function(first, second){return first.order - second.order});
         setDoctorDiagnostics(newDoctorDiagnostics);
       },
       (error) => {
@@ -199,7 +207,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           setDoctorDiagnostics(_content);
       }
     );
-  }, []);  
+  }, [diagnosticTypes]);  
 
   const [newItem, setNewItem] = useState<Diagnostic | null>();
 
@@ -228,7 +236,12 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const handleAddDialogSubmit = (): void => {
     if(newItem){
       createDoctorDiagnostic(examId, newItem.diagnosticId);
-      setDoctorDiagnostics([...doctorDiagnostics, {examId: examId, diagnosticId: newItem.diagnosticId}]);
+      let newObject: Diagnostic | undefined = diagnosticTypes.find(object => object.diagnosticId == newItem.diagnosticId);
+      if (newObject) {
+        const newDoctorDiagnostics = [...doctorDiagnostics, newObject];
+        newDoctorDiagnostics.sort(function(first, second){return first.order - second.order});
+        setDoctorDiagnostics(newDoctorDiagnostics);
+      }
     }
     setOpenAddDialog(false);
   };
@@ -248,7 +261,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
             onDelete={handleDeleteDiagnosticoSugerido}
           />
         ))}
-        {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: DoctorDiagnostic) => (
+        {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: Diagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}

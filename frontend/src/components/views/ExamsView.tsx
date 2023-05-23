@@ -85,8 +85,8 @@ export interface DoctorDiagnostic {
 export interface DiagnosticStates {
     diagnosticosSugeridos: Diagnostic[];
     setDiagnosticosSugeridos: Dispatch<Diagnostic[]>;
-    doctorDiagnostics: DoctorDiagnostic[];
-    setDoctorDiagnostics: Dispatch<DoctorDiagnostic[]>;
+    doctorDiagnostics: Diagnostic[];
+    setDoctorDiagnostics: Dispatch<Diagnostic[]>;
 }
 
 export const rejectionReasons: RejectionReason[] = [
@@ -134,7 +134,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   };
 
   const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
-  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
+  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(Diagnostic)[]>([]);
   const diagnosticStates: DiagnosticStates = {
     diagnosticosSugeridos: diagnosticosSugeridos,
     setDiagnosticosSugeridos: setDiagnosticosSugeridos,
