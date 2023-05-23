@@ -74,6 +74,7 @@ export interface FiducialStates {
 export interface Diagnostic {
     diagnosticId: number,
     diagnostic: string,
+    order: number,
 }
 
 export interface DoctorDiagnostic {

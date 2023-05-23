@@ -134,10 +134,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getDiagnosticTypes().then(
       (res) => {
         let diagnostics: (Diagnostic)[] = []
-        res.data.map((diagnostic: { diagnostic_id: any; diagnostic: any; }) => {
+        res.data.map((diagnostic: { diagnostic_id: number; diagnostic: string; order: number;}) => {
           diagnostics.push({
             diagnosticId: diagnostic.diagnostic_id,
             diagnostic: diagnostic.diagnostic,
+            order: diagnostic.order,
           });
         });
         setDiagnosticTypes(diagnostics);
