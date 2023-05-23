@@ -166,6 +166,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getSuggestedDiagnostic(examId).then(
       (res) => {
         const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
+        diagnosticDataParser.sort(function(first, second){return first.order - second.order});
         setDiagnosticosSugeridos(diagnosticDataParser);
       },
       (error) => {
