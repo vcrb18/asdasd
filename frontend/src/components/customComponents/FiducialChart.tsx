@@ -129,13 +129,13 @@ const FiducialChart = (props: any): JSX.Element => {
     setfidST(props.fidST);
     setfidT(props.fidT);
 
-    setfidPY(timeseriesData[props.fidP] + pointLineLength);
-    setfidQRSY(timeseriesData[props.fidQRS] + pointLineLength);
-    setfidRY(timeseriesData[props.fidR] + pointLineLength);
-    setfidR2Y(timeseriesData[props.fidR2] + pointLineLength);
-    setfidSY(timeseriesData[props.fidS] + pointLineLength);
-    setfidSTY(timeseriesData[props.fidST] + pointLineLength);
-    setfidTY(timeseriesData[props.fidT] + pointLineLength);
+    setfidPY(props.timeSeries[props.fidP] + pointLineLength);
+    setfidQRSY(props.timeSeries[props.fidQRS] + pointLineLength);
+    setfidRY(props.timeSeries[props.fidR] + pointLineLength);
+    setfidR2Y(props.timeSeries[props.fidR2] + pointLineLength);
+    setfidSY(props.timeSeries[props.fidS] + pointLineLength);
+    setfidSTY(props.timeSeries[props.fidST] + pointLineLength);
+    setfidTY(props.timeSeries[props.fidT] + pointLineLength);
 
     setTimeSeriesData(props.timeSeries);
     if (!changedZoom){
@@ -162,8 +162,8 @@ const FiducialChart = (props: any): JSX.Element => {
     const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
     setmaxX(maxPoint + xAxisOffsetRight);
     setminX(minPoint - xAxisOffsetLeft);
-    setmaxY(1500);
-    setminY(-1000);
+    setmaxY(maxTimeSeries + 1000);
+    setminY(minTimeSeries -1000);
 
     }
     chart = ChartJS.getChart("fiduChart");
@@ -196,8 +196,8 @@ useEffect(() => {
   const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
   setmaxX(maxPoint + xAxisOffsetRight);
   setminX(minPoint - xAxisOffsetLeft);
-  setmaxY(1500);
-  setminY(-1000);
+  setmaxY(maxTimeSeries + 1000);
+  setminY(minTimeSeries - 1000);
 }, [props.timeSeries]);
 
 useEffect(() => {
@@ -224,7 +224,7 @@ useEffect(() => {
 
   let n_x_ticks = timeseriesData.length / 100;
 
-  let refLine:any;
+  let refLabel:any;
 
   let leftBorderArea : any;
   let rightBorderArea : any;
@@ -385,15 +385,7 @@ useEffect(() => {
 
     num.y = Math.round(realY);
 
-    refLine.element.x = bubble[0].element.x;
-    refLine.element.x2 = bubble[0].element.x;
-
-    refLine.element.elements[0].width = 70;
-    refLine.element.elements[0].x = bubble[0].element.x - refLine.element.elements[0].width/2;
-
-    refLine.element.elements[0].options.content = num.x;
-
-    refLine.element.elements[0].y = bubble[0].element.y -50;
+    refLabel.element.options.content = ` ${num.x}`;
 
     pointLines[index].element.y2 += moveY;
     pointLines[index].element.x = bubble[0].element.x;
@@ -552,23 +544,28 @@ useEffect(() => {
         annotations: [
           {
 
-            type: 'line',
-            id: 'referenceLine',
-            borderColor: 'transparent',
-            borderWidth: 1,
-            display:true,
-            drawTime:'beforeDatasetsDraw',
-            label: {
-              drawTime:'afterDatasetsDraw',
-              display: true,
-              content: '',
-              rotation: 0,
-            },
+            type: 'label',
+            id: 'referenceLabel',
+            drawTime:'afterDatasetsDraw',
+            display: true,
+            content: 'Posicion',
+            rotation: 0,
             scaleID: 'x',
-            value: points.reduce((a,b) => a + b, 0) / points.length,
-            beforeDraw: function (context:any) {
-              refLine = context;
+            backgroundColor: 'teal',
+            borderColor:'black',
+            borderWidth:2,
+            borderRadius:5,
+            yValue: function (context:any) {
+              if (chart)
+              {
+                return(chart.scales.y.getValueForPixel(chart.chartArea.bottom - chart.height*0.1))
+              }
+              return(0);
             },
+            beforeDraw: function (context:any) {
+              refLabel = context;
+            },
+            position: 'bottom',
             z:1,
           },
 
@@ -655,6 +652,8 @@ useEffect(() => {
             },
             content: 'P',
             fontColor: '#fff',
+            textStrokeColor: 'rgb(237, 28, 36)',
+            textStrokeWidth: 3,
             padding: {
               left: 5,
               right: 5,
@@ -689,6 +688,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'rgb(255, 127, 39)',
+            textStrokeWidth: 3,
             content: 'Q',
             fontColor: '#fff',
             padding: {
@@ -724,6 +725,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'rgb(0, 162, 232)',
+            textStrokeWidth: 3,
             content: 'R',
             fontColor: '#fff',
             padding: {
@@ -759,6 +762,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'rgb(63, 72, 204)',
+            textStrokeWidth: 3,
             content: 'S',
             fontColor: '#fff',
             padding: {
@@ -794,6 +799,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'rgb(255, 174, 201)',
+            textStrokeWidth: 3,
             content: 'ST',
             fontColor: '#fff',
             padding: {
@@ -829,6 +836,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'rgb(163, 73, 164)',
+            textStrokeWidth: 3,
             content: 'T',
             fontColor: '#fff',
             padding: {
@@ -864,6 +873,8 @@ useEffect(() => {
             font: {
               size: pointRadious,
             },
+            textStrokeColor: 'green',
+            textStrokeWidth: 3,
             content: 'R2',
             fontColor: '#fff',
             padding: {
@@ -898,7 +909,13 @@ useEffect(() => {
         max: maxY,
         ticks: {
           stepSize: 500,
-          maxTicksLimit: 10
+          maxTicksLimit: 10,
+          callback: function (value:any, index:any, values:any) {
+            if (Math.floor(value) === value) {
+              return value;
+            }
+            return value.toFixed(0);
+          }
         }
       },
       x: {

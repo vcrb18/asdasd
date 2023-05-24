@@ -155,6 +155,7 @@ interface ExamData {
   deadline: string;
   status: boolean;
   urgency: number;
+  remainingTime: string,
   operatorReview: boolean;
   results: string;
   accepted: boolean;
@@ -340,44 +341,7 @@ const ExamTable = ({
         return ("error")
       }
   }
-  const getRemainingTime = (deadline: string): [JSX.Element, number] => {
-    const deadlineDate = new Date(deadline);
-    const hardcodedExtraTime = 1
-    deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
-    const currentDate = new Date();
-    const remaningTime = deadlineDate.getTime() - currentDate.getTime();
-    let ago = t('examTimeRemaining');
-    let remaningTimeColor = 1;
-    const elapsedTime = remaningTime;
-    const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-    if (days < 0 || hours < 0 || minutes < 0 ||seconds < 0) {
-      ago = t('examTimeAgo');
-      remaningTimeColor = 3;
-    } else {
-      if (hours < 0 && minutes <= 15) {
-        ago = t('examTimeRemaining');
-        remaningTimeColor = 2;
-      }
-    }
-    let remainingTimeString = `${Math.abs(days)} ${t('days')} ${ago}`;
-    if (days === 0)
-      remainingTimeString = `${Math.abs(hours)}:${Math.abs(minutes)} ${t('hours')} ${ago}`;
-    if (days === 0 && hours === 0)
-      remainingTimeString = `${Math.abs(minutes)}:${Math.abs(seconds)} ${t('minutes')} ${ago}`;
-    if (days === 0 && hours === 0 && minutes <= 0)
-      remainingTimeString = `${Math.abs(seconds)} ${t('seconds')} ${ago}`;
-    return (
-      [
-      (<Typography color={getRemainingTimeColor(remaningTimeColor)} fontWeight={"bold"}>
-        {remainingTimeString}
-      </Typography>),
-       remaningTimeColor
-      ]
-      )
-  };
+  
   const getStatus = (state: boolean)=> (
     <Typography
       fontWeight={"bold"}
@@ -446,7 +410,6 @@ const ExamTable = ({
         getExamsById(filterId, page, 11).then((response) => {
           const newExams: ExamData[] = [];
           console.log("estoy retornando un examen filtrado")
-          console.log(response)
 
           response.data.rows.map((examData: any) => {
             setMaxRows(response.data.count)
@@ -457,6 +420,7 @@ const ExamTable = ({
               deadline: examData.created_at,
               status: examData.estado,
               urgency: examData.urgencia,
+              remainingTime: examData.RemainingTime,
               operatorReview: examData.operator_review,
               results: examData.resultados,
               accepted: examData.aceptado,
@@ -482,7 +446,6 @@ const ExamTable = ({
       else{
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
-        console.log(response);
         response.data.rows.map((examData: any) => {
           setMaxRows(response.data.count)
           newExams.push({
@@ -491,7 +454,8 @@ const ExamTable = ({
             createdAt: examData.created_at,
             deadline: examData.created_at,
             status: examData.estado,
-            urgency: examData.urgencia,
+            urgency: examData.urgency,
+            remainingTime: examData.remainingTime,
             operatorReview: examData.operator_review,
             results: examData.resultados,
             accepted: examData.aceptado,
@@ -548,10 +512,14 @@ const ExamTable = ({
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
-          <StyledTableCell align="center">{getRemainingTime(row.createdAt)[0]}</StyledTableCell>  
+          <StyledTableCell align="center">
+            <Typography fontWeight={"bold"}>
+              {row.remainingTime}
+            </Typography>
+          </StyledTableCell>  
           <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
           {/* <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell> */}
-          <StyledTableCell align="center">{getUrgency(getRemainingTime(row.createdAt)[1])}</StyledTableCell>
+          <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
           <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
           <StyledTableCell align="center">
             <ThemeProvider theme={buttonsTheme}>
@@ -587,7 +555,11 @@ const ExamTable = ({
             </StyledTableCell>
             <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
             <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
+            <StyledTableCell align="center">
+              <Typography fontWeight={"bold"}>
+                {row.remainingTime}
+              </Typography>
+            </StyledTableCell>
             <StyledTableCell align="center">
               <ThemeProvider theme={buttonsTheme}>
                 <Button
