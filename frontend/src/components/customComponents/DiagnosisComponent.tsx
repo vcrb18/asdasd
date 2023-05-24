@@ -16,19 +16,21 @@ import {
 import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
-import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics } from "../../service/user.service";
+import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics, getDiagnosticPredictions } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import xButton from "../../static/images/xButton.png"
-import { Diagnostic, DoctorDiagnostic, DiagnosticStates } from "../views/ExamsView";
+import { Diagnostic, DoctorDiagnostic, DiagnosticStates, DiagnosticPrediction } from "../views/ExamsView";
 
 
 const DeletableBoxItem = ({
   id,
   label,
+  accuracy,
   onDelete,
 }: {
   id: number;
   label: string;
+  accuracy: string | undefined;
   onDelete: (item: string, id: number) => void;
 }): JSX.Element => {
   //   const [hovered, setHovered] = useState(false);
@@ -55,6 +57,7 @@ const DeletableBoxItem = ({
         borderColor: "#E4EDEF",
         borderRadius: "1%",
       }}>
+        {accuracy ? 
           <Grid container
             display={"flex"}
             marginLeft={"1%"}
@@ -64,7 +67,12 @@ const DeletableBoxItem = ({
               {label}
             </Typography>
             </Grid>
-            <Grid item xs={3} sm={3} md={3} lg={3} display={'flex'} justifyContent={'flex-end'} alignItems={"center"}>
+            <Grid item xs={2} sm={2} md={2} lg={2} display={'flex'} justifyContent={'flex-start'} alignItems={"center"}>
+              <Typography fontSize={"65%"} fontWeight={"bold"} align="left">
+                {accuracy}
+              </Typography>
+            </Grid>
+            <Grid item xs={1} sm={1} md={1} lg={1} display={'flex'} justifyContent={'flex-end'} alignItems={"center"}>
               <Button
                 onClick={handleDeleteClick}
               >
@@ -72,6 +80,25 @@ const DeletableBoxItem = ({
               </Button>
             </Grid>
           </Grid>
+            :
+            <Grid container
+            display={"flex"}
+            marginLeft={"1%"}
+          >
+            <Grid item xs={9} sm={9} md={9} lg={9} display={'flex'} justifyContent={'center'} alignItems={"center"} >
+            <Typography fontSize={"65%"} fontWeight={"bold"} align="left">
+              {label}
+            </Typography>
+            </Grid>
+            <Grid item xs={3} sm={3} md={1} lg={3} display={'flex'} justifyContent={'flex-end'} alignItems={"center"}>
+              <Button
+                onClick={handleDeleteClick}
+              >
+                <Avatar src={xButton} alt={"checkVerde"} variant={"circular"}  />
+              </Button>
+            </Grid>
+          </Grid>
+    }
       </Box>
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>{t("confirmDelete")}</DialogTitle>
@@ -97,32 +124,37 @@ const DeletableBoxItem = ({
     </>
   );
 };
-/*
-interface SuggestedDiagnostic {
-  prediction_id?: number;
-  exam_id?: number;
-  algorithm_type_id?: number;
-  value_name?: string;
-  value_type?: string;
-  value?: string;
-}
-*/
+
 interface DiagnosisProps {
   examId: number;
   diagnosticStates: DiagnosticStates;
 }
 
 const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
+  let newDiagnostics: (DiagnosticPrediction)[] = [];
+  diagnostics.map((item: {exam_id: number, diagnostic_id: number, prediction: boolean, accuracy: number})=>{
+    let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnostic_id);
+    if (newObject){
+      newDiagnostics.push({
+        ...newObject,
+        accuracy: item.accuracy,
+      });
+    }
+  });
+  return newDiagnostics;
+}
+
+const ParserDoctorDiagnostic = (doctorDiagnostics: any, listOfDiagnostics: (Diagnostic)[]) => {
   let newDiagnostics: (Diagnostic)[] = [];
-  diagnostics.map((item: (number | string)[])=>{
-    const text = item[1].toString();
-    let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnostic == text);
+  doctorDiagnostics.map((item: any)=>{
+    let newObject: Diagnostic | undefined = listOfDiagnostics.find(object => object.diagnosticId === item.diagnostic_id);
     if (newObject){
       newDiagnostics.push(newObject);
     }
   });
   return newDiagnostics;
 }
+
 
 const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   examId, diagnosticStates
@@ -134,10 +166,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getDiagnosticTypes().then(
       (res) => {
         let diagnostics: (Diagnostic)[] = []
-        res.data.map((diagnostic: { diagnostic_id: any; diagnostic: any; }) => {
+        res.data.map((diagnostic: { diagnostic_id: number; diagnostic: string; order: number;}) => {
           diagnostics.push({
             diagnosticId: diagnostic.diagnostic_id,
             diagnostic: diagnostic.diagnostic,
+            order: diagnostic.order,
           });
         });
         setDiagnosticTypes(diagnostics);
@@ -162,9 +195,10 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
 
   useEffect(() => {
     if(diagnosticTypes.length === 0) return;
-    getSuggestedDiagnostic(examId).then(
+    getDiagnosticPredictions(examId).then(
       (res) => {
-        const diagnosticDataParser = ParserDiagnostic(res.data[1], diagnosticTypes);
+        const diagnosticDataParser = ParserDiagnostic(res.data, diagnosticTypes);
+        diagnosticDataParser.sort(function(first, second){return first.order - second.order});
         setDiagnosticosSugeridos(diagnosticDataParser);
       },
       (error) => {
@@ -178,15 +212,11 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   }, [diagnosticTypes]);
 
   useEffect(() => {
+    if(diagnosticTypes.length === 0) return;
     getDoctorDiagnostics(examId).then(
       (res) => {
-        let newDoctorDiagnostics: DoctorDiagnostic[] = [];
-        res.data.map((doctorDiagnostic: { exam_id: any; diagnostic_id: any; }) => {
-          newDoctorDiagnostics.push({
-            examId: doctorDiagnostic.exam_id,
-            diagnosticId: doctorDiagnostic.diagnostic_id,
-          });
-        });
+        const newDoctorDiagnostics: (Diagnostic)[] = ParserDoctorDiagnostic(res.data, diagnosticTypes);
+        newDoctorDiagnostics.sort(function(first, second){return first.order - second.order});
         setDoctorDiagnostics(newDoctorDiagnostics);
       },
       (error) => {
@@ -197,7 +227,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           setDoctorDiagnostics(_content);
       }
     );
-  }, []);  
+  }, [diagnosticTypes]);  
 
   const [newItem, setNewItem] = useState<Diagnostic | null>();
 
@@ -226,7 +256,12 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
   const handleAddDialogSubmit = (): void => {
     if(newItem){
       createDoctorDiagnostic(examId, newItem.diagnosticId);
-      setDoctorDiagnostics([...doctorDiagnostics, {examId: examId, diagnosticId: newItem.diagnosticId}]);
+      let newObject: Diagnostic | undefined = diagnosticTypes.find(object => object.diagnosticId == newItem.diagnosticId);
+      if (newObject) {
+        const newDoctorDiagnostics = [...doctorDiagnostics, newObject];
+        newDoctorDiagnostics.sort(function(first, second){return first.order - second.order});
+        setDoctorDiagnostics(newDoctorDiagnostics);
+      }
     }
     setOpenAddDialog(false);
   };
@@ -238,19 +273,21 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
         </Typography>
       </Box>
       <Box width={"100%"}>
-        {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: Diagnostic) => (
+        {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: DiagnosticPrediction) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
             label={item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
+            accuracy={(item.accuracy*100).toFixed(1) + "%"}
             onDelete={handleDeleteDiagnosticoSugerido}
           />
         ))}
-        {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: DoctorDiagnostic) => (
+        {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: Diagnostic) => (
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
             label={item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
+            accuracy={undefined}
             onDelete={handleDeleteDoctorDiagnostic}
           />
         ))}

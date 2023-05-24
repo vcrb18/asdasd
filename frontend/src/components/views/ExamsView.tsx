@@ -74,6 +74,14 @@ export interface FiducialStates {
 export interface Diagnostic {
     diagnosticId: number,
     diagnostic: string,
+    order: number,
+}
+
+export interface DiagnosticPrediction {
+  diagnosticId: number,
+  diagnostic: string,
+  order: number,
+  accuracy: number,
 }
 
 export interface DoctorDiagnostic {
@@ -82,10 +90,10 @@ export interface DoctorDiagnostic {
 }
 
 export interface DiagnosticStates {
-    diagnosticosSugeridos: Diagnostic[];
-    setDiagnosticosSugeridos: Dispatch<Diagnostic[]>;
-    doctorDiagnostics: DoctorDiagnostic[];
-    setDoctorDiagnostics: Dispatch<DoctorDiagnostic[]>;
+    diagnosticosSugeridos: DiagnosticPrediction[];
+    setDiagnosticosSugeridos: Dispatch<DiagnosticPrediction[]>;
+    doctorDiagnostics: Diagnostic[];
+    setDoctorDiagnostics: Dispatch<Diagnostic[]>;
 }
 
 export const rejectionReasons: RejectionReason[] = [
@@ -132,8 +140,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     fidT: fidT, setFidT: setFidT
   };
 
-  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
-  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(DoctorDiagnostic)[]>([]);
+  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(DiagnosticPrediction)[]>([]);
+  const [doctorDiagnostics, setDoctorDiagnostics] = useState<(Diagnostic)[]>([]);
   const diagnosticStates: DiagnosticStates = {
     diagnosticosSugeridos: diagnosticosSugeridos,
     setDiagnosticosSugeridos: setDiagnosticosSugeridos,
