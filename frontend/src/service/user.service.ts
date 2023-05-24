@@ -177,3 +177,7 @@ export const markExamIdAsLocked = async (examId: number): Promise<AxiosResponse>
 export const markExamIdAsUnlocked = async (examId: number): Promise<AxiosResponse> => {
   return await axios.post(`/exams/unlock/${examId}`, {withCredentials: true,});  //changed
 }
+
+export const getDiagnosticPredictions = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/diagnostic_predictions/${examId}`, {withCredentials: true,});  //changed
+}

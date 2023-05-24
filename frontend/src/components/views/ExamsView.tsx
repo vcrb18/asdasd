@@ -77,14 +77,21 @@ export interface Diagnostic {
     order: number,
 }
 
+export interface DiagnosticPrediction {
+  diagnosticId: number,
+  diagnostic: string,
+  order: number,
+  accuracy: number,
+}
+
 export interface DoctorDiagnostic {
     examId: number,
     diagnosticId: number,
 }
 
 export interface DiagnosticStates {
-    diagnosticosSugeridos: Diagnostic[];
-    setDiagnosticosSugeridos: Dispatch<Diagnostic[]>;
+    diagnosticosSugeridos: DiagnosticPrediction[];
+    setDiagnosticosSugeridos: Dispatch<DiagnosticPrediction[]>;
     doctorDiagnostics: Diagnostic[];
     setDoctorDiagnostics: Dispatch<Diagnostic[]>;
 }
@@ -133,7 +140,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     fidT: fidT, setFidT: setFidT
   };
 
-  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(Diagnostic)[]>([]);
+  const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(DiagnosticPrediction)[]>([]);
   const [doctorDiagnostics, setDoctorDiagnostics] = useState<(Diagnostic)[]>([]);
   const diagnosticStates: DiagnosticStates = {
     diagnosticosSugeridos: diagnosticosSugeridos,
