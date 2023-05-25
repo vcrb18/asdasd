@@ -208,7 +208,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           patientId: response.data.patientId,
           createdAt: response.data.createdAt,
           status: response.data.estado,
-          accepted: response.data.aceptado,
+          accepted: response.data.accepted,
           urgency: response.data.urgencia,
           results: response.data.resultados,
           operatorReview: response.data.operatorReview,
