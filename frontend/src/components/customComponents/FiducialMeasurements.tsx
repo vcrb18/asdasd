@@ -10,7 +10,7 @@ import { getExamPredictedMarkersComputations } from "../../service/user.service"
 import { Typography } from "@mui/material";
 
 interface Measurements {
-  exam_id: number;
+  examId: number;
   fc: number;
   rr: number;
   pq: number;
@@ -21,7 +21,7 @@ interface Measurements {
 }
 
 function createData(
-  exam_id: number,
+  examId: number,
   fc: number,
   rr: number,
   pq: number,
@@ -30,12 +30,12 @@ function createData(
   qtc: number,
   st: number
 ): Measurements {
-  return { exam_id, fc, rr, pq, qrs, qt, qtc, st };
+  return { examId, fc, rr, pq, qrs, qt, qtc, st };
 }
 
 const FiducialMeasurementsTable = (props: any): JSX.Element => {
   const [computationPoints, setComputationPoints] = useState<Measurements>({
-    exam_id: 0,
+    examId: 0,
     fc: 0,
     rr: 0,
     pq: 0,
