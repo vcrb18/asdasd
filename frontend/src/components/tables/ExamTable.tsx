@@ -153,7 +153,6 @@ interface ExamData {
   patientId: string | null;
   createdAt: string;
   deadline: string;
-  status: boolean;
   urgency: number;
   remainingTime: string,
   operatorReview: boolean;
@@ -406,7 +405,6 @@ const ExamTable = ({
       if (useFilter && (filterId != "")){
         getExamsById(filterId, page, 11).then((response) => {
           const newExams: ExamData[] = [];
-
           response.data.rows.map((examData: any) => {
             setMaxRows(response.data.count)
             newExams.push({
@@ -414,12 +412,11 @@ const ExamTable = ({
               patientId: examData.patientId,
               createdAt: examData.createdAt,
               deadline: examData.createdAt,
-              status: examData.estado,
               urgency: examData.urgencia,
               remainingTime: examData.RemainingTime,
               operatorReview: examData.operatorReview,
               results: examData.resultados,
-              accepted: examData.aceptado,
+              accepted: examData.accepted,
               operatorAccept: examData.operatorAccept,
               locked: examData.locked,
               lockedBy: examData.lockedBy,
@@ -449,12 +446,11 @@ const ExamTable = ({
             patientId: examData.patientId,
             createdAt: examData.createdAt,
             deadline: examData.createdAt,
-            status: examData.estado,
             urgency: examData.urgency,
             remainingTime: examData.remainingTime,
             operatorReview: examData.operatorReview,
             results: examData.resultados,
-            accepted: examData.aceptado,
+            accepted: examData.accepted,
             operatorAccept: examData.operatorAccept,
             locked: examData.locked,
             lockedBy: examData.lockedBy,
