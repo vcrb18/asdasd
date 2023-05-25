@@ -6,9 +6,6 @@ export type AxiosHeaders = Record<string, string | null>;
 
 export default function authHeader(): AxiosHeaders {
   const userStr = localStorage.getItem("user");
-  console.log("ESTAMOS ADENTRO DE authHEADER");
-  console.log("userStr");
-  console.log(userStr);
 
   let user = null;
   if (userStr) user = JSON.parse(userStr);

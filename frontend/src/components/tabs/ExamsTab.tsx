@@ -49,9 +49,7 @@ const ExamsTab = (): JSX.Element => {
   
 
   const onSubmit = (data: FormInput) : void => {
-    console.log("Input:", data.folioSearch);
     setInputValue(data.folioSearch);
-    console.log(inputValue)
     if (inputValue !== "") {
       setFilterCondition(true);
     } else {

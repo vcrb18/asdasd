@@ -4,7 +4,6 @@ import authHeader from "./auth.header";
 const API_URL = "http://localhost:8080/";
 
 function fetcher(url: string) {
-  console.log(`url: ${url}`);
   return fetch(url).then((res) => res.json());
 }
 
@@ -15,8 +14,6 @@ export const getPublicContent = async (): Promise<AxiosResponse> => {
 export function useExams(page : number, order:number) {
 
   const { data, error } = useSWR(`/exams?page=${page}&order=${order}&count=25`, fetcher);
-  console.log('Inside the useExams. data:');
-  console.log(data);
   
   
   return {
@@ -95,7 +92,6 @@ export const getExamOperatorMarkers = async (examId: number): Promise<AxiosRespo
     return res;
   }
   catch(error : any){
-    console.log(error.response);
     return error.response;
   }
 }

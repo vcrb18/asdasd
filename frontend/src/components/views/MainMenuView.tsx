@@ -21,7 +21,6 @@ const MainMenuView = (): JSX.Element => {
         headerPositionMd="relative"
         headerPositionXs="fixed"
         onTabValueChange={(index: number) => {
-          console.log(`Main Menu: Tab index changed to ${index}`);
         }}
       />
       <Grid 

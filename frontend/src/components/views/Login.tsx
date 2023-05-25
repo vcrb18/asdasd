@@ -46,18 +46,13 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
   };
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log(`loginInputs.username: ${loginInputs.username}`);
-    console.log(`loginInputs.password: ${loginInputs.password}`);
     setLoading(true)
     login(loginInputs.username, loginInputs.password).then(
       () => {
-        console.log("Entramos al login");
         navigate("/mainmenu");
         window.location.reload();
       })
       .catch((error) => {
-        console.log("Entramos al error");
-        console.log(error.response.data);
 
         const resMessage =
           error?.response?.data?.message || error.message || error.toString();
@@ -81,7 +76,6 @@ const Login: React.FC<LoginProps> = ({ buttons }) => {
           headerPositionXs="sticky"
           buttons={buttons}
           onTabValueChange={(index: number) => {
-            console.log(`Funcion que no hace nada en el Login`);
           }}
         />
     <Box

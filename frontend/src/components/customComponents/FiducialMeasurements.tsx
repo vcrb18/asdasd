@@ -47,7 +47,6 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   useEffect(() => {
     getExamPredictedMarkersComputations(props.examId).then(
       (response) => {
-        console.log(response.data);
         setComputationPoints(response.data);
       },
       (error) => {

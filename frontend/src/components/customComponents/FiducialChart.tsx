@@ -117,7 +117,6 @@ const FiducialChart = (props: any): JSX.Element => {
 
 
   useEffect(() => {
-    console.log("update tabla fiduciales")
 
     setexamId(props.examId);
 

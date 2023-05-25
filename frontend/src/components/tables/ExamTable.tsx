@@ -404,12 +404,8 @@ const ExamTable = ({
       shouldLoad = true
       setMaxPage(page)
       if (useFilter && (filterId != "")){
-        console.log(page)
-        console.log(filterId)
-        console.log(oldFolio)
         getExamsById(filterId, page, 11).then((response) => {
           const newExams: ExamData[] = [];
-          console.log("estoy retornando un examen filtrado")
 
           response.data.rows.map((examData: any) => {
             setMaxRows(response.data.count)

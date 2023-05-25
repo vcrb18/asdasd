@@ -10,8 +10,6 @@ interface ProtectedRouteProps {
 const RequireAuth: React.FC<ProtectedRouteProps> = ({ children }) => {
   // CAMBIAR
   const userIsLogged = getCurrentUser();
-  console.log("userIsLogged");
-  console.log(userIsLogged);
 
   if (!userIsLogged) {
     return <Login buttons={loginPageButtons} />;
