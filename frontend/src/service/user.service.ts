@@ -40,9 +40,9 @@ export const getExamsCount = async () : Promise<AxiosResponse> => {
 }
 
 export const getExamPredictedMarkersComputations = (
-  exam_id: number
+  examId: number
 ): Promise<AxiosResponse> => {
-  return axios.get(`/predicted_marker_computations/${exam_id}`, {
+  return axios.get(`/predicted_marker_computations/${examId}`, {
     withCredentials: true,
   });
 };
@@ -58,14 +58,14 @@ export const getExamPredictedMarkersComputations = (
 //   "st": 0.47500000000000003
 // }
 
-export const getExam = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/exams/${exam_id}`, { withCredentials: true });
+export const getExam = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/exams/${examId}`, { withCredentials: true });
 };
 
 export const getExamAllAlgorithmPredictions = (
-  exam_id: number
+  examId: number
 ): Promise<AxiosResponse> => {
-  return axios.get(`/algorithm_predictions/${exam_id}`, {
+  return axios.get(`/algorithm_predictions/${examId}`, {
     withCredentials: true,
   });
 };
@@ -78,20 +78,20 @@ export const getExamAllAlgorithmPredictions = (
 // }
 
 export const getSuggestedDiagnostic = async (
-  exam_id: number,
+  examId: number,
 ): Promise<AxiosResponse> => {
-  return await axios.get(`/algorithm_predictions/${exam_id}`, {
+  return await axios.get(`/algorithm_predictions/${examId}`, {
     withCredentials: true,
   });
 };
 
-export const getExamPredictedMarkers = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/predicted_markers/${exam_id}`, {withCredentials: true})
+export const getExamPredictedMarkers = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/predicted_markers/${examId}`, {withCredentials: true})
 }
 
-export const getExamOperatorMarkers = async (exam_id: number): Promise<AxiosResponse> => {
+export const getExamOperatorMarkers = async (examId: number): Promise<AxiosResponse> => {
   try{
-    let res = await axios.get(`/operator_markers/${exam_id}`, {withCredentials: true})
+    let res = await axios.get(`/operator_markers/${examId}`, {withCredentials: true})
     return res;
   }
   catch(error : any){
@@ -100,55 +100,55 @@ export const getExamOperatorMarkers = async (exam_id: number): Promise<AxiosResp
   }
 }
 
-export const getTimeSeriesById = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true})
+export const getTimeSeriesById = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/timeseries/${examId}`, {withCredentials: true})
 }
-export const getTimeSeries = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.get(`/timeseries/${exam_id}`, {withCredentials: true});
+export const getTimeSeries = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/timeseries/${examId}`, {withCredentials: true});
 }
 
-export const postOperatorMarkers = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
+export const postOperatorMarkers = async (examId: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
   return await axios(
     {
       method: 'post', //changed
-      url: `/operator_markers/edit/${exam_id}`,
+      url: `/operator_markers/edit/${examId}`,
       data: newData,
       withCredentials: true,
     });
 }
 
-export const postOperatorMarkersComputations = async (exam_id: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
+export const postOperatorMarkersComputations = async (examId: number, newData : any): Promise<AxiosResponse> => {  //deberiamos considerar la posibilidad de multiples comentarios, quiza al menos agregar userid
   return await axios(
     {
       method: 'post', //changed
-      url: `/operator_marker_computations/edit/${exam_id}`,
+      url: `/operator_marker_computations/edit/${examId}`,
       data: newData,
       withCredentials: true,
     });
 }
 
 
-export const deleteOperatorMarkers = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.post(`/operator_markers/delete/${exam_id}`, {withCredentials: true});//changed
+export const deleteOperatorMarkers = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.post(`/operator_markers/delete/${examId}`, {withCredentials: true});//changed
 }
 
-export const deleteOperatorMarkersComputations = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.post(`/operator_marker_computations/delete/${exam_id}`, {withCredentials: true}); //changed
+export const deleteOperatorMarkersComputations = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.post(`/operator_marker_computations/delete/${examId}`, {withCredentials: true}); //changed
 }
-export const putExamReview = async (exam_id: number): Promise<AxiosResponse> => {
-    return await axios.post(`/exams/review/${exam_id}`, { withCredentials: true }); //changed
-}
-
-export const putExamUnreview = async (exam_id: number): Promise<AxiosResponse> => {
-    return await axios.post(`/exams/unreview/${exam_id}`, { withCredentials: true }); //changed
+export const putExamReview = async (examId: number): Promise<AxiosResponse> => {
+    return await axios.post(`/exams/review/${examId}`, { withCredentials: true }); //changed
 }
 
-export const markExamIdAsAccepted = async (exam_id: number): Promise<AxiosResponse> => {
-  return await axios.post(`/exams/accept//${exam_id}`, {withCredentials: true}) //changed
+export const putExamUnreview = async (examId: number): Promise<AxiosResponse> => {
+    return await axios.post(`/exams/unreview/${examId}`, { withCredentials: true }); //changed
 }
 
-export const markExamIdAsRejected = async (exam_id: number, reasonId: number, derivation: string): Promise<AxiosResponse> => {
-  return await axios.post(`/exams/reject/${exam_id}?reason=${reasonId}&derivation=${derivation}`, {withCredentials: true}) //changed
+export const markExamIdAsAccepted = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.post(`/exams/accept//${examId}`, {withCredentials: true}) //changed
+}
+
+export const markExamIdAsRejected = async (examId: number, reasonId: number, derivation: string): Promise<AxiosResponse> => {
+  return await axios.post(`/exams/reject/${examId}?reason=${reasonId}&derivation=${derivation}`, {withCredentials: true}) //changed
 }
 export const getDiagnosticTypeByDiagnostic = async (diagnostic: string,): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_types/${diagnostic}`, {withCredentials: true,});
@@ -159,7 +159,7 @@ export const getDiagnosticTypes = async (): Promise<AxiosResponse> => {
 }
 
 export const createDoctorDiagnostic = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
-  return await axios.post(`/doctor_diagnostics/create`, {exam_id: examId, diagnostic_id: diagnosticId, withCredentials: true,});
+  return await axios.post(`/doctor_diagnostics/create`, {examId: examId, diagnosticId: diagnosticId, withCredentials: true,});
 }
 
 export const getDoctorDiagnostics = async (examId: number): Promise<AxiosResponse> => {
