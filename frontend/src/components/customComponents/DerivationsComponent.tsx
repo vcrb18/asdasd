@@ -105,24 +105,24 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     getExamOperatorMarkers(examId).then(
       (response) => {
         if (response.status ==  200){
-          setFidP(response.data.p_start + offset)
-          setFidQRS(response.data.qrs_start + offset)
+          setFidP(response.data.pStart + offset)
+          setFidQRS(response.data.qrsStart + offset)
           setFidR(response.data.r + offset)
           setFidR2(response.data.r2 + offset)
-          setFidS(response.data.qrs_end + offset)
-          setFidST(response.data.t_start + offset)
-          setFidT(response.data.t_end + offset) 
+          setFidS(response.data.qrsEnd + offset)
+          setFidST(response.data.tStart + offset)
+          setFidT(response.data.tEnd + offset) 
         }
         else{
           getExamPredictedMarkers(examId).then(
             (response) => {
-              setFidP(response.data.p_start + offset)
-              setFidQRS(response.data.qrs_start + offset)
+              setFidP(response.data.pStart + offset)
+              setFidQRS(response.data.qrsStart + offset)
               setFidR(response.data.r + offset)
               setFidR2(response.data.r2 + offset)
-              setFidS(response.data.qrs_end + offset)
-              setFidST(response.data.t_start + offset)
-              setFidT(response.data.t_end + offset) 
+              setFidS(response.data.qrsEnd + offset)
+              setFidST(response.data.tStart + offset)
+              setFidT(response.data.tEnd + offset) 
             }
           );
         }
@@ -130,13 +130,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
   }, [count]);
 
   const handleFiducialChartUpdate : Function = (childData : any) => {
-    setFidP(childData.p_start);
-    setFidQRS(childData.qrs_start);
+    setFidP(childData.pStart);
+    setFidQRS(childData.qrsStart);
     setFidR(childData.r);
     setFidR2(childData.r2);
-    setFidS(childData.qrs_end);
-    setFidST(childData.t_start);
-    setFidT(childData.t_end);
+    setFidS(childData.qrsEnd);
+    setFidST(childData.tStart);
+    setFidT(childData.tEnd);
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
@@ -257,14 +257,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
             onClick={() => {
               const newData = 
               {
-                exam_id:examId - offset,
-                p_start:fidP - offset,
-                qrs_start:fidQRS - offset,
+                examId:examId - offset,
+                pStart:fidP - offset,
+                qrsStart:fidQRS - offset,
                 r:fidR - offset,
                 r2:fidR2 - offset,
-                qrs_end:fidS - offset,
-                t_start:fidST - offset,
-                t_end:fidT - offset,
+                qrsEnd:fidS - offset,
+                tStart:fidST - offset,
+                tEnd:fidT - offset,
               }
               postOperatorMarkers(examId, newData);
               postOperatorMarkersComputations(examId, newData)

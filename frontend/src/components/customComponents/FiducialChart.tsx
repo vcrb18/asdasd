@@ -117,7 +117,6 @@ const FiducialChart = (props: any): JSX.Element => {
 
 
   useEffect(() => {
-    console.log("update tabla fiduciales")
 
     setexamId(props.examId);
 
@@ -242,14 +241,14 @@ useEffect(() => {
   let lastMovedIndex = 0;
 
   let lastData = {
-    exam_id:examId,
-    p_start:props.fidP,
-    qrs_start:props.fidQRS,
+    examId:examId,
+    pStart:props.fidP,
+    qrsStart:props.fidQRS,
     r:props.fidR,
     r2:props.fidR2,
-    qrs_end:props.fidS,
-    t_start:props.fidT,
-    t_end:props.fidST,
+    qrsEnd:props.fidS,
+    tStart:props.fidT,
+    tEnd:props.fidST,
   } as any;
 
   
@@ -275,14 +274,14 @@ useEffect(() => {
     setfidT(chart.data.datasets[5].data[0].x);
 
     const childata = {
-      exam_id:examId,
-      p_start:chart.data.datasets[0].data[0].x,
-      qrs_start:chart.data.datasets[1].data[0].x,
+      examId:examId,
+      pStart:chart.data.datasets[0].data[0].x,
+      qrsStart:chart.data.datasets[1].data[0].x,
       r:chart.data.datasets[2].data[0].x,
       r2:chart.data.datasets[6].data[0].x,
-      qrs_end:chart.data.datasets[3].data[0].x,
-      t_start:chart.data.datasets[4].data[0].x,
-      t_end:chart.data.datasets[5].data[0].x,
+      qrsEnd:chart.data.datasets[3].data[0].x,
+      tStart:chart.data.datasets[4].data[0].x,
+      tEnd:chart.data.datasets[5].data[0].x,
     }
 
     return childata;
@@ -307,23 +306,23 @@ useEffect(() => {
 
     
 
-    setfidP(lastData.p_start + movement);
-    setfidQRS(lastData.qrs_start + movement);
+    setfidP(lastData.pStart + movement);
+    setfidQRS(lastData.qrsStart + movement);
     setfidR(lastData.r + movement);
     setfidR2(lastData.r2 + movement);
-    setfidS(lastData.qrs_end + movement);
-    setfidST(lastData.t_end + movement);
-    setfidT(lastData.t_start + movement);
+    setfidS(lastData.qrsEnd + movement);
+    setfidST(lastData.tEnd + movement);
+    setfidT(lastData.tStart + movement);
 
     const childata = {
-      exam_id: examId,
-      p_start: lastData.p_start + movement,
-      qrs_start: lastData.qrs_start + movement,
+      examId: examId,
+      pStart: lastData.pStart + movement,
+      qrsStart: lastData.qrsStart + movement,
       r: lastData.r + movement,
       r2: lastData.r2 + movement,
-      qrs_end: lastData.qrs_end + movement,
-      t_start: lastData.t_end + movement,
-      t_end: lastData.t_start + movement,
+      qrsEnd: lastData.qrsEnd + movement,
+      tStart: lastData.tEnd + movement,
+      tEnd: lastData.tStart + movement,
     }
 
     return childata;
@@ -951,7 +950,7 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "P",
-      altLabel:"p_start",
+      altLabel:"pStart",
       data: pStartPoint,
       spanGaps: true,
       borderColor: "black",
@@ -964,7 +963,7 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "Q",
-      altLabel:"qrs_start",
+      altLabel:"qrsStart",
       data: qrsStartPoint,
       spanGaps: true,
       borderColor: "black",
@@ -990,7 +989,7 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "S",
-      altLabel:"qrs_end",
+      altLabel:"qrsEnd",
       data: qrsEndPoint,
       spanGaps: true,
       borderColor: "black",
@@ -1003,7 +1002,7 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "ST",
-      altLabel:"t_end",
+      altLabel:"tEnd",
       data: tStartPoint,
       spanGaps: true,
       borderColor: "black",
@@ -1016,7 +1015,7 @@ const data1 = {
       pointStyle:'rectRounded',
       pointRadius: pointRadious,
       label: "T",
-      altLabel:"t_start",
+      altLabel:"tStart",
       data: tEndPoint,
       spanGaps: true,
       borderColor: "black",

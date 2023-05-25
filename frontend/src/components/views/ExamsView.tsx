@@ -25,7 +25,7 @@ interface ExamsViewProps {
 }
 
 interface PredictedValuesData {
-  exam_id: number;
+  examId: number;
   fc: number;
   rr: number;
   pq: number;
@@ -204,20 +204,20 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     getExam(examIdNumber).then(
       (response) => {
         setExamData({
-          examId: response.data.exam_id,
-          patientId: response.data.patient_id,
-          createdAt: response.data.created_at,
+          examId: response.data.examId,
+          patientId: response.data.patientId,
+          createdAt: response.data.createdAt,
           status: response.data.estado,
           accepted: response.data.aceptado,
           urgency: response.data.urgencia,
           results: response.data.resultados,
-          operatorReview: response.data.operator_review,
-          operatorAccept: response.data.operator_accept,
-          rejectionId: response.data.rejection_id,
-          rejectedDerivation: response.data.rejected_derivation,
+          operatorReview: response.data.operatorReview,
+          operatorAccept: response.data.operatorAccept,
+          rejectionId: response.data.rejectionId,
+          rejectedDerivation: response.data.rejectedDerivation,
         });
-        setValidated(response.data?.operator_review);
-        let newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejection_id);
+        setValidated(response.data?.operatorReview);
+        let newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejectionId);
         setRejectionReason(newRejectionReason);
         setIsLoadingExamData(false);
       },

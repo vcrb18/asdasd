@@ -46,7 +46,6 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
     href: string
   ): void => {
     event.preventDefault();
-    console.log(label);
 
     if (label === "logOut") {
       logout().then(() => {

@@ -42,8 +42,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
           confidence: response.data[0][0].confidence,
           status: response.data[0][0].estado,
           id: response.data[0][0].id,
-          rejectionReason: response.data[0][0].razon_rechazo,
-          rejectionReasonConfidence: response.data[0][0].razon_rechazo_confianza,
+          rejectionReason: response.data[0][0].razonRechazo,
+          rejectionReasonConfidence: response.data[0][0].razonRechazoConfianza,
         };
         let newRejectionReason: undefined | RejectionReason = rejectionReasons.find(object => object.reason == data.rejectionReason);
         setRejectionReason(newRejectionReason);

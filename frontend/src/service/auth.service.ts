@@ -32,37 +32,22 @@ export const login = async (
       password,
     });
 
-    console.log("Estamos en la response del login");
-    console.log("response");
-    console.log(response);
-    console.log("response.data");
-    console.log(response.data);
-    console.log("response.data.token");
-    console.log(response.data.token);
-
     // CAMBIAR
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
-      console.log("Entro en el if: if (response.data.token)");
       const userIsLogged = getCurrentUser();
-      console.log("userIsLogged");
-      console.log(userIsLogged);
     }
 
     return response.data;
   } catch (error) {
-    console.log("Error in login request:", error);
     throw error;
   }
 };
 
 // CAMBIAR
 export const logout = async () => {
-  console.log("ENTRAMOS al logout");
   localStorage.removeItem("user");
   const userIsLogged = getCurrentUser();
-  console.log("userIsLogged");
-  console.log(userIsLogged);
 };
 
 export const getCurrentUser = (): any => {

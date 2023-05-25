@@ -132,8 +132,8 @@ interface DiagnosisProps {
 
 const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
   let newDiagnostics: (DiagnosticPrediction)[] = [];
-  diagnostics.map((item: {exam_id: number, diagnostic_id: number, prediction: boolean, accuracy: number})=>{
-    let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnostic_id);
+  diagnostics.map((item: {examId: number, diagnosticId: number, prediction: boolean, accuracy: number})=>{
+    let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnosticId);
     if (newObject){
       newDiagnostics.push({
         ...newObject,
@@ -147,7 +147,7 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
 const ParserDoctorDiagnostic = (doctorDiagnostics: any, listOfDiagnostics: (Diagnostic)[]) => {
   let newDiagnostics: (Diagnostic)[] = [];
   doctorDiagnostics.map((item: any)=>{
-    let newObject: Diagnostic | undefined = listOfDiagnostics.find(object => object.diagnosticId === item.diagnostic_id);
+    let newObject: Diagnostic | undefined = listOfDiagnostics.find(object => object.diagnosticId === item.diagnosticId);
     if (newObject){
       newDiagnostics.push(newObject);
     }
@@ -166,9 +166,9 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getDiagnosticTypes().then(
       (res) => {
         let diagnostics: (Diagnostic)[] = []
-        res.data.map((diagnostic: { diagnostic_id: number; diagnostic: string; order: number;}) => {
+        res.data.map((diagnostic: { diagnosticId: number; diagnostic: string; order: number;}) => {
           diagnostics.push({
-            diagnosticId: diagnostic.diagnostic_id,
+            diagnosticId: diagnostic.diagnosticId,
             diagnostic: diagnostic.diagnostic,
             order: diagnostic.order,
           });
