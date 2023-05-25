@@ -414,17 +414,17 @@ const ExamTable = ({
           response.data.rows.map((examData: any) => {
             setMaxRows(response.data.count)
             newExams.push({
-              examId: examData.exam_id,
-              patientId: examData.patient_id,
-              createdAt: examData.created_at,
-              deadline: examData.created_at,
+              examId: examData.examId,
+              patientId: examData.patientId,
+              createdAt: examData.createdAt,
+              deadline: examData.createdAt,
               status: examData.estado,
               urgency: examData.urgencia,
               remainingTime: examData.RemainingTime,
-              operatorReview: examData.operator_review,
+              operatorReview: examData.operatorReview,
               results: examData.resultados,
               accepted: examData.aceptado,
-              operatorAccept: examData.operator_accept,
+              operatorAccept: examData.operatorAccept,
               locked: examData.locked,
               lockedBy: examData.lockedBy,
             });
@@ -449,17 +449,17 @@ const ExamTable = ({
         response.data.rows.map((examData: any) => {
           setMaxRows(response.data.count)
           newExams.push({
-            examId: examData.exam_id,
-            patientId: examData.patient_id,
-            createdAt: examData.created_at,
-            deadline: examData.created_at,
+            examId: examData.examId,
+            patientId: examData.patientId,
+            createdAt: examData.createdAt,
+            deadline: examData.createdAt,
             status: examData.estado,
             urgency: examData.urgency,
             remainingTime: examData.remainingTime,
-            operatorReview: examData.operator_review,
+            operatorReview: examData.operatorReview,
             results: examData.resultados,
             accepted: examData.aceptado,
-            operatorAccept: examData.operator_accept,
+            operatorAccept: examData.operatorAccept,
             locked: examData.locked,
             lockedBy: examData.lockedBy,
           });
