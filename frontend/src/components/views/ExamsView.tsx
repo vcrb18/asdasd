@@ -11,7 +11,10 @@ import {
   getExamPredictedMarkersComputations,
   markExamIdAsLocked,
   markExamIdAsUnlocked,
-  putExamReview, putExamUnreview
+  putExamReview, putExamUnreview,
+  acceptExamSistemed2, rejectExamSistemed2,
+  postMarkersSistemed2,
+  DiagnosticSistemed2, postDiagnosticsSistemed2
 } from "../../service/user.service";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 
@@ -231,24 +234,50 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     );
   }, [acceptedExam]);
 
-    const validationButtonMessage: string = (validated) ? t("undoValidation") : t("validateMeasurements");
-    const toggleValidatedExam = (): void => {
-        if (validated) {
-            putExamUnreview(examIdNumber).then((res) => {
-                if (res.data.success) {
-                    setValidated(!validated);
-                }
-            });
+  const validationButtonMessage: string = (validated) ? t("undoValidation") : t("validateMeasurements");
+  const toggleValidatedExam = (): void => {
+    if (validated) {
+      putExamUnreview(examIdNumber).then((res) => {
+        if (res.data.success) {
+          setValidated(!validated);
         }
-        else {
-            putExamReview(examIdNumber).then((res) => {
-                if (res.data.success) {
-                    setValidated(!validated);
-                    handleGoBack();
-                }
+      });
+    }
+    else {
+      putExamReview(examIdNumber).then((res) => {
+        if (res.data.success) {
+
+          const isAccepted: boolean = examData?.operatorAccept != undefined ?
+            (examData?.operatorAccept === true ? true : false) :
+            (examData?.accepted === true ? true : false);
+          if (isAccepted) {
+
+            const isUrgent: boolean = examData?.urgency != undefined ?
+              ((examData?.urgency > 1) ? true : false) :
+              false;
+            acceptExamSistemed2(examIdNumber, isUrgent);
+
+            postMarkersSistemed2(examIdNumber, fidP, fidQRS, fidR, fidS, fidST, fidT, fidR2);
+
+            const suggestedDiagnostics: DiagnosticSistemed2[] = [];
+            diagnosticStates.diagnosticosSugeridos.forEach((item: DiagnosticPrediction) => {
+              suggestedDiagnostics.push({ ID: item.diagnosticId, METRIC: Math.round(item.accuracy * 100) });
             });
+            diagnosticStates.doctorDiagnostics.forEach((item: Diagnostic) => {
+              suggestedDiagnostics.push({ ID: item.diagnosticId, METRIC: 100 });
+            });
+            postDiagnosticsSistemed2(examIdNumber, suggestedDiagnostics);
+          }
+          else {
+            rejectExamSistemed2(examIdNumber, examData?.rejectionId, examData?.rejectedDerivation);
+          }
+
+          setValidated(!validated);
+          handleGoBack();
         }
-    };
+      });
+    }
+  };
 
   const fecha = examData?.createdAt.includes("T")
     ? examData?.createdAt.replace("T", " ").split(".")[0]

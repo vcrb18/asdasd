@@ -177,3 +177,48 @@ export const markExamIdAsUnlocked = async (examId: number): Promise<AxiosRespons
 export const getDiagnosticPredictions = async (examId: number): Promise<AxiosResponse> => {
   return await axios.get(`/diagnostic_predictions/${examId}`, {withCredentials: true,});  //changed
 }
+
+export const acceptExamSistemed2 = async (examId: number, urgency: boolean = false): Promise<AxiosResponse> => {
+  examId = 12619;  // TODO: remove line when API is in production.
+  return await axios.post(`/sistemed2_api/accept_exam/${examId}`, {
+    withCredentials: true,
+    urgency: urgency
+  });
+}
+
+export const rejectExamSistemed2 = async (examId: number, reasonForRejection: number | null | undefined, derivations: string | null | undefined, indications: string =''): Promise<AxiosResponse> => {
+  examId = 12619;  // TODO: remove line when API is in production.
+  return await axios.post(`/sistemed2_api/reject_exam/${examId}`, {
+    withCredentials: true,
+    reason_for_rejection: reasonForRejection,
+    derivations: derivations,
+    indications: indications
+  });
+}
+
+export const postMarkersSistemed2 = async (examId: number, p: number, q: number, r: number, s: number, st:number, t: number, r2: number): Promise<AxiosResponse> => {
+  examId = 12619;  // TODO: remove line when API is in production.
+  return await axios.post(`/sistemed2_api/add_measurements/${examId}`, {
+    withCredentials: true,
+    p_start: p,
+    qrs_start: q,
+    r: r,
+    qrs_end: s,
+    t_start: st,
+    t_end: t,
+    r2: r2
+  });
+}
+
+export interface DiagnosticSistemed2 {
+  ID: number;
+  METRIC: number;
+}
+
+export const postDiagnosticsSistemed2 = async (examId: number, diagnostics: DiagnosticSistemed2[]): Promise<AxiosResponse> => {
+  examId = 12619;  // TODO: remove line when API is in production.
+  return await axios.post(`/sistemed2_api/add_suggested_diagnosis/${examId}`, {
+    withCredentials: true,
+    diagnostics: diagnostics
+  });
+}
