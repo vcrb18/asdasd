@@ -67,7 +67,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   // const qtc = computationPoints? computationPoints.qtc : 0;
   // const st = computationPoints? computationPoints.st: 0;
   // const row = computationPoints;
-  const rr = props.fidR2 - props.fidR;
+  const rr = Math.abs(props.fidR2 - props.fidR);
   const fc = (1000 * 60) / rr;
   const pq = props.fidQRS - props.fidP;
   const qrs = props.fidS - props.fidQRS;
