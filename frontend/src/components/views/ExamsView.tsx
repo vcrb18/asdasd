@@ -555,6 +555,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             >
                 <AnalisisBox examId={examIdNumber} 
                              analisisData={examData} 
+                             examMetadata={examMetadata}
                              isLoading={isLoadingExamData} 
                              setAccepted={setAcceptedExam}
                              rejectionReason={rejectionReason} 
@@ -684,6 +685,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             >
                 <AnalisisBox examId={examIdNumber} 
                              analisisData={examData}
+                             examMetadata={examMetadata}
                              isLoading={isLoadingExamData} 
                              setAccepted={setAcceptedExam} 
                              rejectionReason={rejectionReason} 
