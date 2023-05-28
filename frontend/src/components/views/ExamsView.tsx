@@ -12,6 +12,7 @@ import {
   markExamIdAsLocked,
   markExamIdAsUnlocked,
   putExamReview, putExamUnreview,
+  getExamDataSistemed2,
   acceptExamSistemed2, rejectExamSistemed2,
   postMarkersSistemed2,
   DiagnosticSistemed2, postDiagnosticsSistemed2
@@ -50,6 +51,32 @@ export interface ExamData {
   operatorAccept: boolean | null;
   rejectionId: number | null;
   rejectedDerivation: string | null;
+}
+
+export interface Background {
+  id: number;
+  name: string;
+}
+export interface Medication {
+  id: number;
+  name: string;
+  dose: number;
+}
+
+export interface Symptom {
+  id: number;
+  name: string;
+  dose: number;
+}
+
+
+export interface ExamMetadata {
+  patientId: number;
+  birthday: string;
+  gender: string;
+  backgrounds: Background[];
+  medications: Medication[];
+  symptoms: Symptom[];
 }
 
 export interface RejectionReason {
@@ -125,6 +152,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [isLoadingExamData, setIsLoadingExamData] = useState<boolean>(true);
   const [acceptedExam, setAcceptedExam] = useState<boolean | null>(null);
   const [rejectionReason, setRejectionReason] = useState<RejectionReason | undefined>();
+
+  const [examMetadata, setExamMetadata] = useState<ExamMetadata | null>(null);
 
   const [fidP, setFidP] = React.useState(1500);
   const [fidQRS, setFidQRS] = React.useState(1700);
@@ -202,6 +231,27 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
   }, [isLocked]);
 
+  useEffect(() => {
+    getExamDataSistemed2(examIdNumber).then((response) => {
+      if (response?.data?.Error === false) {
+        setExamMetadata({
+          patientId: response.data.PatientId,
+          birthday: response.data.Birthday,
+          gender: response.data.Gender,
+          backgrounds: Object.entries(response.data.Backgrounds).map(([key, value]: [string, any]) => {
+            return { id: value.ID, name: value.NAME };
+          }),
+          medications: Object.entries(response.data.Medications).map(([key, value]: [string, any]) => {
+            return { id: value.ID, name: value.NAME, dose: value.DOSE };
+          }),
+          symptoms: Object.entries(response.data.Symptoms).map(([key, value]: [string, any]) => {
+            return { id: value.ID, name: value.NAME, dose: value.DOSE };
+          })
+        });
+      }
+    });
+  }, []);
+  
   useEffect(() => {
     setIsLoadingExamData(true);
     getExam(examIdNumber).then(

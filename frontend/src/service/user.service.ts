@@ -178,6 +178,13 @@ export const getDiagnosticPredictions = async (examId: number): Promise<AxiosRes
   return await axios.get(`/diagnostic_predictions/${examId}`, {withCredentials: true,});  //changed
 }
 
+export const getExamDataSistemed2 = async (examId: number): Promise<AxiosResponse> => {
+  examId = 12619;  // TODO: remove line when API is in production.
+  return await axios.get(`/sistemed2_api/get_exam_data/${examId}`, {
+    withCredentials: true,
+  });
+}
+
 export const acceptExamSistemed2 = async (examId: number, urgency: boolean = false): Promise<AxiosResponse> => {
   examId = 12619;  // TODO: remove line when API is in production.
   return await axios.post(`/sistemed2_api/accept_exam/${examId}`, {
