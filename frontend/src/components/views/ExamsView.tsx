@@ -300,6 +300,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           const isAccepted: boolean = examData?.operatorAccept != undefined ?
             (examData?.operatorAccept === true ? true : false) :
             (examData?.accepted === true ? true : false);
+
           if (isAccepted) {
 
             const isUrgent: boolean = examData?.urgency != undefined ?
