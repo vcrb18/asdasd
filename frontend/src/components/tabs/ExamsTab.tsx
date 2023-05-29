@@ -144,14 +144,15 @@ const ExamsTab = (): JSX.Element => {
       </Grid>
       <Grid item lg={12} xs={12} md={12}></Grid>
       </div>
-      <div style={{width: "100%",bottom: 0, textAlign: "center", position: "fixed"}}>
+      <div style={{width: "100%",bottom: 0, textAlign: "center", position: "relative"}}>
     <Footer 
-      footerPositionLg="fixed"
-      footerPositionMd="fixed"
-      footerPositionXs="fixed" />
+      footerPositionLg="sticky"
+      footerPositionMd="sticky"
+      footerPositionXs="sticky" />
       </div>
     </>
   );
 };
+
 
 export default ExamsTab;
