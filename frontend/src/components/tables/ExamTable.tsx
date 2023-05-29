@@ -439,7 +439,6 @@ const ExamTable = ({
       else{
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
-        console.log(response.data.rows);
         response.data.rows.map((examData: any) => {
           setMaxRows(response.data.count)
           newExams.push({
