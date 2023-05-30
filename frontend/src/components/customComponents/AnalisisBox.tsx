@@ -62,9 +62,9 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
     }, []);
 
   const handleAddDialogClose = (): void => {
-    setOpenAddDialog(false);
-    setRejectionReason(undefined);
+    setPossibleNewDerivation(null);
     setPossibleNewRejectionReason(null);
+    setOpenAddDialog(false);
   };
 
   const handleOptionSelectRejectionReason = (event: any, newValue: RejectionReason | null) => {
