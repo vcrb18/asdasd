@@ -2,7 +2,7 @@ import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
-import { type ExamData } from "../views/ExamsView";
+import { type ExamData, type ExamMetadata } from "../views/ExamsView";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
@@ -12,6 +12,7 @@ import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 interface AnalisisProps {
     examId: number;
     analisisData: ExamData | null;
+    examMetadata: ExamMetadata | null;
     isLoading: boolean;
     setAccepted: Dispatch<boolean>;
     rejectionReason: RejectionReason | undefined;
@@ -29,7 +30,7 @@ function stateColorSwitcher(value: boolean | undefined): string {
   }
 }
 
-const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading, setAccepted, rejectionReason, setRejectionReason }): JSX.Element => {
+const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetadata, isLoading, setAccepted, rejectionReason, setRejectionReason }): JSX.Element => {
   const { t } = useTranslation();
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -132,6 +133,47 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
   //     }
   // }
 
+  const remapGender = (gender: string | undefined): string => {
+    switch (gender) {
+      case "HOMBRE":
+        return "male";
+      case "MUJER":
+        return "female";
+      default:
+        return "";
+    }
+  };
+
+  const getAge = (birthday: string | undefined): string => {
+    if (birthday === undefined) return '';
+
+    const splittedDate = birthday.split('-');
+    if (splittedDate.length != 3) return '';
+
+    const day = parseInt(splittedDate[0]);
+    const month = parseInt(splittedDate[1]);
+    const year = parseInt(splittedDate[2]);
+
+    const currentDate = new Date();
+    let age = currentDate.getFullYear() - year;
+
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+    if ((month > currentMonth) || (month == currentMonth && day > currentDay)) {
+      age = age - 1;
+    }
+
+    return age.toString();
+  };
+
+  const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
+    if (!examMetadata) return '';
+
+    const gender = remapGender(examMetadata?.gender);
+    const age = getAge(examMetadata?.birthday);
+    return `${t(gender)}, ${age} ${t("yearsOld")}`;
+  }
+
   const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
     switch (colorNumber) {
       case 1:
@@ -230,6 +272,19 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading,
           </Typography>
         </Grid>
       </Grid>
+        <Grid container>
+          <Grid item
+            xs={5} sm={5} md={5} lg={5} display={"flex"} justifyContent={"flex-start"} alignItems={"center"} paddingLeft={"5%"}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
+              {t("patient")}
+            </Typography>
+          </Grid>
+          <Grid item xs={7} sm={7} md={7} lg={7}>
+            <Typography fontSize={"65%"} fontWeight={"bold"}>
+              {getMetadataToDisplay(examMetadata)}
+            </Typography>
+          </Grid>
+        </Grid>
     </Grid>
     {/* Sector del análisis */}
     <Grid container

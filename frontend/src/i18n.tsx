@@ -246,6 +246,9 @@ const resources = {
       diagnostic150: "Sinus rhythm, Normal AV conduction, Normal complexes",
       diagnostic404: "Diagnosis not registered in the DB",
       locked: "Locked",
+      male: "Male",
+      female: "Female",
+      yearsOld: "years old",
     },
   },
   es: {
@@ -491,6 +494,9 @@ const resources = {
       diagnostic150: "Ritmo sinusal, Conducción AV normal, Complejos normales",
       diagnostic404: "Diagnóstico no registrado en la BD",
       locked: "Bloqueado",
+      male: "Masculino",
+      female: "Femenino",
+      yearsOld: "años",
     },
   },
 };
