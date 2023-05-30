@@ -2,7 +2,7 @@ import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "./DiagnosisComponent";
-import { type ExamData, type ExamMetadata } from "../views/ExamsView";
+import { Derivation, derivations, type ExamData, type ExamMetadata } from "../views/ExamsView";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Check from "../../static/images/checkVerde.png"
@@ -17,6 +17,8 @@ interface AnalisisProps {
     setAccepted: Dispatch<boolean>;
     rejectionReason: RejectionReason | undefined;
     setRejectionReason: Dispatch<SetStateAction<RejectionReason | undefined> >;
+    derivation: Derivation | undefined;
+    setDerivation: Dispatch<SetStateAction<Derivation | undefined> >;
 }
 
 function stateColorSwitcher(value: boolean | undefined): string {
@@ -30,11 +32,12 @@ function stateColorSwitcher(value: boolean | undefined): string {
   }
 }
 
-const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetadata, isLoading, setAccepted, rejectionReason, setRejectionReason }): JSX.Element => {
+const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetadata, isLoading, setAccepted, rejectionReason, setRejectionReason, derivation, setDerivation }): JSX.Element => {
   const { t } = useTranslation();
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [possibleNewRejectionReason, setPossibleNewRejectionReason] = useState<RejectionReason | null>();
+  const [possibleNewDerivation, setPossibleNewDerivation] = useState<Derivation | null>();
 
   useEffect(() => {
     getSuggestedDiagnostic(examId).then(
@@ -64,17 +67,23 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
     setPossibleNewRejectionReason(null);
   };
 
-  const handleOptionSelect = (event: any, newValue: RejectionReason | null) => {
+  const handleOptionSelectRejectionReason = (event: any, newValue: RejectionReason | null) => {
     setPossibleNewRejectionReason(newValue);
   };
 
+  const handleOptionSelectDerivation = (event: any, newValue: Derivation | null) => {
+    setPossibleNewDerivation(newValue);
+  };
+
   const handleAddDialogSubmit = (): void => {
-    if(possibleNewRejectionReason){
-      markExamIdAsRejected(examId, possibleNewRejectionReason.id, "I").then((res) => {
+    if(possibleNewRejectionReason && possibleNewDerivation){
+      markExamIdAsRejected(examId, possibleNewRejectionReason.id, possibleNewDerivation.derivation).then((res) => {
         if (res.data.success) {
           setAccepted(false);
           setRejectionReason(possibleNewRejectionReason);
           setPossibleNewRejectionReason(null);
+          setDerivation(derivation);
+          setPossibleNewDerivation(null);
         }
       });
     }
@@ -336,15 +345,36 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               </Button>
             </ThemeProvider>
             <Dialog fullWidth={false} maxWidth={"sm"}  open={openAddDialog} onClose={handleAddDialogClose}>
-              <DialogTitle>{t("add")} {t("reason")}</DialogTitle>
+              <DialogTitle>
+                <Typography>
+                  {t("add")} {t("reason")}
+                </Typography>
+              </DialogTitle>
               <DialogContent>
                 <Autocomplete
                 isOptionEqualToValue={(option, value) => option.reason === value.reason}
                 getOptionLabel={(option) => option.reason}
-                value={rejectionReason || null}
-                onChange={handleOptionSelect}
+                value={possibleNewRejectionReason || null}
+                onChange={handleOptionSelectRejectionReason}
                 id="select-diagnostic"
                 options={rejectionReasons}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params}/>}
+                />
+              </DialogContent>
+              <DialogTitle>
+                <Typography>
+                  {t("add")} {t("derivation")}
+                </Typography>
+              </DialogTitle>
+              <DialogContent>
+                <Autocomplete
+                isOptionEqualToValue={(option, value) => option.derivation === value.derivation}
+                getOptionLabel={(option) => option.derivation}
+                value={possibleNewDerivation || null}
+                onChange={handleOptionSelectDerivation}
+                id="select-derivation"
+                options={derivations}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params}/>}
                 />
