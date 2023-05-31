@@ -290,6 +290,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       putExamUnreview(examIdNumber).then((res) => {
         if (res.data.success) {
           setValidated(!validated);
+          markExamIdAsUnlocked(examIdNumber).then(
+            (response) => {
+              setIsLocked(false);
+            },
+            (error) => {
+            }
+          );
+          navigate("/exams?undoValidation=true");
         }
       });
     }
@@ -324,7 +332,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           }
 
           setValidated(!validated);
-          handleGoBack();
+          markExamIdAsUnlocked(examIdNumber).then(
+            (response) => {
+              setIsLocked(false);
+            },
+            (error) => {
+            }
+          );
+          navigate("/exams?validation=true");
         }
       });
     }

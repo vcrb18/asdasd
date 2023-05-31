@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -9,6 +9,8 @@ import {
   DialogTitle,
   TextField,
   IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
@@ -23,6 +25,7 @@ import {
 import Footer from "../customComponents/Footer";
 import { useForm } from "react-hook-form";
 import { truncate } from "fs";
+import { useLocation } from "react-router-dom";
 
 type FormInput = {
   folioSearch: string;
@@ -35,6 +38,8 @@ const ExamsTab = (): JSX.Element => {
   const [inputValue, setInputValue] = useState<string>("");
   const [filterCondition, setFilterCondition] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<FormInput>();
+  const [openSnackBarValidation, setOpenSnackBarValidation] = useState<boolean>(false);
+  const [openSnackBarUndoValidation, setOpenSnackBarUndoValidation] = useState<boolean>(false);
 
   const handleOpenFilter = (): void => {
     setOpenFilter(true);
@@ -58,6 +63,26 @@ const ExamsTab = (): JSX.Element => {
     // Do whatever you need with the input value here
   };
 
+  const handleCloseSnackBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackBarValidation(false);
+    setOpenSnackBarUndoValidation(false);
+  };
+
+  const query = new URLSearchParams(useLocation().search);
+  const validated = query.get('validation');
+  const rejected = query.get('undoValidation');
+
+  useEffect(() => {
+    if(validated){
+      setOpenSnackBarValidation(true);
+    } else if(rejected){
+      setOpenSnackBarUndoValidation(true);
+    }
+  }, []);
 
   return (
     <>
@@ -71,6 +96,16 @@ const ExamsTab = (): JSX.Element => {
             throw new Error("Function not implemented.");
           }}
       />
+      <Snackbar open={openSnackBarValidation} autoHideDuration={3000} onClose={handleCloseSnackBar}>
+        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
+          {t("validationMessage")}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openSnackBarUndoValidation} autoHideDuration={3000} onClose={handleCloseSnackBar}>
+        <Alert onClose={handleCloseSnackBar} severity="warning" sx={{ width: '100%' }}>
+          {t("undoValidationMessage")}
+        </Alert>
+      </Snackbar>
       <div style={{height: "100%", position: "relative"}}>
       <Grid
         item

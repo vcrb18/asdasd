@@ -249,6 +249,8 @@ const resources = {
       male: "Male",
       female: "Female",
       yearsOld: "years old",
+      validationMessage: "Exam validated successfully",
+      undoValidationMessage: "Exam validation undone successfully",
     },
   },
   es: {
@@ -497,6 +499,8 @@ const resources = {
       male: "Masculino",
       female: "Femenino",
       yearsOld: "años",
+      validationMessage: "Examen validado con éxito",
+      undoValidationMessage: "Validación del examen deshecha con éxito",
     },
   },
 };
