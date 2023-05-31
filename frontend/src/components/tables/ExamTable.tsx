@@ -86,7 +86,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "timeLeft",
-    label: "Remaning time",
+    label: "timeLeft",
     minWidth: "20%",
     align: "center",
     format: (value: string) => {
@@ -294,7 +294,7 @@ const ExamTable = ({
   useFilter,
   filterId
 }: ExamTableProps): JSX.Element => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const buttonsTheme = createTheme({
     palette: {
       primary: {
@@ -485,6 +485,18 @@ const ExamTable = ({
     }
   }
 
+  const parseTime = (time: string) => {
+    let timeParser = '';
+    let timeSplit = time.split(' ');
+    timeParser += t(timeSplit[1]);
+    if(timeParser.includes("X")){
+    timeParser = timeParser.replace("X", timeSplit[0]);
+    } else{
+      timeParser = timeSplit[0] + " " + timeParser;
+    } 
+    return timeParser
+  }
+
   const Row: React.FC<RowProps> = ({ row, isMatch }) => {  
     const [open, setOpen] = React.useState(false);
     if (isMatch) {
@@ -506,7 +518,7 @@ const ExamTable = ({
           </StyledTableCell> 
           <StyledTableCell align="center">
             <Typography fontWeight={"bold"}>
-              {row.remainingTime}
+              {parseTime(row.remainingTime)}
             </Typography>
           </StyledTableCell>  
           <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
@@ -549,7 +561,7 @@ const ExamTable = ({
             <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
             <StyledTableCell align="center">
               <Typography fontWeight={"bold"}>
-                {row.remainingTime}
+                {parseTime(row.remainingTime)}
               </Typography>
             </StyledTableCell>
             <StyledTableCell align="center">
