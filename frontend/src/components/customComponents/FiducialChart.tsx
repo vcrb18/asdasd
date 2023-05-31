@@ -129,10 +129,10 @@ const FiducialChart = (props: any): JSX.Element => {
     setfidT(props.fidT);
 
     setfidPY(props.timeSeries[props.fidP] + pointLineLength);
-    setfidQRSY(props.timeSeries[props.fidQRS] + pointLineLength);
+    setfidQRSY(props.timeSeries[props.fidQRS] - pointLineLength);
     setfidRY(props.timeSeries[props.fidR] + pointLineLength);
     setfidR2Y(props.timeSeries[props.fidR2] + pointLineLength);
-    setfidSY(props.timeSeries[props.fidS] + pointLineLength);
+    setfidSY(props.timeSeries[props.fidS] - pointLineLength);
     setfidSTY(props.timeSeries[props.fidST] + pointLineLength);
     setfidTY(props.timeSeries[props.fidT] + pointLineLength);
 
@@ -202,7 +202,7 @@ useEffect(() => {
 useEffect(() => {
   getExam(examId).then(      
     (response) => {
-      setLineColor(urgencyColorSwitcher(response.data.urgencia))
+      setLineColor(urgencyColorSwitcher(response.data.urgency))
     }
   );
 }, []);
@@ -301,9 +301,9 @@ useEffect(() => {
     if (chart.scales.x.min + movement <= 0)
       scaleMovement = - 100 - chart.scales.x.min;
 
+      
     setmaxX(chart.scales.x.max + scaleMovement);
     setminX(chart.scales.x.min + scaleMovement);
-
     
 
     setfidP(lastData.pStart + movement);
@@ -547,18 +547,24 @@ useEffect(() => {
             id: 'referenceLabel',
             drawTime:'afterDatasetsDraw',
             display: true,
-            content: 'Posicion',
+            content: 'Posición',
             rotation: 0,
             scaleID: 'x',
-            backgroundColor: 'teal',
+            backgroundColor: 'rgb(249, 246, 238)',
             borderColor:'black',
             borderWidth:2,
             borderRadius:5,
+            font: {
+              size: 18
+            },
+            xValue: function (context:any) {
+              if (chart)
+                return(chart.scales.x.getValueForPixel(chart.chartArea.left + chart.chartArea.width/16))
+              return(0);
+            },
             yValue: function (context:any) {
               if (chart)
-              {
-                return(chart.scales.y.getValueForPixel(chart.chartArea.bottom - chart.height*0.1))
-              }
+                return(chart.scales.y.getValueForPixel(chart.chartArea.top + chart.height*0.1))
               return(0);
             },
             beforeDraw: function (context:any) {
@@ -674,7 +680,7 @@ useEffect(() => {
             xMin: qrsStartPoint[0].x,
             xMax: qrsStartPoint[0].x,
             yMax: qrsStartPoint[0].y,
-            yMin: qrsStartPoint[0].y-pointLineLength,
+            yMin: qrsStartPoint[0].y + pointLineLength,
             beforeDraw: function (context:any) {
               pointLines[1] = context;
             },
@@ -748,7 +754,7 @@ useEffect(() => {
             xMin: qrsEndPoint[0].x,
             xMax: qrsEndPoint[0].x,
             yMax: qrsEndPoint[0].y,
-            yMin: qrsEndPoint[0].y-pointLineLength,
+            yMin: qrsEndPoint[0].y + pointLineLength,
             beforeDraw: function (context:any) {
               pointLines[3] = context;
             },
@@ -888,7 +894,7 @@ useEffect(() => {
             z:7,
           },
     ] as any,
-        animation:false,
+        animation:true,
       }
 
     },
