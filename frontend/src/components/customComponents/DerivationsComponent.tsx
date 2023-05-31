@@ -43,7 +43,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
 
   const [selectedTimeSeries, setSelectedTimeSeries] = React.useState([]);
 
-  const derivationOptions = ['I','II','III','V1','V2','V3','V4','V5','V6','VF','VL','VR'];
+  const derivationOptions = ['I','II','III','V1','V2','V3','V4','V5','V6','aVF','aVL','aVR'];
 
   const allTimeSeriesObject = 
   {
@@ -56,9 +56,9 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     'V4':timeSeriesV4,
     'V5':timeSeriesV5,
     'V6':timeSeriesV6,
-    'VF':timeSeriesaVF,
-    'VL':timeSeriesaVL,
-    'VR':timeSeriesaVR
+    'aVF':timeSeriesaVF,
+    'aVL':timeSeriesaVL,
+    'aVR':timeSeriesaVR
   } as any;
 
 
@@ -212,14 +212,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       </Element>
 
       <Box>
-        <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
-          <FormControl sx={{ m: 1, minWidth: 250 }}>
-          <InputLabel id="selectDerivationInputLabel">Selecciona una derivación</InputLabel>
+        <Stack direction="row" justifyContent={"flex-end"} spacing={2} >
+          <FormControl sx={{ m: 1, minWidth: 90, width: '16ch'}}>
+          <InputLabel id="selectDerivationInputLabel">Derivación</InputLabel>
           <Select
             labelId="selectDerivationLabel"
             id="selectDerivationLabel"
             value={selectedDerivation}
-            autoWidth
+            fullWidth ={true}
             label="GraficoDerivacionesSeleccionado"
             onChange={handleSelectedDerivationChange}
           >
@@ -238,6 +238,8 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
            sx={{
             backgroundColor: '#007088',
             color: "#fff",
+            pl: 3,
+            pr: 3,
           }}
             variant="contained"
             onClick={() => {
@@ -312,17 +314,17 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"VF"} height={"25%"} width={"25%"} data={timeSeriesaVF} max_points={2500}/>
+              <LineChart id={"aVF"} height={"25%"} width={"25%"} data={timeSeriesaVF} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"VL"} height={"25%"} width={"25%"} data={timeSeriesaVL} max_points={2500}/>
+              <LineChart id={"aVL"} height={"25%"} width={"25%"} data={timeSeriesaVL} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"VR"} height={"25%"} width={"25%"} data={timeSeriesaVR} max_points={2500}/>
+              <LineChart id={"aVR"} height={"25%"} width={"25%"} data={timeSeriesaVR} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
