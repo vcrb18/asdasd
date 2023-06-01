@@ -119,6 +119,11 @@ export interface DoctorDiagnostic {
     diagnosticId: number,
 }
 
+export interface Derivation {
+  id: number,
+  derivation: string,
+}
+
 export interface DiagnosticStates {
     diagnosticosSugeridos: DiagnosticPrediction[];
     setDiagnosticosSugeridos: Dispatch<DiagnosticPrediction[]>;
@@ -140,6 +145,21 @@ export const rejectionReasons: RejectionReason[] = [
   {id: 11, reason: "TRAZADO DIFUSO"},
 ]
 
+export const derivations: Derivation[] = [
+  {id: 1, derivation: "I"},
+  {id: 2, derivation: "II"},
+  {id: 3, derivation: "III"},
+  {id: 4, derivation: "aVR"},
+  {id: 5, derivation: "aVL"},
+  {id: 6, derivation: "aVF"},
+  {id: 7, derivation: "V1"},
+  {id: 8, derivation: "V2"},
+  {id: 9, derivation: "V3"},
+  {id: 10, derivation: "V4"},
+  {id: 11, derivation: "V5"},
+  {id: 12, derivation: "V6"},
+]
+
 const ExamsView: React.FC<ExamsViewProps> = ({
   buttons,
   tabs,
@@ -152,6 +172,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [isLoadingExamData, setIsLoadingExamData] = useState<boolean>(true);
   const [acceptedExam, setAcceptedExam] = useState<boolean | null>(null);
   const [rejectionReason, setRejectionReason] = useState<RejectionReason | undefined>();
+  const [derivation, setDerivation] = useState<Derivation | undefined>();
 
   const [examMetadata, setExamMetadata] = useState<ExamMetadata | null>(null);
 
@@ -559,7 +580,10 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                              isLoading={isLoadingExamData} 
                              setAccepted={setAcceptedExam}
                              rejectionReason={rejectionReason} 
-                             setRejectionReason={setRejectionReason}/>
+                             setRejectionReason={setRejectionReason}
+                             derivation={derivation}
+                             setDerivation={setDerivation}
+                             />
               </Grid>
             <Grid container xs={12} sm={12} md={6} lg={6} padding={"2%"}
               sx={{
@@ -689,7 +713,10 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                              isLoading={isLoadingExamData} 
                              setAccepted={setAcceptedExam} 
                              rejectionReason={rejectionReason} 
-                             setRejectionReason={setRejectionReason} />
+                             setRejectionReason={setRejectionReason}
+                             derivation={derivation}
+                             setDerivation={setDerivation}
+                             />
               </Grid>
             <Grid container xs={12} sm={12} md={6} lg={6} padding={"2%"}
               sx={{
