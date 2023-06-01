@@ -53,7 +53,7 @@ interface fidutialChartPoints {
 }
 
 const FiducialChart = (props: any): JSX.Element => {
-  const pointRadious = 15;
+  const pointRadious = 12;
   const pointLineLength = 500;
   
 
