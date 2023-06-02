@@ -299,7 +299,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
           <DialogContent>
             <Autocomplete
               isOptionEqualToValue={(option, value) => option.diagnostic === value.diagnostic}
-              getOptionLabel={(option) => option.diagnostic}
+              getOptionLabel={(option) => t("diagnostic" + option.diagnosticId)}
               value={newItem || null}
               onChange={handleOptionSelect}
               id="select-diagnostic"
