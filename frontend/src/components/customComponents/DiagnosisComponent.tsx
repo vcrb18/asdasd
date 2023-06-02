@@ -274,6 +274,7 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
       </Box>
       <Box width={"100%"}>
         {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: DiagnosticPrediction) => (
+          (item.accuracy >= 0.9) &&
           <DeletableBoxItem
             key={item.diagnosticId}
             id={item.diagnosticId}
