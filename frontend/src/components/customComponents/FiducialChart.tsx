@@ -18,6 +18,7 @@ import annotationPlugin from "chartjs-plugin-annotation";
 import ChartZoom from 'chartjs-plugin-zoom';
 import React, {useEffect} from "react";
 import { getExam} from "../../service/user.service";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -77,7 +78,7 @@ const FiducialChart = (props: any): JSX.Element => {
   const [fidTY, setfidTY] = React.useState<number>(0);
 
   
-
+  const { t } = useTranslation();
 
 
   const points = [props.fidP, props.fidQRS, props.fidR, props.fidR2, props.fidS, props.fidST, props.fidT]
@@ -547,7 +548,7 @@ useEffect(() => {
             id: 'referenceLabel',
             drawTime:'afterDatasetsDraw',
             display: true,
-            content: 'Posición',
+            content: t("position"),
             rotation: 0,
             scaleID: 'x',
             backgroundColor: 'rgb(249, 246, 238)',
@@ -925,7 +926,7 @@ useEffect(() => {
       },
       x: {
         title: {
-          text: "TIEMPO [ms]",
+          text: t("time") + " [ms]",
           display: true,
         },
         grid: {

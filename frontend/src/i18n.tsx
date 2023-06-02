@@ -260,6 +260,8 @@ const resources = {
       minute: "minute",
       validationMessage: "Exam validated successfully",
       undoValidationMessage: "Exam validation undone successfully",
+      position: "Position",
+      time: "Time",
     },
   },
   es: {
@@ -519,6 +521,8 @@ const resources = {
       minute: "minuto",
       validationMessage: "Examen validado con éxito",
       undoValidationMessage: "Validación del examen deshecha con éxito",
+      position: "Posición",
+      time: "Tiempo",
     },
   },
 };
