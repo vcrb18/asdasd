@@ -297,74 +297,74 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation} >
-                <LineChart id={"I"}  height={"25%"} width={"25%"} data={timeSeriesI} max_points={2500} />
+                <LineChart id={"I"}  height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesI} max_points={2500} />
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"II"} height={"25%"} width={"25%"} data={timeSeriesII} max_points={2500}/>
+              <LineChart id={"II"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesII} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-                <LineChart id={"III"} height={"25%"} width={"25%"} data={timeSeriesIII} max_points={2500}/>
+                <LineChart id={"III"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesIII} max_points={2500}/>
               </Box>
             </Grid>
           </Grid>
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"aVF"} height={"25%"} width={"25%"} data={timeSeriesaVF} max_points={2500}/>
+              <LineChart id={"aVF"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVF} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"aVL"} height={"25%"} width={"25%"} data={timeSeriesaVL} max_points={2500}/>
+              <LineChart id={"aVL"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVL} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"aVR"} height={"25%"} width={"25%"} data={timeSeriesaVR} max_points={2500}/>
-              </Box>
-            </Grid>
-          </Grid> 
-          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
-            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
-              <Box onClick={handleOpenDerivation}>
-              <LineChart id={"V1"} height={"25%"} width={"25%"} data={timeSeriesV1} max_points={2500}/>
-              </Box>
-            </Grid>
-            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
-              <Box onClick={handleOpenDerivation}>
-              <LineChart id={"V2"} height={"25%"} width={"25%"} data={timeSeriesV2} max_points={2500}/>
-              </Box>
-            </Grid>
-            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
-              <Box onClick={handleOpenDerivation}>
-              <LineChart id={"V3"} height={"25%"} width={"25%"} data={timeSeriesV3} max_points={2500}/>
+              <LineChart id={"aVR"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVR} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"V4"} height={"25%"} width={"25%"} data={timeSeriesV4} max_points={2500}/>
+              <LineChart id={"V1"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV1} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"V5"} height={"25%"} width={"25%"} data={timeSeriesV5} max_points={2500}/>
+              <LineChart id={"V2"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV2} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-                <LineChart id={"V6"} height={"25%"} width={"25%"} data={timeSeriesV6} max_points={2500}/>
+              <LineChart id={"V3"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV3} max_points={2500}/>
+              </Box>
+            </Grid>
+          </Grid> 
+          <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V4"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV4} max_points={2500}/>
+              </Box>
+            </Grid>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+              <LineChart id={"V5"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV5} max_points={2500}/>
+              </Box>
+            </Grid>
+            <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
+              <Box onClick={handleOpenDerivation}>
+                <LineChart id={"V6"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesV6} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 
           <Grid item xs={12} md={12} lg={12} padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
             <Box onClick={handleOpenDerivation}>
-            <LineChart id={"II"} height={"25%"} width={"100%"} data={timeSeriesII} max_points={10000}/>
+            <LineChart id={"II"} height={"25%"} width={"100%"} ratio={16/3} data={timeSeriesII} max_points={10000}/>
             </Box>
           </Grid> 
       </Grid>
