@@ -16,10 +16,10 @@ import {
 import React, { useEffect, useState } from "react";
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
 import AddIcon from "@mui/icons-material/Add";
-import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics, getDiagnosticPredictions } from "../../service/user.service";
+import { getSuggestedDiagnostic, getDiagnosticTypes, createDoctorDiagnostic, getDoctorDiagnostics, deleteDoctorDiagnostics, getDiagnosticPredictions, markDiagnosticPredictionNotDisplayable } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import xButton from "../../static/images/xButton.png"
-import { Diagnostic, DoctorDiagnostic, DiagnosticStates, DiagnosticPrediction } from "../views/ExamsView";
+import { Diagnostic, DoctorDiagnostic, DiagnosticStates, DiagnosticPrediction, DiagnosticDataBase } from "../views/ExamsView";
 
 
 const DeletableBoxItem = ({
@@ -132,9 +132,9 @@ interface DiagnosisProps {
 
 const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) => {
   let newDiagnostics: (DiagnosticPrediction)[] = [];
-  diagnostics.map((item: {examId: number, diagnosticId: number, prediction: boolean, accuracy: number})=>{
+  diagnostics.map((item: DiagnosticDataBase)=>{
     let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnosticId);
-    if (newObject){
+    if (newObject && item.display){
       newDiagnostics.push({
         ...newObject,
         accuracy: item.accuracy,
@@ -231,8 +231,9 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
 
   const [newItem, setNewItem] = useState<Diagnostic | null>();
 
-  const handleDeleteDiagnosticoSugerido = (item: string): void => {
+  const handleDeleteDiagnosticoSugerido = (item: string, id: number): void => {
     setDiagnosticosSugeridos(diagnosticosSugeridos.filter((i) => i?.diagnostic.toString() !== item));
+    markDiagnosticPredictionNotDisplayable(examId, id);
   };
 
   const handleDeleteDoctorDiagnostic = (item: string, id: number): void => {
