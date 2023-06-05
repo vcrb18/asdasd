@@ -229,3 +229,7 @@ export const postDiagnosticsSistemed2 = async (examId: number, diagnostics: Diag
     diagnostics: diagnostics
   });
 }
+
+export const markDiagnosticPredictionNotDisplayable = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
+  return await axios.post(`/diagnostic_predictions/${examId}/${diagnosticId}`, {withCredentials: true,});
+}
