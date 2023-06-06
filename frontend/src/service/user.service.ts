@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
+import axios, { Axios, type AxiosResponse } from "axios";
 import useSWR from "swr"
 import authHeader from "./auth.header";
 const API_URL = "http://localhost:8080/";
@@ -25,6 +25,18 @@ export function useExams(page : number, order:number) {
 export const getExams = async (page : number, order:number): Promise<AxiosResponse> => {
   return await axios.get(`/exams?page=${page}&order=${order}&count=25`, { withCredentials: true });
 };
+
+export const getExamsByFilter = async (page: number, order: number, accepted: boolean | null, review: boolean | null ) : Promise<AxiosResponse> => {
+  if (accepted == null){
+    return await axios.get(`/exams?page=${page}&order=${order}&reviewed=${review}&count=25`, { withCredentials: true })
+  }
+  else if (review == null){
+    return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&count=25`, { withCredentials: true })
+  }
+  else{
+    return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&count=25`, { withCredentials: true })
+  }
+}
 
 export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {
   return await axios.get(`/exams?page=${page}&order=${order}&find=${searchInt}&count=25`, { withCredentials: true })
