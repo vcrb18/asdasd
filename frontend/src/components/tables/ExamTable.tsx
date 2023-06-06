@@ -22,16 +22,16 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-// import authHeader from "../../service/auth.header";
-import { getExams, getExamsById, getExamsCount, useExams } from "../../service/user.service";
-// import { type NavigateFunction, useNavigate } from "react-router-dom";
+import { getExams, getExamsByFilter, getExamsById, getExamsCount, useExams } from "../../service/user.service";
+import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps } from "../../utils/ExamTableConst";
+import { getComparator, stableSort } from "../../utils/ExamTableFunctions";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Link, NavigateFunction, useNavigate } from "react-router-dom";
-import Footer from "../customComponents/Footer"
+import { NavigateFunction, useNavigate } from "react-router-dom";
+
 
 
 const API_URL = "http://localhost:8080/";
@@ -49,168 +49,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-// Nombres de las columnas que tendremos que
-// obtener desde la base de datos
-interface Column {
-  id: "folio"| "timeLeft" | "patient" | "date" | "state" | "urgency" | "review"| "results";
-  label: string;
-  align?: "center" | "left" | "right";
-  minWidth?: string;
-  format?:
-    | ((value: number) => string)
-    | ((value: boolean) => string)
-    | ((value: string) => string);
-}
-
-interface RowProps {
-  row: ExamData;
-  isMatch: boolean;
-}
 
 
-const columns: readonly Column[] = [
-  { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
-  {
-    id: "patient",
-    label: "patient",
-    align: "center",
-  },
-  {
-    id: "date",
-    label: "date",
-    align: "center",
-    format: (value: string) => {
-      return value.replace("T", " ");
-    },
-
-  },
-  {
-    id: "timeLeft",
-    label: "timeLeft",
-    minWidth: "20%",
-    align: "center",
-    format: (value: string) => {
-      return value.replace("T", " ");
-    },
-  },
-  {
-    id: "state",
-    label: "state",
-    align: "center",
-    format: (value: boolean) => {
-      const returnValue = value ? "Aceptado" : "Rechazado";
-      return returnValue;
-    },
-  },
-  {
-    id: "urgency",
-    label: "urgency",
-    align: "center",
-    format: (value: number) => {
-      const returnValue = value === 1 ? "Urgente" : "Normal";
-      return returnValue;
-    },
-  },
-  {
-    id: "review",
-    label: "review",
-    align: "center",
-  },
-  {
-    id: "results",
-    label: "results",
-    align: "center",
-  },
-];
-
-const mobileColumns: readonly Column[] =[
-  {
-    id: "urgency",
-    label: "urgency",
-    align: "center",
-  },
-  {
-    id: "review",
-    label: "review",
-    align: "center",
-  },
-  {
-    id: "timeLeft",
-    label: "timeLeft",
-    align: "center",
-  },
-  {
-    id: "results",
-    label: "results",
-    align: "center",
-  },
-]
-
-// Chekear los typos de cada una de las categorias
-// depediendo de como llegan desde la base de datos
-interface ExamData {
-  examId: number;
-  patientId: string | null;
-  createdAt: string;
-  deadline: string;
-  urgency: number;
-  remainingTime: string,
-  operatorReview: boolean;
-  results: string;
-  accepted: boolean;
-  operatorAccept: boolean | null;
-  locked: boolean | null;
-  lockedBy: string;
-}
-
-type Order = "asc" | "desc";
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T): number {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(
-  array: ExamData[],
-  comparator: (a: T, b: T) => number
-): any {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-interface ExamHeadTableProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-  order: Order;
-  orderBy: string | number | boolean;
-}
 
 function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
   const { t } = useTranslation();
@@ -277,21 +117,15 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
 }
 
 function colorSwitcher(value: boolean): string {
-  switch (value) {
-    case true:
-      return "green";
-    case false:
-      return "red";
-    default:
-      return "red";
-  }
+  return value ? "green" : "red";
 }
-interface ExamTableProps {
-  useFilter: boolean;
-  filterId: string; 
-}
+
 const ExamTable = ({
-  useFilter,
+  filterStates,
+  filterReview,
+  useStateFilter,
+  useReviewFilter,
+  useIdFilter,
   filterId
 }: ExamTableProps): JSX.Element => {
   const { t, i18n } = useTranslation();
@@ -302,7 +136,7 @@ const ExamTable = ({
       },
     },
   });
-  
+  const [reloadPage, setReloadPage] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
@@ -312,7 +146,11 @@ const ExamTable = ({
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
   const [oldFolio, setOldFolio] = React.useState<string>(filterId);
+  const [filteredIdRows, setFilteredIdRows] = React.useState<ExamData[]>([]);
   const [filteredRows, setFilteredRows] = React.useState<ExamData[]>([]);
+  const [oldFilterState, setOldFilterState] = React.useState<filterStateTypes>(filterStates);
+  const [oldFilterReview, setOldFilterReview] = React.useState<filterReviewTypes>(filterReview);
+
   const formatDate = (dateString: string): JSX.Element => {
     const date = new Date(dateString);
     return (
@@ -322,57 +160,33 @@ const ExamTable = ({
       )
   };
 
-  const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
-    switch (colorNumber) {
-      case 1:
-        return(
-          "success"
-      )
-      case 2:
-        return (
-          "warning"
-        )
-      case 3:
-        return(
-          "error"
-        )
-      default:
-        return ("error")
-      }
+const getRemainingTimeColor = (colorNumber: number): "error" | "success" | "warning" => {
+  if (colorNumber === 1) {
+    return "success";
+  } else if (colorNumber === 2) {
+    return "warning";
   }
+  return "error";
+};
   
   const getStatus = (state: boolean)=> (
     <Typography
       fontWeight={"bold"}
       color={colorSwitcher(state)}
       >
-        {state?  t("accepted") : t("refused")}
+        {state?  t("accepted") : t("rejected")}
   </Typography>
   );
 
-  const getUrgency= (urgency: number) : JSX.Element  => {
-    return(
-    <>
-      <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
-    </>
-    )
-    }
+const getUrgency = (urgency: number): JSX.Element => (
+  <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
+);
    
-  const getReviewState = (state: boolean) : JSX.Element => {
-    if (state === true) {
-      return(
-        <Box display={"flex"} justifyContent={"center"}>
-          <Avatar src={Check} alt={"checkVerde"} variant={"square"}/>
-        </Box>
-      )
-    } else {
-      return (
-        <Box display={"flex"} justifyContent={"center"}>
-          <Avatar src={X} alt={"checkRojo"} variant={"square"}/>
-        </Box>
-        )
-    }
-  }
+  const getReviewState = (state: boolean): JSX.Element => (
+    <Box display="flex" justifyContent="center">
+      <Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
+    </Box>
+);
 
 
   const handleRequestSort = (
@@ -393,54 +207,200 @@ const ExamTable = ({
   ): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-    setMaxPage(-1)
+    setMaxPage(-1);
   };
+
+
 
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
-    if (page > maxPage || useFilter)  {
+    let useFilter = useReviewFilter || useStateFilter || useIdFilter;
+    if (page > maxPage || useFilter || reloadPage){
       shouldLoad = true
       setMaxPage(page)
-      if (useFilter && (filterId != "")){
-        getExamsById(filterId, page, 11).then((response) => {
-          const newExams: ExamData[] = [];
-          response.data.rows.map((examData: any) => {
+      if (reloadPage){
+        setPage(0)
+      }
+      if (useFilter) {
+        if (useReviewFilter && useStateFilter){
+          getExamsByFilter(page, 11, filterStates.accepted, filterReview.reviewed).then((response) => {
+            const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            newExams.push({
-              examId: examData.examId,
-              patientId: examData.patientId,
-              createdAt: examData.createdAt,
-              deadline: examData.createdAt,
-              urgency: examData.urgencia,
-              remainingTime: examData.RemainingTime,
-              operatorReview: examData.operatorReview,
-              results: examData.resultados,
-              accepted: examData.accepted,
-              operatorAccept: examData.operatorAccept,
-              locked: examData.locked,
-              lockedBy: examData.lockedBy,
+            response.data.rows.map((examData: any) => {
+              newExams.push({
+                examId: examData.examId,
+                patientId: examData.patientId,
+                createdAt: examData.createdAt,
+                deadline: examData.createdAt,
+                urgency: examData.urgency,
+                remainingTime: examData.remainingTime,
+                operatorReview: examData.operatorReview,
+                results: examData.resultados,
+                accepted: examData.accepted,
+                operatorAccept: examData.operatorAccept,
+                locked: examData.locked,
+                lockedBy: examData.lockedBy,
+              });
             });
-          });
-          if (filterId == oldFolio){
-            setOldFolio(filterId)
-            setFilteredRows([...filteredRows, ...newExams]);
-          }
-          else {
-            setOldFolio(filterId);
-            setFilteredRows(newExams);
-          }
-
+            if (maxRows == 0 ){
+              throw new Error("No se encontraron exámenes")
+            } 
+            if (filterStates == oldFilterState && filterReview == oldFilterReview){
+              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
+              setFilteredRows([...filteredRows, ...newExamsFiltered]); //
+              setReloadPage(false)
+            }
+            else if (filterStates == oldFilterState){
+              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
+              setOldFilterReview(filterReview)
+              setReloadPage(false)
+              setFilteredRows(newExamsFiltered); 
+            }
+            else if (filterReview == oldFilterReview) {
+              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
+              setReloadPage(false)
+              setOldFilterState(filterStates)
+              setFilteredRows(newExamsFiltered);
+            }
+            else{
+              if (maxRows == 0 ){
+                throw new Error("No se encontraron exámenes")
+              }   
+              setOldFilterReview(filterReview)
+              setOldFilterState(filterStates)
+              setFilteredRows(newExams);
+              setReloadPage(true)
+            }
           return Promise
         }).catch((error) => {
-          console.error(error);
-        })
-       }
-      else{
+          alert(error.message)
+        });
+      }
+      else if (useStateFilter) {
+        getExamsByFilter(page, 11, filterStates.accepted, null).then((response) => {
+          const newExams: ExamData[] = [];
+          setMaxRows(response.data.count)
+          response.data.rows.map((examData: any) => {
+            newExams.push({
+              examId: examData.examId,
+            patientId: examData.patientId,
+            createdAt: examData.createdAt,
+            deadline: examData.createdAt,
+            urgency: examData.urgency,
+            remainingTime: examData.remainingTime,
+            operatorReview: examData.operatorReview,
+            results: examData.resultados,
+            accepted: examData.accepted,
+            operatorAccept: examData.operatorAccept,
+            locked: examData.locked,
+            lockedBy: examData.lockedBy,
+            });
+          });
+          if (filterStates == oldFilterState){
+            const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
+              setReloadPage(false)
+              setFilteredRows([...filteredRows, ...newExamsFiltered]); 
+          }
+          else {
+            if (newExams.length == 0 ){
+              throw new Error("No se encontraron exámenes")
+            }
+            setOldFilterState(filterStates);
+            setFilteredRows(newExams);
+            setReloadPage(true)
+          }
+          return Promise
+        }).catch((error) => {
+          alert(error.message);
+        });
+      }
+        else if (useReviewFilter) {
+          getExamsByFilter(page, 11, null, filterReview.reviewed).then((response) => {
+            const newExams: ExamData[] = [];
+            setMaxRows(response.data.count)
+            response.data.rows.map((examData: any) => {
+              newExams.push({
+                examId: examData.examId,
+                patientId: examData.patientId,
+                createdAt: examData.createdAt,
+                deadline: examData.createdAt,
+                urgency: examData.urgency,
+                remainingTime: examData.remainingTime,
+                operatorReview: examData.operatorReview,
+                results: examData.resultados,
+                accepted: examData.accepted,
+                operatorAccept: examData.operatorAccept,
+                locked: examData.locked,
+                lockedBy: examData.lockedBy,
+              });
+            });
+            if (filterReview === oldFilterReview){
+              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
+              setFilteredRows([...filteredRows, ...newExamsFiltered]);
+              setReloadPage(false)
+            }
+            else if (filterReview != oldFilterReview) {
+              setOldFilterReview(filterReview)
+              if (newExams.length == 0 ){
+                throw new Error("No se encontraron exámenes")
+              }
+              setReloadPage(true)
+              setFilteredRows(newExams);
+              
+            }
+            return Promise
+        }).catch((error) => {
+          alert(error.message);
+
+        });
+      }        
+        else if (useIdFilter){
+          getExamsById(filterId, page, 11).then((response) => {
+            const newExams: ExamData[] = [];
+            setMaxRows(response.data.count)
+            response.data.rows.map((examData: any) => {
+              newExams.push({
+                examId: examData.examId,
+                patientId: examData.patientId,
+                createdAt: examData.createdAt,
+                deadline: examData.createdAt,
+                urgency: examData.urgency,
+                remainingTime: examData.remainingTime,
+                operatorReview: examData.operatorReview,
+                results: examData.resultados,
+                accepted: examData.accepted,
+                operatorAccept: examData.operatorAccept,
+                locked: examData.locked,
+                lockedBy: examData.lockedBy,
+            });
+          });
+            if (filterId == oldFolio){
+              setOldFolio(filterId)
+              setReloadPage(false)
+              setFilteredIdRows([...filteredIdRows, ...newExams]);
+            }
+            else {
+              if (newExams.length == 0 ){
+                throw new Error("No se encontraron exámenes")
+              }
+              else{
+              setReloadPage(true)
+              setFilteredIdRows(newExams);
+              }
+            }
+            return Promise
+          }).catch((error) => {
+            alert(error.message);
+
+          });
+        }
+      }
+      else {
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
+        setMaxRows(response.data.count)
         response.data.rows.map((examData: any) => {
-          setMaxRows(response.data.count)
           newExams.push({
             examId: examData.examId,
             patientId: examData.patientId,
@@ -456,27 +416,24 @@ const ExamTable = ({
             lockedBy: examData.lockedBy,
           });
         });
-        const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
-        setRows([...rows, ...newExamsFiltered]);
-        return Promise
-      }).catch((error) => {
-        console.error(error);
-      });
+
+          const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
+          setRows([...rows, ...newExamsFiltered]);
+          return Promise
+        }).catch((error) => {
+          alert(error.message);
+        });
+      }
     }
-      // getExamsCount().then((response) => {
-      //   setMaxRows(response.data.count)
-      // }).catch((error) => {
-      //   console.error(error)
-      // });
+      if (shouldLoad) {
+        setTimeout(() => {
+          setIsLoading(false)
+        },200)
+      } else {
+        setIsLoading(false);
+      }
     }
-    if (shouldLoad) {
-      setTimeout(() => {
-        setIsLoading(false)
-      },200)
-    } else {
-      setIsLoading(false);
-    }
-  }, [page, filterId, useFilter])
+, [page, filterId, oldFilterReview, oldFilterState, useReviewFilter, useStateFilter, useIdFilter])
   const navigate: NavigateFunction = useNavigate();
 
   const handleAccess = (examId: number, locked: boolean | null) => {
@@ -521,8 +478,8 @@ const ExamTable = ({
               {parseTime(row.remainingTime)}
             </Typography>
           </StyledTableCell>  
-          <StyledTableCell align="center">{getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}</StyledTableCell>
-          {/* <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell> */}
+          <StyledTableCell align="center">{getStatus(row.operatorAccept ?? row.accepted)}
+</StyledTableCell>
           <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
           <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
           <StyledTableCell align="center">
@@ -618,7 +575,7 @@ const ExamTable = ({
                       </Typography>
                     </Grid>
                     <Grid item>
-                      {getStatus(row.operatorAccept != null ? row.operatorAccept : row.accepted)}
+                      {getStatus(row.operatorAccept ?? row.accepted)}
                     </Grid>
                   </Grid>
                 </Collapse>
@@ -629,9 +586,10 @@ const ExamTable = ({
     }
   };
 
-  const sortedRows = (useFilter && (filterId != ""))
-    ? stableSort(filteredRows, getComparator(order, orderBy))
-    : stableSort(rows, getComparator(order, orderBy));
+  const sortedRows = (useIdFilter)? stableSort(filteredIdRows, getComparator(order, orderBy)) :
+  ( (useReviewFilter || useStateFilter)?
+    stableSort(filteredRows, getComparator(order, orderBy)) :
+    stableSort(rows, getComparator(order, orderBy)))
 
   const paginatedRows = sortedRows.slice(
     page * rowsPerPage,
