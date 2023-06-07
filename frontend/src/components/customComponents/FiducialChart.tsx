@@ -101,8 +101,6 @@ const FiducialChart = (props: any): JSX.Element => {
 
 
   function urgencyColorSwitcher(value: number | undefined): string {
-    console.log(value);
-    console.log("LOL!");
     switch (value) {
       case undefined:
         return "black";
@@ -209,7 +207,6 @@ useEffect(() => {
 useEffect(() => {
   getExam(examId).then(      
     (response) => {
-      console.log(response.data);
       setLineColor(urgencyColorSwitcher(response.data.urgency))
     }
   );
