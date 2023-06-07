@@ -100,7 +100,7 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
     }
   }, [canvasRef, sliced_data, options]);
 
-  return <canvas id={id} ref={canvasRef} />;
+  return <canvas id={id} ref={canvasRef} width={width} />;
 };
 
 export default LineChart;
