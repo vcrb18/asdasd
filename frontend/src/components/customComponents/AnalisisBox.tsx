@@ -353,7 +353,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               <DialogContent>
                 <Autocomplete
                 isOptionEqualToValue={(option, value) => option.reason === value.reason}
-                getOptionLabel={(option) => option.reason}
+                getOptionLabel={(option) => t("rejectionReason" + option.id)}
                 value={possibleNewRejectionReason || null}
                 onChange={handleOptionSelectRejectionReason}
                 id="select-diagnostic"
@@ -415,7 +415,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               fontWeight={"bold"}
               align="left"
             >
-              {rejectionReason.reason}
+              {t("rejectionReason" + rejectionReason.id)}
             </Typography>
           </Grid>
         </Grid>)}

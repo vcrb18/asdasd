@@ -214,7 +214,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       <Box>
         <Stack direction="row" justifyContent={"flex-end"} spacing={2} >
           <FormControl sx={{ m: 1, minWidth: 90, width: '16ch'}}>
-          <InputLabel id="selectDerivationInputLabel">Derivación</InputLabel>
+          <InputLabel id="selectDerivationInputLabel">{t("derivation")}</InputLabel>
           <Select
             labelId="selectDerivationLabel"
             id="selectDerivationLabel"
