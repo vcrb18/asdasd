@@ -15,7 +15,7 @@ import {
   getExamDataSistemed2,
   acceptExamSistemed2, rejectExamSistemed2,
   postMarkersSistemed2,
-  DiagnosticSistemed2, postDiagnosticsSistemed2
+  DiagnosticSistemed2, postDiagnosticsSistemed2, getRejectedPrediction
 } from "../../service/user.service";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 
@@ -304,6 +304,24 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       }
     );
   }, [acceptedExam]);
+
+  const notRefusedForAlgorithms = examData?.operatorAccept != null || examData?.accepted;
+  useEffect(() => {
+    if(notRefusedForAlgorithms) return;
+    getRejectedPrediction(examIdNumber).then(
+      (response) => {
+        const newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejectionId);
+        setRejectionReason(newRejectionReason);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+        setRejectionReason(_content);
+      }
+    );
+  }, [examData]);
 
   const validationButtonMessage: string = (validated) ? t("undoValidation") : t("validateMeasurements");
   const toggleValidatedExam = (): void => {
