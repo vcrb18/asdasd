@@ -141,8 +141,8 @@ const FiducialChart = (props: any): JSX.Element => {
     if (!changedZoom){
     const maxPoint = Math.max(...points);
     const minPoint = Math.min(...points);
-    let xAxisOffsetLeft = (5000 - (maxPoint - minPoint))/2;
-    let xAxisOffsetRight = (5000 - (maxPoint - minPoint))/2;
+    let xAxisOffsetLeft = (5500 - (maxPoint - minPoint))/2;
+    let xAxisOffsetRight = (5500 - (maxPoint - minPoint))/2;
 
     if(minPoint-xAxisOffsetLeft<0)
     {
@@ -156,14 +156,15 @@ const FiducialChart = (props: any): JSX.Element => {
       xAxisOffsetRight = timeseriesData.length- maxPoint;
     }
     
-
     const maxTimeSeries = Math.max(...timeseriesData);
     const minTimeSeries = Math.min(...timeseriesData);
-    const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
+    const yAxisOffset = (2000 - (maxTimeSeries-minTimeSeries));
+
     setmaxX(maxPoint + xAxisOffsetRight);
     setminX(minPoint - xAxisOffsetLeft);
-    setmaxY(maxTimeSeries + 1000);
-    setminY(minTimeSeries -1000);
+
+    setmaxY(1750 + timeseriesData.reduce((a:any, b:any) => a + b, 0) / timeseriesData.length);
+    setminY(-1750 + timeseriesData.reduce((a:any, b:any) => a + b, 0) / timeseriesData.length);
 
     }
     chart = ChartJS.getChart("fiduChart");
@@ -175,8 +176,8 @@ useEffect(() => {
 
   const maxPoint = Math.max(...points);
   const minPoint = Math.min(...points);
-  let xAxisOffsetLeft = (5000 - (maxPoint - minPoint))/2;
-  let xAxisOffsetRight = (5000 - (maxPoint - minPoint))/2;
+  let xAxisOffsetLeft = (5500 - (maxPoint - minPoint))/2;
+  let xAxisOffsetRight = (5500 - (maxPoint - minPoint))/2;
 
   if(minPoint-xAxisOffsetLeft<0)
   {
@@ -193,11 +194,15 @@ useEffect(() => {
 
   const maxTimeSeries = Math.max(...props.timeSeries);
   const minTimeSeries = Math.min(...props.timeSeries);
-  const yAxisOffset = (2500 - (maxTimeSeries-minTimeSeries))/2;
+
+  const yAxisOffset = (2000 - (maxTimeSeries-minTimeSeries)/2);
+  
   setmaxX(maxPoint + xAxisOffsetRight);
   setminX(minPoint - xAxisOffsetLeft);
-  setmaxY(maxTimeSeries + 1000);
-  setminY(minTimeSeries - 1000);
+
+  setmaxY(1750 + props.timeSeries.reduce((a:any, b:any) => a + b, 0) / props.timeSeries.length);
+  setminY(-1750 + props.timeSeries.reduce((a:any, b:any) => a + b, 0) / props.timeSeries.length);
+
 }, [props.timeSeries]);
 
 useEffect(() => {

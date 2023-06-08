@@ -8,11 +8,12 @@ interface LineChartProps {
   options?: ChartOptions;
   width?: number | string ;
   height?: number | string ;
+  ratio?:number;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, width, height }) => {
+const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, width, height, ratio }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  let n_x_ticks = max_points / 100;
+  let n_x_ticks = max_points / 200;
   let sliced_data = data.slice(0,max_points);
 
   useEffect(() => {
@@ -36,6 +37,8 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
           ],
         },
         options: {
+          aspectRatio:ratio,
+          responsive:true,
           scales: {
             x: {
               ticks: {
@@ -57,8 +60,8 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
                 text: 'VOLTAJE [mV]',
                 display: false,
               },
-              min: -1500,
-              max: 1500,
+              min: -2000,
+              max: 2000,
             },
           },
           plugins: {
@@ -97,7 +100,7 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
     }
   }, [canvasRef, sliced_data, options]);
 
-  return <canvas id={id} height={height} width={width} ref={canvasRef} />;
+  return <canvas id={id} ref={canvasRef} width={width} />;
 };
 
 export default LineChart;
