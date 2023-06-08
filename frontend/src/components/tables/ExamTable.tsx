@@ -573,7 +573,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("state")}
                       </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
                       {getStatus(row.operatorAccept ?? row.accepted)}
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
