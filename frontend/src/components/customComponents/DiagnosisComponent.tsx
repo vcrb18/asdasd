@@ -134,7 +134,7 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
   let newDiagnostics: (DiagnosticPrediction)[] = [];
   diagnostics.map((item: {examId: number, diagnosticId: number, prediction: boolean, accuracy: number})=>{
     let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnosticId);
-    if (newObject){
+    if (newObject && item.accuracy >= 0.9){
       newDiagnostics.push({
         ...newObject,
         accuracy: item.accuracy,
