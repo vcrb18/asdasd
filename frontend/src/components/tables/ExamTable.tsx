@@ -90,8 +90,6 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
     return (
       <TableHead>
         <TableRow>
-          <StyledTableCell align={"center"}>
-          </StyledTableCell>
           {mobileColumns.map((columns) => (
             <StyledTableCell key={columns.id} align={columns.align}>
               <TableSortLabel
@@ -110,6 +108,8 @@ function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
               </TableSortLabel>
             </StyledTableCell>
           ))}
+          <StyledTableCell align={"center"}>
+          </StyledTableCell>
         </TableRow>
       </TableHead>
     );
@@ -492,7 +492,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                 value={row.examId}
               >
                 <Typography fontSize={'120%'} color={'#fff'}>
-                  {row.locked === true ? t("locked") : t("access")}
+                  {row.locked === true ? t("locked") : t("view")}
                 </Typography>
               </Button>
             </ThemeProvider>
@@ -505,22 +505,6 @@ const getUrgency = (urgency: number): JSX.Element => (
       return(
         <React.Fragment>
           <TableRow hover role="checkbox" tabIndex={-1} key={row.examId} sx={{ '& > *': { borderBottom: 'unset' } }}>
-            <StyledTableCell>
-              <IconButton
-                  aria-label="expand row"
-                  size="small"
-                  onClick={() => setOpen(!open)}
-                  >
-                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </StyledTableCell>
-            <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
-            <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
-            <StyledTableCell align="center">
-              <Typography fontWeight={"bold"}>
-                {parseTime(row.remainingTime)}
-              </Typography>
-            </StyledTableCell>
             <StyledTableCell align="center">
               <ThemeProvider theme={buttonsTheme}>
                 <Button
@@ -531,16 +515,31 @@ const getUrgency = (urgency: number): JSX.Element => (
                   value={row.examId}
                 >
                   <Typography fontSize={'120%'} color={'#fff'}>
-                    {row.locked === true ? t("locked") : t("access")}
+                    {row.locked === true ? t("locked") : t("view")}
                   </Typography>
                 </Button>
               </ThemeProvider>
+            </StyledTableCell>
+            <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
+            <StyledTableCell align="center">
+              <Typography fontWeight={"bold"}>
+                {parseTime(row.remainingTime)}
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                  >
+                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
             </StyledTableCell>
           </TableRow>
           <TableRow>
             <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-                  <Grid container>
+                  <Grid container spacing={1} paddingY={"1%"}>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {t("patient")}
@@ -576,6 +575,14 @@ const getUrgency = (urgency: number): JSX.Element => (
                     </Grid>
                     <Grid item>
                       {getStatus(row.operatorAccept ?? row.accepted)}
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("review")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2} >
+                      {getReviewState(row.operatorReview)}
                     </Grid>
                   </Grid>
                 </Collapse>
