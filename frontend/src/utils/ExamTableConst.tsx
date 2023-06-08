@@ -73,13 +73,13 @@ export const columns: readonly Column[] = [
   
 export const mobileColumns: readonly Column[] =[
     {
-      id: "urgency",
-      label: "urgency",
+      id: "results",
+      label: "results",
       align: "center",
     },
     {
-      id: "review",
-      label: "review",
+      id: "urgency",
+      label: "urgency",
       align: "center",
     },
     {
@@ -87,11 +87,7 @@ export const mobileColumns: readonly Column[] =[
       label: "timeLeft",
       align: "center",
     },
-    {
-      id: "results",
-      label: "results",
-      align: "center",
-    },
+    
   ]
   
   // Chekear los typos de cada una de las categorias
