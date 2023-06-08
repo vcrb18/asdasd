@@ -107,6 +107,14 @@ export interface Diagnostic {
     order: number,
 }
 
+export interface DiagnosticDataBase {
+  examId: number, 
+  diagnosticId: number, 
+  prediction: boolean, 
+  accuracy: number, 
+  display: boolean,
+}
+
 export interface DiagnosticPrediction {
   diagnosticId: number,
   diagnostic: string,
