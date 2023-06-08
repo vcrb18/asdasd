@@ -51,6 +51,7 @@ export interface ExamData {
   operatorAccept: boolean | null;
   rejectionId: number | null;
   rejectedDerivation: string | null;
+  accuracy: number;
 }
 
 export interface Background {
@@ -297,6 +298,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           operatorAccept: response.data.operatorAccept,
           rejectionId: response.data.rejectionId,
           rejectedDerivation: response.data.rejectedDerivation,
+          accuracy: response.data.accuracy
         });
         setValidated(response.data?.operatorReview);
         let newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejectionId);

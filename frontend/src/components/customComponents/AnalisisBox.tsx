@@ -322,7 +322,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
           </Grid>
           {!isLoading &&
           (<>
-          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={6} sm={6} md={6} lg={6}>
+          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={3} sm={3} md={3} lg={3}>
             <Typography
               fontSize={"65%"}
               align="left"
@@ -330,6 +330,15 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
             >
               { displayAccepted ? t("accepted") : t("refused") }
+            </Typography>
+          </Grid>
+          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={2} sm={2} md={2} lg={2}>
+            <Typography
+              fontSize={"65%"}
+              align="left"
+              fontWeight={"bold"}
+            >
+              {analisisData?.operatorAccept == undefined && analisisData?.accuracy !=  undefined && ((analisisData?.accuracy*100).toFixed(1) + "%")}
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-end"} xs={2} sm={2} md={2} lg={2}>
