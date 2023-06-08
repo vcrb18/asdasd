@@ -288,7 +288,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               fontWeight={"bold"}
               color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
             >
-              { displayAccepted ? t("accepted") : t("refused") }
+              { displayAccepted ? t("accepted") : t("rejected") }
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={2} sm={2} md={2} lg={2}>
