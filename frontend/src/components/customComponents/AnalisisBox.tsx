@@ -1,12 +1,9 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
-import { Typography, Select, MenuItem, Box, Grid, Avatar, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import React, { useState, Dispatch, SetStateAction } from "react";
+import { Typography, Grid, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import DiagnosisComponent from "./DiagnosisComponent";
 import { Derivation, derivations, type ExamData, type ExamMetadata } from "../views/ExamsView";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
-import { getExam, getSuggestedDiagnostic, markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
-import Check from "../../static/images/checkVerde.png"
-import X from "../../static/images/X.png"
+import { markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 
 interface AnalisisProps {
@@ -38,29 +35,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [possibleNewRejectionReason, setPossibleNewRejectionReason] = useState<RejectionReason | null>();
   const [possibleNewDerivation, setPossibleNewDerivation] = useState<Derivation | null>();
-
-  useEffect(() => {
-    getSuggestedDiagnostic(examId).then(
-      (response) => {
-        const data = {
-          confidence: response.data[0][0].confidence,
-          status: response.data[0][0].estado,
-          id: response.data[0][0].id,
-          rejectionReason: response.data[0][0].razonRechazo,
-          rejectionReasonConfidence: response.data[0][0].razonRechazoConfianza,
-        };
-        let newRejectionReason: undefined | RejectionReason = rejectionReasons.find(object => object.reason == data.rejectionReason);
-        setRejectionReason(newRejectionReason);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
-    }, []);
-
+ 
   const handleAddDialogClose = (): void => {
     setPossibleNewDerivation(null);
     setPossibleNewRejectionReason(null);
@@ -125,22 +100,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
       },
     });
   
-  // const displayUrgency = (nivel: number) => {
-  //   switch (nivel) {
-  //     case 1:
-  //       return(
-  //         <Brightness1RoundedIcon color={"success"} />
-  //     )
-  //     case 2:
-  //       return (
-  //         <Brightness1RoundedIcon color={"warning"} />
-  //       )
-  //     case 3:
-  //       return(
-  //         <Brightness1RoundedIcon color={"error"} />
-  //       )
-  //     }
-  // }
 
   const remapGender = (gender: string | undefined): string => {
     switch (gender) {
@@ -329,7 +288,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
               fontWeight={"bold"}
               color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
             >
-              { displayAccepted ? t("accepted") : t("refused") }
+              { displayAccepted ? t("accepted") : t("rejected") }
             </Typography>
           </Grid>
           <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={2} sm={2} md={2} lg={2}>
@@ -406,7 +365,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
         </Grid>
         
         
-        {rejectionReason && !displayAccepted &&  (
+        {rejectionReason && !displayAccepted && !isLoading &&  (
         <Grid
           container
           display={"flex"}

@@ -245,3 +245,7 @@ export const postDiagnosticsSistemed2 = async (examId: number, diagnostics: Diag
 export const markDiagnosticPredictionNotDisplayable = async (examId: number, diagnosticId: number): Promise<AxiosResponse> => {
   return await axios.post(`/diagnostic_predictions/${examId}/${diagnosticId}`, {withCredentials: true,});
 }
+
+export const getRejectedPrediction = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/rejection_predictions/${examId}`, {withCredentials: true,});
+}
