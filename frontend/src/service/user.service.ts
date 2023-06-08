@@ -241,3 +241,7 @@ export const postDiagnosticsSistemed2 = async (examId: number, diagnostics: Diag
     diagnostics: diagnostics
   });
 }
+
+export const getRejectedPrediction = async (examId: number): Promise<AxiosResponse> => {
+  return await axios.get(`/rejection_predictions/${examId}`, {withCredentials: true,});
+}
