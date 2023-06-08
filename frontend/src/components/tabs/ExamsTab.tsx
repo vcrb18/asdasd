@@ -137,7 +137,7 @@ const ExamsTab = (): JSX.Element => {
   const SwitchesGroup = () => {
     return (
       <Grid container display={"flex"} justifyContent={"space-around"}>
-        <Grid item xs={12} sm={6} md={6} lg={6} paddingY={"1%"}>
+        <Grid item xs={6} sm={6} md={6} lg={6} paddingY={"2%"}>
           <FormControl component="fieldset" variant="standard">
             <FormLabel component="legend">
               <Typography fontWeight={"bold"}>
@@ -166,7 +166,7 @@ const ExamsTab = (): JSX.Element => {
             </FormGroup>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6} paddingY={"1%"}>
+        <Grid item xs={6} sm={6} md={6} lg={6} paddingY={"2%"}>
           <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">
                 <Typography fontWeight={"bold"}>
