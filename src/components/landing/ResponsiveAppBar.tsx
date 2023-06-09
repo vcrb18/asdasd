@@ -1,9 +1,8 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import LogoImage from '@/assets/images/logo_isatec.png';
 import { useAuth } from '@/hooks/AuthContext';
+
+import { AppBar, Box, Button, Typography } from '@mui/material';
+
+import LogoImage from '@/assets/images/logo_isatec.png';
 
 function ResponsiveAppBar() {
   const { user, signOut } = useAuth();

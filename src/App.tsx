@@ -1,15 +1,15 @@
-import { createBrowserRouter, RouterProvider, LoaderFunction, ActionFunction } from 'react-router-dom';
-import '@/global.css';
-
-import { AuthProvider } from '@/hooks/AuthContext';
 import { I18nextProvider } from 'react-i18next';
+import { ActionFunction, createBrowserRouter, LoaderFunction, RouterProvider } from 'react-router-dom';
+
+import client from '@/api/client';
+import { AuthProvider } from '@/hooks/AuthContext';
+import theme from '@/theme';
+
 import { ThemeProvider } from '@mui/material/styles';
 
 import i18n from '@/utils/i18n';
 
-import theme from '@/theme';
-
-import client from '@/api/client';
+import '@/global.css';
 
 interface RouteCommon {
   loader?: LoaderFunction;

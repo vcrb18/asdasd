@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { AxiosRequestHeaders } from 'axios';
+
 import { User } from '@/ts/interfaces/user';
 import { AuthContextProps, AuthProviderProps, SignInParams, SignUpParams } from '@/ts/types/authContext';
 

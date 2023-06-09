@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+
 import { User } from '@/ts/interfaces/user';
 
 type AuthContextProps = {

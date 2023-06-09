@@ -1,9 +1,10 @@
-import { Box, Divider } from '@mui/material';
-import ResponsiveAppBar from '@/components/landing/ResponsiveAppBar';
+import Footer from '@/components/landing/Footer';
 import Hero from '@/components/landing/Hero';
 import Projects from '@/components/landing/Projects';
+import ResponsiveAppBar from '@/components/landing/ResponsiveAppBar';
 import Team from '@/components/landing/Team';
-import Footer from '@/components/landing/Footer';
+
+import { Box, Divider } from '@mui/material';
 
 const Landing = () => {
   return (

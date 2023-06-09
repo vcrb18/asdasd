@@ -1,8 +1,9 @@
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+
 import LogoCMM from '@/assets/images/logo_cmm.png';
 import LogoIsatecCompleto from '@/assets/images/logo_isatec_completo.png';
-import LogoUChile from '@/assets/images/logo_uchile.png';
 import LogoUC from '@/assets/images/logo_uc.png';
+import LogoUChile from '@/assets/images/logo_uchile.png';
 
 const Team = () => {
   const logosCMM = {

@@ -1,8 +1,8 @@
-import { Box, Typography, Grid, Paper, Avatar } from '@mui/material';
+import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
 
-import VerificacionExamenesImage from '@/assets/images/verificacion_examenes.png';
 import ArritmiasImage from '@/assets/images/arritmia_image.png';
 import ExtrasistoleImage from '@/assets/images/extrasistole.png';
+import VerificacionExamenesImage from '@/assets/images/verificacion_examenes.png';
 
 const CustomGridElement = ({ children }: { children: JSX.Element[] }): JSX.Element => (
   <Grid item xs={12} lg={6}>

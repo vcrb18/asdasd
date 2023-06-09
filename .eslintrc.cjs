@@ -9,7 +9,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'simple-import-sort'],
   settings: {
     'import/resolver': {
       typescript: {},
@@ -20,4 +20,28 @@ module.exports = {
       }
     },
   },
+  rules: {
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          // Packages `react` related packages come first.
+          ["^react", "^@?\\w"],
+          // Internal packages components or hooks
+          ["^(@|components|hooks)"],
+          // Material UI packages.
+          ["^@mui/material"],
+          // @/utils
+          ["^@/utils"],
+          // types
+          ["^@/ts"],
+          // assets and icons
+          ["^@/assets", "^@mui/icons-material"],
+          // Style imports.
+          ["^.+\\.?(css)$"]
+        ],
+      },
+    ],
+    'simple-import-sort/exports': 'error', 
+  }
 };

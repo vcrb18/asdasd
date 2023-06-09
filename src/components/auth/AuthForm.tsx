@@ -1,11 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Button, FormControlLabel, Grid, Link, TextField, Typography, Box, Checkbox } from '@mui/material';
+import { useFormik } from 'formik';
+
+import { useAuth } from '@/hooks/AuthContext';
+
+import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
+
+import { LoginValidation } from '@/utils/Validations';
+
+import { AuthPage } from '@/ts/types/types';
+
 import FullIsatecLogo from '@/assets/images/logo_isatec_completo.png';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useFormik } from 'formik';
-import { LoginValidation } from '@/utils/Validations';
-import { useAuth } from '@/hooks/AuthContext';
-import { AuthPage } from '@/ts/types/types';
 
 function Buttons({ mode }: { mode: AuthPage }) {
   return (
