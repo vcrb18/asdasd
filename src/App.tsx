@@ -1,39 +1,34 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  LoaderFunction,
-  ActionFunction,
-} from "react-router-dom";
-import "@/global.css";
+import { createBrowserRouter, RouterProvider, LoaderFunction, ActionFunction } from 'react-router-dom';
+import '@/global.css';
 
-import { AuthProvider } from "@/hooks/AuthContext";
-import { I18nextProvider } from "react-i18next";
-import { ThemeProvider } from "@mui/material/styles";
+import { AuthProvider } from '@/hooks/AuthContext';
+import { I18nextProvider } from 'react-i18next';
+import { ThemeProvider } from '@mui/material/styles';
 
-import i18n from "@/utils/i18n";
+import i18n from '@/utils/i18n';
 
-import theme from "@/theme";
+import theme from '@/theme';
 
-import client from "@/api/client";
+import client from '@/api/client';
 
 interface RouteCommon {
   loader?: LoaderFunction;
   action?: ActionFunction;
-  ErrorBoundary?: React.ComponentType<any>;
+  ErrorBoundary?: React.ComponentType;
 }
 
 interface IRoute extends RouteCommon {
   path: string;
-  Element: React.ComponentType<any>;
+  Element: React.ComponentType;
 }
 
 interface Pages {
   [key: string]: {
-    default: React.ComponentType<any>;
+    default: React.ComponentType;
   } & RouteCommon;
 }
 
-const pages: Pages = import.meta.glob("./pages/**/*.tsx", { eager: true });
+const pages: Pages = import.meta.glob('./pages/**/*.tsx', { eager: true });
 
 const routes: IRoute[] = [];
 for (const path of Object.keys(pages)) {
@@ -42,12 +37,10 @@ for (const path of Object.keys(pages)) {
     continue;
   }
 
-  const normalizedPathName = fileName.includes("$")
-    ? fileName.replace("$", ":")
-    : fileName.replace(/\/index/, "");
+  const normalizedPathName = fileName.includes('$') ? fileName.replace('$', ':') : fileName.replace(/\/index/, '');
 
   routes.push({
-    path: fileName === "index" ? "/" : `/${normalizedPathName.toLowerCase()}`,
+    path: fileName === 'index' ? '/' : `/${normalizedPathName.toLowerCase()}`,
     Element: pages[path].default,
     loader: pages[path]?.loader as LoaderFunction | undefined,
     action: pages[path]?.action as ActionFunction | undefined,
@@ -60,13 +53,13 @@ const router = createBrowserRouter(
     ...rest,
     element: <Element />,
     ...(ErrorBoundary && { errorElement: <ErrorBoundary /> }),
-  }))
+  })),
 );
 
 const store = {
-  get: () => localStorage.getItem("token"),
-  set: (token: string) => localStorage.setItem("token", token),
-  del: () => localStorage.removeItem("token"),
+  get: () => localStorage.getItem('token'),
+  set: (token: string) => localStorage.setItem('token', token),
+  del: () => localStorage.removeItem('token'),
 };
 
 const App = () => {

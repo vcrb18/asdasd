@@ -1,1 +1,1 @@
-export type AuthPage = "login" | "register";
+export type AuthPage = 'login' | 'register';

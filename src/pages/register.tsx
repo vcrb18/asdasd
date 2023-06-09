@@ -1,12 +1,7 @@
-
-import AuthForm from "@/components/auth/AuthForm";
+import AuthForm from '@/components/auth/AuthForm';
 
 function Register() {
-  return (
-    <AuthForm
-      mode="register"
-    />
-  );
+  return <AuthForm mode="register" />;
 }
 
 export default Register;

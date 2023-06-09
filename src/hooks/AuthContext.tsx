@@ -1,51 +1,12 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface AuthContextProps {
-  user: User | null;
-  signUp: (params: any) => Promise<void>;
-  signIn: (credentials: { email: string; password: string }) => Promise<void>;
-  signOut: () => void;
-  state: "loading" | "unauthenticated" | "authenticated";
-  refreshUser: () => Promise<void>;
-}
-
-interface AuthProviderProps {
-  store: {
-    get: () => string | null;
-    set: (token: string) => void;
-    del: () => void;
-  };
-  client: {
-    get: (url: string, params?: any) => Promise<any>;
-    post: (url: string, params?: any) => Promise<any>;
-    interceptors: {
-      request: {
-        use: (handler: (config: any) => any) => void;
-        eject: (interceptor: any) => void;
-      };
-    };
-  };
-  children: React.ReactNode;
-}
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { AxiosRequestHeaders } from 'axios';
+import { User } from '@/ts/interfaces/user';
+import { AuthContextProps, AuthProviderProps, SignInParams, SignUpParams } from '@/ts/types/authContext';
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
-export function AuthProvider({ store, client, ...props }: AuthProviderProps) {
-  const [state, setState] = useState<
-    "loading" | "unauthenticated" | "authenticated"
-  >("loading");
+function AuthProvider({ store, client, ...props }: AuthProviderProps) {
+  const [state, setState] = useState<'loading' | 'unauthenticated' | 'authenticated'>('loading');
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | undefined>(undefined);
 
@@ -53,24 +14,24 @@ export function AuthProvider({ store, client, ...props }: AuthProviderProps) {
     store.del();
     setToken(undefined);
     setUser(null);
-    setState("unauthenticated");
+    setState('unauthenticated');
   }, [store]);
 
   const setLoadingState = useCallback(
     async (newToken: string) => {
       store.set(newToken);
-      setState("loading");
+      setState('loading');
       setUser(null);
       setToken(newToken);
     },
-    [store]
+    [store],
   );
 
   const getUserInfo = useCallback(async () => {
     try {
-      const { data } = await client.get("/users/me");
+      const { data } = await client.get('/users/me');
       setUser(data.data);
-      setState("authenticated");
+      setState('authenticated');
     } catch (error) {
       console.error(error);
       signOut();
@@ -85,13 +46,12 @@ export function AuthProvider({ store, client, ...props }: AuthProviderProps) {
     } else {
       signOut();
     }
-    
   }, [setLoadingState, getUserInfo, signOut, store]);
 
   useEffect(() => {
     if (!token) return;
-    const interceptor = client.interceptors.request.use((config: any) => {
-      if (!config.headers) config.headers = {};
+    const interceptor = client.interceptors.request.use((config) => {
+      if (!config.headers) config.headers = {} as AxiosRequestHeaders;
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
@@ -99,40 +59,34 @@ export function AuthProvider({ store, client, ...props }: AuthProviderProps) {
   }, [token, client, store]);
 
   const signUp = useCallback(
-    async ({ params }: { params: any }) => {
-      await client.post("/signup", { ...params });
+    async (params: SignUpParams) => {
+      await client.post('/signup', { ...params });
     },
-    [client]
+    [client],
   );
 
   const signIn = useCallback(
-    async ({ email, password }: { email: string; password: string }) => {
-      const payload = { password, email };
-      const response = await client.post("/login", payload);
-      console.log(response)
+    async (params: SignInParams) => {
+      const response = await client.post('/login', { ...params });
       const token = response.data.token;
       await setLoadingState(token);
       await getUserInfo();
     },
-    [client, getUserInfo, setLoadingState]
+    [client, getUserInfo, setLoadingState],
   );
 
   const refreshUser = useCallback(async () => {
-    const { data } = await client.get("/users/me");
+    const { data } = await client.get('/users/me');
     setUser(data);
   }, [client]);
 
-  return (
-    <AuthContext.Provider
-      {...props}
-      value={{ user, signUp, signIn, signOut, state, refreshUser }}
-    />
-  );
+  return <AuthContext.Provider {...props} value={{ user, signUp, signIn, signOut, state, refreshUser }} />;
 }
 
-export function useAuth() {
+function useAuth() {
   const context = useContext(AuthContext);
-  if (!context)
-    throw new Error("useAuthContext must be used within an AuthProvider");
+  if (!context) throw new Error('useAuthContext must be used within an AuthProvider');
   return context;
 }
+
+export { AuthProvider, useAuth };
