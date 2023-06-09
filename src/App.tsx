@@ -6,8 +6,12 @@ import {
 } from "react-router-dom";
 import "@/global.css";
 
-import { AuthProvider } from "@/lib/headlessAuth";
+import { AuthProvider } from "@/hooks/AuthContext";
+import { I18nextProvider } from "react-i18next";
 import { ThemeProvider } from "@mui/material/styles";
+
+import i18n from "@/utils/i18n";
+
 import theme from "@/theme";
 
 import client from "@/api/client";
@@ -67,11 +71,13 @@ const store = {
 
 const App = () => {
   return (
-    <AuthProvider store={store} client={client}>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </AuthProvider>
+    <I18nextProvider i18n={i18n}>
+      <AuthProvider store={store} client={client}>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </AuthProvider>
+    </I18nextProvider>
   );
 };
 

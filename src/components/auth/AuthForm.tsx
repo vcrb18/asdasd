@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -9,14 +10,15 @@ import {
   Box,
   Checkbox,
 } from "@mui/material";
+import FullIsatecLogo from "@/assets/images/logo_isatec_completo.png";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useAuth } from "@/lib/headlessAuth";
-import { useNavigate } from "react-router-dom";
-import FullIsatecLogo from "@/assets/images/logo_isatec_completo.png";
+import { LoginValidation } from "@/utils/Validations";
+import { useAuth } from "@/hooks/AuthContext";
+import { AuthPage } from "@/ts/types/types";
 
-function Buttons({ mode }: { mode: "login" | "register" }) {
+
+function Buttons({ mode } : { mode : AuthPage }) {
   return (
     <>
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
@@ -43,23 +45,16 @@ function Buttons({ mode }: { mode: "login" | "register" }) {
   );
 }
 
-function AuthForm({ mode }: { mode: "login" | "register" }) {
+function AuthForm({ mode }: { mode: AuthPage }) {
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
-
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
-  });
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema,
+    validationSchema: LoginValidation,
     onSubmit: async (values: any) => {
       try {
         if (mode === "register") {
@@ -131,7 +126,6 @@ function AuthForm({ mode }: { mode: "login" | "register" }) {
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             margin="normal"
@@ -147,7 +141,6 @@ function AuthForm({ mode }: { mode: "login" | "register" }) {
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="secondary" />}

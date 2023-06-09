@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
-
+import { useTranslation } from "react-i18next";
 const Hero = () => {
+  const { t } = useTranslation();
   return (
     <Box sx={{ width: "100%" }}>
       <Box
@@ -13,7 +14,7 @@ const Hero = () => {
         }}
       >
         <Typography mt={8} variant="h2" align="center" color="primary">
-          Inteligencia Artificial para Cardiología
+          {t("landing.hero.title")}
         </Typography>
         <Typography mt={8} mb={4} variant="h5" align="justify" color="grey.700">
           Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo

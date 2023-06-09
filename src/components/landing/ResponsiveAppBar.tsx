@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import LogoImage from "@/assets/images/logo_isatec.png";
-import { useAuth } from "../../lib/headlessAuth";
+import { useAuth } from "@/hooks/AuthContext";
 
 function ResponsiveAppBar() {
   const { user, signOut } = useAuth();
