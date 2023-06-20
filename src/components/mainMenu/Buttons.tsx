@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Avatar,Button, Grid, Typography } from '@mui/material';
+import { Avatar, Button, Grid, Typography } from '@mui/material';
 
 import { mainMenuPageButtons } from '@/utils/MenuButtons';
 
