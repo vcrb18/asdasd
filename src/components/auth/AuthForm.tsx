@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 
 import { useAuth } from '@/hooks/AuthContext';
 
-import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 
 import { LoginValidation } from '@/utils/Validations';
 
@@ -19,11 +19,6 @@ function Buttons({ mode }: { mode: AuthPage }) {
         {mode === 'register' ? 'Sign Up' : 'Sign In'}
       </Button>
       <Grid container>
-        <Grid item xs>
-          <Link href="#" variant="body2">
-            Forgot password?
-          </Link>
-        </Grid>
         <Grid item>
           <Link href={mode === 'register' ? '/login' : '/register'} variant="body2">
             {mode === 'register' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
@@ -117,7 +112,6 @@ function AuthForm({ mode }: { mode: AuthPage }) {
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
           />
-          <FormControlLabel control={<Checkbox value="remember" color="secondary" />} label="Remember me" />
           {formik.status && (
             <Typography variant="body2" color="error" align="center" sx={{ mb: 2 }}>
               {formik.status}
