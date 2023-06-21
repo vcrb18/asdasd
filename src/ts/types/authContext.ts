@@ -8,7 +8,6 @@ type AuthContextProps = {
   signIn: (params: SignInParams) => Promise<void>;
   signOut: () => void;
   state: 'loading' | 'unauthenticated' | 'authenticated';
-  refreshUser: () => Promise<void>;
 };
 
 type AuthProviderProps = {
