@@ -6,7 +6,9 @@ import { mainMenuPageButtons } from '@/utils/MenuButtons';
 
 import { MenuButton } from '@/ts/interfaces/menuButton';
 
-function MainMenuButton({ label, href, image }: { label: string; href: string; image: string }) {
+function MainMenuButton({ label, href, image }: MenuButton) {
+  const buttonIsNotExam = label === 'alerts' || label === 'metrics' || label === 'report';
+
   return (
     <Grid container lg={6} md={6} xs={12} key={label} padding={'0.5%'}>
       <Button
@@ -14,7 +16,7 @@ function MainMenuButton({ label, href, image }: { label: string; href: string; i
         href={href}
         fullWidth
         disableElevation
-        disabled={label === 'alerts' || label === 'metrics' || label === 'report'}
+        disabled={buttonIsNotExam}
       >
         <Grid
           container

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAuth } from '@/hooks/AuthContext';
 
 import { 
@@ -19,18 +19,10 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoImage from '@/assets/images/logo_isatec.png';
 import { useTranslation } from 'react-i18next';
+import { DrawerButton } from '@/ts/interfaces/drawerButton';
+import { AppBarButtons } from '@/ts/interfaces/appBarButtons';
 
-function DrawerButton({
-  key,
-  onClick,
-  href,
-  label
-}: {
-  key: string;
-  onClick: (() => void) | undefined;
-  href: string;
-  label: string;
-}) {
+function DrawerButton({ key, onClick, href, label }: DrawerButton) {
   return(
     <ListItemButton
     key={key}
@@ -53,9 +45,7 @@ function DrawerButtons() {
   const handleLanguageChange = useCallback((event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage).catch((error) => {
-      console.error(error);
-    });
+    i18n.changeLanguage(newLanguage);
   }, [i18n]);
   return (
   <>
@@ -77,21 +67,15 @@ function DrawerButtons() {
     </List> 
     ) : (
     <List>
-      <DrawerButton key="login" onClick={undefined} href={"/login"} label="Log in"/>
-      <DrawerButton key="register" onClick={undefined} href={"/register"} label="Register"/>
+      <DrawerButton key="login" href={"/login"} label="Log in"/>
+      <DrawerButton key="register" href={"/register"} label="Register"/>
   </List> 
   )}
   </>
   );
 }
 
-function Buttons({
-  setOpenDrawer, 
-  openDrawer
-}: { 
-  setOpenDrawer: Dispatch<SetStateAction<boolean>>; 
-  openDrawer: boolean; 
-}) {
+function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
   const { i18n } = useTranslation();
   const { user, signOut } = useAuth();
 
@@ -100,9 +84,7 @@ function Buttons({
   const handleLanguageChange = useCallback((event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage).catch((error) => {
-      console.error(error);
-    });
+    i18n.changeLanguage(newLanguage);
   }, [i18n]);
   return(
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
