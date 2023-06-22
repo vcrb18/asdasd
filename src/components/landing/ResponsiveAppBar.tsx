@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAuth } from '@/hooks/AuthContext';
 
 import { 
@@ -19,18 +19,11 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoImage from '@/assets/images/logo_isatec.png';
 import { useTranslation } from 'react-i18next';
+import { DrawerButton } from '@/ts/interfaces/drawerButton';
+import { AppBarButtons } from '@/ts/interfaces/appBarButtons';
+import { useLocation } from 'react-router-dom';
 
-function DrawerButton({
-  key,
-  onClick,
-  href,
-  label
-}: {
-  key: string;
-  onClick: (() => void) | undefined;
-  href: string;
-  label: string;
-}) {
+function DrawerButton({ key, onClick, href, label }: DrawerButton) {
   return(
     <ListItemButton
     key={key}
@@ -47,16 +40,17 @@ function DrawerButton({
 function DrawerButtons() {
   const { i18n } = useTranslation();
   const { user, signOut } = useAuth();
+  const location = useLocation();
 
   const [language, setLanguage] = useState<string>(i18n.language);
 
   const handleLanguageChange = useCallback((event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage).catch((error) => {
-      console.error(error);
-    });
+    i18n.changeLanguage(newLanguage);
   }, [i18n]);
+
+  const currentViewIsMainMenu = location.pathname === "/mainMenu";
   return (
   <>
     <Select
@@ -73,37 +67,32 @@ function DrawerButtons() {
     </Select>
     {user ? (
     <List>
+      <DrawerButton key={currentViewIsMainMenu ? "index" : "menu"} href={currentViewIsMainMenu ? "/" : "/mainMenu"} label={currentViewIsMainMenu ? "Index" : "Main Menu"}/>
       <DrawerButton key="logout"  onClick={signOut} href={""} label="Log out"/>
     </List> 
     ) : (
     <List>
-      <DrawerButton key="login" onClick={undefined} href={"/login"} label="Log in"/>
-      <DrawerButton key="register" onClick={undefined} href={"/register"} label="Register"/>
+      <DrawerButton key="login" href={"/login"} label="Log in"/>
+      <DrawerButton key="register" href={"/register"} label="Register"/>
   </List> 
   )}
   </>
   );
 }
 
-function Buttons({
-  setOpenDrawer, 
-  openDrawer
-}: { 
-  setOpenDrawer: Dispatch<SetStateAction<boolean>>; 
-  openDrawer: boolean; 
-}) {
+function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
   const { i18n } = useTranslation();
   const { user, signOut } = useAuth();
-
+  const location = useLocation();
   const [language, setLanguage] = useState<string>(i18n.language);
 
   const handleLanguageChange = useCallback((event: SelectChangeEvent): void => {
     const newLanguage = event.target.value;
     setLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage).catch((error) => {
-      console.error(error);
-    });
+    i18n.changeLanguage(newLanguage);
   }, [i18n]);
+
+  const currentViewIsMainMenu = location.pathname === "/mainMenu";
   return(
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
     {user ? (
@@ -112,11 +101,22 @@ function Buttons({
           {user.email}
         </Typography>
         <Button
+          key={currentViewIsMainMenu ? "index" : "menu"}
+          variant="contained"
+          href={currentViewIsMainMenu ? "/" : "/mainMenu"}
+          sx={{
+            mx: 4,
+            display:{ xs: "none", sm: "block"}
+          }}
+        >
+          {currentViewIsMainMenu ? "Index" : "Main Menu"}
+        </Button>
+        <Button
           key="logout"
           variant="contained"
           onClick={signOut}
           sx={{
-            mx: 8,
+            mx: 4,
             display:{ xs: "none", sm: "block"}
           }}
         >
