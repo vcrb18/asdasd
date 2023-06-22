@@ -21,6 +21,7 @@ import LogoImage from '@/assets/images/logo_isatec.png';
 import { useTranslation } from 'react-i18next';
 import { DrawerButton } from '@/ts/interfaces/drawerButton';
 import { AppBarButtons } from '@/ts/interfaces/appBarButtons';
+import { useLocation } from 'react-router-dom';
 
 function DrawerButton({ key, onClick, href, label }: DrawerButton) {
   return(
@@ -39,6 +40,7 @@ function DrawerButton({ key, onClick, href, label }: DrawerButton) {
 function DrawerButtons() {
   const { i18n } = useTranslation();
   const { user, signOut } = useAuth();
+  const location = useLocation();
 
   const [language, setLanguage] = useState<string>(i18n.language);
 
@@ -47,6 +49,8 @@ function DrawerButtons() {
     setLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
   }, [i18n]);
+
+  const currentViewIsMainMenu = location.pathname === "/mainMenu";
   return (
   <>
     <Select
@@ -63,6 +67,7 @@ function DrawerButtons() {
     </Select>
     {user ? (
     <List>
+      <DrawerButton key={currentViewIsMainMenu ? "index" : "menu"} href={currentViewIsMainMenu ? "/" : "/mainMenu"} label={currentViewIsMainMenu ? "Index" : "Main Menu"}/>
       <DrawerButton key="logout"  onClick={signOut} href={""} label="Log out"/>
     </List> 
     ) : (
@@ -78,7 +83,7 @@ function DrawerButtons() {
 function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
   const { i18n } = useTranslation();
   const { user, signOut } = useAuth();
-
+  const location = useLocation();
   const [language, setLanguage] = useState<string>(i18n.language);
 
   const handleLanguageChange = useCallback((event: SelectChangeEvent): void => {
@@ -86,6 +91,8 @@ function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
     setLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
   }, [i18n]);
+
+  const currentViewIsMainMenu = location.pathname === "/mainMenu";
   return(
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
     {user ? (
@@ -94,11 +101,22 @@ function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
           {user.email}
         </Typography>
         <Button
+          key={currentViewIsMainMenu ? "index" : "menu"}
+          variant="contained"
+          href={currentViewIsMainMenu ? "/" : "/mainMenu"}
+          sx={{
+            mx: 4,
+            display:{ xs: "none", sm: "block"}
+          }}
+        >
+          {currentViewIsMainMenu ? "Index" : "Main Menu"}
+        </Button>
+        <Button
           key="logout"
           variant="contained"
           onClick={signOut}
           sx={{
-            mx: 8,
+            mx: 4,
             display:{ xs: "none", sm: "block"}
           }}
         >
