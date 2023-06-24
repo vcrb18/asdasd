@@ -11,13 +11,7 @@ function MainMenuButton({ label, href, image }: MenuButton) {
 
   return (
     <Grid container lg={6} md={6} xs={12} key={label} padding={'0.5%'}>
-      <Button
-        sx={{ backgroundColor: '#E4EDEF' }}
-        href={href}
-        fullWidth
-        disableElevation
-        disabled={buttonIsNotExam}
-      >
+      <Button sx={{ backgroundColor: '#E4EDEF' }} href={href} fullWidth disableElevation disabled={buttonIsNotExam}>
         <Grid
           container
           display={'flex'}

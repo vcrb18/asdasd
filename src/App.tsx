@@ -30,17 +30,29 @@ interface Pages {
 
 const pages: Pages = import.meta.glob('./pages/**/*.tsx', { eager: true });
 
+const getNormalizedPathName = (fileName: string): string => {
+  return fileName.includes('$') ? fileName.replace('$', ':') : fileName.replace(/\/index/, '');
+};
+
+const getRouteFromFileName = (fileName: string): string => {
+  switch (fileName) {
+    case 'index':
+      return '/';
+    case 'examView':
+      return '/exam/:idExam';
+    default:
+      return `/${getNormalizedPathName(fileName)}`;
+  }
+};
+
 const routes: IRoute[] = [];
 for (const path of Object.keys(pages)) {
   const fileName = path.match(/\.\/pages\/(.*)\.tsx$/)?.[1];
   if (!fileName) {
     continue;
   }
-
-  const normalizedPathName = fileName.includes('$') ? fileName.replace('$', ':') : fileName.replace(/\/index/, '');
-
   routes.push({
-    path: fileName === 'index' ? '/' : `/${normalizedPathName.toLowerCase()}`,
+    path: getRouteFromFileName(fileName),
     Element: pages[path].default,
     loader: pages[path]?.loader as LoaderFunction | undefined,
     action: pages[path]?.action as ActionFunction | undefined,
