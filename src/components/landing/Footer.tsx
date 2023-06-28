@@ -8,7 +8,7 @@ function Footer() {
       sx={{
         top: 'auto',
         bottom: 0,
-        marginTop: "0.5%"
+        marginTop: '0.5%',
       }}
     >
       <Toolbar sx={{ justifyContent: 'center' }}>
@@ -16,6 +16,6 @@ function Footer() {
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default Footer;
