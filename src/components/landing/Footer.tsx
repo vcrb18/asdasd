@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
-const Footer = () => {
+function Footer() {
   return (
     <AppBar
       position="static"
@@ -8,15 +8,14 @@ const Footer = () => {
       sx={{
         top: 'auto',
         bottom: 0,
-        border: '1px solid #E0E0E0',
-        borderLeft: 'none',
+        marginTop: '0.5%',
       }}
     >
       <Toolbar sx={{ justifyContent: 'center' }}>
-        <Typography variant="h5">Copyright@2022 ISATEC ECG. All rights reserved</Typography>
+        <Typography variant="h6">Copyright@2022 ISATEC ECG. All rights reserved</Typography>
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default Footer;
