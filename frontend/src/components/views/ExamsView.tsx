@@ -106,6 +106,7 @@ export interface Diagnostic {
     diagnosticId: number,
     diagnostic: string,
     order: number,
+    threshold: number,
 }
 
 export interface DiagnosticDataBase {
