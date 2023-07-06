@@ -134,7 +134,7 @@ const ParserDiagnostic = (diagnostics: [], listOfDiagnostics: (Diagnostic)[]) =>
   let newDiagnostics: (DiagnosticPrediction)[] = [];
   diagnostics.map((item: DiagnosticDataBase)=>{
     let newObject: undefined | Diagnostic = listOfDiagnostics.find(object => object.diagnosticId == item.diagnosticId);
-    if (newObject && item.display && item.accuracy >= 0.9){
+    if (newObject && item.display && item.accuracy > newObject.threshold){
       newDiagnostics.push({
         ...newObject,
         accuracy: item.accuracy,
@@ -166,12 +166,8 @@ const DiagnosisComponent: React.FC<DiagnosisProps> = ({
     getDiagnosticTypes().then(
       (res) => {
         let diagnostics: (Diagnostic)[] = []
-        res.data.map((diagnostic: { diagnosticId: number; diagnostic: string; order: number;}) => {
-          diagnostics.push({
-            diagnosticId: diagnostic.diagnosticId,
-            diagnostic: diagnostic.diagnostic,
-            order: diagnostic.order,
-          });
+        res.data.map((diagnostic: Diagnostic) => {
+          diagnostics.push(diagnostic);
         });
         setDiagnosticTypes(diagnostics);
       },
