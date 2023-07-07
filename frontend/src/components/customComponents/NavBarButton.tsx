@@ -11,6 +11,7 @@ import { type ButtonProps } from "./Header";
 import { useTranslation } from "react-i18next";
 import { logout } from "../../service/auth.service";
 import { type NavigateFunction, useNavigate } from "react-router-dom";
+import { customButtonTheme } from "../../utils/ButtonsConst";
 
 interface NavBarButtonProps {
   buttonsLabels: ButtonProps[];
@@ -20,13 +21,7 @@ const NavBarButton: React.FC<NavBarButtonProps> = ({
   buttonsLabels,
 }): JSX.Element => {
   const { t } = useTranslation();
-  const buttonsTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#006a6b",
-      },
-    },
-  });
+  const buttonsTheme = customButtonTheme;
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState<string>(i18n.language);
   const navigate: NavigateFunction = useNavigate();

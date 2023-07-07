@@ -28,4 +28,5 @@ export const mainMenuTabs = [
 export const mainMenuHeaderButtons = [
   { label: "myAccount", href: "#" },
   { label: "logOut", href: "/" },
+  { label: "admin", href: "/admin"}
 ];

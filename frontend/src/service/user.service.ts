@@ -1,6 +1,7 @@
 import axios, { Axios, type AxiosResponse } from "axios";
 import useSWR from "swr"
 import authHeader from "./auth.header";
+import { BasePopperPropsOverrides } from "@mui/x-data-grid";
 const API_URL = "http://localhost:8080/";
 
 function fetcher(url: string) {
@@ -47,7 +48,14 @@ export const getExamsById = async (searchInt: string, page : number, order:numbe
 export const getExamsCount = async () : Promise<AxiosResponse> => {
   return axios.get(`/exams/count`, {withCredentials: true})
 }
-
+export const postAIState = async ( turnOn: boolean, timeActive: number) => {
+  if (turnOn){
+    return axios.post(` /ai_analysis/activate/${timeActive}`, { withCredentials: true });
+  }
+  else {
+    return axios.post(` /ai_analysis/deactivate`, { withCredentials: true });
+  }
+};
 export const getExamPredictedMarkersComputations = (
   examId: number
 ): Promise<AxiosResponse> => {
@@ -248,4 +256,8 @@ export const markDiagnosticPredictionNotDisplayable = async (examId: number, dia
 
 export const getRejectedPrediction = async (examId: number): Promise<AxiosResponse> => {
   return await axios.get(`/rejection_predictions/${examId}`, {withCredentials: true,});
+}
+
+export const getMedicalCenters = async (): Promise<AxiosResponse> => {
+  return await axios.get(`/organizations`, {withCredentials: true,});
 }
