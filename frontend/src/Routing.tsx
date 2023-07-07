@@ -18,6 +18,7 @@ import ExamsView from "./components/views/ExamsView";
 import RequireAuth from "./components/customComponents/ProtectedRoute";
 import TablesView from "./components/views/TablesView";
 import ExamsTab from "./components/tabs/ExamsTab";
+import AdminView from "./components/views/AdminView";
 
 function Routing(): JSX.Element {
   return (
@@ -75,6 +76,14 @@ function Routing(): JSX.Element {
           element={
             <RequireAuth>
             <TablesView />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <RequireAuth>
+            <AdminView />
             </RequireAuth>
           }
         />
