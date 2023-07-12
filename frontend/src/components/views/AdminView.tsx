@@ -145,8 +145,8 @@ function AdminView() {
       </Button>
       <Footer
         footerPositionLg="absolute"
-        footerPositionMd="absolute"
-        footerPositionXs="absolute"
+        footerPositionMd="relative"
+        footerPositionXs="static"
       />
     </>
   );
