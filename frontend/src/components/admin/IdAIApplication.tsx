@@ -18,7 +18,6 @@ function IdAIApplication({onClickIdApplication}: IdAIApplicationProps) {
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExamId(event.target.value);
-    console.log(examId);
   };
   
   return (
