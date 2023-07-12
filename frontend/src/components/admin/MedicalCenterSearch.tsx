@@ -21,10 +21,13 @@ import { MedicalCenter } from "./MedicalCenters";
 
 interface MedicalCenterSearchProps {
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
-  areMedicalCentersActive: boolean
+  areMedicalCentersActive: boolean;
 }
 
-function MedicalCenterSearch({ onNewMedicalCenter, areMedicalCentersActive }: MedicalCenterSearchProps) {
+function MedicalCenterSearch({
+  onNewMedicalCenter,
+  areMedicalCentersActive,
+}: MedicalCenterSearchProps) {
   const { t } = useTranslation();
   const [medicalCentersForAI, setMedicalCentersForAI] = useState<
     MedicalCenter[]
@@ -41,10 +44,9 @@ function MedicalCenterSearch({ onNewMedicalCenter, areMedicalCentersActive }: Me
   }, []);
 
   const handleAddMedicalCenter = (): void => {
-    if (areMedicalCentersActive){
-      alert("Desactive la IA primero")
-    }
-    else {
+    if (areMedicalCentersActive) {
+      alert("Desactive la IA primero");
+    } else {
       setOpenAddMedicalCenter(true);
     }
   };

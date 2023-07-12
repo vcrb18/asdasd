@@ -5,17 +5,22 @@ import { useEffect } from "react";
 
 interface MedicalCenterListProps {
   medicalCentersList: MedicalCenter[];
-  timeActiveLeft: number[]
+  timeActiveLeft: number[];
 }
 
-function MedicalCenterList({medicalCentersList, timeActiveLeft}: MedicalCenterListProps) {
-
+function MedicalCenterList({
+  medicalCentersList,
+  timeActiveLeft,
+}: MedicalCenterListProps) {
   return (
-    <Grid container width={"80%"} margin={"5%"} gap={5} sx={{border: 1,
-        borderColor: "#E4EDEF",
-        borderRadius: 3,
-      }}
-      padding={"1%"}>
+    <Grid
+      container
+      width={"80%"}
+      margin={"5%"}
+      gap={5}
+      sx={{ border: 1, borderColor: "#E4EDEF", borderRadius: 3 }}
+      padding={"1%"}
+    >
       {medicalCentersList.map((medicalCenter: MedicalCenter, index: number) => {
         return (
           <Grid
