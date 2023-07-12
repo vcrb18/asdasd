@@ -2,6 +2,7 @@ import axios, { Axios, type AxiosResponse } from "axios";
 import useSWR from "swr"
 import authHeader from "./auth.header";
 import { BasePopperPropsOverrides } from "@mui/x-data-grid";
+import { MedicalCenter } from "../components/admin/MedicalCenters";
 const API_URL = "http://localhost:8080/";
 
 function fetcher(url: string) {
@@ -48,14 +49,26 @@ export const getExamsById = async (searchInt: string, page : number, order:numbe
 export const getExamsCount = async () : Promise<AxiosResponse> => {
   return axios.get(`/exams/count`, {withCredentials: true})
 }
-export const postAIState = async ( turnOn: boolean, timeActive: number) => {
+export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[]) => {
   if (turnOn){
-    return axios.post(` /ai_analysis/activate/${timeActive}`, { withCredentials: true });
+    return axios.post(` /ai_analysis/activate`, { 
+      withCredentials: true,
+      time: timeActive,
+      organizations: organizationIds
+    });
   }
   else {
-    return axios.post(` /ai_analysis/deactivate`, { withCredentials: true });
+    return axios.post(` /ai_analysis/deactivate`, {
+      withCredentials: true,
+      organizations: organizationIds
+    });
   }
 };
+
+export const getAIActiveOrganizations = async () : Promise<AxiosResponse> => {
+  return axios.get(`/ai_analysis/`, {withCredentials: true})
+}
+
 export const getExamPredictedMarkersComputations = (
   examId: number
 ): Promise<AxiosResponse> => {
@@ -63,17 +76,6 @@ export const getExamPredictedMarkersComputations = (
     withCredentials: true,
   });
 };
-// Esto se ve de la siguiente manera:
-// {
-//   "exam_id": 107220,
-//   "fc": 66.00660066006601,
-//   "rr": 909,
-//   "pq": 191,
-//   "qrs": 155,
-//   "qt": 405,
-//   "qtc": 424.788823481098,
-//   "st": 0.47500000000000003
-// }
 
 export const getExam = async (examId: number): Promise<AxiosResponse> => {
   return await axios.get(`/exams/${examId}`, { withCredentials: true });
@@ -86,13 +88,6 @@ export const getExamAllAlgorithmPredictions = (
     withCredentials: true,
   });
 };
-
-// Esto se ve de la siguiente manera:
-// {
-//   "exam_id": 107220,
-//   "patient_id": null,
-//   "created_at": "2023-03-16T14:23:46.000Z"
-// }
 
 export const getSuggestedDiagnostic = async (
   examId: number,

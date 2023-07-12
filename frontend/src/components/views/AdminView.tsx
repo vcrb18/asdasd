@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
+import { useTimer } from "react-timer-hook";
 
 import React, { useEffect, useState } from "react";
 
@@ -15,12 +16,20 @@ import {
 } from "../../utils/routingPropConsts";
 
 import TimerBox from "../admin/TimerBox";
-import { postAIState } from "../../service/user.service";
+import {
+  postAIState,
+  getAIActiveOrganizations,
+} from "../../service/user.service";
 import IdAIApplication from "../admin/IdAIApplication";
+import { isEmptyArray } from "formik";
+import { time } from "console";
+import { get } from "http";
 
-
-function AdminView(){
+function AdminView() {
   const { t } = useTranslation();
+  const timeToRender = new Date();
+  
+  let hasTimerChanged = false;
 
   const [examIdToApply, setExamIdToApply] = useState<string>("");
   const [activeTimer, setActiveTimer] = useState<boolean>(false);
@@ -28,6 +37,19 @@ function AdminView(){
   const [actualMedicalCenters, setActualMedicalCenter] = useState<
     MedicalCenter[]
   >([]);
+  const [areMedicalCentersActive, setAreMedicalCentersActive] =
+    useState<boolean>(false);
+  const {
+    seconds,
+    minutes,
+    hours,
+    days,
+    isRunning,
+    start,
+    pause,
+    resume,
+    restart,
+  } = useTimer({ expiryTimestamp: timeToRender});
 
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
     if (!actualMedicalCenters.includes(newMedicalCenter)) {
@@ -46,12 +68,30 @@ function AdminView(){
   };
 
   const handleApplyButton = () => {
-    postAIState(activeTimer, amountOfTimeActive);
+    const actualMedicalCentersIds: number[] = actualMedicalCenters.map(
+      (medicalCenter) => medicalCenter.organizationId
+    );
+    postAIState(activeTimer, amountOfTimeActive, actualMedicalCentersIds);
+    window.location.reload();
   };
 
   const handleIdApplication = (examId: string) => {
     setExamIdToApply(examId);
   };
+
+  useEffect(() => {
+    getAIActiveOrganizations().then((medicalCenters) => {
+      if (!hasTimerChanged) {
+        hasTimerChanged = true;
+        timeToRender.setSeconds(timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds);
+        setActualMedicalCenter(medicalCenters.data.organizations);
+        setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
+        setAreMedicalCentersActive(
+          !isEmptyArray(medicalCenters.data.organizations)
+        );
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -70,13 +110,16 @@ function AdminView(){
       >
         {t("admin")}
       </Typography>
-      <MedicalCenters
-        actualMedicalCenters={actualMedicalCenters}
-        onNewMedicalCenter={handleMedicalCenterSelect}
-      />
-      <Box>
-        <IdAIApplication onClickIdApplication={handleIdApplication} />
-      </Box>
+      {seconds != undefined && minutes != undefined ? (
+        <MedicalCenters
+          actualMedicalCenters={actualMedicalCenters}
+          onNewMedicalCenter={handleMedicalCenterSelect}
+          areMedicalCentersActive={areMedicalCentersActive}
+          timeActiveLeft={[minutes, seconds]}
+        />
+      ) : (
+        <></>
+      )}
       <Box>
         <TimerBox
           activeTimer={activeTimer}
@@ -84,6 +127,9 @@ function AdminView(){
           onActiveTimerChange={handleActiveTimerChange}
           onAmountOfTimeActiveChange={handleAmountTimeActiveChange}
         />
+      </Box>
+      <Box>
+        <IdAIApplication onClickIdApplication={handleIdApplication} />
       </Box>
       <Button
         sx={{
@@ -100,7 +146,7 @@ function AdminView(){
       <Footer
         footerPositionLg="absolute"
         footerPositionMd="absolute"
-        footerPositionXs="relative"
+        footerPositionXs="absolute"
       />
     </>
   );

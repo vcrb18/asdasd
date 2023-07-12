@@ -2,7 +2,9 @@ import { Grid, Typography } from "@mui/material";
 
 import { useTranslation } from "react-i18next";
 
-import { AdminBoxProps } from "./MedicalCenters";
+interface AdminBoxProps {
+  text: string;
+}
 
 function AdminBox({ text }: AdminBoxProps) {
   const { t } = useTranslation();
