@@ -56,14 +56,14 @@ export const postExamIdAI = async (examId: string) => {
 
 export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[]) => {
   if (turnOn){
-    return axios.post(`/ai_analysis/activate`, { 
+    return axios.post(` /ai_analysis/activate`, { 
       withCredentials: true,
       time: timeActive,
       organizations: organizationIds
     });
   }
   else {
-    return axios.post(`/ai_analysis/deactivate`, {
+    return axios.post(` /ai_analysis/deactivate`, {
       withCredentials: true,
       organizations: organizationIds
     });
@@ -71,7 +71,7 @@ export const postAIState = async ( turnOn: boolean, timeActive: number, organiza
 };
 
 export const getAIActiveOrganizations = async () : Promise<AxiosResponse> => {
-  return axios.get(`/ai_analysis/`, {withCredentials: true})
+  return axios.get(` /ai_analysis/`, {withCredentials: true})
 }
 
 export const getExamPredictedMarkersComputations = (
