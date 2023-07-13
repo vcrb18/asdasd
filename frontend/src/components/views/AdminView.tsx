@@ -24,8 +24,6 @@ import {
 } from "../../service/user.service";
 import IdAIApplication from "../admin/IdAIApplication";
 import { isEmptyArray } from "formik";
-import { time } from "console";
-import { get } from "http";
 
 function AdminView() {
   const { t } = useTranslation();
@@ -38,15 +36,18 @@ function AdminView() {
   const [examIdToApply, setExamIdToApply] = useState<string>("");
   const [activeTimer, setActiveTimer] = useState<boolean>(false);
   const [amountOfTimeActive, setAmountOfTimeActive] = useState<number>(0);
-  const [actualMedicalCenters, setActualMedicalCenter] = useState<
+  const [activeMedicalCenters, setActiveMedicalCenter] = useState<
+    MedicalCenter[]
+  >([]);
+  const [medicalCentersToAdd, setMedicalCentersToAdd] = useState<
     MedicalCenter[]
   >([]);
   const [areMedicalCentersActive, setAreMedicalCentersActive] =
     useState<boolean>(false);
-
+  
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
-    if (!actualMedicalCenters.includes(newMedicalCenter)) {
-      setActualMedicalCenter([...actualMedicalCenters, newMedicalCenter]);
+    if (!medicalCentersToAdd.includes(newMedicalCenter)) {
+      setMedicalCentersToAdd([...medicalCentersToAdd, newMedicalCenter]);
     }
   };
 
@@ -61,10 +62,14 @@ function AdminView() {
   };
 
   const handleApplyButton = () => {
-    const actualMedicalCentersIds: number[] = actualMedicalCenters.map(
+    const array = activeTimer ? medicalCentersToAdd : activeMedicalCenters;
+    const arrayIds: number[] = array.map(
       (medicalCenter) => medicalCenter.organizationId
     );
-    postAIState(activeTimer, amountOfTimeActive, actualMedicalCentersIds);
+    postAIState(activeTimer, amountOfTimeActive, arrayIds).then((res) => {
+      setActiveMedicalCenter(medicalCentersToAdd);
+      setMedicalCentersToAdd([]);
+    });
     window.location.reload();
   };
 
@@ -74,10 +79,16 @@ function AdminView() {
     navigate(`/examsview/${examId}`);
   };
 
+  const handleDeleteClick = (id: number): void => {
+    setMedicalCentersToAdd(
+      medicalCentersToAdd.filter((i) => i.organizationId !== id)
+    );
+  };
+
   const handleTimeExpire = () => {
     setActiveTimer(false);
     setAreMedicalCentersActive(false);
-    setActualMedicalCenter([]);
+    setActiveMedicalCenter([]);
   };
 
   const {
@@ -102,7 +113,7 @@ function AdminView() {
         timeToRender.setSeconds(
           timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds
         );
-        setActualMedicalCenter(medicalCenters.data.organizations);
+        setActiveMedicalCenter(medicalCenters.data.organizations);
         setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
         setAreMedicalCentersActive(
           !isEmptyArray(medicalCenters.data.organizations)
@@ -130,10 +141,12 @@ function AdminView() {
       </Typography>
       {seconds != undefined && minutes != undefined ? (
         <MedicalCenters
-          actualMedicalCenters={actualMedicalCenters}
+          activeMedicalCenters={activeMedicalCenters}
+          medicalCentersToAdd={medicalCentersToAdd}
           onNewMedicalCenter={handleMedicalCenterSelect}
           areMedicalCentersActive={areMedicalCentersActive}
           timeActiveLeft={[minutes, seconds]}
+          handleDeleteClick={handleDeleteClick}
         />
       ) : (
         <></>

@@ -73,10 +73,11 @@ function MedicalCenterSearch({
       item
       lg={4}
       md={4}
-      sm={12}
-      xs={12}
+      sm={4}
+      xs={4}
       display={"flex"}
       justifyContent={"center"}
+      alignContent={"center"}
     >
       <IconButton size="large" edge={"end"} onClick={handleAddMedicalCenter}>
         <AddIcon fontSize={"inherit"} sx={{ color: "#007088" }} />

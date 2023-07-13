@@ -23,7 +23,12 @@ interface TimerBoxProps {
   onAmountOfTimeActiveChange: (time: number) => void;
 }
 
-function TimerBox({activeTimer, amountOfTimeActive, onActiveTimerChange, onAmountOfTimeActiveChange }: TimerBoxProps){
+function TimerBox({
+  activeTimer,
+  amountOfTimeActive,
+  onActiveTimerChange,
+  onAmountOfTimeActiveChange,
+}: TimerBoxProps) {
   const { t } = useTranslation();
   const handleActiveTimerChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -58,12 +63,20 @@ function TimerBox({activeTimer, amountOfTimeActive, onActiveTimerChange, onAmoun
         justifyContent={"space-around"}
         marginX={"10%"}
       >
-        <AdminBox text="activeTime"/>
-        <Grid item lg={6} md={6} sm={6} xs={12}  display={"flex"} justifyContent= {"center"} >
+        <AdminBox text="activeTime" />
+        <Grid
+          item
+          lg={6}
+          md={6}
+          sm={6}
+          xs={12}
+          display={"flex"}
+          justifyContent={"center"}
+        >
           <Select
             value={amountOfTimeActive}
             onChange={handleAmountOfTimeActiveChange}
-            sx={{ width: "80%"}}
+            sx={{ width: "80%" }}
           >
             {Object.entries(timeSelect).map(([key, value]) => {
               return (
@@ -97,4 +110,4 @@ function TimerBox({activeTimer, amountOfTimeActive, onActiveTimerChange, onAmoun
     </Box>
   );
 }
-export default TimerBox
+export default TimerBox;
