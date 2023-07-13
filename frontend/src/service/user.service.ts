@@ -49,16 +49,21 @@ export const getExamsById = async (searchInt: string, page : number, order:numbe
 export const getExamsCount = async () : Promise<AxiosResponse> => {
   return axios.get(`/exams/count`, {withCredentials: true})
 }
+
+export const postExamIdAI = async (examId: string) => {
+  return axios.post(`/ai_analysis/notify/${examId}`, {withCredentials: true})
+}
+
 export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[]) => {
   if (turnOn){
-    return axios.post(` /ai_analysis/activate`, { 
+    return axios.post(`/ai_analysis/activate`, { 
       withCredentials: true,
       time: timeActive,
       organizations: organizationIds
     });
   }
   else {
-    return axios.post(` /ai_analysis/deactivate`, {
+    return axios.post(`/ai_analysis/deactivate`, {
       withCredentials: true,
       organizations: organizationIds
     });
