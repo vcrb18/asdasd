@@ -51,7 +51,7 @@ export const getExamsCount = async () : Promise<AxiosResponse> => {
 }
 
 export const postExamIdAI = async (examId: string) => {
-  return axios.post(`/ai_analysis/notify/${examId}`, {withCredentials: true})
+  return axios.post(`/ai_analysis/notify/${examId}?forced=true`, {withCredentials: true})
 }
 
 export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[]) => {
