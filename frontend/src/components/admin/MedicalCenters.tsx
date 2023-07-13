@@ -12,17 +12,21 @@ export interface MedicalCenter {
 }
 
 interface MedicalCenterProps {
-  actualMedicalCenters: MedicalCenter[];
+  activeMedicalCenters: MedicalCenter[];
+  medicalCentersToAdd: MedicalCenter[];
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
   timeActiveLeft: number[];
   areMedicalCentersActive: boolean;
+  handleDeleteClick: (id: number) => void;
 }
 
 function MedicalCenters({
-  actualMedicalCenters,
+  activeMedicalCenters,
+  medicalCentersToAdd,
   onNewMedicalCenter,
   timeActiveLeft,
   areMedicalCentersActive,
+  handleDeleteClick,
 }: MedicalCenterProps) {
   return (
     <Box
@@ -43,8 +47,10 @@ function MedicalCenters({
           areMedicalCentersActive={areMedicalCentersActive}
         />
         <MedicalCenterList
-          medicalCentersList={actualMedicalCenters}
+          activeMedicalCenters={activeMedicalCenters}
+          medicalCentersToAdd={medicalCentersToAdd}
           timeActiveLeft={timeActiveLeft}
+          handleDeleteClick={handleDeleteClick}
         />
       </Grid>
     </Box>
