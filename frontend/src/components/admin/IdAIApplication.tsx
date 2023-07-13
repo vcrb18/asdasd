@@ -7,7 +7,7 @@ interface IdAIApplicationProps {
   onClickIdApplication: (examId: string) => void;
 }
 
-function IdAIApplication({onClickIdApplication}: IdAIApplicationProps) {
+function IdAIApplication({ onClickIdApplication }: IdAIApplicationProps) {
   const { t } = useTranslation();
 
   const [examId, setExamId] = React.useState<string>("");
@@ -19,7 +19,7 @@ function IdAIApplication({onClickIdApplication}: IdAIApplicationProps) {
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExamId(event.target.value);
   };
-  
+
   return (
     <Box display={"flex"} width={"100%"} marginY={"3%"}>
       <Grid
@@ -28,7 +28,7 @@ function IdAIApplication({onClickIdApplication}: IdAIApplicationProps) {
         justifyContent={"space-around"}
         marginX={"10%"}
       >
-        <AdminBox text="examId"/>
+        <AdminBox text="examId" />
         <Grid
           item
           lg={6}
@@ -78,4 +78,4 @@ function IdAIApplication({onClickIdApplication}: IdAIApplicationProps) {
     </Box>
   );
 }
-export default IdAIApplication
+export default IdAIApplication;

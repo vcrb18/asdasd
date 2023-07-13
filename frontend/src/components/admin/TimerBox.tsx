@@ -34,6 +34,22 @@ function TimerBox({activeTimer, amountOfTimeActive, onActiveTimerChange, onAmoun
     onAmountOfTimeActiveChange(event.target.value as number);
   };
 
+  const getTimerSelect = (key: string, value: number) => {
+    if (value === 1){
+      return (
+        <MenuItem key={key} value={value}>
+          {value} {t('minute')}
+        </MenuItem>
+      )
+    } else {
+      return (
+        <MenuItem key={key} value={value}>
+          {value} {t('minutes')}
+        </MenuItem>
+      )
+    }
+  }
+
   return (
     <Box display={"flex"} width={"100%"}>
       <Grid
@@ -51,9 +67,7 @@ function TimerBox({activeTimer, amountOfTimeActive, onActiveTimerChange, onAmoun
           >
             {Object.entries(timeSelect).map(([key, value]) => {
               return (
-                <MenuItem key={key} value={value}>
-                  {t(key)}
-                </MenuItem>
+                getTimerSelect(key,value)
               );
             })}
           </Select>

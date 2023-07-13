@@ -6,8 +6,6 @@ import MedicalCenterSearch from "./MedicalCenterSearch";
 import MedicalCenterList from "./MedicalCenterList";
 import { isEmptyArray } from "formik";
 
-
-
 export interface MedicalCenter {
   organizationId: number;
   legalName: string;
@@ -16,8 +14,8 @@ export interface MedicalCenter {
 interface MedicalCenterProps {
   actualMedicalCenters: MedicalCenter[];
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
-  timeActiveLeft: number[]
-  areMedicalCentersActive: boolean
+  timeActiveLeft: number[];
+  areMedicalCentersActive: boolean;
 }
 
 function MedicalCenters({
@@ -27,7 +25,12 @@ function MedicalCenters({
   areMedicalCentersActive,
 }: MedicalCenterProps) {
   return (
-    <Box display={"flex"} width={"100%"} marginTop={"1%"} justifyContent={"center"}>
+    <Box
+      display={"flex"}
+      width={"100%"}
+      marginTop={"1%"}
+      justifyContent={"center"}
+    >
       <Grid
         container
         display={"flex"}
@@ -35,8 +38,14 @@ function MedicalCenters({
         width={"80%"}
       >
         <AdminBox text="medicalCenter" />
-        <MedicalCenterSearch onNewMedicalCenter={onNewMedicalCenter} areMedicalCentersActive={areMedicalCentersActive}/>
-        <MedicalCenterList medicalCentersList={actualMedicalCenters} timeActiveLeft={timeActiveLeft}/>
+        <MedicalCenterSearch
+          onNewMedicalCenter={onNewMedicalCenter}
+          areMedicalCentersActive={areMedicalCentersActive}
+        />
+        <MedicalCenterList
+          medicalCentersList={actualMedicalCenters}
+          timeActiveLeft={timeActiveLeft}
+        />
       </Grid>
     </Box>
   );

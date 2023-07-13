@@ -5,6 +5,7 @@ import { useTimer } from "react-timer-hook";
 import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
@@ -19,6 +20,7 @@ import TimerBox from "../admin/TimerBox";
 import {
   postAIState,
   getAIActiveOrganizations,
+  postExamIdAI,
 } from "../../service/user.service";
 import IdAIApplication from "../admin/IdAIApplication";
 import { isEmptyArray } from "formik";
@@ -27,8 +29,10 @@ import { get } from "http";
 
 function AdminView() {
   const { t } = useTranslation();
+  const navigate: NavigateFunction = useNavigate();
+
   const timeToRender = new Date();
-  
+
   let hasTimerChanged = false;
 
   const [examIdToApply, setExamIdToApply] = useState<string>("");
@@ -39,17 +43,6 @@ function AdminView() {
   >([]);
   const [areMedicalCentersActive, setAreMedicalCentersActive] =
     useState<boolean>(false);
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    resume,
-    restart,
-  } = useTimer({ expiryTimestamp: timeToRender});
 
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
     if (!actualMedicalCenters.includes(newMedicalCenter)) {
@@ -77,13 +70,38 @@ function AdminView() {
 
   const handleIdApplication = (examId: string) => {
     setExamIdToApply(examId);
+    postExamIdAI(examId);
+    navigate(`/examsview/${examId}`);
   };
+
+  const handleTimeExpire = () => {
+    setActiveTimer(false);
+    setAreMedicalCentersActive(false);
+    setActualMedicalCenter([]);
+  };
+
+  const {
+    seconds,
+    minutes,
+    hours,
+    days,
+    isRunning,
+    start,
+    pause,
+    resume,
+    restart,
+  } = useTimer({
+    expiryTimestamp: timeToRender,
+    onExpire: () => handleTimeExpire(),
+  });
 
   useEffect(() => {
     getAIActiveOrganizations().then((medicalCenters) => {
       if (!hasTimerChanged) {
         hasTimerChanged = true;
-        timeToRender.setSeconds(timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds);
+        timeToRender.setSeconds(
+          timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds
+        );
         setActualMedicalCenter(medicalCenters.data.organizations);
         setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
         setAreMedicalCentersActive(
