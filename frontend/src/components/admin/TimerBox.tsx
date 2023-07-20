@@ -40,20 +40,20 @@ function TimerBox({
   };
 
   const getTimerSelect = (key: string, value: number) => {
-    if (value === 1){
+    if (value === 1) {
       return (
         <MenuItem key={key} value={value}>
-          {value} {t('minute')}
+          {value} {t("minute")}
         </MenuItem>
-      )
+      );
     } else {
       return (
         <MenuItem key={key} value={value}>
-          {value} {t('minutes')}
+          {value} {t("minutes")}
         </MenuItem>
-      )
+      );
     }
-  }
+  };
 
   return (
     <Box display={"flex"} width={"100%"}>
@@ -79,9 +79,7 @@ function TimerBox({
             sx={{ width: "80%" }}
           >
             {Object.entries(timeSelect).map(([key, value]) => {
-              return (
-                getTimerSelect(key,value)
-              );
+              return getTimerSelect(key, value);
             })}
           </Select>
         </Grid>

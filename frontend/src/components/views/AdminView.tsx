@@ -44,7 +44,12 @@ function AdminView() {
   >([]);
   const [areMedicalCentersActive, setAreMedicalCentersActive] =
     useState<boolean>(false);
-  
+
+  const [areAllMedicalCentersSelected, setAllMedicalCentersSelected] =
+    useState<boolean>(false);
+  const [areAllMedicalCentersActived, setAllMedicalCentersActived] =
+    useState<boolean>(false);
+
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
     if (!medicalCentersToAdd.includes(newMedicalCenter)) {
       setMedicalCentersToAdd([...medicalCentersToAdd, newMedicalCenter]);
@@ -66,9 +71,19 @@ function AdminView() {
     const arrayIds: number[] = array.map(
       (medicalCenter) => medicalCenter.organizationId
     );
-    postAIState(activeTimer, amountOfTimeActive, arrayIds).then((res) => {
-      setActiveMedicalCenter(medicalCentersToAdd);
-      setMedicalCentersToAdd([]);
+    postAIState(
+      activeTimer,
+      amountOfTimeActive,
+      arrayIds,
+      areAllMedicalCentersSelected
+    ).then((res) => {
+      if (areAllMedicalCentersSelected) {
+        setAllMedicalCentersActived(true);
+        setActiveMedicalCenter([]);
+      } else {
+        setMedicalCentersToAdd([]);
+        setActiveMedicalCenter(medicalCentersToAdd);
+      }
     });
     window.location.reload();
   };
@@ -89,6 +104,16 @@ function AdminView() {
     setActiveTimer(false);
     setAreMedicalCentersActive(false);
     setActiveMedicalCenter([]);
+  };
+
+  const handleAllCentersSelected = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (areAllMedicalCentersActived) {
+      alert("Desactive la IA primero");
+    } else {
+      setAllMedicalCentersSelected(event.target.checked);
+    }
   };
 
   const {
@@ -113,11 +138,17 @@ function AdminView() {
         timeToRender.setSeconds(
           timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds
         );
-        setActiveMedicalCenter(medicalCenters.data.organizations);
         setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
         setAreMedicalCentersActive(
           !isEmptyArray(medicalCenters.data.organizations)
         );
+        setAllMedicalCentersActived(
+          medicalCenters.data.allOrganizationsActives
+        );
+        setAllMedicalCentersSelected(
+          medicalCenters.data.allOrganizationsActives
+        );
+        setActiveMedicalCenter(medicalCenters.data.organizations);
       }
     });
   }, []);
@@ -143,10 +174,13 @@ function AdminView() {
         <MedicalCenters
           activeMedicalCenters={activeMedicalCenters}
           medicalCentersToAdd={medicalCentersToAdd}
-          onNewMedicalCenter={handleMedicalCenterSelect}
           areMedicalCentersActive={areMedicalCentersActive}
           timeActiveLeft={[minutes, seconds]}
+          onNewMedicalCenter={handleMedicalCenterSelect}
+          onSelectAllCenters={handleAllCentersSelected}
           handleDeleteClick={handleDeleteClick}
+          areAllMedicalCentersSelected={areAllMedicalCentersSelected}
+          areAllMedicalCentersActived={areAllMedicalCentersActived}
         />
       ) : (
         <></>

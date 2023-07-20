@@ -14,19 +14,25 @@ export interface MedicalCenter {
 interface MedicalCenterProps {
   activeMedicalCenters: MedicalCenter[];
   medicalCentersToAdd: MedicalCenter[];
-  onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
   timeActiveLeft: number[];
   areMedicalCentersActive: boolean;
+  onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
+  onSelectAllCenters: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDeleteClick: (id: number) => void;
+  areAllMedicalCentersSelected: boolean;
+  areAllMedicalCentersActived: boolean;
 }
 
 function MedicalCenters({
   activeMedicalCenters,
   medicalCentersToAdd,
-  onNewMedicalCenter,
   timeActiveLeft,
   areMedicalCentersActive,
+  onNewMedicalCenter,
+  onSelectAllCenters,
   handleDeleteClick,
+  areAllMedicalCentersSelected,
+  areAllMedicalCentersActived,
 }: MedicalCenterProps) {
   return (
     <Box
@@ -44,6 +50,8 @@ function MedicalCenters({
         <AdminBox text="medicalCenter" />
         <MedicalCenterSearch
           onNewMedicalCenter={onNewMedicalCenter}
+          onSelectAllCenters={onSelectAllCenters}
+          areAllMedicalCentersSelected={areAllMedicalCentersSelected}
           areMedicalCentersActive={areMedicalCentersActive}
         />
         <MedicalCenterList
@@ -51,6 +59,8 @@ function MedicalCenters({
           medicalCentersToAdd={medicalCentersToAdd}
           timeActiveLeft={timeActiveLeft}
           handleDeleteClick={handleDeleteClick}
+          areAllMedicalCentersSelected={areAllMedicalCentersSelected}
+          areAllMedicalCentersActived={areAllMedicalCentersActived}
         />
       </Grid>
     </Box>
