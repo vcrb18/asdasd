@@ -283,6 +283,11 @@ const resources = {
       applyChanges: "Apply Changes",
       apply: "Apply",
       examId: "Exam Id",
+      centerSeleccion: "Select a center",
+      selectAll: "Select all",
+      allCentersSelected: "All centers are selected",
+      allCentersActivated: "All centers are activated",
+      deactivateAIFirst: "Deactivate AI first",
     },
   },
   es: {
@@ -565,6 +570,11 @@ const resources = {
       applyChanges: "Aplicar Cambios",
       apply: "Aplicar",
       examId: "Id del Examen",
+      centerSeleccion: "Seleccione un centro",
+      selectAll: "Seleccionar todos",
+      allCentersSelected: "Están todos los centros seleccionados",
+      allCentersActivated: "Están todos los centros activados",
+      deactivateAIFirst: "Desactive la IA primero",
     },
   },
 };

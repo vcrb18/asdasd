@@ -54,18 +54,20 @@ export const postExamIdAI = async (examId: string) => {
   return axios.post(`/ai_analysis/notify/${examId}?forced=true`, {withCredentials: true})
 }
 
-export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[]) => {
+export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[], allOrganizations: boolean) => {
   if (turnOn){
     return axios.post(` /ai_analysis/activate`, { 
       withCredentials: true,
       time: timeActive,
-      organizations: organizationIds
+      organizations: organizationIds,
+      allOrganizations: allOrganizations,
     });
   }
   else {
     return axios.post(` /ai_analysis/deactivate`, {
       withCredentials: true,
-      organizations: organizationIds
+      organizations: organizationIds,
+      allOrganizations: allOrganizations,
     });
   }
 };
