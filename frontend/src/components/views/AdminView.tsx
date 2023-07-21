@@ -143,10 +143,10 @@ function AdminView() {
           !isEmptyArray(medicalCenters.data.organizations)
         );
         setAllMedicalCentersActived(
-          medicalCenters.data.allOrganizationsActives
+          medicalCenters.data.allOrganizationsActive
         );
         setAllMedicalCentersSelected(
-          medicalCenters.data.allOrganizationsActives
+          medicalCenters.data.allOrganizationsActive
         );
         setActiveMedicalCenter(medicalCenters.data.organizations);
       }
