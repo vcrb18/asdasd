@@ -298,6 +298,8 @@ const resources = {
       modifyParameters: "Modify Parameters",
       accept: "Accept",
       reject: "Reject",
+      unauthorized: "You are not authorized to access this page.",
+      backToMenu: "Back to menu",
     },
   },
   es: {
@@ -595,6 +597,8 @@ const resources = {
       modifyParameters: "Modificar Parámetros",
       accept: "Aceptar",
       reject: "Rechazar",
+      unauthorized: "No estás autorizado para acceder a esta página.",
+      backToMenu: "Volver al menú",
     },
   },
 };

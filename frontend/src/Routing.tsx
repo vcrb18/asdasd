@@ -7,6 +7,7 @@ import {
   loginPageButtons,
   mainMenuHeaderButtons,
   mainMenuPageButtons,
+  roles,
 } from "./utils/routingPropConsts";
 import ExamTable from "./components/tables/ExamTable";
 import MetricTabs from "./components/tabs/MetricTab";
@@ -38,7 +39,7 @@ function Routing(): JSX.Element {
         <Route
           path="/exams"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
               <ExamsTab />
             </RequireAuth>
           }
@@ -47,7 +48,7 @@ function Routing(): JSX.Element {
         <Route
           path="/metrics"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
               <MetricTabs />
             </RequireAuth>
           }
@@ -55,7 +56,7 @@ function Routing(): JSX.Element {
         <Route
           path="/alerts"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
               <AlertTab />
             </RequireAuth>
           }
@@ -64,7 +65,7 @@ function Routing(): JSX.Element {
         <Route
           path="/examsview/:examId"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
             <ExamsView
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
@@ -75,7 +76,7 @@ function Routing(): JSX.Element {
         <Route
           path="/mainmenu"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
             <TablesView />
             </RequireAuth>
           }
@@ -83,7 +84,7 @@ function Routing(): JSX.Element {
         <Route
           path="/admin"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin]}>
             <AdminView />
             </RequireAuth>
           }
@@ -91,7 +92,7 @@ function Routing(): JSX.Element {
         <Route
           path="/admin/modifyparams"
           element={
-            <RequireAuth>
+            <RequireAuth roles={[roles.admin]}>
             <ModifyParametersView />
             </RequireAuth>
           }

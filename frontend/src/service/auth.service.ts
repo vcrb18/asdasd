@@ -31,13 +31,14 @@ export const login = async (
       email,
       password,
     });
-
-    // CAMBIAR
     if (response.data.token) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-      const userIsLogged = getCurrentUser();
+      const user = await axios.get("/users/me", {
+        headers: {
+          "x-access-token": response.data.token
+        },
+      });
+      localStorage.setItem("user", JSON.stringify(user.data));
     }
-
     return response.data;
   } catch (error) {
     throw error;
