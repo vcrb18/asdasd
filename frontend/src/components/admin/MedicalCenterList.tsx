@@ -104,7 +104,7 @@ function MedicalCenterList({
                 sm={6}
                 xs={6}
                 display={"flex"}
-                justifyContent={"space-arround"}
+                justifyContent={"space-evenly"}
                 alignItems={"center"}
               >
                 <Typography color={"#007088"} fontWeight={"bold"}>
@@ -133,7 +133,7 @@ function MedicalCenterList({
                 sm={6}
                 xs={6}
                 display={"flex"}
-                justifyContent={"center"}
+                justifyContent={"space-evenly"}
                 alignItems={"center"}
               >
                 <Typography color={"#007088"} fontWeight={"bold"}>
