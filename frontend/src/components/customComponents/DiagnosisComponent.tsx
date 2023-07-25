@@ -22,7 +22,7 @@ import xButton from "../../static/images/xButton.png"
 import { Diagnostic, DoctorDiagnostic, DiagnosticStates, DiagnosticPrediction, DiagnosticDataBase } from "../views/ExamsView";
 
 
-const DeletableBoxItem = ({
+export const DeletableBoxItem = ({
   id,
   label,
   accuracy,

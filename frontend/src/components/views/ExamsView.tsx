@@ -1,5 +1,5 @@
-import { Box, Button, Fab, Grid, Paper, TextField, ThemeProvider, Typography, createTheme, useMediaQuery, useTheme } from "@mui/material";
-import React, { Dispatch, useEffect, useState } from "react";
+import { Box, Button, Fab, Grid, Modal, Paper, Stack, TextField, ThemeProvider, Typography, createTheme, useMediaQuery, useTheme } from "@mui/material";
+import React, { Dispatch, useEffect, useRef, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
@@ -21,6 +21,9 @@ import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "../customComponents/DiagnosisComponent";
+
+import html2canvas from "html2canvas";
+import ScreenshotComponent from "../customComponents/ScreenshotComponent";
 
 interface ExamsViewProps {
   // examId: number ;
@@ -110,10 +113,10 @@ export interface Diagnostic {
 }
 
 export interface DiagnosticDataBase {
-  examId: number, 
-  diagnosticId: number, 
-  prediction: boolean, 
-  accuracy: number, 
+  examId: number,
+  diagnosticId: number,
+  prediction: boolean,
+  accuracy: number,
   display: boolean,
 }
 
@@ -217,6 +220,45 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reloadTime, setReloadTime] = useState<number>();
 
+  const viewRef = useRef<HTMLDivElement>(null);
+  const testRef = useRef<HTMLDivElement>(null);
+
+  const test = <div ref={testRef}>Test</div>;
+
+  const CapturePage = () => {
+    return (
+      <div>
+        <div className="screen-layout">
+          {/* Content for the screen layout */}
+          <h1>Hello, World!</h1>
+          <p>This is the content shown on the screen.</p>
+          <button onClick={handleCapture}>Capture</button>
+        </div>
+        <div className="print-layout" id="capture">
+          {/* Content for the print layout */}
+          <h1>Hello, World!</h1>
+          <p>This is the content for printing.</p>
+        </div>
+      </div>
+    );
+  };
+
+  const handleCapture = () => {
+    console.log("test");
+    const element = document.getElementById('capture');
+    if (element) {
+      html2canvas(element).then((canvas) => {
+        // Convert the canvas to an image data URL
+        const dataURL = canvas.toDataURL();
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = `exam_${examId}.png`;
+        link.click();
+      });
+    }
+  };
+
   useEffect(
     () => {
       markExamIdAsLocked(examIdNumber).then(
@@ -229,7 +271,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             const timeRemaining = error.response.data.timeRemaining;
             const expTime = new Date(timeRemaining);
             const asTimestamp = new Date(error.response.data.asTimestamp);
-            const msg = `Este examen está siendo visualizado por ${error.response.data.lockedBy}, el bloqueo expirará a las ${expTime.toLocaleTimeString()} a menos que 
+            const msg = `Este examen está siendo visualizado por ${error.response.data.lockedBy}, el bloqueo expirará a las ${expTime.toLocaleTimeString()} a menos que
             ${error.response.data.lockedBy} lo prolongue o lo deje de visualizar.`
             setErrorMessage(msg);
             setReloadTime(asTimestamp.getTime());
@@ -245,7 +287,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         );
       }
   }, []);
-  
+
   useEffect(() => {
     if(isLocked){
       const timeoutId = setTimeout(()=>{
@@ -282,7 +324,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       }
     });
   }, []);
-  
+
   useEffect(() => {
     setIsLoadingExamData(true);
     getExam(examIdNumber).then(
@@ -407,12 +449,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     },
   });
   const theme = useTheme();
-  
+
   const isMatchXs = useMediaQuery(theme.breakpoints.down("md"));
 
   const navigate: NavigateFunction = useNavigate();
 
-  
+
   const handleGoBack = (): void => {
     markExamIdAsUnlocked(examIdNumber).then(
       (response) => {
@@ -424,9 +466,44 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     navigate("/exams");
   };
 
+  const [open, setOpen] = React.useState(false);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [fiducialChart, setFiducialChart] = React.useState(null);
+  const handleOpenModal = () => {
+    setOpen(true);
+    // const chartElement = chartRef.current;
+    // if (chartElement) {
+    //   const fiducial = chartElement.getElementsByClassName('FiducialChart')[0];
+    //   console.log(chartElement);
+    //   if (fiducial) {
+    //     // Manipulate the child element or access its properties
+    //     console.log(fiducial);
+    //     const clonedElement = fiducial.cloneNode(true);
+    //     console.log(clonedElement);
+    //     setFiducialChart(fiducial);
+    //   }
+    // }
+    //setFiducialChart(fiducial[0]);
+  }
+  const handleCloseModal = () => setOpen(false);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '80vw',
+    height: '80vh',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
   if (isLocked && !isMatchXs){
     return(
       <>
+      <div ref={viewRef}>
         <Header
           tabs={tabs}
           buttons={buttons}
@@ -437,7 +514,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           }}
         />
         {/* Grid que contiene todo lo de la vista del examen */}
-        <Grid container marginY={"1%"} width={"100%"} 
+        <Grid container marginY={"1%"} width={"100%"}
           >
           {/* Contenedor del boton para volver a la tabla de exámenes*/}
           <Grid item xs={6} sm={6} md={2} lg={2} width={"80%"} >
@@ -483,11 +560,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
       </Grid>
       <div style={{width: "100%", bottom: 0, position: "relative"}}>
-      <Footer 
+      <Footer
         footerPositionLg="sticky"
         footerPositionMd="sticky"
         footerPositionXs="sticky" />
         </div>
+      </div>
       </>
       )
   }
@@ -554,6 +632,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   else if (isMatchXs){
   return (
     <>
+    <div ref={viewRef}>
       <Header
         tabs={tabs}
         buttons={buttons}
@@ -618,12 +697,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <AnalisisBox examId={examIdNumber} 
-                             analisisData={examData} 
+                <AnalisisBox examId={examIdNumber}
+                             analisisData={examData}
                              examMetadata={examMetadata}
-                             isLoading={isLoadingExamData} 
+                             isLoading={isLoadingExamData}
                              setAccepted={setAcceptedExam}
-                             rejectionReason={rejectionReason} 
+                             rejectionReason={rejectionReason}
                              setRejectionReason={setRejectionReason}
                              derivation={derivation}
                              setDerivation={setDerivation}
@@ -641,7 +720,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <DiagnosisComponent examId={examIdNumber} diagnosticStates={diagnosticStates} />
+                <DiagnosisComponent examId={examIdNumber} diagnosticStates={diagnosticStates}/>
             </Grid>
           </Grid>
 
@@ -652,7 +731,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           rowSpacing={1}
           alignItems={"center"}
         >
-          
+          <div ref={chartRef}>
           <Grid
             item
             xs={12}
@@ -667,7 +746,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           >
             <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
-         
+          </div>
+
           <Grid item
             display={"flex"}
             justifyContent={"center"}
@@ -694,8 +774,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       </Grid>
 
 
-     
+
     </Grid>
+    </div>
     </>
   );
 }
@@ -703,6 +784,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   else {
     return(
     <>
+    
       <Header
         tabs={tabs}
         buttons={buttons}
@@ -712,8 +794,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         onTabValueChange={(index: number) => {
         }}
       />
+      <div >
       {/* Grid que contiene todo lo de la vista del examen */}
-      <Grid container marginY={"1%"} width={"100%"} 
+      <Grid container marginY={"1%"} width={"100%"}
         >
         {/* Contenedor del boton para volver a la tabla de exámenes*/}
         <Grid item xs={6} sm={6} md={2} lg={2} width={"80%"} >
@@ -736,7 +819,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         </ThemeProvider>
         </Grid>
         {/* Grid que contiene la parte de la informacion del examen */}
-        <Grid container display={"flex"}  mb={"4%"} item xs={12} sm={12} md={8} lg={8} flexDirection={"column"}>
+        <Grid container display={"flex"}  mb={"4%"} item xs={12} sm={12} md={8} lg={8} flexDirection={"column"} ref={viewRef}>
           {/* Grid que contiene la información del examen (incluyendo el análisis de este) */}
           <Grid container display={"flex"} justifyContent={"space-around"} >
             <Grid container xs={12} sm={12} md={5} lg={5} padding={"2%"}
@@ -751,12 +834,12 @@ const ExamsView: React.FC<ExamsViewProps> = ({
                 },
               }}
             >
-                <AnalisisBox examId={examIdNumber} 
+                <AnalisisBox examId={examIdNumber}
                              analisisData={examData}
                              examMetadata={examMetadata}
-                             isLoading={isLoadingExamData} 
-                             setAccepted={setAcceptedExam} 
-                             rejectionReason={rejectionReason} 
+                             isLoading={isLoadingExamData}
+                             setAccepted={setAcceptedExam}
+                             rejectionReason={rejectionReason}
                              setRejectionReason={setRejectionReason}
                              derivation={derivation}
                              setDerivation={setDerivation}
@@ -785,7 +868,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           rowSpacing={1}
           alignItems={"center"}
         >
-          
+          <div ref={chartRef}>
           <Grid
             item
             xs={12}
@@ -800,6 +883,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           >
             <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
+          </div>
           <Grid item
             display={"flex"}
             justifyContent={"center"}
@@ -826,15 +910,18 @@ const ExamsView: React.FC<ExamsViewProps> = ({
       </Grid>
 
 
+
       {/* Contenedor del botón de validación */}
-      <Grid item xs={12} sm={12} md={2} lg={2}>
+      <Grid item display={"flex"} flexDirection={"column"} xs={12} sm={12} md={2} lg={2}
+                  sx={{
+                    right: "2%",
+                    position:"fixed",
+                  }}>
+        <Grid item>
         <ThemeProvider theme={buttonsTheme}>
           <Button
             variant="contained"
             sx={{
-              position: "fixed",
-              right: "2%",
-              width: "10%",
               backgroundColor: '#007088',
               color: "#fff",// Set a fixed width for the button, // Use shorthand notation for marginLeft
             }}
@@ -845,14 +932,88 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Typography>
           </Button>
         </ThemeProvider>
+        </Grid>
+        <Grid container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        
+        <ThemeProvider theme={buttonsTheme}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#007088',
+              color: "#fff",// Set a fixed width for the button, // Use shorthand notation for marginLeft
+            }}
+            onClick={handleOpenModal}
+            >
+            <Typography fontStyle={"bold"} color={"#ffffff"}>
+              {"capture screenshot"}
+            </Typography>
+          </Button>
+        </ThemeProvider>
+        </Grid>
       </Grid>
+      
+      <Grid item
+            display={"flex"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+            marginBottom={"3%"}
+            width={"100%"}
+            marginX={"3%"}
+          >
+            <Box display={"flex"} alignItems={"flex-start"}>
+              <Typography fontSize={"80%"} fontWeight={"bold"}>
+                {t("comments")}
+              </Typography>
+            </Box>
+            <TextField
+              id="outlined-multiline-static"
+              label={t("commentsLabel")}
+              multiline
+              rows={4}
+              fullWidth
+            ></TextField>
+        </Grid>
+    
     </Grid>
-    <div style={{width: "100%", bottom: 0, position: "relative"}}>
-    <Footer 
-      footerPositionLg="sticky"
-      footerPositionMd="sticky"
-      footerPositionXs="sticky" />
+    <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+
+    >
+      <div>
+      
+      <Box sx={style}>
+      <Stack alignItems="center" spacing={2}>
+      <div className="print-layout" id="capture" >
+        <Grid container style={{ width: '100%', height: '100%' }}>
+          <ScreenshotComponent examId={examIdNumber} fiducialStates={fiducialStates} analisisData={examData}
+           examMetadata={examMetadata} isLoading={isLoadingExamData} diagnosticStates={diagnosticStates}/>
+        </Grid>
       </div>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#007088',
+          color: "#fff",// Set a fixed width for the button, // Use shorthand notation for marginLeft
+        }}
+        onClick={handleCapture}>
+        <Typography fontStyle={"bold"} color={"#ffffff"}>
+          {"save"}
+        </Typography>
+      </Button>
+      </Stack>
+      </Box>
+      </div>
+    </Modal>
+    <div style={{width: "100%", bottom: 0, position: "relative"}}>
+      <Footer
+        footerPositionLg="sticky"
+        footerPositionMd="sticky"
+        footerPositionXs="sticky" />
+    </div>
+    </div>
     </>
     )
   }
