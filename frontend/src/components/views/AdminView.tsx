@@ -87,6 +87,10 @@ function AdminView() {
     });
     window.location.reload();
   };
+  
+  const handleModifyParameters = () => {
+    navigate("/admin/modifyparams");
+  };
 
   const handleIdApplication = (examId: string) => {
     setExamIdToApply(examId);
@@ -103,6 +107,8 @@ function AdminView() {
   const handleTimeExpire = () => {
     setActiveTimer(false);
     setAreMedicalCentersActive(false);
+    setAllMedicalCentersSelected(false);
+    setAllMedicalCentersActived(false);
     setActiveMedicalCenter([]);
   };
 
@@ -110,7 +116,8 @@ function AdminView() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (areAllMedicalCentersActived) {
-      alert("Desactive la IA primero");
+      const alertString = t("deactivateAIFisrt")
+      alert(alertString);
     } else {
       setAllMedicalCentersSelected(event.target.checked);
     }
@@ -196,18 +203,32 @@ function AdminView() {
       <Box>
         <IdAIApplication onClickIdApplication={handleIdApplication} />
       </Box>
-      <Button
-        sx={{
-          backgroundColor: "#007088",
-          color: "#000000",
-          width: "auto",
-        }}
-        variant="contained"
-        onClick={handleApplyButton}
-        fullWidth
-      >
-        <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
-      </Button>
+      <Box>
+        <Button
+          sx={{
+            backgroundColor: "#007088",
+            color: "#000000",
+            width: "auto",
+            marginX:"10%",
+          }}
+          variant="contained"
+          onClick={handleModifyParameters}
+        >
+          <Typography color={"#ffffff"}>{t("modifyParams")}</Typography>
+        </Button>
+        <Button
+          sx={{
+            backgroundColor: "#007088",
+            color: "#000000",
+            width: "auto",
+            marginX:"10%",
+          }}
+          variant="contained"
+          onClick={handleApplyButton}
+        >
+          <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
+        </Button>
+      </Box>
       <Footer
         footerPositionLg="absolute"
         footerPositionMd="relative"

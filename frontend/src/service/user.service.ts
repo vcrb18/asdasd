@@ -263,3 +263,23 @@ export const getRejectedPrediction = async (examId: number): Promise<AxiosRespon
 export const getMedicalCenters = async (): Promise<AxiosResponse> => {
   return await axios.get(`/organizations`, {withCredentials: true,});
 }
+
+export const getNormalThresholdMarkers = async (): Promise<AxiosResponse> => {
+  return await axios.get(`/normal_threshold_markers`, {withCredentials: true,});
+}
+
+export const updateNormalThresholdMarkers = async (fiducialPoint: string, lowerLimit: number, upperLimit: number): Promise<AxiosResponse> => {
+  return await axios.post(`/normal_threshold_markers`, {withCredentials: true, fiducialPoint: fiducialPoint, lowerLimit: lowerLimit, upperLimit: upperLimit});
+}
+
+export const updateDiagnosticThreshold = async (diagnosticId: number, threshold: number): Promise<AxiosResponse> => {
+  return await axios.post(`/diagnostic_types/edit/${diagnosticId}`, {withCredentials: true, threshold: threshold});
+}
+
+export const getAcceptanceThresholds = async (): Promise<AxiosResponse> => {
+  return await axios.get(`/acceptance_thresholds`, {withCredentials: true,});
+}
+
+export const updateAcceptanceThresholds = async (name: string, threshold: number): Promise<AxiosResponse> => {
+  return await axios.post(`/acceptance_thresholds`, {withCredentials: true, name: name, threshold: threshold});
+}
