@@ -196,6 +196,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       <Box
         sx={{ backgroundColor: "#FFFFFF", border: 2, borderColor: "#DDDDDD" }}
       >
+        <div className="FiducialChart">
         <FiducialChart
           examId={examId}  //lo cambio, pero no la tengo clara
           fidP={fidP}
@@ -208,6 +209,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
           handleFiducialChartUpdate = {handleFiducialChartUpdate}
           timeSeries = {selectedTimeSeries}
         />
+        </div>
       </Box>
       </Element>
 
