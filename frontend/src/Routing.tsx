@@ -23,6 +23,8 @@ import AdminView from "./components/views/AdminView";
 import ModifyParametersView from "./components/views/ModifyParametersView";
 
 function Routing(): JSX.Element {
+  const allRoles = [roles.admin, roles.doctor, roles.operator, roles.superOperator];
+
   return (
     <BrowserRouter>
       <Routes>
@@ -39,7 +41,7 @@ function Routing(): JSX.Element {
         <Route
           path="/exams"
           element={
-            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
+            <RequireAuth roles={allRoles}>
               <ExamsTab />
             </RequireAuth>
           }
@@ -48,7 +50,7 @@ function Routing(): JSX.Element {
         <Route
           path="/metrics"
           element={
-            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
+            <RequireAuth roles={allRoles}>
               <MetricTabs />
             </RequireAuth>
           }
@@ -56,7 +58,7 @@ function Routing(): JSX.Element {
         <Route
           path="/alerts"
           element={
-            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
+            <RequireAuth roles={allRoles}>
               <AlertTab />
             </RequireAuth>
           }
@@ -65,7 +67,7 @@ function Routing(): JSX.Element {
         <Route
           path="/examsview/:examId"
           element={
-            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
+            <RequireAuth roles={allRoles}>
             <ExamsView
               tabs={mainMenuPageButtons}
               buttons={mainMenuHeaderButtons}
@@ -76,7 +78,7 @@ function Routing(): JSX.Element {
         <Route
           path="/mainmenu"
           element={
-            <RequireAuth roles={[roles.admin, roles.doctor, roles.operator, roles.superOperator]}>
+            <RequireAuth roles={allRoles}>
             <TablesView />
             </RequireAuth>
           }
