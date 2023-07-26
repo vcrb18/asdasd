@@ -30,3 +30,10 @@ export const mainMenuHeaderButtons = [
   { label: "logOut", href: "/" },
   { label: "admin", href: "/admin"}
 ];
+
+export const roles = {
+  admin: "Admin",
+  doctor: "Doctor",
+  operator: "Operator",
+  superOperator: "Super Operator"
+}
