@@ -24,6 +24,7 @@ import DiagnosisComponent from "../customComponents/DiagnosisComponent";
 
 import html2canvas from "html2canvas";
 import ScreenshotComponent from "../customComponents/ScreenshotComponent";
+import ScreenshotModal from "../customComponents/screenshotModal";
 
 interface ExamsViewProps {
   // examId: number ;
@@ -70,7 +71,8 @@ export interface Medication {
 export interface Symptom {
   id: number;
   name: string;
-  dose: number;
+  days: number;
+  hours: number;
 }
 
 
@@ -318,7 +320,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             return { id: value.ID, name: value.NAME, dose: value.DOSE };
           }),
           symptoms: Object.entries(response.data.Symptoms).map(([key, value]: [string, any]) => {
-            return { id: value.ID, name: value.NAME, dose: value.DOSE };
+            return { id: value.ID, name: value.NAME, days: value.DAYS, hours: value.HOURS };
           })
         });
       }
@@ -982,30 +984,8 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         aria-describedby="modal-modal-description"
 
     >
-      <div>
-      
-      <Box sx={style}>
-      <Stack alignItems="center" spacing={2}>
-      <div className="print-layout" id="capture" >
-        <Grid container style={{ width: '100%', height: '100%' }}>
-          <ScreenshotComponent examId={examIdNumber} fiducialStates={fiducialStates} analisisData={examData}
-           examMetadata={examMetadata} isLoading={isLoadingExamData} diagnosticStates={diagnosticStates}/>
-        </Grid>
-      </div>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: '#007088',
-          color: "#fff",// Set a fixed width for the button, // Use shorthand notation for marginLeft
-        }}
-        onClick={handleCapture}>
-        <Typography fontStyle={"bold"} color={"#ffffff"}>
-          {"save"}
-        </Typography>
-      </Button>
-      </Stack>
-      </Box>
-      </div>
+      <ScreenshotModal examId={examId} fiducialStates={fiducialStates} examData={examData}
+         examMetadata={examMetadata} isLoadingExamData={isLoadingExamData} diagnosticStates={diagnosticStates}/>
     </Modal>
     <div style={{width: "100%", bottom: 0, position: "relative"}}>
       <Footer
