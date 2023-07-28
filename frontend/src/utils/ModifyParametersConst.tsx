@@ -1,8 +1,8 @@
 export interface NormalThresholdMarker {
     fiducialPoint: string;
     measurementUnit: string;
-    lowerLimit: number;
-    upperLimit: number;
+    lowerLimit: string;
+    upperLimit: string;
 }
 export interface DiagnosticType {
     diagnosticId: number;

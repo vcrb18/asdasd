@@ -38,7 +38,7 @@ function DiagnosticsTable() {
     };
 
     const handleThresholdChange = (newThreshold: string) => {
-        const newValue = newThreshold === '' ? 0 : parseFloat(newThreshold) 
+        const newValue = Number.isNaN(parseFloat(newThreshold)) ? 0 : parseFloat(newThreshold);
         const diagnosticModified = {
             ...currentDiagnostic,
             ['threshold']: newValue,

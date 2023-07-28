@@ -19,25 +19,30 @@ function FiducialPointsTable() {
     }, []);
 
     const handleLimitChange = (index:number, value: string, limit: string) => {
-        const newValue = value === '' ? 0 : parseFloat(value);
         const updatedValues = [...normalThresholdMarkersToChange];
         updatedValues[index] = {
             ...updatedValues[index],
-            [limit]: newValue,
+            [limit]: value,
         };
         SetNormalThresholdMarkersToChange(updatedValues);
     };
 
     const handleSaveButton = () => {
-        normalThresholdMarkersToChange.map(async (fp) => {
-            await updateNormalThresholdMarkers(fp.fiducialPoint, fp.lowerLimit, fp.upperLimit);
+        normalThresholdMarkersToChange.map(async (fp, index) => {
+            const isValidLowerLimit = !Number.isNaN(parseFloat(fp.lowerLimit));
+            const isValidUpperLimit = !Number.isNaN(parseFloat(fp.upperLimit));
+            await updateNormalThresholdMarkers(
+                fp.fiducialPoint, 
+                isValidLowerLimit ? parseFloat(fp.lowerLimit) : parseFloat(normalThresholdMarkers[index].lowerLimit),
+                isValidUpperLimit ? parseFloat(fp.upperLimit) : parseFloat(normalThresholdMarkers[index].upperLimit),
+                );
         });
     };
 
     const handleCancelButton = () => {
         SetNormalThresholdMarkersToChange(normalThresholdMarkers);
         normalThresholdMarkers.map(async (fp) => {
-            await updateNormalThresholdMarkers(fp.fiducialPoint, fp.lowerLimit, fp.upperLimit);
+            await updateNormalThresholdMarkers(fp.fiducialPoint, parseFloat(fp.lowerLimit), parseFloat(fp.upperLimit));
         });
     };
     
