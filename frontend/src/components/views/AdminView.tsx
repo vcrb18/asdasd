@@ -85,7 +85,7 @@ function AdminView() {
         setActiveMedicalCenter(medicalCentersToAdd);
       }
     });
-    window.location.reload();
+    navigate(0);
   };
   
   const handleModifyParameters = () => {
