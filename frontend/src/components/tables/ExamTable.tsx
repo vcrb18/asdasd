@@ -31,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 
 
 
@@ -210,7 +211,27 @@ const getUrgency = (urgency: number): JSX.Element => (
     setMaxPage(-1);
   };
 
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleRowsResponse = (response: AxiosResponse<any, any>, newExams: ExamData[]) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    response.data.rows.map((examData: any) => {
+      newExams.push({
+        examId: examData.examId,
+        patientId: examData.patientId,
+        createdAt: examData.createdAt,
+        deadline: examData.createdAt,
+        urgency: examData.urgency,
+        remainingTime: examData.remainingTime,
+        operatorReview: examData.operatorReview,
+        results: examData.resultados,
+        accepted: examData.accepted,
+        operatorAccept: examData.operatorAccept,
+        locked: examData.locked,
+        lockedBy: examData.lockedBy,
+        organizationLegalName: examData.organizationLegalName,
+      });
+    });
+};
 
   useEffect(()=> {
     setIsLoading(true);
@@ -225,24 +246,10 @@ const getUrgency = (urgency: number): JSX.Element => (
       if (useFilter) {
         if (useReviewFilter && useStateFilter){
           getExamsByFilter(page, 11, filterStates.accepted, filterReview.reviewed).then((response) => {
+            console.log(response.data);
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-              });
-            });
+            handleRowsResponse(response, newExams)
             if (maxRows == 0 ){
               throw new Error("No se encontraron exámenes")
             } 
@@ -281,22 +288,7 @@ const getUrgency = (urgency: number): JSX.Element => (
         getExamsByFilter(page, 11, filterStates.accepted, null).then((response) => {
           const newExams: ExamData[] = [];
           setMaxRows(response.data.count)
-          response.data.rows.map((examData: any) => {
-            newExams.push({
-              examId: examData.examId,
-            patientId: examData.patientId,
-            createdAt: examData.createdAt,
-            deadline: examData.createdAt,
-            urgency: examData.urgency,
-            remainingTime: examData.remainingTime,
-            operatorReview: examData.operatorReview,
-            results: examData.resultados,
-            accepted: examData.accepted,
-            operatorAccept: examData.operatorAccept,
-            locked: examData.locked,
-            lockedBy: examData.lockedBy,
-            });
-          });
+          handleRowsResponse(response, newExams)
           if (filterStates == oldFilterState){
             const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
               setReloadPage(false)
@@ -319,22 +311,7 @@ const getUrgency = (urgency: number): JSX.Element => (
           getExamsByFilter(page, 11, null, filterReview.reviewed).then((response) => {
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-              });
-            });
+            handleRowsResponse(response, newExams)
             if (filterReview === oldFilterReview){
               const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
               setFilteredRows([...filteredRows, ...newExamsFiltered]);
@@ -359,22 +336,7 @@ const getUrgency = (urgency: number): JSX.Element => (
           getExamsById(filterId, page, 11).then((response) => {
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-            });
-          });
+            handleRowsResponse(response, newExams)
             if (filterId == oldFolio){
               setOldFolio(filterId)
               setReloadPage(false)
@@ -400,24 +362,8 @@ const getUrgency = (urgency: number): JSX.Element => (
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
         setMaxRows(response.data.count)
-        response.data.rows.map((examData: any) => {
-          newExams.push({
-            examId: examData.examId,
-            patientId: examData.patientId,
-            createdAt: examData.createdAt,
-            deadline: examData.createdAt,
-            urgency: examData.urgency,
-            remainingTime: examData.remainingTime,
-            operatorReview: examData.operatorReview,
-            results: examData.resultados,
-            accepted: examData.accepted,
-            operatorAccept: examData.operatorAccept,
-            locked: examData.locked,
-            lockedBy: examData.lockedBy,
-          });
-        });
-
-          const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
+        handleRowsResponse(response, newExams)
+        const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
           setRows([...rows, ...newExamsFiltered]);
           return Promise
         }).catch((error) => {
@@ -470,6 +416,9 @@ const getUrgency = (urgency: number): JSX.Element => (
               {row.patientId}
             </Typography>
           </StyledTableCell>
+          <StyledTableCell align="left" sx={{maxWidth:"15%"}} >
+            {row.organizationLegalName}
+          </StyledTableCell> 
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
