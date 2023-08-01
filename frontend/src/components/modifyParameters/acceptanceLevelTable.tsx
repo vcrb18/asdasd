@@ -12,7 +12,7 @@ function AcceptanceLevelTable() {
     const [acceptanceThresholdsToChange, setAcceptanceThresholdsToChange] = useState<AcceptanceThreshold[]>([]);
 
     const handleChangeThreshold = (index:number, value: string) => {
-        const newValue = value === '' ? 0 : parseFloat(value);
+        const newValue = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value);
         const updatedValues = [...acceptanceThresholdsToChange];
         updatedValues[index] = {
             ...updatedValues[index],
