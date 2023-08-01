@@ -2,31 +2,32 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import AdminBox from "./AdminBox";
+import { postExamIdAI } from "../../service/user.service";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
-interface IdAIApplicationProps {
-  onClickIdApplication: (examId: string) => void;
-}
 
-function IdAIApplication({ onClickIdApplication }: IdAIApplicationProps) {
+function IdAIApplication() {
+  const navigate: NavigateFunction = useNavigate();
   const { t } = useTranslation();
 
   const [examId, setExamId] = React.useState<string>("");
 
-  const handleIdSubmit = () => {
-    onClickIdApplication(examId);
-  };
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExamId(event.target.value);
   };
 
+  const handleIdSubmit = () => {
+    postExamIdAI(examId);
+    navigate(`/examsview/${examId}`);
+  };
+
   return (
-    <Box display={"flex"} width={"100%"} marginY={"3%"}>
+    <>
       <Grid
         container
         display={"flex"}
         justifyContent={"space-around"}
-        marginX={"10%"}
       >
         <AdminBox text="examId" />
         <Grid
@@ -46,7 +47,7 @@ function IdAIApplication({ onClickIdApplication }: IdAIApplicationProps) {
             variant="outlined"
             size="medium"
             onChange={handleIdChange}
-            sx={{ width: "80%" }}
+            sx={{ width: "90%", bgcolor: "#ffffff" }}
           />
         </Grid>
         <Grid
@@ -75,7 +76,11 @@ function IdAIApplication({ onClickIdApplication }: IdAIApplicationProps) {
           </Button>
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 }
 export default IdAIApplication;
+function setExamIdToApply(examId: string) {
+  throw new Error("Function not implemented.");
+}
+

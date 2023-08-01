@@ -9,10 +9,9 @@ import {
   DialogActions,
   Button,
   Typography,
-  Box,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -23,51 +22,46 @@ import { useTranslation } from "react-i18next";
 import { getMedicalCenters } from "../../service/user.service";
 
 import { MedicalCenter } from "./MedicalCenters";
+import { timeRestrictionSelect} from "../../utils/AdminViewConst";
 
 interface MedicalCenterSearchProps {
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
   onSelectAllCenters: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  areAllMedicalCentersSelected: boolean;
-  areMedicalCentersActive: boolean;
+  medicalCentersToAdd: MedicalCenter[];
+  handleMedicalCentersToAdd: (medicalCenters: MedicalCenter[]) => void;
 }
 
 function MedicalCenterSearch({
   onNewMedicalCenter,
   onSelectAllCenters,
-  areAllMedicalCentersSelected,
-  areMedicalCentersActive,
+  medicalCentersToAdd,
+  handleMedicalCentersToAdd
 }: MedicalCenterSearchProps) {
   const { t } = useTranslation();
   const [medicalCentersForAI, setMedicalCentersForAI] = useState<
     MedicalCenter[]
   >([]);
-  const [openAddMedicalCenter, setOpenAddMedicalCenter] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [medicalCenterToAdd, setMedicalCenterToAdd] = useState<MedicalCenter>();
-
+  const [timeToRestriction, setTimeToRestriction] = useState<number>(0);
 
   useEffect(() => {
     const allMedicalCenters = getMedicalCenters().then(
-      (medicalCenters) => medicalCenters.data
+      (medicalCenters) => (medicalCenters.data).sort((a: MedicalCenter, b: MedicalCenter) => (a.legalName > b.legalName) ? 1 : -1)
     );
-    allMedicalCenters.then((res) => setMedicalCentersForAI(res));
+    
+    allMedicalCenters.then((res) =>
+      setMedicalCentersForAI(res)
+    )
   }, []);
 
-  const handleAddMedicalCenter = (): void => {
-    if (areMedicalCentersActive) {
-      alert(t("deactivateAIFirst"));
-    } else {
-      setOpenAddMedicalCenter(true);
-    }
-  };
-
   const handleCloseMedicalCenter = (): void => {
-    setOpenAddMedicalCenter(false);
+    setOpenDialog(false);
   };
 
   const handleMedicalCenterSubmit = (): void => {
     if (medicalCenterToAdd) {
       onNewMedicalCenter(medicalCenterToAdd);
-      setOpenAddMedicalCenter(false);
     }
   };
   const handleMedicalCenterSelect = (
@@ -79,6 +73,23 @@ function MedicalCenterSearch({
 
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSelectAllCenters(event);
+  };
+
+  const handleActiveAllMedicalCenters = () => {
+    const medicalCentersFilters: MedicalCenter[] = medicalCentersForAI.filter((medicalCenter) => (medicalCenter.responseTime > timeToRestriction));
+    handleMedicalCentersToAdd(medicalCentersFilters);
+    setOpenDialog(false);
+  }
+  const handleMedicalCenterRestriction = (event: SelectChangeEvent<number>) => {
+    setTimeToRestriction(event.target.value as number);
+  }
+
+  const getTimerSelect = (index: number, value: number) => {
+      return (
+        <MenuItem key={index} value={value}>
+          {t("moreThan")} {value} {t("minutes")}
+        </MenuItem>
+      );
   };
 
   return (
@@ -102,11 +113,19 @@ function MedicalCenterSearch({
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Typography>{t("centerSeleccion")}</Typography>
-        <IconButton size="large" edge={"end"} onClick={handleAddMedicalCenter}>
+        <Autocomplete
+          getOptionLabel={(option) => option.legalName}
+          options={medicalCentersForAI}
+          sx={{ width: "75%", bgcolor: "#ffffff" }}
+          renderInput={(params) => <TextField {...params} label={t("centerSelection")} />}
+          onChange={handleMedicalCenterSelect}
+          
+        />
+        <IconButton size="large" edge={"end"} onClick={handleMedicalCenterSubmit}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#007088" }} />
         </IconButton>
       </Grid>
+
       <Grid
         item
         lg={6}
@@ -117,45 +136,70 @@ function MedicalCenterSearch({
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <FormGroup>
-          <FormControlLabel
-            labelPlacement="start"
-            label={<Typography>{t("selectAll")}</Typography>}
-            control={
-              <Checkbox
-                onChange={handleCheckBoxChange}
-                checked={areAllMedicalCentersSelected}
-              />
-            }
-          />
-        </FormGroup>
+          <Button
+            sx={{
+              backgroundColor: "#007088",
+              color: "#000000",
+              width: "auto",
+            }}
+            variant="contained"
+            onClick={() => {setOpenDialog(true)}}
+            fullWidth
+          >
+            <Typography color={"#ffffff"}>{t("selectAll")}</Typography>
+          </Button>
       </Grid>
       <Dialog
         fullWidth={true}
         maxWidth={"sm"}
-        open={openAddMedicalCenter}
+        open={openDialog}
         onClose={handleCloseMedicalCenter}
       >
-        <DialogTitle>
-          {t("add")} {t("medicalCenter")}
+        <DialogTitle display={"flex"} justifyContent={"center"} alignItems={"center"}>
+          {t("restrictions")}
         </DialogTitle>
         <DialogContent>
-          <Autocomplete
-            getOptionLabel={(option) => option.legalName}
-            options={medicalCentersForAI}
-            sx={{ width: 500 }}
-            renderInput={(params) => <TextField {...params} label="" />}
-            onChange={handleMedicalCenterSelect}
-          />
+          <Grid container>
+            <Grid item xs={4} display={"flex"} alignItems={"center"} justifyContent={"flex-start"}>
+              <Typography color={"#007088"} fontWeight={"bold"}>{t("responseTime")}</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Select
+                value={timeToRestriction}
+                onChange={handleMedicalCenterRestriction}
+                sx={{ width: "100%", bgcolor: "#fff" }}
+              >
+                {timeRestrictionSelect.map((value, index) => {
+                  return getTimerSelect(index, value);
+                })}
+              </Select>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseMedicalCenter}>{t("cancel")}</Button>
           <Button
-            onClick={handleMedicalCenterSubmit}
+            sx={{
+              backgroundColor: "#007088",
+              color: "#000000",
+              width: "auto",
+            }}
             variant="contained"
-            color="error"
+            onClick={handleCloseMedicalCenter}
+            fullWidth
           >
-            {t("submit")}
+            <Typography color={"#ffffff"}>{t("cancel")}</Typography>
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: "#007088",
+              color: "#000000",
+              width: "auto",
+            }}
+            variant="contained"
+            onClick={handleActiveAllMedicalCenters}
+            fullWidth
+          >
+            <Typography color={"#ffffff"}>{t("submit")}</Typography>
           </Button>
         </DialogActions>
       </Dialog>

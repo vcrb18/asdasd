@@ -1,18 +1,40 @@
+export const timeRestrictionSelect = [
+  15,
+  20,
+  30,
+  90,
+  100,
+  120,
+  150,
+  180,
+  350,
+  360,
+  720,
+  1440,
+];
 
+export const timeSelect = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  15,
+  30,
+  45,
+  60,
+];
 
-export const timeSelect = {
-  oneMin: 1,
-  twoMin: 2,
-  threeMin: 3,
-  fourMin: 4,
-  fiveMin: 5,
-  sixMin: 6,
-  sevenMin: 7,
-  eightMin: 8,
-  nineMin: 9,
-  tenMin: 10,
-  fiveteenMin: 15,
-  thirtyMin: 30,
-  fourtyFiveMin: 45,
-  oneHour: 60,
-};
+export const AdminViewBoxStyle = {
+  bgcolor: "#E4EDEF", 
+  marginX: "10%",
+  marginY: "2%", 
+  paddingY: "2%", 
+  paddingX: "2%",
+  borderRadius: 4,
+}
