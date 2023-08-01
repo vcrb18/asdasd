@@ -473,19 +473,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [fiducialChart, setFiducialChart] = React.useState(null);
   const handleOpenModal = () => {
     setOpen(true);
-    // const chartElement = chartRef.current;
-    // if (chartElement) {
-    //   const fiducial = chartElement.getElementsByClassName('FiducialChart')[0];
-    //   console.log(chartElement);
-    //   if (fiducial) {
-    //     // Manipulate the child element or access its properties
-    //     console.log(fiducial);
-    //     const clonedElement = fiducial.cloneNode(true);
-    //     console.log(clonedElement);
-    //     setFiducialChart(fiducial);
-    //   }
-    // }
-    //setFiducialChart(fiducial[0]);
   }
   const handleCloseModal = () => setOpen(false);
 
@@ -870,13 +857,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
 
 
-      {/* Contenedor del botón de validación */}
+      {/* Contenedor del botón de validación y screenshot*/}
       <Grid item display={"flex"} flexDirection={"column"} xs={12} sm={12} md={2} lg={2}
                   sx={{
                     right: "2%",
                     position:"fixed",
                   }}>
         <Grid item>
+          <Stack direction={"column"} spacing={2}>
         <ThemeProvider theme={buttonsTheme}>
           <Button
             variant="contained"
@@ -891,8 +879,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             </Typography>
           </Button>
         </ThemeProvider>
-        </Grid>
-        <Grid container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
         
         <ThemeProvider theme={buttonsTheme}>
           <Button
@@ -904,10 +891,11 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             onClick={handleOpenModal}
             >
             <Typography fontStyle={"bold"} color={"#ffffff"}>
-              {"capture screenshot"}
+              {t("captureScreenshot")}
             </Typography>
           </Button>
         </ThemeProvider>
+        </Stack>
         </Grid>
       </Grid>
     
@@ -920,7 +908,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
     >
       <ScreenshotModal examId={examId} fiducialStates={fiducialStates} examData={examData}
-         examMetadata={examMetadata} isLoadingExamData={isLoadingExamData} diagnosticStates={diagnosticStates}/>
+         examMetadata={examMetadata} isLoadingExamData={isLoadingExamData} diagnosticStates={diagnosticStates} closeModal={handleCloseModal}/>
     </Modal>
     <div style={{width: "100%", bottom: 0, position: "relative"}}>
       <Footer

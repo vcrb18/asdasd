@@ -316,7 +316,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
           <Grid container display={'flex'} flexDirection={'column'} lg={3} xs={3} sm={3} md={3}>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"aVF"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVF} max_points={2500}/>
+              <LineChart id={"aVR"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVR} max_points={2500}/>
               </Box>
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
@@ -326,7 +326,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
             </Grid>
             <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
               <Box onClick={handleOpenDerivation}>
-              <LineChart id={"aVR"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVR} max_points={2500}/>
+              <LineChart id={"aVF"} height={"25%"} width={"25%"} ratio={4/3} data={timeSeriesaVF} max_points={2500}/>
               </Box>
             </Grid>
           </Grid> 

@@ -34,20 +34,12 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
   const [timeSeriesaVF, setTimeSeriesaVF] = React.useState([]);
   const [timeSeriesaVL, setTimeSeriesaVL] = React.useState([]);
   const [timeSeriesaVR, setTimeSeriesaVR] = React.useState([]);
-
-  
-
-
   
   const dummyMetadata = patientsMetadata[2]
   const patientBackground = examMetadata?.backgrounds ? examMetadata?.backgrounds : dummyMetadata.backgrounds;
   const patientSymptoms = examMetadata?.symptoms ? examMetadata?.symptoms : dummyMetadata.symptoms;
   const patientMedications = examMetadata?.medications ? examMetadata?.medications : dummyMetadata.medications;
-  console.log(dummyMetadata)
-  console.log("patientBackground:", patientBackground);
-  console.log("patientSymptoms", patientSymptoms);
-  console.log("patientMedications", patientMedications);
-  console.log(patientMedications.length);
+  const patientInformation = examMetadata ? examMetadata : dummyMetadata;
 
   function getPatientSymptomAsText(symptom: Symptom | undefined): string {
     if(!symptom) return("");
@@ -58,17 +50,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     if(symptom?.days > 0 && symptom?.hours > 0)
     return(`${symptom?.name} hace ${symptom?.days} dias y ${symptom?.hours} horas`);
     return(`${symptom?.name}`);
-  }
-
-  function stateColorSwitcher(value: boolean | undefined): string {
-    switch (value) {
-      case true:
-        return "green";
-      case false:
-        return "red";
-      default:
-        return "red";
-    }
   }
 
   useEffect(()=> {
@@ -126,12 +107,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     });
   }, [count]);
 
-  const {
-    diagnosticosSugeridos,
-    setDiagnosticosSugeridos,
-    doctorDiagnostics,
-    setDoctorDiagnostics } = diagnosticStates;
-
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
   }
 
@@ -168,61 +143,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     return age.toString();
   };
 
-  const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
-    switch (colorNumber) {
-      case 1:
-        return(
-          "success"
-      )
-      case 2:
-        return (
-          "warning"
-        )
-      case 3:
-        return(
-          "error"
-        )
-      default:
-        return ("error")
-      }
-  }
-
-  const getRemainingTime = (deadline: string | undefined): number => {
-    if(!deadline) return 0;
-    const deadlineDate = new Date(deadline);
-    const hardcodedExtraTime = 1
-    deadlineDate.setHours(deadlineDate.getHours() + hardcodedExtraTime);
-    const currentDate = new Date();
-    const remaningTime = deadlineDate.getTime() - currentDate.getTime();
-    let ago = t('examTimeRemaining');
-    let remaningTimeColor = 1;
-    const elapsedTime = remaningTime;
-    const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-    if (days < 0 || hours < 0 || minutes < 0 ||seconds < 0) {
-      ago = t('examTimeAgo');
-      remaningTimeColor = 3;
-    } else {
-      if (hours < 0 && minutes <= 15) {
-        ago = t('examTimeRemaining');
-        remaningTimeColor = 2;
-      }
-    }
-    return (
-       remaningTimeColor
-      )
-  };
-
-  const displayUrgency= (urgency: number) : JSX.Element  => {
-    return(
-    <>
-      <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
-    </>
-    )
-    }
- 
   const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
     if (!examMetadata) return '';
 
@@ -240,9 +160,8 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
       (analisisData?.accepted === true ? true : false);
 
   const styleToGraphics = {
-    margin: "4px",
+    margin: "1px",
     border: "2px solid black",
-    maxWidth: '500px',
     borderRadius: "5px",
     cursor: "pointer",
     "&:hover": {
@@ -266,7 +185,7 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
       display={"flex"}
       flexDirection={"column"}
       alignItems="center"
-      width={"45%"}
+      width={"25%"}
       height={"100%"}
       justifyContent="space-evenly"
       spacing={2}
@@ -289,7 +208,7 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     >
     <Container
         sx={{
-          height: '40%',
+          height: '25%',
           border: 4,
           borderColor: "#E4EDEF",
           borderRadius: "1%",
@@ -347,83 +266,16 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
           </Grid>
           <Grid item xs={7} sm={7} md={7} lg={7}>
             <Typography fontSize={"100%"} fontWeight={"bold"}>
-              {getMetadataToDisplay(examMetadata)}
+              {getMetadataToDisplay(patientInformation)}
             </Typography>
           </Grid>
-        </Grid>
-    </Grid>
-    {/* Sector del análisis */}
-    <Grid container
-      display={"flex"}
-      flexDirection={"row"}
-      justifyContent={"center"}
-      xs={12} sm={12} md={12} lg={12} 
-    >
-      <Grid item>
-        {/* Titulo de análisis */}
-        <Typography fontSize={"130%"} fontWeight={"bold"}>
-        {t("analysis")}
-        </Typography>
-      </Grid>
-        {/* Estado */}
-        <Grid
-          container
-          display={"flex"}
-          alignItems={"center"}
-        >
-          <Grid item  
-            xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
-            <Typography fontSize={"100%"} fontWeight={"bold"}>
-              {t("state")}
-            </Typography>
-          </Grid>
-          {!isLoading &&
-          (<>
-          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={3} sm={3} md={3} lg={3}>
-            <Typography
-              fontSize={"100%"}
-              align="left"
-              fontWeight={"bold"}
-              color={stateColorSwitcher(analisisData?.operatorAccept != undefined ? analisisData?.operatorAccept : analisisData?.accepted)}
-            >
-              { displayAccepted ? t("accepted") : t("rejected") }
-            </Typography>
-          </Grid>
-          <Grid item display={"flex"} justifyContent={"flex-start"} width={"100%"} xs={2} sm={2} md={2} lg={2}>
-            <Typography
-              fontSize={"100%"}
-              align="left"
-              fontWeight={"bold"}
-            >
-              {analisisData?.operatorAccept == undefined && analisisData?.accuracy !=  undefined && ((analisisData?.accuracy*100).toFixed(1) + "%")}
-            </Typography>
-          </Grid>
-        
-          </>
-          )}
-          
-        </Grid>
-        <Grid
-          container
-          display={"flex"}
-          justifyContent={"space-between"}
-        >
-          <Grid item  xs={4} sm={4} md={4} lg={4} display={"flex"} justifyContent={"flex-start"} paddingLeft={"5%"}>
-            <Typography fontSize={"100%"} fontWeight={"bold"}>
-            {t("urgency")}
-            </Typography>
-          </Grid>
-          {!isLoading &&
-          (<Grid item display={"flex"} justifyContent={"center"} alignItems={"center"} xs={8} sm={8} md={8} lg={8}>
-            {/* {displayUrgency(analisisData?.urgency)} */}
-            {displayUrgency(getRemainingTime(analisisData?.createdAt))}
-          </Grid>)}
         </Grid>
     </Grid>
     </Container>
     <Container 
               sx={{
-                height: '60%',
+                overflow: 'auto',
+                height: '75%',
                 border: 4,
                 borderColor: "#E4EDEF",
                 borderRadius: "1%",
@@ -434,99 +286,10 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
                 },
               }}
             >
-    <Box width={"100%"} height={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
-    <Stack direction="column">
-        <Typography fontWeight={"bold"} fontSize={"130%"}>
-          {t("suggestedDiagnoses")}
-        </Typography>
-      <List        sx={{
-        width: '100%',
-        position: 'relative',
-        overflow: 'hidden',
-        '& ul': { padding: 0 },
-      }}>
-      {diagnosticosSugeridos.length>0 && diagnosticosSugeridos.map((item: DiagnosticPrediction) => (
-        <ListItem sx={{border: 1,
-          borderColor: "#E4EDEF",
-          borderRadius: "1%",
-        }}>
-        <SmartToyIcon/>
-        <ListItemText>
-        <Typography
-              fontSize={"100%"}
-              align="left"
-              fontWeight={"bold"}
-            >
-              {item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
-            </Typography>
-        </ListItemText>
-        <ListItemText>
-        <Typography
-              fontSize={"100%"}
-              align="right"
-              fontWeight={"bold"}
-            >
-              {(item.accuracy*100).toFixed(1) + "%"}
-            </Typography>
-        </ListItemText>
-        </ListItem>
-       ))}
-      {doctorDiagnostics.length>0 && doctorDiagnostics.map((item: Diagnostic) => (
-        <ListItem sx={{border: 1,
-          borderColor: "#E4EDEF",
-          borderRadius: "1%",
-        }}>
-        <FaceIcon/>
-        <ListItemText>
-        <Typography
-              fontSize={"100%"}
-              align="left"
-              fontWeight={"bold"}
-            >
-              {item.diagnosticId ? t("diagnostic" + item.diagnosticId.toString()) : ""}
-        </Typography>
-        </ListItemText>
-        </ListItem>
-       ))}
-      </List>
-      {doctorDiagnostics.length === 0 && diagnosticosSugeridos.length === 0 && 
-        <Typography
-                fontSize={"100%"}
-                align="center"
-                fontWeight={"bold"}
-              >
-                {t("No hay diagnosticos sugeridos")}
-        </Typography>}
-      </Stack>
-      </Box>
-      </Container>
-      </Stack>
-      <Stack
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems="center"
-      width={"100%"}
-      height={"100%"}
-      spacing={1}
-    >
-      {/* Background */}
-      <Container 
-              sx={{
-                height: '33%',
-                border: 4,
-                borderColor: "#E4EDEF",
-                borderRadius: "1%",
-                boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-                transition: "box-shadow 0.3s ease-in-out",
-                "&:hover": {
-                  boxShadow: "0px 8px 16px rgba(0,0,0,0.3)",
-                },
-              }}
-            >
-    <Box width={"100%"} height={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
+<Box width={"100%"}  mb={"5%"} display={"flex"} justifyContent={"center"}>
       <Stack direction="column" width={"100%"}>
         <Typography fontWeight={"bold"} fontSize={"130%"} align="center">
-          {t("Background")}
+          {t("background")}
         </Typography>
         <List        sx={{
         width: '100%',
@@ -554,27 +317,10 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
       </List>
         </Stack>
       </Box>
-      <Box width={"100%"}>        
-      </Box>
-      </Container>
-      {/* SYMPTOMS */}
-      <Container 
-              sx={{
-                height: '33%',
-                border: 4,
-                borderColor: "#E4EDEF",
-                borderRadius: "1%",
-                boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-                transition: "box-shadow 0.3s ease-in-out",
-                "&:hover": {
-                  boxShadow: "0px 8px 16px rgba(0,0,0,0.3)",
-                },
-              }}
-            >
-    <Box width={"100%"} height={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
+      <Box width={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
       <Stack direction="column" width={"100%"}>
         <Typography fontWeight={"bold"} fontSize={"130%"} align="center">
-          {t("Sintomas")}
+          {t("symptoms")}
         </Typography>
         <List        sx={{
         width: '100%',
@@ -602,67 +348,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
       </List>
         </Stack>
       </Box>
-      <Box width={"100%"}>        
-      </Box>
-      </Container>
-      {/* MEDICACIONES */}
-      <Container
-              sx={{
-                height: '33%',
-                border: 4,
-                borderColor: "#E4EDEF",
-                borderRadius: "1%",
-                boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-                transition: "box-shadow 0.3s ease-in-out",
-                "&:hover": {
-                  boxShadow: "0px 8px 16px rgba(0,0,0,0.3)",
-                },
-              }}
-            >
-    <Box width={"100%"} height={"100%"} mb={"5%"} display={"flex"} justifyContent={"center"}>
-      <Stack direction="column" width={"100%"}>
-        <Typography fontWeight={"bold"} fontSize={"130%"} align="center" width={"100%"} height={"20%"}>
-          {t("Medicaciones")}
-        </Typography >
-        <List       
-        sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        overflow: 'hidden',
-        '& ul': { padding: 0 },
-      }}>
-        {patientMedications.length>0 && patientMedications.map((item: Medication) => (
-        <ListItem sx={{border: 1,
-          borderColor: "#E4EDEF",
-          borderRadius: "1%",
-          width:"100%",
-        }}>
-        <ListItemText>
-        <Typography
-              fontSize={"100%"}
-              align="left"
-              fontWeight={"bold"}
-            >
-              {item.name ? t(item.name) : ""}
-            </Typography>
-        </ListItemText>
-        <ListItemText>
-        <Typography
-              fontSize={"100%"}
-              align="right"
-              fontWeight={"bold"}
-            >
-              {item.dose ? "Dosis:" + item.dose.toString() : ""}
-            </Typography>
-        </ListItemText>
-        </ListItem>
-       ))}
-      </List>
-        </Stack>
-      </Box>
-      <Box width={"100%"}>        
-      </Box>
       </Container>
       </Stack>
       </Stack>
@@ -670,64 +355,9 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
 
       <Container 
 
-        sx={{ width: '55%' }}>
-          <Stack direction="column">
-          <Stack direction="row"
-          justifyContent="space-around"
-          alignItems="center"
-          spacing={2}>
-          <Stack direction="column">
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-                <LineChart id={"I"}  height={"200%"} width={"175%"}  ratio={4/3} data={timeSeriesI} max_points={2500} />
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"II"}  height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesII} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"III"} height={"200%"} width={"175%"}  ratio={4/3} data={timeSeriesIII} max_points={2500}/>
-              </Box>
-          </Stack>
-          <Stack direction="column">
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"aVF"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesaVF} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"aVL"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesaVL} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"aVR"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesaVR} max_points={2500}/>
-              </Box>
-          </Stack>
-          <Stack direction="column">
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V1"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV1} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V2"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV2} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V3"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV3} max_points={2500}/>
-              </Box>
-          </Stack>
-          <Stack direction="column">
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V4"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV4} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V5"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV5} max_points={2500}/>
-              </Box>
-              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
-              <LineChart id={"V6"} height={"200%"} width={"175%"} ratio={4/3} data={timeSeriesV6} max_points={2500}/>
-              </Box>
-          </Stack>
-          </Stack>
-          <Grid item xs={12} md={12} lg={12} padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'} sx={styleToGraphics}>
-            <Box onClick={handleOpenDerivation}>
-            <LineChart id={"II"} height={"25%"} width={"100%"} ratio={16/3} data={timeSeriesII} max_points={10000}/>
-            </Box>
-          </Grid>
-          <Element name="graphic" >
-          <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
+        sx={{ width: '75%', height: '100%' }}>
+          <Stack direction="column" height={"100%"}>
+          <Box sx={{height:"10%", marginBottom:"15px", border: "2px solid black"}}>
             <FiducialMeasurementsTable
               fidP={fidP}
               fidQRS={fidQRS}
@@ -739,7 +369,61 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
               examId={examId}
             />
           </Box>
-          </Element>
+          <Stack direction="row"
+          justifyContent="space-around"
+          alignItems="center"
+          spacing={2}
+          height={"65%"}>
+          <Stack direction="column" width={"25%"}>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+                <LineChart id={"I"}   width={"100%"}  ratio={4/3} data={timeSeriesI} max_points={2500} />
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"II"}  width={"100%"} ratio={4/3} data={timeSeriesII} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"III"} width={"100%"}  ratio={4/3} data={timeSeriesIII} max_points={2500}/>
+              </Box>
+          </Stack>
+          <Stack direction="column" width={"25%"}>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"aVR"} width={"100%"} ratio={4/3} data={timeSeriesaVR} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"aVL"}  width={"100%"} ratio={4/3} data={timeSeriesaVL} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"aVF"}  width={"100%"} ratio={4/3} data={timeSeriesaVF} max_points={2500}/>
+              </Box>
+          </Stack>
+          <Stack direction="column" width={"25%"}>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V1"} width={"100%"} ratio={4/3} data={timeSeriesV1} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V2"}  width={"100%"} ratio={4/3} data={timeSeriesV2} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V3"}  width={"100%"} ratio={4/3} data={timeSeriesV3} max_points={2500}/>
+              </Box>
+          </Stack>
+          <Stack direction="column" width={"25%"}>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V4"} width={"100%"} ratio={4/3} data={timeSeriesV4} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V5"}  width={"100%"} ratio={4/3} data={timeSeriesV5} max_points={2500}/>
+              </Box>
+              <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+              <LineChart id={"V6"}  width={"100%"} ratio={4/3} data={timeSeriesV6} max_points={2500}/>
+              </Box>
+          </Stack>
+          </Stack>
+          <Grid item padding={'1%'} alignItems={'center'} justifyContent={'space-evenly'}  height={"25%"}>
+            <Box onClick={handleOpenDerivation} sx={styleToGraphics}>
+            <LineChart id={"II"}  width={"100%"} ratio={16/3} data={timeSeriesII} max_points={10000}/>
+            </Box>
+          </Grid>
           </Stack> 
       </Container>  
     </Stack>
