@@ -6,7 +6,7 @@ import { type ExamMetadata } from "../../utils/MetadataTransforms";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import { getMetadataToDisplay } from "../../utils/MetadataTransforms";
+import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/MetadataTransforms";
 
 interface AnalisisProps {
     examId: number;
@@ -209,6 +209,7 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
           </Grid>
           <Grid item xs={7} sm={7} md={7} lg={7}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
+              {getFullNameToDisplay(examMetadata)} <br />
               {getMetadataToDisplay(examMetadata)}
             </Typography>
           </Grid>

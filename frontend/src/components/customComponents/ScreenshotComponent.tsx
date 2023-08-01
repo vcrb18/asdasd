@@ -11,7 +11,7 @@ import { Element } from "react-scroll"
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import FaceIcon from '@mui/icons-material/Face';
-import { getMetadataToDisplay } from "../../utils/MetadataTransforms";
+import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/MetadataTransforms";
 import { patientsMetadata } from "../../utils/patientMetadataDummy";
 
 const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisData, examMetadata, isLoading, diagnosticStates}): JSX.Element => {
@@ -260,6 +260,7 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
           </Grid>
           <Grid item xs={7} sm={7} md={7} lg={7}>
             <Typography fontSize={"100%"} fontWeight={"bold"}>
+              {getFullNameToDisplay(patientInformation)} <br />
               {getMetadataToDisplay(patientInformation)}
             </Typography>
           </Grid>

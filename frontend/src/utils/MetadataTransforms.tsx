@@ -61,6 +61,11 @@ const getAge = (birthday: string | undefined): string => {
   return age.toString();
 };
 
+export const getFullNameToDisplay = (examMetadata: ExamMetadata | null): string => {
+  if (!examMetadata) return '';
+  return `${examMetadata?.name} ${examMetadata?.lastName}`;
+}
+
 export const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
   const { t } = useTranslation();
   if (!examMetadata) return '';
