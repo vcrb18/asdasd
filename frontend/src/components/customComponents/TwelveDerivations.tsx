@@ -16,6 +16,10 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
   let n_x_ticks = max_points / 200;
   let sliced_data = data.slice(0,max_points);
 
+  const gridLineColor = 'rgba(205, 84, 98, 0.5)';
+  const gridLineWidth = 2;
+
+
   useEffect(() => {
     if (canvasRef.current) {
       const chart = new Chart(canvasRef.current, {
@@ -49,6 +53,10 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
               title: {
                 display: false,
               },
+              grid: {
+                color: gridLineColor, // Customize the color of vertical gridlines
+                lineWidth: gridLineWidth,
+              },
             },
             y: {
               ticks: {
@@ -59,6 +67,10 @@ const LineChart: React.FC<LineChartProps> = ({ id, data, max_points, options, wi
               title: {
                 text: 'VOLTAJE [mV]',
                 display: false,
+              },
+              grid: {
+                color: gridLineColor, // Customize the color of vertical gridlines}
+                lineWidth: gridLineWidth,
               },
               min: -2000,
               max: 2000,

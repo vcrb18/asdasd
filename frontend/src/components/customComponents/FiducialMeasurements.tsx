@@ -78,7 +78,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   const row = createData(props.examId, fc, rr, pq, qrs, qt, qtc, st);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer >
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow
