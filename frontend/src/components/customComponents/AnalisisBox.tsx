@@ -1,10 +1,12 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
 import { Typography, Grid, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Derivation, derivations, type ExamData, type ExamMetadata } from "../views/ExamsView";
+import { Derivation, derivations, type ExamData } from "../views/ExamsView";
+import { type ExamMetadata } from "../../utils/MetadataTransforms";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
+import { getMetadataToDisplay } from "../../utils/MetadataTransforms";
 
 interface AnalisisProps {
     examId: number;
@@ -99,48 +101,6 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
         },
       },
     });
-  
-
-  const remapGender = (gender: string | undefined): string => {
-    switch (gender) {
-      case "HOMBRE":
-        return "male";
-      case "MUJER":
-        return "female";
-      default:
-        return "";
-    }
-  };
-
-  const getAge = (birthday: string | undefined): string => {
-    if (birthday === undefined) return '';
-
-    const splittedDate = birthday.split('-');
-    if (splittedDate.length != 3) return '';
-
-    const day = parseInt(splittedDate[0]);
-    const month = parseInt(splittedDate[1]);
-    const year = parseInt(splittedDate[2]);
-
-    const currentDate = new Date();
-    let age = currentDate.getFullYear() - year;
-
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentDay = currentDate.getDate();
-    if ((month > currentMonth) || (month == currentMonth && day > currentDay)) {
-      age = age - 1;
-    }
-
-    return age.toString();
-  };
-
-  const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
-    if (!examMetadata) return '';
-
-    const gender = remapGender(examMetadata?.gender);
-    const age = getAge(examMetadata?.birthday);
-    return `${t(gender)}, ${age} ${t("yearsOld")}`;
-  }
 
   const getRemainingTimeColor = (colorNumber: number) :  "error" | "success" | "warning"  => {
     switch (colorNumber) {

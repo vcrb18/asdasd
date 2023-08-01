@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, Container, ListItemText, List, ListItem } from "@mui/material";
 import React, { useEffect } from "react";
-import { ExamMetadata, FiducialStates, DiagnosticPrediction, Diagnostic, Medication, Background, Symptom } from "../views/ExamsView";
+import { FiducialStates, DiagnosticPrediction, Diagnostic} from "../views/ExamsView";
+import { type Background, type Medication, type Symptom, type ExamMetadata } from "../../utils/MetadataTransforms";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
 import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
@@ -10,6 +11,7 @@ import { Element } from "react-scroll"
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import FaceIcon from '@mui/icons-material/Face';
+import { getMetadataToDisplay } from "../../utils/MetadataTransforms";
 import { patientsMetadata } from "../../utils/patientMetadataDummy";
 
 const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisData, examMetadata, isLoading, diagnosticStates}): JSX.Element => {
@@ -142,14 +144,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
 
     return age.toString();
   };
-
-  const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
-    if (!examMetadata) return '';
-
-    const gender = remapGender(examMetadata?.gender);
-    const age = getAge(examMetadata?.birthday);
-    return `${t(gender)}, ${age} ${t("yearsOld")}`;
-  }
 
   const date = analisisData?.createdAt == undefined
   ? '' 
