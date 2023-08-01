@@ -24,141 +24,10 @@ import {
 } from "../../service/user.service";
 import IdAIApplication from "../admin/IdAIApplication";
 import { isEmptyArray } from "formik";
+import { AdminViewBoxStyle } from "../../utils/AdminViewConst";
 
 function AdminView() {
-  const { t } = useTranslation();
-  const navigate: NavigateFunction = useNavigate();
-
-  const timeToRender = new Date();
-
-  let hasTimerChanged = false;
-
-  const [examIdToApply, setExamIdToApply] = useState<string>("");
-  const [activeTimer, setActiveTimer] = useState<boolean>(false);
-  const [amountOfTimeActive, setAmountOfTimeActive] = useState<number>(0);
-  const [activeMedicalCenters, setActiveMedicalCenter] = useState<
-    MedicalCenter[]
-  >([]);
-  const [medicalCentersToAdd, setMedicalCentersToAdd] = useState<
-    MedicalCenter[]
-  >([]);
-  const [areMedicalCentersActive, setAreMedicalCentersActive] =
-    useState<boolean>(false);
-
-  const [areAllMedicalCentersSelected, setAllMedicalCentersSelected] =
-    useState<boolean>(false);
-  const [areAllMedicalCentersActived, setAllMedicalCentersActived] =
-    useState<boolean>(false);
-
-  const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
-    if (!medicalCentersToAdd.includes(newMedicalCenter)) {
-      setMedicalCentersToAdd([...medicalCentersToAdd, newMedicalCenter]);
-    }
-  };
-
-  const handleActiveTimerChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setActiveTimer(event.target.checked);
-  };
-
-  const handleAmountTimeActiveChange = (time: number) => {
-    setAmountOfTimeActive(time);
-  };
-
-  const handleApplyButton = () => {
-    const array = activeTimer ? medicalCentersToAdd : activeMedicalCenters;
-    const arrayIds: number[] = array.map(
-      (medicalCenter) => medicalCenter.organizationId
-    );
-    postAIState(
-      activeTimer,
-      amountOfTimeActive,
-      arrayIds,
-      areAllMedicalCentersSelected
-    ).then((res) => {
-      if (areAllMedicalCentersSelected) {
-        setAllMedicalCentersActived(true);
-        setActiveMedicalCenter([]);
-      } else {
-        setMedicalCentersToAdd([]);
-        setActiveMedicalCenter(medicalCentersToAdd);
-      }
-    });
-    navigate(0);
-  };
-  
-  const handleModifyParameters = () => {
-    navigate("/admin/modifyparams");
-  };
-
-  const handleIdApplication = (examId: string) => {
-    setExamIdToApply(examId);
-    postExamIdAI(examId);
-    navigate(`/examsview/${examId}`);
-  };
-
-  const handleDeleteClick = (id: number): void => {
-    setMedicalCentersToAdd(
-      medicalCentersToAdd.filter((i) => i.organizationId !== id)
-    );
-  };
-
-  const handleTimeExpire = () => {
-    setActiveTimer(false);
-    setAreMedicalCentersActive(false);
-    setAllMedicalCentersSelected(false);
-    setAllMedicalCentersActived(false);
-    setActiveMedicalCenter([]);
-  };
-
-  const handleAllCentersSelected = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (areAllMedicalCentersActived) {
-      const alertString = t("deactivateAIFisrt")
-      alert(alertString);
-    } else {
-      setAllMedicalCentersSelected(event.target.checked);
-    }
-  };
-
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    resume,
-    restart,
-  } = useTimer({
-    expiryTimestamp: timeToRender,
-    onExpire: () => handleTimeExpire(),
-  });
-
-  useEffect(() => {
-    getAIActiveOrganizations().then((medicalCenters) => {
-      if (!hasTimerChanged) {
-        hasTimerChanged = true;
-        timeToRender.setSeconds(
-          timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds
-        );
-        setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
-        setAreMedicalCentersActive(
-          !isEmptyArray(medicalCenters.data.organizations)
-        );
-        setAllMedicalCentersActived(
-          medicalCenters.data.allOrganizationsActive
-        );
-        setAllMedicalCentersSelected(
-          medicalCenters.data.allOrganizationsActive
-        );
-        setActiveMedicalCenter(medicalCenters.data.organizations);
-      }
-    });
-  }, []);
+  const { t } = useTranslation()
 
   return (
     <>
@@ -177,63 +46,15 @@ function AdminView() {
       >
         {t("admin")}
       </Typography>
-      {seconds != undefined && minutes != undefined ? (
-        <MedicalCenters
-          activeMedicalCenters={activeMedicalCenters}
-          medicalCentersToAdd={medicalCentersToAdd}
-          areMedicalCentersActive={areMedicalCentersActive}
-          timeActiveLeft={[minutes, seconds]}
-          onNewMedicalCenter={handleMedicalCenterSelect}
-          onSelectAllCenters={handleAllCentersSelected}
-          handleDeleteClick={handleDeleteClick}
-          areAllMedicalCentersSelected={areAllMedicalCentersSelected}
-          areAllMedicalCentersActived={areAllMedicalCentersActived}
-        />
-      ) : (
-        <></>
-      )}
-      <Box>
-        <TimerBox
-          activeTimer={activeTimer}
-          amountOfTimeActive={amountOfTimeActive}
-          onActiveTimerChange={handleActiveTimerChange}
-          onAmountOfTimeActiveChange={handleAmountTimeActiveChange}
-        />
+
+      <Box sx={AdminViewBoxStyle}>
+          <MedicalCenters/>
       </Box>
-      <Box>
-        <IdAIApplication onClickIdApplication={handleIdApplication} />
+
+      <Box  sx={AdminViewBoxStyle}>
+        <IdAIApplication/>
       </Box>
-      <Box>
-        <Button
-          sx={{
-            backgroundColor: "#007088",
-            color: "#000000",
-            width: "auto",
-            marginX:"10%",
-          }}
-          variant="contained"
-          onClick={handleModifyParameters}
-        >
-          <Typography color={"#ffffff"}>{t("modifyParams")}</Typography>
-        </Button>
-        <Button
-          sx={{
-            backgroundColor: "#007088",
-            color: "#000000",
-            width: "auto",
-            marginX:"10%",
-          }}
-          variant="contained"
-          onClick={handleApplyButton}
-        >
-          <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
-        </Button>
-      </Box>
-      <Footer
-        footerPositionLg="absolute"
-        footerPositionMd="relative"
-        footerPositionXs="static"
-      />
+      
     </>
   );
 }
