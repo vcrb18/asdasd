@@ -749,28 +749,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
           </div>
-
-          <Grid item
-            display={"flex"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            marginBottom={"3%"}
-            width={"100%"}
-            marginX={"3%"}
-          >
-            <Box display={"flex"} alignItems={"flex-start"}>
-              <Typography fontSize={"80%"} fontWeight={"bold"}>
-                {t("comments")}
-              </Typography>
-            </Box>
-            <TextField
-              id="outlined-multiline-static"
-              label={t("commentsLabel")}
-              multiline
-              rows={4}
-              fullWidth
-            ></TextField>
-        </Grid>
       </Grid>
 
       </Grid>
@@ -886,27 +864,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             <DerivationsComponent examId={examIdNumber} fiducialStates={fiducialStates} />
           </Grid>
           </div>
-          <Grid item
-            display={"flex"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            marginBottom={"3%"}
-            width={"100%"}
-            marginX={"3%"}
-          >
-            <Box display={"flex"} alignItems={"flex-start"}>
-              <Typography fontSize={"80%"} fontWeight={"bold"}>
-                {t("comments")}
-              </Typography>
-            </Box>
-            <TextField
-              id="outlined-multiline-static"
-              label={t("commentsLabel")}
-              multiline
-              rows={4}
-              fullWidth
-            ></TextField>
-        </Grid>
       </Grid>
 
       </Grid>
@@ -953,28 +910,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
         </ThemeProvider>
         </Grid>
       </Grid>
-      
-      <Grid item
-            display={"flex"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-            marginBottom={"3%"}
-            width={"100%"}
-            marginX={"3%"}
-          >
-            <Box display={"flex"} alignItems={"flex-start"}>
-              <Typography fontSize={"80%"} fontWeight={"bold"}>
-                {t("comments")}
-              </Typography>
-            </Box>
-            <TextField
-              id="outlined-multiline-static"
-              label={t("commentsLabel")}
-              multiline
-              rows={4}
-              fullWidth
-            ></TextField>
-        </Grid>
     
     </Grid>
     <Modal
