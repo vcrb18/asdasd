@@ -295,7 +295,10 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           }),
           symptoms: Object.entries(response.data.Symptoms).map(([key, value]: [string, any]) => {
             return { id: value.ID, name: value.NAME, days: value.DAYS, hours: value.HOURS };
-          })
+          }),
+          identifier: response.data.Identifier,
+          name: response.data.Name,
+          lastName: response.data.LastName,
         });
       }
     });

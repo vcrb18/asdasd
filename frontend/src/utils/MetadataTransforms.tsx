@@ -23,6 +23,9 @@ export interface ExamMetadata {
   backgrounds: Background[];
   medications: Medication[];
   symptoms: Symptom[];
+  identifier: string;
+  name: string;
+  lastName: string;
 }
 
 const remapGender = (gender: string | undefined): string => {
