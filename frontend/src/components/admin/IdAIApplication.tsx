@@ -20,8 +20,8 @@ function IdAIApplication() {
   };
 
   const handleIdSubmit = () => {
-    const isNeedExamId = examId == "";
-    if(isNeedExamId){
+    const isExamIdRequired = examId == "";
+    if(isExamIdRequired){
       setExamIdError(true);
       return;
     }

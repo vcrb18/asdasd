@@ -82,12 +82,12 @@ function MedicalCenters() {
   }
   
   const handleApplyButton = () => {
-    const isNeedMedicalCenter = medicalCentersToAdd.length === 0 && !activeTimer;
-    const isNeedTime = amountOfTimeActive === 0 && !activeTimer;
-    if(isNeedMedicalCenter){
+    const isMedicalCenterRequired = medicalCentersToAdd.length === 0 && !activeTimer;
+    const isTimeRequired = amountOfTimeActive === 0 && !activeTimer;
+    if(isMedicalCenterRequired){
       return;
     }
-    if(isNeedTime){
+    if(isTimeRequired){
       setTimeError(true);
       return;
     }
