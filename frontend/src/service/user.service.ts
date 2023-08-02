@@ -3,6 +3,7 @@ import useSWR from "swr"
 import authHeader from "./auth.header";
 import { BasePopperPropsOverrides } from "@mui/x-data-grid";
 import { MedicalCenter } from "../components/admin/MedicalCenters";
+import { ExamHeadTableProps } from "../utils/ExamTableConst";
 const API_URL = "http://localhost:8080/";
 
 function fetcher(url: string) {
@@ -30,13 +31,13 @@ export const getExams = async (page : number, order:number): Promise<AxiosRespon
 
 export const getExamsByFilter = async (page: number, order: number, accepted: boolean | null, review: boolean | null ) : Promise<AxiosResponse> => {
   if (accepted == null){
-    return await axios.get(`/exams?page=${page}&order=${order}&reviewed=${review}&count=25`, { withCredentials: true })
+    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&reviewed=${review}&count=25`, { withCredentials: true })
   }
   else if (review == null){
-    return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&count=25`, { withCredentials: true })
+    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&count=25`, { withCredentials: true })
   }
   else{
-    return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&count=25`, { withCredentials: true })
+    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&count=25`, { withCredentials: true })
   }
 }
 
