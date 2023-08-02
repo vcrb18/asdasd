@@ -41,14 +41,10 @@ function MedicalCenterSearch({
   const [medicalCenterToAdd, setMedicalCenterToAdd] = useState<MedicalCenter>();
   const [timeToRestriction, setTimeToRestriction] = useState<number>(0);
 
-  useEffect(() => {
-    const allMedicalCenters = getMedicalCenters().then(
-      (medicalCenters) => (medicalCenters.data).sort((a: MedicalCenter, b: MedicalCenter) => (a.legalName > b.legalName) ? 1 : -1)
-    );
-    
-    allMedicalCenters.then((res) =>
-      setMedicalCentersForAI(res)
-    )
+  useEffect(() => {    
+    getMedicalCenters().then((res) => {
+      setMedicalCentersForAI(res.data);
+    });
   }, []);
 
   const handleCloseMedicalCenter = (): void => {
