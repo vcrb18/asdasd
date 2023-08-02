@@ -73,13 +73,17 @@ function MedicalCenterSearch({
     if (value == 0){
       return (
         <MenuItem key={index} value={value}>
-          {t("withoutRestrictions")}
+          <Typography>
+            {t("withoutRestrictions")}
+          </Typography>
         </MenuItem>
       );
     } else {
       return (
         <MenuItem key={index} value={value}>
-          {t("moreThan")} {value} {t("minutes")}
+          <Typography>
+            {t("moreThan")} {value} {t("minutes")}
+          </Typography>
         </MenuItem>
       );
     }
@@ -112,7 +116,6 @@ function MedicalCenterSearch({
           sx={{ width: "75%", bgcolor: "#ffffff" }}
           renderInput={(params) => <TextField {...params} label={t("centerSelection")} />}
           onChange={handleMedicalCenterSelect}
-          
         />
         <IconButton size="large" edge={"end"} onClick={handleMedicalCenterSubmit}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#007088" }} />
