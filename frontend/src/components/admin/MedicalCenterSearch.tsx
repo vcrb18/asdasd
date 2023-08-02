@@ -41,14 +41,10 @@ function MedicalCenterSearch({
   const [medicalCenterToAdd, setMedicalCenterToAdd] = useState<MedicalCenter>();
   const [timeToRestriction, setTimeToRestriction] = useState<number>(0);
 
-  useEffect(() => {
-    const allMedicalCenters = getMedicalCenters().then(
-      (medicalCenters) => (medicalCenters.data).sort((a: MedicalCenter, b: MedicalCenter) => (a.legalName > b.legalName) ? 1 : -1)
-    );
-    
-    allMedicalCenters.then((res) =>
-      setMedicalCentersForAI(res)
-    )
+  useEffect(() => {    
+    getMedicalCenters().then((res) => {
+      setMedicalCentersForAI(res.data);
+    });
   }, []);
 
   const handleCloseMedicalCenter = (): void => {
@@ -77,13 +73,17 @@ function MedicalCenterSearch({
     if (value == 0){
       return (
         <MenuItem key={index} value={value}>
-          {t("withoutRestrictions")}
+          <Typography>
+            {t("withoutRestrictions")}
+          </Typography>
         </MenuItem>
       );
     } else {
       return (
         <MenuItem key={index} value={value}>
-          {t("moreThan")} {value} {t("minutes")}
+          <Typography>
+            {t("moreThan")} {value} {t("minutes")}
+          </Typography>
         </MenuItem>
       );
     }
@@ -116,7 +116,6 @@ function MedicalCenterSearch({
           sx={{ width: "75%", bgcolor: "#ffffff" }}
           renderInput={(params) => <TextField {...params} label={t("centerSelection")} />}
           onChange={handleMedicalCenterSelect}
-          
         />
         <IconButton size="large" edge={"end"} onClick={handleMedicalCenterSubmit}>
           <AddIcon fontSize={"inherit"} sx={{ color: "#007088" }} />

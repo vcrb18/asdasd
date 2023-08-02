@@ -44,6 +44,7 @@ function MedicalCenters() {
   let hasTimerChanged = false;
 
   const [activeTimer, setActiveTimer] = useState<boolean>(false)
+  const [timeError, setTimeError] = useState<boolean>(false);
   const [amountOfTimeActive, setAmountOfTimeActive] = useState<number>(0);
   const [activeMedicalCenters, setActiveMedicalCenter] = useState<
     MedicalCenter[]
@@ -64,7 +65,9 @@ function MedicalCenters() {
 
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
     if (!medicalCentersToAdd.includes(newMedicalCenter)) {
-      setMedicalCentersToAdd([...medicalCentersToAdd, newMedicalCenter]);
+      const newMedicalCenters = [...medicalCentersToAdd, newMedicalCenter];
+      const medicalCentersOrder = newMedicalCenters.sort((a, b) => (a.legalName > b.legalName ? 1 : -1));
+      setMedicalCentersToAdd(medicalCentersOrder);
     }
   };
 
@@ -79,22 +82,32 @@ function MedicalCenters() {
   }
   
   const handleApplyButton = () => {
+    const isMedicalCenterRequired = medicalCentersToAdd.length === 0 && !activeTimer;
+    const isTimeRequired = amountOfTimeActive === 0 && !activeTimer;
+    if(isMedicalCenterRequired){
+      return;
+    }
+    if(isTimeRequired){
+      setTimeError(true);
+      return;
+    }
     const array = activeTimer ? activeMedicalCenters : medicalCentersToAdd ;
     const arrayIds: number[] = array.map(
       (medicalCenter) => medicalCenter.organizationId
-    );
-    const newTime = new Date();
-    newTime.setSeconds(newTime.getSeconds() + amountOfTimeActive*60);
-    postAIState(
-      activeTimer,
-      amountOfTimeActive,
-      arrayIds,
-      false
-    ).then((res) => {
-      setActiveTimer(!activeTimer);
-      setMedicalCentersToAdd([]);
-      restart(newTime);
-    });
+      );
+      const newTime = new Date();
+      newTime.setSeconds(newTime.getSeconds() + amountOfTimeActive*60);
+      postAIState(
+        activeTimer,
+        amountOfTimeActive,
+        arrayIds,
+        false
+        ).then((res) => {
+          setActiveTimer(!activeTimer);
+          setMedicalCentersToAdd([]);
+          restart(newTime);
+        });
+
   };
 
   useEffect(() => {
@@ -124,19 +137,20 @@ function MedicalCenters() {
           handleMedicalCentersToAdd={handleMedicalCentersToAdd}
           onNewMedicalCenter={handleMedicalCenterSelect}
         />
-          
+            
         <TimerBox
           amountOfTimeActive={amountOfTimeActive}
           onAmountOfTimeActiveChange={setAmountOfTimeActive}
+          setTimeError={setTimeError}
+          timeError={timeError}
         />
-
-
+        
         <MedicalCenterList
-        activeMedicalCenters={activeMedicalCenters}
-        medicalCentersToAdd={medicalCentersToAdd}
-        timeActiveLeft={[minutes, seconds]}
-        handleDeleteClick={handleDeleteClick}
-      />
+          activeMedicalCenters={activeMedicalCenters}
+          medicalCentersToAdd={medicalCentersToAdd}
+          timeActiveLeft={[minutes, seconds]}
+          handleDeleteClick={handleDeleteClick}
+        />
         
         <Button
           sx={{
@@ -160,7 +174,7 @@ function MedicalCenters() {
           variant="contained"
           onClick={handleApplyButton}
         >
-          <Typography color={"#ffffff"}>{activeTimer ? "Desactivar IA" : "Activar IA"}</Typography>
+          <Typography color={"#ffffff"}>{activeTimer ? t("deactivateAI") : t("activateAI")}</Typography>
         </Button>
 
       </Grid>

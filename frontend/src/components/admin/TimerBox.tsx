@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
 } from "@mui/material";
 
 import { timeSelect } from "../../utils/AdminViewConst";
@@ -16,29 +17,46 @@ import AdminBox from "./AdminBox";
 interface TimerBoxProps {
   amountOfTimeActive: number;
   onAmountOfTimeActiveChange: (time: number) => void;
+  setTimeError: (timeError: boolean) => void;
+  timeError: boolean;
 }
 
 function TimerBox({
   amountOfTimeActive,
   onAmountOfTimeActiveChange,
+  setTimeError,
+  timeError,
 }: TimerBoxProps) {
   const { t } = useTranslation();
   
   const handleAmountOfTimeActiveChange = (event: SelectChangeEvent<number>) => {
     onAmountOfTimeActiveChange(event.target.value as number);
+    setTimeError(false);
   };
 
   const getTimerSelect = (index: number, value: number) => {
-    if (value === 1) {
+    if (value === 0) {
+      return (
+        <MenuItem disabled key={index} value={value}>
+          <Typography>
+            {t("selectTime")}
+          </Typography>
+        </MenuItem>
+      );
+    } else if (value === 1) {
       return (
         <MenuItem key={index} value={value}>
-          {value} {t("minute")}
+          <Typography>
+            {value} {t("minute")}
+          </Typography>
         </MenuItem>
       );
     } else {
       return (
         <MenuItem key={index} value={value}>
-          {value} {t("minutes")}
+          <Typography>
+            {value} {t("minutes")}
+          </Typography>
         </MenuItem>
       );
     }
@@ -63,7 +81,7 @@ function TimerBox({
           <Select
             value={amountOfTimeActive}
             onChange={handleAmountOfTimeActiveChange}
-            sx={{ width: "92%", bgcolor: "#fff" }}
+            sx={{ width: "92%", bgcolor: timeError ? "#DE8989" : "#fff"}}
           >
             
             {timeSelect.map((value, index) => {

@@ -1,5 +1,5 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import AdminBox from "./AdminBox";
 import { postExamIdAI } from "../../service/user.service";
@@ -10,14 +10,22 @@ function IdAIApplication() {
   const navigate: NavigateFunction = useNavigate();
   const { t } = useTranslation();
 
-  const [examId, setExamId] = React.useState<string>("");
+  const [examId, setExamId] = useState<string>("");
+  const [examIdError, setExamIdError] = useState<boolean>(false);
 
 
   const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExamIdError(false);
     setExamId(event.target.value);
   };
 
   const handleIdSubmit = () => {
+    const isExamIdRequired = examId == "";
+    if(isExamIdRequired){
+      setExamIdError(true);
+      return;
+    }
+      
     postExamIdAI(examId);
     navigate(`/examsview/${examId}`);
   };
@@ -47,7 +55,7 @@ function IdAIApplication() {
             variant="outlined"
             size="medium"
             onChange={handleIdChange}
-            sx={{ width: "90%", bgcolor: "#ffffff" }}
+            sx={{ width: "90%", bgcolor: examIdError ? "#DE8989" : "#ffffff" }}
           />
         </Grid>
         <Grid
@@ -80,7 +88,4 @@ function IdAIApplication() {
   );
 }
 export default IdAIApplication;
-function setExamIdToApply(examId: string) {
-  throw new Error("Function not implemented.");
-}
 
