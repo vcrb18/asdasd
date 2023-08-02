@@ -17,6 +17,7 @@ import {
   postMarkersSistemed2,
   DiagnosticSistemed2, postDiagnosticsSistemed2, getRejectedPrediction
 } from "../../service/user.service";
+import { type ExamMetadata } from "../../utils/MetadataTransforms";
 import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
@@ -56,33 +57,6 @@ export interface ExamData {
   rejectionId: number | null;
   rejectedDerivation: string | null;
   accuracy: number;
-}
-
-export interface Background {
-  id: number;
-  name: string;
-}
-export interface Medication {
-  id: number;
-  name: string;
-  dose: number;
-}
-
-export interface Symptom {
-  id: number;
-  name: string;
-  days: number;
-  hours: number;
-}
-
-
-export interface ExamMetadata {
-  patientId: number;
-  birthday: string;
-  gender: string;
-  backgrounds: Background[];
-  medications: Medication[];
-  symptoms: Symptom[];
 }
 
 export interface RejectionReason {
@@ -321,7 +295,10 @@ const ExamsView: React.FC<ExamsViewProps> = ({
           }),
           symptoms: Object.entries(response.data.Symptoms).map(([key, value]: [string, any]) => {
             return { id: value.ID, name: value.NAME, days: value.DAYS, hours: value.HOURS };
-          })
+          }),
+          identifier: response.data.Identifier,
+          name: response.data.Name,
+          lastName: response.data.LastName,
         });
       }
     });
