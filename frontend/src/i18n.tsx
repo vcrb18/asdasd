@@ -310,6 +310,7 @@ const resources = {
       moreThan: "More than ",
       restrictions: "Restrictions",
       responseTime: "Response time",
+      withoutRestrictions: "Without restrictions",
     },
   },
   es: {
@@ -619,6 +620,7 @@ const resources = {
       moreThan: "Mayor a ",
       restrictions: "Restricciones",
       responseTime: "Tiempo de respuesta",
+      withoutRestrictions: "Sin restricción",
     },
   },
 };

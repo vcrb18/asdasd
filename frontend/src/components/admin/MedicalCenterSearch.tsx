@@ -26,15 +26,11 @@ import { timeRestrictionSelect} from "../../utils/AdminViewConst";
 
 interface MedicalCenterSearchProps {
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
-  onSelectAllCenters: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  medicalCentersToAdd: MedicalCenter[];
   handleMedicalCentersToAdd: (medicalCenters: MedicalCenter[]) => void;
 }
 
 function MedicalCenterSearch({
   onNewMedicalCenter,
-  onSelectAllCenters,
-  medicalCentersToAdd,
   handleMedicalCentersToAdd
 }: MedicalCenterSearchProps) {
   const { t } = useTranslation();
@@ -64,15 +60,8 @@ function MedicalCenterSearch({
       onNewMedicalCenter(medicalCenterToAdd);
     }
   };
-  const handleMedicalCenterSelect = (
-    event: any,
-    newMedicalCenter: MedicalCenter | null
-  ) => {
+  const handleMedicalCenterSelect = (event: any, newMedicalCenter: MedicalCenter | null) => {
     setMedicalCenterToAdd(newMedicalCenter as MedicalCenter);
-  };
-
-  const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onSelectAllCenters(event);
   };
 
   const handleActiveAllMedicalCenters = () => {
@@ -85,11 +74,19 @@ function MedicalCenterSearch({
   }
 
   const getTimerSelect = (index: number, value: number) => {
+    if (value == 0){
+      return (
+        <MenuItem key={index} value={value}>
+          {t("withoutRestrictions")}
+        </MenuItem>
+      );
+    } else {
       return (
         <MenuItem key={index} value={value}>
           {t("moreThan")} {value} {t("minutes")}
         </MenuItem>
       );
+    }
   };
 
   return (

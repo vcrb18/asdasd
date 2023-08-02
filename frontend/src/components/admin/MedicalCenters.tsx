@@ -19,18 +19,6 @@ export interface MedicalCenter {
   responseTime: number;
 }
 
-interface MedicalCenterProps {
-  activeMedicalCenters: MedicalCenter[];
-  medicalCentersToAdd: MedicalCenter[];
-  timeActiveLeft: number[];
-  areMedicalCentersActive: boolean;
-  onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
-  onSelectAllCenters: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDeleteClick: (id: number) => void;
-  areAllMedicalCentersSelected: boolean;
-  areAllMedicalCentersActived: boolean;
-}
-
 function MedicalCenters() {
 
   const navigate: NavigateFunction = useNavigate();
@@ -64,16 +52,14 @@ function MedicalCenters() {
     MedicalCenter[]
   >([]);
 
-  const [oldMedicalCenters, setOldMedicalCenters] = useState<
-    MedicalCenter[]
-  >([]);
-
   const handleModifyParameters = () => {
     navigate("/admin/modifyparams");
   };
 
   const handleTimeExpire = () => {
     setActiveMedicalCenter([]);
+    setMedicalCentersToAdd([]);
+    setActiveTimer(false);
   };
 
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
@@ -88,8 +74,8 @@ function MedicalCenters() {
     );
   };
 
-  const handleMedicalCentersToAdd = (array: MedicalCenter[]): void => {
-    setMedicalCentersToAdd(array);
+  const handleMedicalCentersToAdd = (medicalCenters: MedicalCenter[]): void => {
+    setMedicalCentersToAdd(medicalCenters);
   }
   
   const handleApplyButton = () => {
@@ -106,9 +92,8 @@ function MedicalCenters() {
       false
     ).then((res) => {
       setActiveTimer(!activeTimer);
-      setOldMedicalCenters(array);
       setMedicalCentersToAdd([]);
-      restart(newTime)
+      restart(newTime);
     });
   };
 
@@ -136,13 +121,10 @@ function MedicalCenters() {
         <AdminBox text="medicalCenter" />
         
         <MedicalCenterSearch
-          medicalCentersToAdd={medicalCentersToAdd}
           handleMedicalCentersToAdd={handleMedicalCentersToAdd}
           onNewMedicalCenter={handleMedicalCenterSelect}
-          onSelectAllCenters={() => {}}
         />
           
-
         <TimerBox
           amountOfTimeActive={amountOfTimeActive}
           onAmountOfTimeActiveChange={setAmountOfTimeActive}

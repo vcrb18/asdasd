@@ -24,7 +24,7 @@ function MedicalCenterList({
     borderColor: "#007088",
     width:"80%",
     paddingLeft: "1%",
-    maxHeight: 100,
+    maxHeight: 60,
     borderRadius: 3,
     display: "flex",
     justifyContent: "space-between",
