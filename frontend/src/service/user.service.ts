@@ -55,7 +55,7 @@ export const postExamIdAI = async (examId: string) => {
 }
 
 export const postAIState = async ( turnOn: boolean, timeActive: number, organizationIds: number[], allOrganizations: boolean) => {
-  if (turnOn){
+  if (!turnOn){
     return axios.post(` /ai_analysis/activate`, { 
       withCredentials: true,
       time: timeActive,
