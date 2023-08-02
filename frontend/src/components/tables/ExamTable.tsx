@@ -23,7 +23,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { getExams, getExamsByFilter, getExamsById, getExamsCount, useExams } from "../../service/user.service";
-import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps } from "../../utils/ExamTableConst";
+import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps, ExamTableResponse } from "../../utils/ExamTableConst";
 import { getComparator, stableSort } from "../../utils/ExamTableFunctions";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -211,28 +211,11 @@ const getUrgency = (urgency: number): JSX.Element => (
     setMaxPage(-1);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleRowsResponse = (response: AxiosResponse<any, any>, newExams: ExamData[]) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    response.data.rows.map((examData: any) => {
-      newExams.push({
-        examId: examData.examId,
-        patientId: examData.patientId,
-        createdAt: examData.createdAt,
-        deadline: examData.createdAt,
-        urgency: examData.urgency,
-        remainingTime: examData.remainingTime,
-        operatorReview: examData.operatorReview,
-        results: examData.resultados,
-        accepted: examData.accepted,
-        operatorAccept: examData.operatorAccept,
-        locked: examData.locked,
-        lockedBy: examData.lockedBy,
-        organizationLegalName: examData.organizationLegalName,
-      });
-    });
-};
-
+  const handleRowsResponse = (response: AxiosResponse<ExamTableResponse,any>, newExams: ExamData[]): void => {
+    response.data.rows.forEach((examData: ExamData) => {
+      newExams.push(examData);
+    });  
+  }
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
@@ -411,12 +394,7 @@ const getUrgency = (urgency: number): JSX.Element => (
               {row.examId}
             </Typography>
           </StyledTableCell>
-          <StyledTableCell align="center">
-            <Typography fontSize={"100%"} fontWeight={"bold"}>
-              {row.patientId}
-            </Typography>
-          </StyledTableCell>
-          <StyledTableCell align="left" sx={{maxWidth:"15%"}} >
+          <StyledTableCell align="left"  >
             {row.organizationLegalName}
           </StyledTableCell> 
           <StyledTableCell align="center">
@@ -494,7 +472,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("patient")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {row.patientId}
                       </Typography>
@@ -504,17 +482,25 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("folio")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {row.examId}
                       </Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("medicalCenter")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
+                      {row.organizationLegalName}
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {t("date")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       {formatDate(row.createdAt)}
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
@@ -522,7 +508,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("state")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       {getStatus(row.operatorAccept ?? row.accepted)}
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>

@@ -4,7 +4,6 @@ export interface Column {
   label: string;
   align?: "center" | "left" | "right";
   minWidth?: string;
-  maxWidth?:string;
   format?:
     | ((value: number) => string)
     | ((value: boolean) => string)
@@ -18,12 +17,10 @@ export interface RowProps {
   
   
   export const columns: readonly Column[] = [
-    { id: "folio", label: "Folio", align: "center" },
-    {
-      id: "patient",
-      label: "patient",
-      align: "center",
-    },
+    { 
+      id: "folio",
+      label: "Folio",
+      align: "center" },
     {
       id: "medicalCenter",
       label: "medicalCenter",
@@ -92,7 +89,6 @@ export const mobileColumns: readonly Column[] =[
       label: "timeLeft",
       align: "center",
     },
-    
   ]
   
   // Chekear los typos de cada una de las categorias
@@ -140,3 +136,8 @@ export interface ExamHeadTableProps {
     order: Order;
     orderBy: string | number | boolean;
   }
+
+export interface ExamTableResponse {
+  rows: [],
+  count: number
+}
