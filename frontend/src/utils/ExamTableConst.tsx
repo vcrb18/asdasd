@@ -1,14 +1,14 @@
 
 export interface Column {
-    id: "folio"| "timeLeft" | "patient" | "date" | "state" | "urgency" | "review"| "results";
-    label: string;
-    align?: "center" | "left" | "right";
-    minWidth?: string;
-    format?:
-      | ((value: number) => string)
-      | ((value: boolean) => string)
-      | ((value: string) => string);
-  }
+  id: "folio"| "timeLeft" | "patient" | "date" | "state" | "urgency" | "review"| "results" | "medicalCenter";
+  label: string;
+  align?: "center" | "left" | "right";
+  minWidth?: string;
+  format?:
+    | ((value: number) => string)
+    | ((value: boolean) => string)
+    | ((value: string) => string);
+}
   
 export interface RowProps {
     row: ExamData;
@@ -16,11 +16,14 @@ export interface RowProps {
   }
   
   
-export const columns: readonly Column[] = [
-    { id: "folio", label: "Folio", minWidth: "30%", align: "center" },
+  export const columns: readonly Column[] = [
+    { 
+      id: "folio",
+      label: "Folio",
+      align: "center" },
     {
-      id: "patient",
-      label: "patient",
+      id: "medicalCenter",
+      label: "medicalCenter",
       align: "center",
     },
     {
@@ -35,7 +38,6 @@ export const columns: readonly Column[] = [
     {
       id: "timeLeft",
       label: "timeLeft",
-      minWidth: "20%",
       align: "center",
       format: (value: string) => {
         return value.replace("T", " ");
@@ -87,7 +89,6 @@ export const mobileColumns: readonly Column[] =[
       label: "timeLeft",
       align: "center",
     },
-    
   ]
   
   // Chekear los typos de cada una de las categorias
@@ -105,6 +106,7 @@ export interface ExamData {
     operatorAccept: boolean | null;
     locked: boolean | null;
     lockedBy: string;
+    organizationLegalName: string;
   }
   
 export type Order = "asc" | "desc"
@@ -134,3 +136,8 @@ export interface ExamHeadTableProps {
     order: Order;
     orderBy: string | number | boolean;
   }
+
+export interface ExamTableResponse {
+  rows: [],
+  count: number
+}

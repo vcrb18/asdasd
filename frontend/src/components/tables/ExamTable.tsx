@@ -23,7 +23,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { getExams, getExamsByFilter, getExamsById, getExamsCount, useExams } from "../../service/user.service";
-import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps } from "../../utils/ExamTableConst";
+import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps, ExamTableResponse } from "../../utils/ExamTableConst";
 import { getComparator, stableSort } from "../../utils/ExamTableFunctions";
 import { visuallyHidden } from "@mui/utils";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -31,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 
 
 
@@ -210,8 +211,11 @@ const getUrgency = (urgency: number): JSX.Element => (
     setMaxPage(-1);
   };
 
-
-
+  const handleRowsResponse = (response: AxiosResponse<ExamTableResponse,any>, newExams: ExamData[]): void => {
+    response.data.rows.forEach((examData: ExamData) => {
+      newExams.push(examData);
+    });  
+  }
   useEffect(()=> {
     setIsLoading(true);
     let shouldLoad = false
@@ -225,24 +229,10 @@ const getUrgency = (urgency: number): JSX.Element => (
       if (useFilter) {
         if (useReviewFilter && useStateFilter){
           getExamsByFilter(page, 11, filterStates.accepted, filterReview.reviewed).then((response) => {
+            console.log(response.data);
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-              });
-            });
+            handleRowsResponse(response, newExams)
             if (maxRows == 0 ){
               throw new Error("No se encontraron exámenes")
             } 
@@ -281,22 +271,7 @@ const getUrgency = (urgency: number): JSX.Element => (
         getExamsByFilter(page, 11, filterStates.accepted, null).then((response) => {
           const newExams: ExamData[] = [];
           setMaxRows(response.data.count)
-          response.data.rows.map((examData: any) => {
-            newExams.push({
-              examId: examData.examId,
-            patientId: examData.patientId,
-            createdAt: examData.createdAt,
-            deadline: examData.createdAt,
-            urgency: examData.urgency,
-            remainingTime: examData.remainingTime,
-            operatorReview: examData.operatorReview,
-            results: examData.resultados,
-            accepted: examData.accepted,
-            operatorAccept: examData.operatorAccept,
-            locked: examData.locked,
-            lockedBy: examData.lockedBy,
-            });
-          });
+          handleRowsResponse(response, newExams)
           if (filterStates == oldFilterState){
             const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
               setReloadPage(false)
@@ -319,22 +294,7 @@ const getUrgency = (urgency: number): JSX.Element => (
           getExamsByFilter(page, 11, null, filterReview.reviewed).then((response) => {
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-              });
-            });
+            handleRowsResponse(response, newExams)
             if (filterReview === oldFilterReview){
               const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
               setFilteredRows([...filteredRows, ...newExamsFiltered]);
@@ -359,22 +319,7 @@ const getUrgency = (urgency: number): JSX.Element => (
           getExamsById(filterId, page, 11).then((response) => {
             const newExams: ExamData[] = [];
             setMaxRows(response.data.count)
-            response.data.rows.map((examData: any) => {
-              newExams.push({
-                examId: examData.examId,
-                patientId: examData.patientId,
-                createdAt: examData.createdAt,
-                deadline: examData.createdAt,
-                urgency: examData.urgency,
-                remainingTime: examData.remainingTime,
-                operatorReview: examData.operatorReview,
-                results: examData.resultados,
-                accepted: examData.accepted,
-                operatorAccept: examData.operatorAccept,
-                locked: examData.locked,
-                lockedBy: examData.lockedBy,
-            });
-          });
+            handleRowsResponse(response, newExams)
             if (filterId == oldFolio){
               setOldFolio(filterId)
               setReloadPage(false)
@@ -400,24 +345,8 @@ const getUrgency = (urgency: number): JSX.Element => (
       getExams(page, 11).then((response) => {
         const newExams: ExamData[] = [];
         setMaxRows(response.data.count)
-        response.data.rows.map((examData: any) => {
-          newExams.push({
-            examId: examData.examId,
-            patientId: examData.patientId,
-            createdAt: examData.createdAt,
-            deadline: examData.createdAt,
-            urgency: examData.urgency,
-            remainingTime: examData.remainingTime,
-            operatorReview: examData.operatorReview,
-            results: examData.resultados,
-            accepted: examData.accepted,
-            operatorAccept: examData.operatorAccept,
-            locked: examData.locked,
-            lockedBy: examData.lockedBy,
-          });
-        });
-
-          const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
+        handleRowsResponse(response, newExams)
+        const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
           setRows([...rows, ...newExamsFiltered]);
           return Promise
         }).catch((error) => {
@@ -465,11 +394,9 @@ const getUrgency = (urgency: number): JSX.Element => (
               {row.examId}
             </Typography>
           </StyledTableCell>
-          <StyledTableCell align="center">
-            <Typography fontSize={"100%"} fontWeight={"bold"}>
-              {row.patientId}
-            </Typography>
-          </StyledTableCell>
+          <StyledTableCell align="left"  >
+            {row.organizationLegalName}
+          </StyledTableCell> 
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
@@ -545,7 +472,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("patient")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {row.patientId}
                       </Typography>
@@ -555,17 +482,25 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("folio")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {row.examId}
                       </Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
+                        {t("medicalCenter")}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
+                      {row.organizationLegalName}
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                      <Typography fontSize={"100%"} fontWeight={"bold"}>
                         {t("date")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} lg={6}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       {formatDate(row.createdAt)}
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
@@ -573,7 +508,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                         {t("state")}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
+                    <Grid item xs={4} sm={4} md={4} lg={4}>
                       {getStatus(row.operatorAccept ?? row.accepted)}
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
