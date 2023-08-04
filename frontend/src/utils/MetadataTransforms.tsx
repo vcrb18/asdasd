@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Patient } from "./ExamTableConst";
 
 export interface Background {
   id: number;
@@ -28,26 +29,15 @@ export interface ExamMetadata {
   lastName: string;
 }
 
-const remapGender = (gender: string | undefined): string => {
-  switch (gender) {
-    case "HOMBRE":
-      return "male";
-    case "MUJER":
-      return "female";
-    default:
-      return "";
-  }
-};
-
 const getAge = (birthday: string | undefined): string => {
   if (birthday === undefined) return '';
 
   const splittedDate = birthday.split('-');
   if (splittedDate.length != 3) return '';
 
-  const day = parseInt(splittedDate[0]);
+  const year = parseInt(splittedDate[0]);
   const month = parseInt(splittedDate[1]);
-  const year = parseInt(splittedDate[2]);
+  const day = parseInt(splittedDate[2]);
 
   const currentDate = new Date();
   let age = currentDate.getFullYear() - year;
@@ -61,16 +51,16 @@ const getAge = (birthday: string | undefined): string => {
   return age.toString();
 };
 
-export const getFullNameToDisplay = (examMetadata: ExamMetadata | null): string => {
+export const getFullNameToDisplay = (examMetadata: Patient | undefined): string => {
   if (!examMetadata) return '';
   return `${examMetadata?.name} ${examMetadata?.lastName}`;
 }
 
-export const getMetadataToDisplay = (examMetadata: ExamMetadata | null): string => {
+export const getMetadataToDisplay = (examMetadata: Patient | undefined): string => {
   const { t } = useTranslation();
   if (!examMetadata) return '';
 
-  const gender = remapGender(examMetadata?.gender);
-  const age = getAge(examMetadata?.birthday);
+  const gender = examMetadata?.gender;
+  const age = getAge(examMetadata?.birth);
   return `${t(gender)}, ${age} ${t("yearsOld")}`;
 }

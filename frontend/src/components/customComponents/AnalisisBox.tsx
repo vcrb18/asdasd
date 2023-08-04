@@ -2,7 +2,6 @@ import React, { useState, Dispatch, SetStateAction } from "react";
 import { Typography, Grid, Button, createTheme, ThemeProvider, Autocomplete, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Derivation, derivations, type ExamData } from "../views/ExamsView";
-import { type ExamMetadata } from "../../utils/MetadataTransforms";
 import { RejectionReason, rejectionReasons} from "../views/ExamsView";
 import { markExamIdAsAccepted, markExamIdAsRejected } from "../../service/user.service";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
@@ -11,7 +10,6 @@ import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/Metadata
 interface AnalisisProps {
     examId: number;
     analisisData: ExamData | null;
-    examMetadata: ExamMetadata | null;
     isLoading: boolean;
     setAccepted: Dispatch<boolean>;
     rejectionReason: RejectionReason | undefined;
@@ -31,7 +29,7 @@ function stateColorSwitcher(value: boolean | undefined): string {
   }
 }
 
-const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetadata, isLoading, setAccepted, rejectionReason, setRejectionReason, derivation, setDerivation }): JSX.Element => {
+const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, isLoading, setAccepted, rejectionReason, setRejectionReason, derivation, setDerivation }): JSX.Element => {
   const { t } = useTranslation();
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -209,8 +207,8 @@ const AnalisisBox: React.FC<AnalisisProps> = ({ examId, analisisData, examMetada
           </Grid>
           <Grid item xs={7} sm={7} md={7} lg={7}>
             <Typography fontSize={"65%"} fontWeight={"bold"}>
-              {getFullNameToDisplay(examMetadata)} <br />
-              {getMetadataToDisplay(examMetadata)}
+              {getFullNameToDisplay(analisisData?.patient)} <br />
+              {getMetadataToDisplay(analisisData?.patient)}
             </Typography>
           </Grid>
         </Grid>
