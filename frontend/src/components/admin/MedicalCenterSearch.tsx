@@ -27,11 +27,15 @@ import { timeRestrictionSelect} from "../../utils/AdminViewConst";
 interface MedicalCenterSearchProps {
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
   handleMedicalCentersToAdd: (medicalCenters: MedicalCenter[]) => void;
+  setMedicalCenterError: (error: boolean) => void;
+  medicalCenterError: boolean;
 }
 
 function MedicalCenterSearch({
   onNewMedicalCenter,
-  handleMedicalCentersToAdd
+  handleMedicalCentersToAdd, 
+  setMedicalCenterError,
+  medicalCenterError,
 }: MedicalCenterSearchProps) {
   const { t } = useTranslation();
   const [medicalCentersForAI, setMedicalCentersForAI] = useState<
@@ -53,6 +57,7 @@ function MedicalCenterSearch({
 
   const handleMedicalCenterSubmit = (): void => {
     if (medicalCenterToAdd) {
+      setMedicalCenterError(false);
       onNewMedicalCenter(medicalCenterToAdd);
     }
   };
@@ -113,7 +118,7 @@ function MedicalCenterSearch({
         <Autocomplete
           getOptionLabel={(option) => option.legalName}
           options={medicalCentersForAI}
-          sx={{ width: "75%", bgcolor: "#ffffff" }}
+          sx={{ width: "75%", bgcolor: medicalCenterError ? "#F3C7C8" : "#fff" }}
           renderInput={(params) => <TextField {...params} label={t("centerSelection")} />}
           onChange={handleMedicalCenterSelect}
         />

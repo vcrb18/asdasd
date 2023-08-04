@@ -81,7 +81,7 @@ function TimerBox({
           <Select
             value={amountOfTimeActive}
             onChange={handleAmountOfTimeActiveChange}
-            sx={{ width: "92%", bgcolor: timeError ? "#DE8989" : "#fff"}}
+            sx={{ width: "92%", bgcolor: timeError ? "#F3C7C8" : "#fff"}}
           >
             
             {timeSelect.map((value, index) => {
