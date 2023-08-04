@@ -26,6 +26,7 @@ import DiagnosisComponent from "../customComponents/DiagnosisComponent";
 import html2canvas from "html2canvas";
 import ScreenshotComponent from "../customComponents/ScreenshotComponent";
 import ScreenshotModal from "../customComponents/screenshotModal";
+import { Patient } from "../../utils/ExamTableConst";
 
 interface ExamsViewProps {
   // examId: number ;
@@ -45,18 +46,17 @@ interface PredictedValuesData {
 }
 
 export interface ExamData {
-  examId: number;
-  patientId: string | null;
-  createdAt: string;
-  status: boolean;
   accepted: boolean;
-  urgency: number;
-  results: string;
-  operatorReview: boolean;
-  operatorAccept: boolean | null;
-  rejectionId: number | null;
-  rejectedDerivation: string | null;
   accuracy: number;
+  createdAt: string;
+  examId: number;
+  operatorAccept: boolean | null;
+  operatorReview: boolean;
+  organizationLegalName: string;
+  patient: Patient;
+  rejectedDerivation: string | null;
+  rejectionId: number | null;
+  urgency: number;
 }
 
 export interface RejectionReason {
@@ -308,20 +308,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     setIsLoadingExamData(true);
     getExam(examIdNumber).then(
       (response) => {
-        setExamData({
-          examId: response.data.examId,
-          patientId: response.data.patientId,
-          createdAt: response.data.createdAt,
-          status: response.data.estado,
-          accepted: response.data.accepted,
-          urgency: response.data.urgencia,
-          results: response.data.resultados,
-          operatorReview: response.data.operatorReview,
-          operatorAccept: response.data.operatorAccept,
-          rejectionId: response.data.rejectionId,
-          rejectedDerivation: response.data.rejectedDerivation,
-          accuracy: response.data.accuracy
-        });
+        setExamData(response.data);
         setValidated(response.data?.operatorReview);
         let newRejectionReason = rejectionReasons.find(object => object.id == response.data.rejectionId);
         setRejectionReason(newRejectionReason);
@@ -665,7 +652,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             >
                 <AnalisisBox examId={examIdNumber}
                              analisisData={examData}
-                             examMetadata={examMetadata}
                              isLoading={isLoadingExamData}
                              setAccepted={setAcceptedExam}
                              rejectionReason={rejectionReason}
@@ -780,7 +766,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
             >
                 <AnalisisBox examId={examIdNumber}
                              analisisData={examData}
-                             examMetadata={examMetadata}
                              isLoading={isLoadingExamData}
                              setAccepted={setAcceptedExam}
                              rejectionReason={rejectionReason}
