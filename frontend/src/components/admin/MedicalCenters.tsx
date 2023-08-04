@@ -45,6 +45,7 @@ function MedicalCenters() {
 
   const [activeTimer, setActiveTimer] = useState<boolean>(false)
   const [timeError, setTimeError] = useState<boolean>(false);
+  const [medicalCenterError, setMedicationCenterError] = useState<boolean>(false)
   const [amountOfTimeActive, setAmountOfTimeActive] = useState<number>(0);
   const [activeMedicalCenters, setActiveMedicalCenter] = useState<
     MedicalCenter[]
@@ -85,6 +86,7 @@ function MedicalCenters() {
     const isMedicalCenterRequired = medicalCentersToAdd.length === 0 && !activeTimer;
     const isTimeRequired = amountOfTimeActive === 0 && !activeTimer;
     if(isMedicalCenterRequired){
+      setMedicationCenterError(true)
       return;
     }
     if(isTimeRequired){
@@ -107,8 +109,11 @@ function MedicalCenters() {
           setMedicalCentersToAdd([]);
           restart(newTime);
         });
-
   };
+
+  const handleMedicalCenterError = (error: boolean) => { 
+    setMedicationCenterError(error);
+  }
 
   useEffect(() => {
     getAIActiveOrganizations().then((medicalCenters) => {
@@ -136,6 +141,8 @@ function MedicalCenters() {
         <MedicalCenterSearch
           handleMedicalCentersToAdd={handleMedicalCentersToAdd}
           onNewMedicalCenter={handleMedicalCenterSelect}
+          setMedicalCenterError={handleMedicalCenterError}
+          medicalCenterError={medicalCenterError}
         />
             
         <TimerBox
