@@ -27,6 +27,11 @@ export interface RowProps {
       align: "center",
     },
     {
+      id: "patient",
+      label: "patient",
+      align: "center",
+    },
+    {
       id: "date",
       label: "date",
       align: "center",
@@ -91,11 +96,19 @@ export const mobileColumns: readonly Column[] =[
     },
   ]
   
-  // Chekear los typos de cada una de las categorias
-  // depediendo de como llegan desde la base de datos
+
+export interface Patient {
+  patientId: number,
+  birth: string,
+  gender: string,
+  identifier: string,
+  name: string,
+  lastName: string
+}
+
 export interface ExamData {
     examId: number;
-    patientId: string | null;
+    patient: Patient;
     createdAt: string;
     deadline: string;
     urgency: number;

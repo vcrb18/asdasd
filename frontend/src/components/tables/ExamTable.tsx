@@ -397,6 +397,9 @@ const getUrgency = (urgency: number): JSX.Element => (
           <StyledTableCell align="left"  >
             {row.organizationLegalName}
           </StyledTableCell> 
+          <StyledTableCell align="left"  >
+            {row.patient.name} {row.patient.lastName}
+          </StyledTableCell> 
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
           </StyledTableCell> 
@@ -474,7 +477,7 @@ const getUrgency = (urgency: number): JSX.Element => (
                     </Grid>
                     <Grid item xs={4} sm={4} md={4} lg={4}>
                       <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {row.patientId}
+                        {row.patient.name} {row.patient.lastName}
                       </Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={2} lg={2}>
