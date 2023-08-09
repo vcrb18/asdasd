@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { t } from "i18next";
 import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
 import Header from "../customComponents/Header";
@@ -6,9 +6,17 @@ import Footer from "../customComponents/Footer";
 import FiducialPointsTable from "../modifyParameters/fiducialPointsTable";
 import AcceptanceLevelTable from "../modifyParameters/acceptanceLevelTable";
 import DiagnosticsTable from "../modifyParameters/diagnosticsTable";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 
 function ModifyParametersView() {
+    
+    const navigate: NavigateFunction = useNavigate();
+
+    const handleGoBack = (): void => {
+
+        navigate("/admin");
+      };
 
   return (
     <>
@@ -29,6 +37,18 @@ function ModifyParametersView() {
         </Typography>
         
        <Grid container spacing={2}>
+            <Grid item xs={12} marginLeft={"5%"} width={"80%"} display={"flex"} justifyContent={"flex-start"}>
+                <Button 
+                    variant="contained" 
+                    onClick={handleGoBack}
+                    sx={{
+                        backgroundColor: "#007088",
+                        color: "#000000",
+                        width: "auto",
+                    }}>
+                    <Typography color={"#ffffff"}>{t("goBack")}</Typography>
+                </Button>
+            </Grid>
             <Grid item xs={6} borderRadius={4}>
                 <FiducialPointsTable/>
                 <AcceptanceLevelTable/>
