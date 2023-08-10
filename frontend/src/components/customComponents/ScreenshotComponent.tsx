@@ -41,7 +41,7 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
   const patientBackground = examMetadata?.backgrounds ? examMetadata?.backgrounds : dummyMetadata.backgrounds;
   const patientSymptoms = examMetadata?.symptoms ? examMetadata?.symptoms : dummyMetadata.symptoms;
   const patientMedications = examMetadata?.medications ? examMetadata?.medications : dummyMetadata.medications;
-  const patientInformation = examMetadata ? examMetadata : dummyMetadata;
+  const patientInformation = analisisData.patient ? analisisData.patient : dummyMetadata;
 
   function getPatientSymptomAsText(symptom: Symptom | undefined): string {
     if(!symptom) return("");
