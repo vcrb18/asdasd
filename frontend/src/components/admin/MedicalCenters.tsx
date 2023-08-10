@@ -111,6 +111,10 @@ function MedicalCenters() {
         });
   };
 
+  const handleCleanButton = () => { 
+    setMedicalCentersToAdd([]);
+  }
+
   const handleMedicalCenterError = (error: boolean) => { 
     setMedicationCenterError(error);
   }
@@ -171,6 +175,17 @@ function MedicalCenters() {
           onClick={handleModifyParameters}
         >
           <Typography color={"#ffffff"}>{t("modifyParams")}</Typography>
+        </Button>
+        <Button
+          sx={{
+            backgroundColor: "#007088",
+            color: "#000000",
+            width: "auto",
+          }}
+          variant="contained"
+          onClick={handleCleanButton}
+        >
+          <Typography color={"#ffffff"}>{t("cleanCenters")}</Typography>
         </Button>
         <Button
           sx={{

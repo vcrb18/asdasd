@@ -312,6 +312,7 @@ const resources = {
       restrictions: "Restrictions",
       responseTime: "Response time",
       withoutRestrictions: "Without restrictions",
+      cleanCenters: "Clean centers",
     },
   },
   es: {
@@ -623,6 +624,7 @@ const resources = {
       restrictions: "Restricciones",
       responseTime: "Tiempo de respuesta",
       withoutRestrictions: "Sin restricción",
+      cleanCenters: "Limpiar centros",
     },
   },
 };
