@@ -59,8 +59,8 @@ function MedicalCenters() {
   };
 
   const handleTimeExpire = () => {
+    setMedicalCentersToAdd(activeMedicalCenters);
     setActiveMedicalCenter([]);
-    setMedicalCentersToAdd([]);
     setActiveTimer(false);
   };
 
@@ -105,9 +105,16 @@ function MedicalCenters() {
         arrayIds,
         false
         ).then((res) => {
-          setActiveTimer(!activeTimer);
-          setMedicalCentersToAdd([]);
-          restart(newTime);
+          if(activeTimer){
+            setActiveTimer(false);
+            setMedicalCentersToAdd(activeMedicalCenters);
+            setActiveMedicalCenter([]);
+          } else{
+            setActiveTimer(true);
+            setMedicalCentersToAdd([]);
+            setActiveMedicalCenter(medicalCentersToAdd);
+            restart(newTime);
+          }
         });
   };
 
@@ -126,12 +133,15 @@ function MedicalCenters() {
         timeToRender.setSeconds(
           timeToRender.getSeconds() + medicalCenters.data.timeRemainingInSeconds
         );
-        setActiveTimer(!isEmptyArray(medicalCenters.data.organizations));
-        
-        setActiveMedicalCenter(medicalCenters.data.organizations);
+        const areActiveMedicalCenters = !isEmptyArray(medicalCenters.data.organizations)
+        if(areActiveMedicalCenters){
+          setActiveTimer(true);
+          setActiveMedicalCenter(medicalCenters.data.organizations);
+          setMedicalCentersToAdd([]);
+        }
       }
     });
-  }, [activeTimer]);
+  }, []);
 
   return (
     <>
@@ -140,7 +150,7 @@ function MedicalCenters() {
         display={"flex"}
         justifyContent={"space-between"}
       > 
-        
+            
         <TimerBox
           amountOfTimeActive={amountOfTimeActive}
           onAmountOfTimeActiveChange={setAmountOfTimeActive}
@@ -155,6 +165,7 @@ function MedicalCenters() {
           onNewMedicalCenter={handleMedicalCenterSelect}
           setMedicalCenterError={handleMedicalCenterError}
           medicalCenterError={medicalCenterError}
+          activeTimer={activeTimer}
         />
         
         <MedicalCenterList
