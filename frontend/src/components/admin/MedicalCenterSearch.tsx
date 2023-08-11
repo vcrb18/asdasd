@@ -58,7 +58,8 @@ function MedicalCenterSearch({
   };
 
   const handleMedicalCenterSubmit = (): void => {
-    if (medicalCenterToAdd && !activeTimer) {
+    const canAddMedicalCenter = medicalCenterToAdd && !activeTimer;
+    if (canAddMedicalCenter) {
       setMedicalCenterError(false);
       onNewMedicalCenter(medicalCenterToAdd);
     }
