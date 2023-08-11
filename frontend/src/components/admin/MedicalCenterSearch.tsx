@@ -29,6 +29,7 @@ interface MedicalCenterSearchProps {
   handleMedicalCentersToAdd: (medicalCenters: MedicalCenter[]) => void;
   setMedicalCenterError: (error: boolean) => void;
   medicalCenterError: boolean;
+  activeTimer: boolean
 }
 
 function MedicalCenterSearch({
@@ -36,6 +37,7 @@ function MedicalCenterSearch({
   handleMedicalCentersToAdd, 
   setMedicalCenterError,
   medicalCenterError,
+  activeTimer
 }: MedicalCenterSearchProps) {
   const { t } = useTranslation();
   const [medicalCentersForAI, setMedicalCentersForAI] = useState<
@@ -56,7 +58,7 @@ function MedicalCenterSearch({
   };
 
   const handleMedicalCenterSubmit = (): void => {
-    if (medicalCenterToAdd) {
+    if (medicalCenterToAdd && !activeTimer) {
       setMedicalCenterError(false);
       onNewMedicalCenter(medicalCenterToAdd);
     }
