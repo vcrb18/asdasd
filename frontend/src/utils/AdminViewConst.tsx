@@ -40,3 +40,9 @@ export const AdminViewBoxStyle = {
   paddingX: "2%",
   borderRadius: 4,
 }
+
+export interface MedicalCenter {
+  organizationId: number;
+  legalName: string;
+  responseTime: number;
+}

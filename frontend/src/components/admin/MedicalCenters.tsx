@@ -11,13 +11,8 @@ import { useTranslation } from "react-i18next";
 import { useTimer } from "react-timer-hook";
 import { useEffect, useState } from "react";
 import { getAIActiveOrganizations, postAIState } from "../../service/user.service";
+import { MedicalCenter } from "../../utils/AdminViewConst";
 
-
-export interface MedicalCenter {
-  organizationId: number;
-  legalName: string;
-  responseTime: number;
-}
 
 function MedicalCenters() {
 
@@ -43,7 +38,7 @@ function MedicalCenters() {
 
   let hasTimerChanged = false;
 
-  const [activeTimer, setActiveTimer] = useState<boolean>(false)
+  const [isAiActivated, setIsAiActivated] = useState<boolean>(false)
   const [timeError, setTimeError] = useState<boolean>(false);
   const [medicalCenterError, setMedicationCenterError] = useState<boolean>(false)
   const [amountOfTimeActive, setAmountOfTimeActive] = useState<number>(0);
@@ -54,6 +49,21 @@ function MedicalCenters() {
     MedicalCenter[]
   >([]);
 
+  const modifyStateOfAI = () => {
+    if(isAiActivated){
+      setIsAiActivated(false);
+      setMedicalCentersToAdd(activeMedicalCenters);
+      setActiveMedicalCenter([]);
+    } else{
+      setIsAiActivated(true);
+      setMedicalCentersToAdd([]);
+      setActiveMedicalCenter(medicalCentersToAdd);
+      const newTime = new Date();
+      newTime.setSeconds(newTime.getSeconds() + amountOfTimeActive*60);
+      restart(newTime);
+    }
+  };
+
   const handleModifyParameters = () => {
     navigate("/admin/modifyparams");
   };
@@ -61,7 +71,7 @@ function MedicalCenters() {
   const handleTimeExpire = () => {
     setMedicalCentersToAdd(activeMedicalCenters);
     setActiveMedicalCenter([]);
-    setActiveTimer(false);
+    setIsAiActivated(false);
   };
 
   const handleMedicalCenterSelect = (newMedicalCenter: MedicalCenter) => {
@@ -83,38 +93,27 @@ function MedicalCenters() {
   }
   
   const handleApplyButton = () => {
-    const isMedicalCenterRequired = medicalCentersToAdd.length === 0 && !activeTimer;
-    const isTimeRequired = amountOfTimeActive === 0 && !activeTimer;
+    const isMedicalCenterRequired = medicalCentersToAdd.length === 0 && !isAiActivated;
+    const isTimeRequired = amountOfTimeActive === 0 && !isAiActivated;
     if(isMedicalCenterRequired){
-      setMedicationCenterError(true)
+      setMedicationCenterError(true);
       return;
     }
     if(isTimeRequired){
       setTimeError(true);
       return;
     }
-    const array = activeTimer ? activeMedicalCenters : medicalCentersToAdd ;
-    const arrayIds: number[] = array.map(
+    const medicalCentersToPost = isAiActivated ? activeMedicalCenters : medicalCentersToAdd ;
+    const idsOfMedicalCentersToPost: number[] = medicalCentersToPost.map(
       (medicalCenter) => medicalCenter.organizationId
       );
-      const newTime = new Date();
-      newTime.setSeconds(newTime.getSeconds() + amountOfTimeActive*60);
       postAIState(
-        activeTimer,
+        isAiActivated,
         amountOfTimeActive,
-        arrayIds,
+        idsOfMedicalCentersToPost,
         false
         ).then((res) => {
-          if(activeTimer){
-            setActiveTimer(false);
-            setMedicalCentersToAdd(activeMedicalCenters);
-            setActiveMedicalCenter([]);
-          } else{
-            setActiveTimer(true);
-            setMedicalCentersToAdd([]);
-            setActiveMedicalCenter(medicalCentersToAdd);
-            restart(newTime);
-          }
+          modifyStateOfAI();
         });
   };
 
@@ -135,7 +134,7 @@ function MedicalCenters() {
         );
         const areActiveMedicalCenters = !isEmptyArray(medicalCenters.data.organizations)
         if(areActiveMedicalCenters){
-          setActiveTimer(true);
+          setIsAiActivated(true);
           setActiveMedicalCenter(medicalCenters.data.organizations);
           setMedicalCentersToAdd([]);
         }
@@ -157,7 +156,7 @@ function MedicalCenters() {
           onNewMedicalCenter={handleMedicalCenterSelect}
           setMedicalCenterError={handleMedicalCenterError}
           medicalCenterError={medicalCenterError}
-          activeTimer={activeTimer}
+          isAiActivated={isAiActivated}
         />
             
         <TimerBox
@@ -207,7 +206,7 @@ function MedicalCenters() {
           variant="contained"
           onClick={handleApplyButton}
         >
-          <Typography color={"#ffffff"}>{activeTimer ? t("deactivateAI") : t("activateAI")}</Typography>
+          <Typography color={"#ffffff"}>{isAiActivated ? t("deactivateAI") : t("activateAI")}</Typography>
         </Button>
 
       </Grid>
