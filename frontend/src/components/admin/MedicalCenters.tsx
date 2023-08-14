@@ -136,20 +136,21 @@ function MedicalCenters() {
         display={"flex"}
         justifyContent={"space-between"}
       > 
-        <AdminBox text="medicalCenter" />
         
-        <MedicalCenterSearch
-          handleMedicalCentersToAdd={handleMedicalCentersToAdd}
-          onNewMedicalCenter={handleMedicalCenterSelect}
-          setMedicalCenterError={handleMedicalCenterError}
-          medicalCenterError={medicalCenterError}
-        />
-            
         <TimerBox
           amountOfTimeActive={amountOfTimeActive}
           onAmountOfTimeActiveChange={setAmountOfTimeActive}
           setTimeError={setTimeError}
           timeError={timeError}
+        />
+
+        <AdminBox text="medicalCenter" />
+
+        <MedicalCenterSearch
+          handleMedicalCentersToAdd={handleMedicalCentersToAdd}
+          onNewMedicalCenter={handleMedicalCenterSelect}
+          setMedicalCenterError={handleMedicalCenterError}
+          medicalCenterError={medicalCenterError}
         />
         
         <MedicalCenterList
