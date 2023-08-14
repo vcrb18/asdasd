@@ -44,7 +44,7 @@ function TimerBox({
   
   const getTimerSelect = (index: number, value: number) => {
     return (
-      <MenuItem disabled key={index} value={value}>
+      <MenuItem key={index} value={value}>
           <TimeText value={value}/>
       </MenuItem>
     );
