@@ -104,7 +104,7 @@ function MedicalCenterSearch({
       display={"flex"}
       justifyContent={"center"}
       alignContent={"center"}
-    >
+    >  
       <Grid
         item
         lg={6}

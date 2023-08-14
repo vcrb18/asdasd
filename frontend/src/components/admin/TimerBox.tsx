@@ -34,33 +34,21 @@ function TimerBox({
     setTimeError(false);
   };
 
+  const TimeText: React.FC<{ value: number }> = ({ value }) => {
+    if (value === 0) return <Typography>{t("selectTime")}</Typography>;
+    const plural = value !== 60 && value !== 1 ? 's' : '';
+    const unit =  value >= 60 ? 'hour' : 'minute';
+    const timeValue = unit === 'minute' ? value : value / 60;
+    return <Typography>{timeValue} {t(`${unit}${plural}`)}</Typography>;
+};
+  
   const getTimerSelect = (index: number, value: number) => {
-    if (value === 0) {
-      return (
-        <MenuItem disabled key={index} value={value}>
-          <Typography>
-            {t("selectTime")}
-          </Typography>
-        </MenuItem>
-      );
-    } else if (value === 1) {
-      return (
-        <MenuItem key={index} value={value}>
-          <Typography>
-            {value} {t("minute")}
-          </Typography>
-        </MenuItem>
-      );
-    } else {
-      return (
-        <MenuItem key={index} value={value}>
-          <Typography>
-            {value} {t("minutes")}
-          </Typography>
-        </MenuItem>
-      );
-    }
-  };
+    return (
+      <MenuItem disabled key={index} value={value}>
+          <TimeText value={value}/>
+      </MenuItem>
+    );
+  }
 
   return (
     <Box display={"flex"} width={"100%"} marginY={"1%"}>
