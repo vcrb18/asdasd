@@ -1,29 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
-import { ThemeProvider } from "@mui/material";
-import { useTimer } from "react-timer-hook";
-
-import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
 
 import { useTranslation } from "react-i18next";
-import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import Header from "../customComponents/Header";
-import Footer from "../customComponents/Footer";
-import MedicalCenters, { MedicalCenter } from "../admin/MedicalCenters";
+import MedicalCenters from "../admin/MedicalCenters";
 
 import {
   mainMenuHeaderButtons,
   mainMenuPageButtons,
 } from "../../utils/routingPropConsts";
 
-import TimerBox from "../admin/TimerBox";
-import {
-  postAIState,
-  getAIActiveOrganizations,
-  postExamIdAI,
-} from "../../service/user.service";
 import IdAIApplication from "../admin/IdAIApplication";
-import { isEmptyArray } from "formik";
 import { AdminViewBoxStyle } from "../../utils/AdminViewConst";
 
 function AdminView() {

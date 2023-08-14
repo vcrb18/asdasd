@@ -21,14 +21,14 @@ import { useTranslation } from "react-i18next";
 
 import { getMedicalCenters } from "../../service/user.service";
 
-import { MedicalCenter } from "./MedicalCenters";
-import { timeRestrictionSelect} from "../../utils/AdminViewConst";
+import { MedicalCenter, timeRestrictionSelect} from "../../utils/AdminViewConst";
 
 interface MedicalCenterSearchProps {
   onNewMedicalCenter: (medicalCenter: MedicalCenter) => void;
   handleMedicalCentersToAdd: (medicalCenters: MedicalCenter[]) => void;
   setMedicalCenterError: (error: boolean) => void;
   medicalCenterError: boolean;
+  isAiActivated: boolean
 }
 
 function MedicalCenterSearch({
@@ -36,6 +36,7 @@ function MedicalCenterSearch({
   handleMedicalCentersToAdd, 
   setMedicalCenterError,
   medicalCenterError,
+  isAiActivated
 }: MedicalCenterSearchProps) {
   const { t } = useTranslation();
   const [medicalCentersForAI, setMedicalCentersForAI] = useState<
@@ -56,7 +57,8 @@ function MedicalCenterSearch({
   };
 
   const handleMedicalCenterSubmit = (): void => {
-    if (medicalCenterToAdd) {
+    const canAddMedicalCenter = medicalCenterToAdd && !isAiActivated;
+    if (canAddMedicalCenter) {
       setMedicalCenterError(false);
       onNewMedicalCenter(medicalCenterToAdd);
     }

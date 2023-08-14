@@ -2,7 +2,6 @@ import axios, { Axios, type AxiosResponse } from "axios";
 import useSWR from "swr"
 import authHeader from "./auth.header";
 import { BasePopperPropsOverrides } from "@mui/x-data-grid";
-import { MedicalCenter } from "../components/admin/MedicalCenters";
 import { ExamHeadTableProps } from "../utils/ExamTableConst";
 const API_URL = "http://localhost:8080/";
 

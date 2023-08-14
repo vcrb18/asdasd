@@ -1,8 +1,7 @@
-import { MedicalCenter } from "./MedicalCenters";
-
 import { Avatar, Button, Grid, Typography } from "@mui/material";
 
 import xButton from "../../static/images/xButton.png";
+import { MedicalCenter } from "../../utils/AdminViewConst";
 
 interface MedicalCenterListProps {
   activeMedicalCenters: MedicalCenter[];
