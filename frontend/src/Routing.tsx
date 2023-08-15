@@ -86,7 +86,7 @@ function Routing(): JSX.Element {
         <Route
           path="/admin"
           element={
-            <RequireAuth roles={[roles.admin]}>
+            <RequireAuth roles={[roles.admin, roles.superOperator]}>
             <AdminView />
             </RequireAuth>
           }
@@ -94,7 +94,7 @@ function Routing(): JSX.Element {
         <Route
           path="/admin/modifyparams"
           element={
-            <RequireAuth roles={[roles.admin]}>
+            <RequireAuth roles={[roles.admin, roles.superOperator]}>
             <ModifyParametersView />
             </RequireAuth>
           }
