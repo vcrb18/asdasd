@@ -50,7 +50,8 @@ function DiagnosticsTable() {
         selectedDiagnostics.map(async (diagnostic) => {
             await updateDiagnosticThreshold(diagnostic.diagnosticId, diagnostic.threshold/100);
         });
-        setSelectedDiagnostics([]);
+        const normalDiagnostic = diagnosticTypes.find( (diagnostic) => (diagnostic.diagnosticId === 150));
+        normalDiagnostic ? setSelectedDiagnostics([normalDiagnostic]) : setSelectedDiagnostics([])
     };
 
     useEffect(() => {
@@ -60,6 +61,8 @@ function DiagnosticsTable() {
                 return diagnostic.threshold*=100;
             });
             setDiagnosticTypes(diagnostics);
+            const normalDiagnostic = diagnostics.find( (diagnostic) => (diagnostic.diagnosticId === 150));
+            normalDiagnostic ? setSelectedDiagnostics([normalDiagnostic]) : setSelectedDiagnostics([])
         });
     }, []);
 
