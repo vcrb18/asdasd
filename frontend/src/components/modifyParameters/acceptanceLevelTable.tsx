@@ -58,13 +58,13 @@ function AcceptanceLevelTable() {
         }}
         >
             <Grid item xs={12} textAlign={"start"} marginLeft={"2%"}>
-                <Typography variant="h6" color={"black"} fontWeight={"bold"}>Nivel de aceptación</Typography>
+                <Typography variant="h6" color={"black"} fontWeight={"bold"}>{t("acceptanceLevel")}</Typography>
             </Grid>
 
             {acceptanceThresholdsToChange.map((acceptanceThreshold, index) => (
                 <React.Fragment key={index}>
                     <Grid item xs={3}>
-                        <Typography>{t(acceptanceThreshold.name)}</Typography>
+                        <Typography>{t(acceptanceThreshold.name)} (%)</Typography>
                     </Grid>
                     <Grid item xs={3}>
                         <TextField
