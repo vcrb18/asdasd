@@ -56,7 +56,8 @@ function MedicalCenterList({
               </Typography>
               <Typography marginX={"5%"}>
                 <span>{timeActiveLeft[0]}</span>:
-                <span>{timeActiveLeft[1]}</span>
+                <span>{timeActiveLeft[1]}</span>:
+                <span>{timeActiveLeft[2]}</span>
               </Typography>
             </Grid>
           );

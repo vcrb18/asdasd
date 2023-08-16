@@ -170,7 +170,7 @@ function MedicalCenters() {
         <MedicalCenterList
           activeMedicalCenters={activeMedicalCenters}
           medicalCentersToAdd={medicalCentersToAdd}
-          timeActiveLeft={[minutes, seconds]}
+          timeActiveLeft={[hours, minutes, seconds]}
           handleDeleteClick={handleDeleteClick}
         />
         
