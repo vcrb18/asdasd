@@ -314,6 +314,7 @@ const resources = {
       withoutRestrictions: "Without restrictions",
       cleanCenters: "Clean centers",
       acceptanceLevel: "Acceptance level",
+      changeParametersMessage: "Parameters changed successfully",
     },
   },
   es: {
@@ -627,6 +628,7 @@ const resources = {
       withoutRestrictions: "Sin restricción",
       cleanCenters: "Limpiar centros",
       acceptanceLevel: "Nivel de aceptación",
+      changeParametersMessage: "Parámetros cambiados con éxito",
     },
   },
 };
