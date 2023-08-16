@@ -1,11 +1,6 @@
 import { Snackbar, Alert } from "@mui/material";
 import { t } from "i18next";
-import { Dispatch, SetStateAction } from "react";
-
-interface ChangeParametersAlertProps{
-    openSnackBar: boolean;
-    setOpenSnackBar: Dispatch<SetStateAction<boolean>>
-}
+import { ChangeParametersAlertProps } from "../../utils/ModifyParametersConst";
 
 function ChangeParametersAlert ({openSnackBar, setOpenSnackBar}: ChangeParametersAlertProps) {
         
