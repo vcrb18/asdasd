@@ -4,12 +4,14 @@ import { getAcceptanceThresholds, updateAcceptanceThresholds } from "../../servi
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AcceptanceThreshold } from "../../utils/ModifyParametersConst";
+import ChangeParametersAlert from "./changeParametersAlert";
 
 function AcceptanceLevelTable() {
     const { t } = useTranslation();
     
     const [acceptanceThresholds, setAcceptanceThresholds] = useState<AcceptanceThreshold[]>([]);
     const [acceptanceThresholdsToChange, setAcceptanceThresholdsToChange] = useState<AcceptanceThreshold[]>([]);
+    const [openSnackBarMessage, setOpenSnackBarMessage] = useState<boolean>(false);
 
     const handleChangeThreshold = (index:number, value: string) => {
         const newValue = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value);
@@ -32,6 +34,7 @@ function AcceptanceLevelTable() {
         acceptanceThresholdsToChange.map(async (acceptanceThreshold) => {
             await updateAcceptanceThresholds(acceptanceThreshold.name, acceptanceThreshold.threshold/100);
         });
+        setOpenSnackBarMessage(true);
     };
 
     useEffect(() => {
@@ -105,6 +108,7 @@ function AcceptanceLevelTable() {
                     <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
                 </Button>
             </Grid>
+            <ChangeParametersAlert openSnackBar={openSnackBarMessage} setOpenSnackBar={setOpenSnackBarMessage} />
         </Grid>
     );
 }
