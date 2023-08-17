@@ -90,7 +90,8 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
           setFidR(response.data.r + offset)
           setFidR2(response.data.r2 + offset)
           setFidS(response.data.qrsEnd + offset)
-          setFidST(response.data.tStart + offset)
+          const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
+          setFidST(stPos + offset);
           setFidT(response.data.tEnd + offset) 
         }
         else{
@@ -101,7 +102,8 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
               setFidR(response.data.r + offset)
               setFidR2(response.data.r2 + offset)
               setFidS(response.data.qrsEnd + offset)
-              setFidST(response.data.tStart + offset)
+              const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
+              setFidST(stPos + offset);
               setFidT(response.data.tEnd + offset) 
             }
           );
