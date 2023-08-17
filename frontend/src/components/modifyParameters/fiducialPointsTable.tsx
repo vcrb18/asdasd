@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getNormalThresholdMarkers, updateNormalThresholdMarkers } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import { NormalThresholdMarker } from "../../utils/ModifyParametersConst";
+import ChangeParametersAlert from "./changeParametersAlert";
 
 function FiducialPointsTable() { 
 
@@ -10,6 +11,7 @@ function FiducialPointsTable() {
 
     const [normalThresholdMarkers, SetNormalThresholdMarkers] = useState<NormalThresholdMarker[]>([]);
     const [normalThresholdMarkersToChange, SetNormalThresholdMarkersToChange] = useState<NormalThresholdMarker[]>([]);
+    const [openSnackBarMessage, setOpenSnackBarMessage] = useState<boolean>(false);
 
     useEffect(() => {
         getNormalThresholdMarkers().then((response) => {
@@ -37,6 +39,7 @@ function FiducialPointsTable() {
                 isValidUpperLimit ? parseFloat(fp.upperLimit) : parseFloat(normalThresholdMarkers[index].upperLimit),
                 );
         });
+        setOpenSnackBarMessage(true);
     };
 
     const handleCancelButton = () => {
@@ -132,6 +135,7 @@ function FiducialPointsTable() {
                     <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
                 </Button>
             </Grid>
+            <ChangeParametersAlert openSnackBar={openSnackBarMessage} setOpenSnackBar={setOpenSnackBarMessage} />
         </Grid>
     );
 }

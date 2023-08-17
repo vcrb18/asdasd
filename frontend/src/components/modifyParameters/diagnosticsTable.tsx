@@ -1,9 +1,10 @@
-import { Grid, Typography, Box, Button, Autocomplete, TextField, AutocompleteInputChangeReason } from "@mui/material";
+import { Grid, Typography, Box, Button, Autocomplete, TextField, AutocompleteInputChangeReason, Snackbar, Alert } from "@mui/material";
 import DiagnosisRow from "./diagnosisRow";
 import { useEffect, useState } from "react";
 import { getDiagnosticTypes, updateDiagnosticThreshold } from "../../service/user.service";
 import { useTranslation } from "react-i18next";
 import { DiagnosticType } from "../../utils/ModifyParametersConst";
+import ChangeParametersAlert from "./changeParametersAlert";
 
 function DiagnosticsTable() {
 
@@ -19,8 +20,7 @@ function DiagnosticsTable() {
     const [selectedDiagnostics, setSelectedDiagnostics] = useState<DiagnosticType[]>([])
     const [diagnosticTypes, setDiagnosticTypes] = useState<DiagnosticType[]>([]);
     const [currentDiagnostic, setCurrentDiagnostic] = useState<DiagnosticType>(dummyDiagnostic);
-    
-
+    const [openSnackBarMessage, setOpenSnackBarMessage] = useState<boolean>(false);
 
     const handleDeleteSelectedDiagnostics = (diagnostic: DiagnosticType): void => {
       setSelectedDiagnostics(selectedDiagnostics.filter((i) => i?.diagnosticId !== diagnostic.diagnosticId) );
@@ -50,7 +50,7 @@ function DiagnosticsTable() {
         selectedDiagnostics.map(async (diagnostic) => {
             await updateDiagnosticThreshold(diagnostic.diagnosticId, diagnostic.threshold/100);
         });
-        setSelectedDiagnostics([]);
+        setOpenSnackBarMessage(true);
     };
 
     useEffect(() => {
@@ -60,8 +60,10 @@ function DiagnosticsTable() {
                 return diagnostic.threshold*=100;
             });
             setDiagnosticTypes(diagnostics);
+            const normalDiagnostic = diagnostics.find( (diagnostic) => (diagnostic.diagnosticId === 150));
+            normalDiagnostic ? setSelectedDiagnostics([normalDiagnostic]) : setSelectedDiagnostics([])
         });
-    }, []);
+    }, [openSnackBarMessage]);
 
     return (
         <Grid 
@@ -148,6 +150,7 @@ function DiagnosticsTable() {
                     <Typography color={"#ffffff"}>{t("modifyParameters")}</Typography>
                 </Button>
             </Grid>
+            <ChangeParametersAlert openSnackBar={openSnackBarMessage} setOpenSnackBar={setOpenSnackBarMessage} />
         </Grid>
     );
 };

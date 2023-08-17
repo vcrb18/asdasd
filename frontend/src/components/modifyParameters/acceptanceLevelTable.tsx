@@ -4,12 +4,14 @@ import { getAcceptanceThresholds, updateAcceptanceThresholds } from "../../servi
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AcceptanceThreshold } from "../../utils/ModifyParametersConst";
+import ChangeParametersAlert from "./changeParametersAlert";
 
 function AcceptanceLevelTable() {
     const { t } = useTranslation();
     
     const [acceptanceThresholds, setAcceptanceThresholds] = useState<AcceptanceThreshold[]>([]);
     const [acceptanceThresholdsToChange, setAcceptanceThresholdsToChange] = useState<AcceptanceThreshold[]>([]);
+    const [openSnackBarMessage, setOpenSnackBarMessage] = useState<boolean>(false);
 
     const handleChangeThreshold = (index:number, value: string) => {
         const newValue = Number.isNaN(parseFloat(value)) ? 0 : parseFloat(value);
@@ -32,6 +34,7 @@ function AcceptanceLevelTable() {
         acceptanceThresholdsToChange.map(async (acceptanceThreshold) => {
             await updateAcceptanceThresholds(acceptanceThreshold.name, acceptanceThreshold.threshold/100);
         });
+        setOpenSnackBarMessage(true);
     };
 
     useEffect(() => {
@@ -58,13 +61,13 @@ function AcceptanceLevelTable() {
         }}
         >
             <Grid item xs={12} textAlign={"start"} marginLeft={"2%"}>
-                <Typography variant="h6" color={"black"} fontWeight={"bold"}>Nivel de aceptación</Typography>
+                <Typography variant="h6" color={"black"} fontWeight={"bold"}>{t("acceptanceLevel")}</Typography>
             </Grid>
 
             {acceptanceThresholdsToChange.map((acceptanceThreshold, index) => (
                 <React.Fragment key={index}>
                     <Grid item xs={3}>
-                        <Typography>{t(acceptanceThreshold.name)}</Typography>
+                        <Typography>{t(acceptanceThreshold.name)} (%)</Typography>
                     </Grid>
                     <Grid item xs={3}>
                         <TextField
@@ -105,6 +108,7 @@ function AcceptanceLevelTable() {
                     <Typography color={"#ffffff"}>{t("applyChanges")}</Typography>
                 </Button>
             </Grid>
+            <ChangeParametersAlert openSnackBar={openSnackBarMessage} setOpenSnackBar={setOpenSnackBarMessage} />
         </Grid>
     );
 }

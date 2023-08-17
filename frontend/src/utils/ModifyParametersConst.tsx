@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface NormalThresholdMarker {
     fiducialPoint: string;
     measurementUnit: string;
@@ -18,4 +20,9 @@ export interface DiagnosticsRowProps {
 export interface AcceptanceThreshold {
     name: string;
     threshold: number;
+}
+
+export interface ChangeParametersAlertProps{
+    openSnackBar: boolean;
+    setOpenSnackBar: Dispatch<SetStateAction<boolean>>
 }
