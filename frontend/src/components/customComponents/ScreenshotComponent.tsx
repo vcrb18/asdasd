@@ -364,6 +364,7 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
               fidST={fidST}
               fidT={fidT}
               examId={examId}
+              timeSeries={timeSeriesII}
             />
           </Box>
           <Stack direction="row"

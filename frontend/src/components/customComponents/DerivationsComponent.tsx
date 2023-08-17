@@ -212,6 +212,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
           fidST={fidST}
           fidT={fidT}
           examId={examId}
+          timeSeries={selectedTimeSeries}
         />
       </Box>
       <Box

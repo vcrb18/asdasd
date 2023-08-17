@@ -73,7 +73,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
   const qrs = props.fidS - props.fidQRS;
   const qt = props.fidT - props.fidQRS;
   const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
-  const st = (25 / 1000) * (props.fidST - props.fidS);
+  const st = (props.timeSeries.length > props.fidST) ? props.timeSeries[props.fidST] * 0.01 : 0;
 
   const row = createData(props.examId, fc, rr, pq, qrs, qt, qtc, st);
 
