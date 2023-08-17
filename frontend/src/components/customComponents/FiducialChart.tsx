@@ -253,8 +253,8 @@ useEffect(() => {
     r:props.fidR,
     r2:props.fidR2,
     qrsEnd:props.fidS,
-    tStart:props.fidT,
-    tEnd:props.fidST,
+    tStart:props.fidST,
+    tEnd:props.fidT,
   } as any;
 
   
@@ -317,8 +317,8 @@ useEffect(() => {
     setfidR(lastData.r + movement);
     setfidR2(lastData.r2 + movement);
     setfidS(lastData.qrsEnd + movement);
-    setfidST(lastData.tEnd + movement);
-    setfidT(lastData.tStart + movement);
+    setfidST(lastData.tStart + movement);
+    setfidT(lastData.tEnd + movement);
 
     const childata = {
       examId: examId,
@@ -327,8 +327,8 @@ useEffect(() => {
       r: lastData.r + movement,
       r2: lastData.r2 + movement,
       qrsEnd: lastData.qrsEnd + movement,
-      tStart: lastData.tEnd + movement,
-      tEnd: lastData.tStart + movement,
+      tStart: lastData.tStart + movement,
+      tEnd: lastData.tEnd + movement,
     }
 
     return childata;
