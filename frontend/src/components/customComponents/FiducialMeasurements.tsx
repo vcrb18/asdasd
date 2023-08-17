@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { getExamPredictedMarkersComputations } from "../../service/user.service";
 import { Typography } from "@mui/material";
 
 interface Measurements {
@@ -34,39 +31,6 @@ function createData(
 }
 
 const FiducialMeasurementsTable = (props: any): JSX.Element => {
-  const [computationPoints, setComputationPoints] = useState<Measurements>({
-    examId: 0,
-    fc: 0,
-    rr: 0,
-    pq: 0,
-    qrs: 0,
-    qt: 0,
-    qtc: 0,
-    st: 0,
-  });
-  useEffect(() => {
-    getExamPredictedMarkersComputations(props.examId).then(
-      (response) => {
-        setComputationPoints(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-        setComputationPoints(_content);
-      }
-    );
-  }, []);
-
-  // const rr = computationPoints? computationPoints.rr : 0;
-  // const fc = computationPoints? computationPoints.fc : 0;
-  // const pq = computationPoints? computationPoints.pq : 0;
-  // const qrs = computationPoints? computationPoints.qrs: 0;
-  // const qt = computationPoints? computationPoints.qt : 0;
-  // const qtc = computationPoints? computationPoints.qtc : 0;
-  // const st = computationPoints? computationPoints.st: 0;
-  // const row = computationPoints;
   const rr = Math.abs(props.fidR2 - props.fidR);
   const fc = (1000 * 60) / rr;
   const pq = props.fidQRS - props.fidP;
