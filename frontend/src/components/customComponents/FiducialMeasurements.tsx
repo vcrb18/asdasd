@@ -200,7 +200,7 @@ const FiducialMeasurementsTable = (props: any): JSX.Element => {
               sx={{ border: 1, borderColor: "#DDDDDD"}}
             >
               <Typography fontWeight={"bold"}>
-                {row.st.toFixed(1)}
+                {row.st.toFixed(2)}
               </Typography>
             </TableCell>
           </TableRow>
