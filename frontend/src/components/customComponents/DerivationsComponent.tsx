@@ -1,12 +1,11 @@
 import { Box, Button, Stack, Typography, createTheme, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
-import React, { MouseEventHandler, useEffect } from "react";
+import React, { useEffect } from "react";
 import FiducialChart from "./FiducialChart";
 import { FiducialStates } from "../views/ExamsView";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
-import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
+import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations, postMarkersSistemed2} from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
-import { number } from "yup";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@emotion/react";
 import { Element } from "react-scroll"
@@ -17,6 +16,7 @@ interface DerivationsProps {
   fiducialStates: FiducialStates;
 }
 
+const derivationOptions = ['I','II','III','V1','V2','V3','V4','V5','V6','aVF','aVL','aVR'];
 
 const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialStates}): JSX.Element => {
   const {
@@ -42,8 +42,8 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
   const [timeSeriesaVR, setTimeSeriesaVR] = React.useState([]);
 
   const [selectedTimeSeries, setSelectedTimeSeries] = React.useState([]);
-
-  const derivationOptions = ['I','II','III','V1','V2','V3','V4','V5','V6','aVF','aVL','aVR'];
+  const [selectedDerivation, setSelectedDerivation] = React.useState('II');
+  const [count, setCount] = React.useState(0); 
 
   const allTimeSeriesObject = 
   {
@@ -61,16 +61,28 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     'aVR':timeSeriesaVR
   } as any;
 
+  const offset = 640;
+  const { t } = useTranslation();
 
+  const buttonsTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#006a6b",
+      },
+    },
+  });
 
-
-  const [selectedDerivation, setSelectedDerivation] = React.useState('II');
-  
-
-  const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
-    setSelectedDerivation(event.target.value as string);
-    setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
-  };
+  const styleToGraphics = {
+    margin: "4px",
+    border: "2px solid black",
+    borderRadius: "5px",
+    cursor: "pointer",
+    "&:hover": {
+      borderRadius: "5px",
+      boxShadow: "0 0 15px green",
+      background: "#fff",
+    },
+  }
 
   useEffect(()=> {
     getTimeSeriesById(examId).then(
@@ -92,14 +104,6 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
         setSelectedTimeSeries(response.data.II)
     }); 
   },[]);
-
-
-  
-  let callUseEffect = 0;
-  const { t } = useTranslation();
-  const [count, setCount] = React.useState(0); 
-
-  const offset = 640;
 
   useEffect(()=> {
     getExamOperatorMarkers(examId).then(
@@ -129,6 +133,11 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     });
   }, [count]);
 
+  const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
+    setSelectedDerivation(event.target.value as string);
+    setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
+  };
+
   const handleFiducialChartUpdate : Function = (childData : any) => {
     setFidP(childData.pStart);
     setFidQRS(childData.qrsStart);
@@ -152,24 +161,34 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     scroller.scrollTo("graphic", scrollType);
   }
  
-  const buttonsTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#006a6b",
-      },
-    },
-  });
+  const handleSaveChanges = async () => {
+    const newOperatorMarkers = {
+      pStart:fidP - offset,
+      qrsStart:fidQRS - offset,
+      r:fidR - offset,
+      r2:fidR2 - offset,
+      qrsEnd:fidS - offset,
+      tStart:fidST - offset,
+      tEnd:fidT - offset,
+    }
+    await postOperatorMarkers(examId, newOperatorMarkers);
+    await postOperatorMarkersComputations(examId, newOperatorMarkers);
+    await postMarkersSistemed2(
+      examId, 
+      newOperatorMarkers.pStart, 
+      newOperatorMarkers.qrsStart,
+      newOperatorMarkers.r,
+      newOperatorMarkers.qrsEnd,
+      newOperatorMarkers.tStart,
+      newOperatorMarkers.tEnd,
+      newOperatorMarkers.r2
+      );
+  }
 
-  const styleToGraphics = {
-    margin: "4px",
-    border: "2px solid black",
-    borderRadius: "5px",
-    cursor: "pointer",
-    "&:hover": {
-      borderRadius: "5px",
-      boxShadow: "0 0 15px green",
-      background: "#fff",
-    },
+  const handleRestoreChanges = async () => {
+    await deleteOperatorMarkers(examId);
+    await deleteOperatorMarkersComputations(examId);
+    setCount(count+1);
   }
 
   return (
@@ -244,11 +263,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
             pr: 3,
           }}
             variant="contained"
-            onClick={() => {
-              deleteOperatorMarkers(examId);
-              deleteOperatorMarkersComputations(examId);
-              setCount(count+1);
-            }}
+            onClick={handleRestoreChanges}
             >
             {t("restore")}
           </Button>
@@ -258,22 +273,7 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
             color: "#fff",
           }}
             variant="contained"
-            onClick={() => {
-              const newData = 
-              {
-                examId:examId - offset,
-                pStart:fidP - offset,
-                qrsStart:fidQRS - offset,
-                r:fidR - offset,
-                r2:fidR2 - offset,
-                qrsEnd:fidS - offset,
-                tStart:fidST - offset,
-                tEnd:fidT - offset,
-              }
-              postOperatorMarkers(examId, newData);
-              postOperatorMarkersComputations(examId, newData)
-              callUseEffect +=1;
-            }}
+            onClick={handleSaveChanges}
             >
             {t("saveChanges")}
           </Button>
