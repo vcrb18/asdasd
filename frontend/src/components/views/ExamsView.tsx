@@ -79,6 +79,20 @@ export interface FiducialStates {
     setFidST: Dispatch<number>;
     fidT: number;
     setFidT: Dispatch<number>;
+    medFC: number;
+    setMedFC: Dispatch<number>;
+    medRR: number;
+    setMedRR: Dispatch<number>;
+    medPQ: number;
+    setMedPQ: Dispatch<number>;
+    medQRS: number;
+    setMedQRS: Dispatch<number>;
+    medQT: number;
+    setMedQT: Dispatch<number>;
+    medQTC: number;
+    setMedQTC: Dispatch<number>;
+    medST: number;
+    setMedST: Dispatch<number>;
 }
 
 export interface Diagnostic {
@@ -172,6 +186,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
+  const [medFC, setMedFC] = React.useState(0);
+  const [medRR, setMedRR] = React.useState(0);
+  const [medPQ, setMedPQ] = React.useState(0);
+  const [medQRS, setMedQRS] = React.useState(0);
+  const [medQT, setMedQT] = React.useState(0);
+  const [medQTC, setMedQTC] = React.useState(0);
+  const [medST, setMedST] = React.useState(0);
   const fiducialStates: FiducialStates = {
     fidP: fidP, setFidP: setFidP,
     fidQRS: fidQRS, setFidQRS: setFidQRS,
@@ -179,7 +200,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     fidR2: fidR2, setFidR2: setFidR2,
     fidS: fidS, setFidS: setFidS,
     fidST: fidST, setFidST: setFidST,
-    fidT: fidT, setFidT: setFidT
+    fidT: fidT, setFidT: setFidT,
+    medFC: medFC, setMedFC: setMedFC,
+    medRR: medRR, setMedRR: setMedRR,
+    medPQ: medPQ, setMedPQ: setMedPQ,
+    medQRS: medQRS, setMedQRS: setMedQRS,
+    medQT: medQT, setMedQT: setMedQT,
+    medQTC: medQTC, setMedQTC: setMedQTC,
+    medST: medST, setMedST: setMedST,
   };
 
   const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(DiagnosticPrediction)[]>([]);

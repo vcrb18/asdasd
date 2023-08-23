@@ -26,7 +26,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     fidR2, setFidR2,
     fidS, setFidS,
     fidST, setFidST,
-    fidT, setFidT } = fiducialStates;
+    fidT, setFidT,
+    medFC, setMedFC,
+    medRR, setMedRR,
+    medPQ, setMedPQ,
+    medQRS, setMedQRS,
+    medQT, setMedQT,
+    medQTC, setMedQTC,
+    medST, setMedST, } = fiducialStates;
   
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
