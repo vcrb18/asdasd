@@ -209,13 +209,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     await postOperatorMarkersComputations(examId, newOperatorMarkers);
     await postMarkersSistemed2(
       examId, 
-      newOperatorMarkers.pStart, 
-      newOperatorMarkers.qrsStart,
-      newOperatorMarkers.r,
-      newOperatorMarkers.qrsEnd,
-      newOperatorMarkers.tStart,
-      newOperatorMarkers.tEnd,
-      newOperatorMarkers.r2
+      newOperatorMarkers.pStart + offset, 
+      newOperatorMarkers.qrsStart + offset,
+      newOperatorMarkers.r + offset,
+      newOperatorMarkers.qrsEnd + offset,
+      newOperatorMarkers.tStart + offset,
+      newOperatorMarkers.tEnd + offset,
+      newOperatorMarkers.r2 + offset,
       );
   }
 
