@@ -236,15 +236,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       <Element name="graphic">
       <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
         <FiducialMeasurementsTable
-          fidP={fidP}
-          fidQRS={fidQRS}
-          fidR={fidR}
-          fidR2={fidR2}
-          fidS={fidS}
-          fidST={fidST}
-          fidT={fidT}
-          examId={examId}
-          timeSeries={selectedTimeSeries}
+            fc={medFC}
+            rr={medRR}
+            pq={medPQ}
+            qrs={medQRS}
+            qt={medQT}
+            qtc={medQTC}
+            st={medST}
         />
       </Box>
       <Box

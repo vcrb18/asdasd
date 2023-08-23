@@ -15,15 +15,8 @@ import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/Metadata
 import { patientsMetadata } from "../../utils/patientMetadataDummy";
 
 const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisData, examMetadata, isLoading, diagnosticStates}): JSX.Element => {
-  const {
-    fidP, setFidP,
-    fidQRS, setFidQRS,
-    fidR, setFidR,
-    fidR2, setFidR2,
-    fidS, setFidS,
-    fidST, setFidST,
-    fidT, setFidT } = fiducialStates;
-  
+  const { medFC, medRR, medPQ, medQRS, medQT, medQTC, medST } = fiducialStates;
+
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
   const [timeSeriesIII, setTimeSeriesIII] = React.useState([]);
@@ -77,39 +70,6 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
   
   let callUseEffect = 0;
   const { t } = useTranslation();
-  const [count, setCount] = React.useState(0); 
-
-  const offset = 640;
-
-  useEffect(()=> {
-    getExamOperatorMarkers(examId).then(
-      (response) => {
-        if (response.status ==  200){
-          setFidP(response.data.pStart + offset)
-          setFidQRS(response.data.qrsStart + offset)
-          setFidR(response.data.r + offset)
-          setFidR2(response.data.r2 + offset)
-          setFidS(response.data.qrsEnd + offset)
-          const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-          setFidST(stPos + offset);
-          setFidT(response.data.tEnd + offset) 
-        }
-        else{
-          getExamPredictedMarkers(examId).then(
-            (response) => {
-              setFidP(response.data.pStart + offset)
-              setFidQRS(response.data.qrsStart + offset)
-              setFidR(response.data.r + offset)
-              setFidR2(response.data.r2 + offset)
-              setFidS(response.data.qrsEnd + offset)
-              const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-              setFidST(stPos + offset);
-              setFidT(response.data.tEnd + offset) 
-            }
-          );
-        }
-    });
-  }, [count]);
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
   }
@@ -356,15 +316,13 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
           <Stack direction="column" height={"100%"}>
           <Box sx={{height:"10%", marginBottom:"15px", border: "2px solid black"}}>
             <FiducialMeasurementsTable
-              fidP={fidP}
-              fidQRS={fidQRS}
-              fidR={fidR}
-              fidR2={fidR2}
-              fidS={fidS}
-              fidST={fidST}
-              fidT={fidT}
-              examId={examId}
-              timeSeries={timeSeriesII}
+              fc={medFC}
+              rr={medRR}
+              pq={medPQ}
+              qrs={medQRS}
+              qt={medQT}
+              qtc={medQTC}
+              st={medST}
             />
           </Box>
           <Stack direction="row"
