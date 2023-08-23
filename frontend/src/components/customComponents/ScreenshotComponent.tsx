@@ -1,16 +1,11 @@
 import { Box, Stack, Typography, Container, ListItemText, List, ListItem } from "@mui/material";
 import React, { useEffect } from "react";
-import { FiducialStates, DiagnosticPrediction, Diagnostic} from "../views/ExamsView";
 import { type Background, type Medication, type Symptom, type ExamMetadata } from "../../utils/MetadataTransforms";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
-import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
+import { getTimeSeriesById } from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Element } from "react-scroll"
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import FaceIcon from '@mui/icons-material/Face';
 import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/MetadataTransforms";
 import { patientsMetadata } from "../../utils/patientMetadataDummy";
 
@@ -66,54 +61,14 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     }); 
   },[]);
 
-
-  
-  let callUseEffect = 0;
   const { t } = useTranslation();
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
   }
 
-  const remapGender = (gender: string | undefined): string => {
-    switch (gender) {
-      case "HOMBRE":
-        return "male";
-      case "MUJER":
-        return "female";
-      default:
-        return "";
-    }
-  };
-
-  const getAge = (birthday: string | undefined): string => {
-    if (birthday === undefined) return '';
-
-    const splittedDate = birthday.split('-');
-    if (splittedDate.length != 3) return '';
-
-    const day = parseInt(splittedDate[0]);
-    const month = parseInt(splittedDate[1]);
-    const year = parseInt(splittedDate[2]);
-
-    const currentDate = new Date();
-    let age = currentDate.getFullYear() - year;
-
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentDay = currentDate.getDate();
-    if ((month > currentMonth) || (month == currentMonth && day > currentDay)) {
-      age = age - 1;
-    }
-
-    return age.toString();
-  };
-
   const date = analisisData?.createdAt == undefined
   ? '' 
   : (new Date(analisisData.createdAt)).toLocaleString('es-CL', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-
-  const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
-    (analisisData?.operatorAccept === true ? true : false) : 
-      (analisisData?.accepted === true ? true : false);
 
   const styleToGraphics = {
     margin: "1px",

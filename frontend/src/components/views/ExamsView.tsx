@@ -5,10 +5,8 @@ import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import {
   getExam,
-  getExamPredictedMarkersComputations,
   markExamIdAsLocked,
   markExamIdAsUnlocked,
   putExamReview, putExamUnreview,
@@ -23,8 +21,6 @@ import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "../customComponents/DiagnosisComponent";
 
-import html2canvas from "html2canvas";
-import ScreenshotComponent from "../customComponents/ScreenshotComponent";
 import ScreenshotModal from "../customComponents/screenshotModal";
 import { Patient } from "../../utils/ExamTableConst";
 
@@ -32,17 +28,6 @@ interface ExamsViewProps {
   // examId: number ;
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string; href: string }>;
-}
-
-interface PredictedValuesData {
-  examId: number;
-  fc: number;
-  rr: number;
-  pq: number;
-  qrs: number;
-  qt: number;
-  qtc: number;
-  st: number;
 }
 
 export interface ExamData {
@@ -225,43 +210,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [reloadTime, setReloadTime] = useState<number>();
 
   const viewRef = useRef<HTMLDivElement>(null);
-  const testRef = useRef<HTMLDivElement>(null);
-
-  const test = <div ref={testRef}>Test</div>;
-
-  const CapturePage = () => {
-    return (
-      <div>
-        <div className="screen-layout">
-          {/* Content for the screen layout */}
-          <h1>Hello, World!</h1>
-          <p>This is the content shown on the screen.</p>
-          <button onClick={handleCapture}>Capture</button>
-        </div>
-        <div className="print-layout" id="capture">
-          {/* Content for the print layout */}
-          <h1>Hello, World!</h1>
-          <p>This is the content for printing.</p>
-        </div>
-      </div>
-    );
-  };
-
-  const handleCapture = () => {
-    console.log("test");
-    const element = document.getElementById('capture');
-    if (element) {
-      html2canvas(element).then((canvas) => {
-        // Convert the canvas to an image data URL
-        const dataURL = canvas.toDataURL();
-        // Create a link element
-        const link = document.createElement('a');
-        link.href = dataURL;
-        link.download = `exam_${examId}.png`;
-        link.click();
-      });
-    }
-  };
 
   useEffect(
     () => {
