@@ -124,6 +124,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     setMedQTC(Math.round(qtc));
     setMedST(Math.round(st * 100) / 100);
   }
+
+  function updateST() {
+    if (fidST > 0) {
+      const st = (selectedTimeSeries.length > fidST) ? selectedTimeSeries[fidST] * 0.01 : 0;
+      setMedST(Math.round(st * 100) / 100);
+    }
+  }
+
   useEffect(()=> {
     getTimeSeriesById(examId).then(
       response =>{
@@ -160,6 +168,10 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
         }
     });
   }, [count]);
+
+  useEffect(() => {
+    updateST();
+  }, [selectedTimeSeries]);
 
   const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
     setSelectedDerivation(event.target.value as string);
