@@ -402,7 +402,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               false;
             acceptExamSistemed2(examIdNumber, isUrgent);
 
-            postMarkersSistemed2(examIdNumber, fidP, fidQRS, fidR, fidS, fidST, fidT, fidR2);
+            postMarkersSistemed2(examIdNumber,
+              fidP, fidQRS, fidR, fidS, fidST, fidT, fidR2,
+              medFC, medRR, medPQ, medQRS, medQT, medQTC, medST);
 
             const suggestedDiagnostics: DiagnosticSistemed2[] = [];
             diagnosticStates.diagnosticosSugeridos.forEach((item: DiagnosticPrediction) => {

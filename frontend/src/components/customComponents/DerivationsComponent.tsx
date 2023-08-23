@@ -216,6 +216,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       newOperatorMarkers.tStart + offset,
       newOperatorMarkers.tEnd + offset,
       newOperatorMarkers.r2 + offset,
+      medFC,
+      medRR,
+      medPQ,
+      medQRS,
+      medQT,
+      medQTC,
+      medST,
       );
   }
 
