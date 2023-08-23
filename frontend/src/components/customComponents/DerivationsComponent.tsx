@@ -91,6 +91,39 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     },
   }
 
+  function setFiducialData(data: any, offset: number, interpolateST: boolean = false) {
+    const pStart = data.pStart + offset;
+    const qrsStart = data.qrsStart + offset;
+    const r1 = data.r + offset;
+    const r2 = data.r2 + offset;
+    const qrsEnd = data.qrsEnd + offset;
+    const tEnd = data.tEnd + offset;
+    const stFlag = (interpolateST) ?
+      Math.floor((qrsEnd + tEnd) / 2) :
+      data.tStart + offset;
+    setFidP(pStart);
+    setFidQRS(qrsStart);
+    setFidR(r1);
+    setFidR2(r2);
+    setFidS(qrsEnd);
+    setFidST(stFlag);
+    setFidT(tEnd);
+
+    const rr = Math.abs(r2 - r1);
+    const fc = (1000 * 60) / rr;
+    const pq = qrsStart - pStart;
+    const qrs = qrsEnd - qrsStart;
+    const qt = tEnd - qrsStart;
+    const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
+    const st = (selectedTimeSeries.length > stFlag) ? selectedTimeSeries[stFlag] * 0.01 : 0;
+    setMedRR(Math.round(rr));
+    setMedFC(Math.round(fc));
+    setMedPQ(Math.round(pq));
+    setMedQRS(Math.round(qrs));
+    setMedQT(Math.round(qt));
+    setMedQTC(Math.round(qtc));
+    setMedST(Math.round(st * 100) / 100);
+  }
   useEffect(()=> {
     getTimeSeriesById(examId).then(
       response =>{
@@ -115,27 +148,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
   useEffect(()=> {
     getExamOperatorMarkers(examId).then(
       (response) => {
-        if (response.status ==  200){
-          setFidP(response.data.pStart + offset)
-          setFidQRS(response.data.qrsStart + offset)
-          setFidR(response.data.r + offset)
-          setFidR2(response.data.r2 + offset)
-          setFidS(response.data.qrsEnd + offset)
-          const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-          setFidST(stPos + offset);
-          setFidT(response.data.tEnd + offset) 
+        if (response.status == 200) {
+          setFiducialData(response.data, offset, false);
         }
         else{
           getExamPredictedMarkers(examId).then(
             (response) => {
-              setFidP(response.data.pStart + offset)
-              setFidQRS(response.data.qrsStart + offset)
-              setFidR(response.data.r + offset)
-              setFidR2(response.data.r2 + offset)
-              setFidS(response.data.qrsEnd + offset)
-              const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-              setFidST(stPos + offset)
-              setFidT(response.data.tEnd + offset) 
+              setFiducialData(response.data, offset, true);
             }
           );
         }
@@ -147,14 +166,8 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
   };
 
-  const handleFiducialChartUpdate : Function = (childData : any) => {
-    setFidP(childData.pStart);
-    setFidQRS(childData.qrsStart);
-    setFidR(childData.r);
-    setFidR2(childData.r2);
-    setFidS(childData.qrsEnd);
-    setFidST(childData.tStart);
-    setFidT(childData.tEnd);
+  const handleFiducialChartUpdate: Function = (childData: any) => {
+    setFiducialData(childData, 0, false);
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
