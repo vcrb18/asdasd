@@ -101,6 +101,9 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     const stFlag = (interpolateST) ?
       Math.floor((qrsEnd + tEnd) / 2) :
       data.tStart + offset;
+    if ([pStart, qrsStart, r1, qrsEnd, tEnd].some(el => isNaN(el))) {
+      throw new Error("Required primary fiducial points not found.");
+    }
     setFidP(pStart);
     setFidQRS(qrsStart);
     setFidR(r1);
@@ -153,20 +156,30 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     }); 
   },[]);
 
-  useEffect(()=> {
-    getExamOperatorMarkers(examId).then(
-      (response) => {
-        if (response.status == 200) {
-          setFiducialData(response.data, offset, false);
-        }
-        else{
-          getExamPredictedMarkers(examId).then(
-            (response) => {
-              setFiducialData(response.data, offset, true);
-            }
-          );
-        }
-    });
+  const getMarkers = async () => {
+    let operatorMarkersFound: boolean;
+    try {
+      const operatorMarkers = await getExamOperatorMarkers(examId);
+      setFiducialData(operatorMarkers.data, offset, false);
+      operatorMarkersFound = true;
+    } catch (error) {
+      operatorMarkersFound = false;
+    }
+
+    if (operatorMarkersFound) { 
+      return;
+    }
+
+    try {
+      const predictedMarkers = await getExamPredictedMarkers(examId);
+      setFiducialData(predictedMarkers.data, offset, true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getMarkers();
   }, [count]);
 
   useEffect(() => {
@@ -179,7 +192,12 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
   };
 
   const handleFiducialChartUpdate: Function = (childData: any) => {
-    setFiducialData(childData, 0, false);
+    try {
+      setFiducialData(childData, 0, false);
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
