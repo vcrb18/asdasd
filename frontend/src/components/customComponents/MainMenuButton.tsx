@@ -52,7 +52,7 @@ const MainMenuButton = (): JSX.Element => {
                   target={button.target}
                   fullWidth 
                   disableElevation
-                  disabled={button.label === 'alerts' || button.label === 'metrics' || button.label === 'report'}
+                  disabled={button.label === 'alerts'}
                   >
                   <Grid 
                     container
