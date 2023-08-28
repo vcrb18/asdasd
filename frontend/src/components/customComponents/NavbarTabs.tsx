@@ -35,6 +35,7 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
           <Tab
             key={index}
             href={tab.href}
+            target={tab.target}
             label={
                 <Typography sx={{color: "#007088"}}>
                   {t(tab.label)}

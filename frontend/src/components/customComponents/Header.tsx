@@ -22,6 +22,7 @@ import {Link} from "react-router-dom";
 export interface TabProps {
   label: string;
   href: string;
+  target: string;
 }
 
 export interface ButtonProps {
