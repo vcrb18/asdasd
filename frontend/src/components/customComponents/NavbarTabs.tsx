@@ -35,14 +35,13 @@ const NavbarTabs: React.FC<NavbarTabsProps> = ({ tabs, onTabChange }) => {
           <Tab
             key={index}
             href={tab.href}
+            target={tab.target}
             label={
                 <Typography sx={{color: "#007088"}}>
                   {t(tab.label)}
                 </Typography>
             }
-            disabled={tab.label === "aboutUs" || tab.label === "metrics" || tab.label === "alerts"
-             || tab.label === "report"
-             || tab.label === "contactUs"}
+            disabled={tab.label === "aboutUs" || tab.label === "alerts" || tab.label === "contactUs"}
             />
           </Box>
         ))}

@@ -49,9 +49,10 @@ const MainMenuButton = (): JSX.Element => {
                 <Button 
                   sx={{ backgroundColor: "#E4EDEF" }}
                   href={button.href}
+                  target={button.target}
                   fullWidth 
                   disableElevation
-                  disabled={button.label === 'alerts' || button.label === 'metrics' || button.label === 'report'}
+                  disabled={button.label === 'alerts'}
                   >
                   <Grid 
                     container
