@@ -31,15 +31,8 @@ function createData(
 }
 
 const FiducialMeasurementsTable = (props: any): JSX.Element => {
-  const rr = Math.abs(props.fidR2 - props.fidR);
-  const fc = (1000 * 60) / rr;
-  const pq = props.fidQRS - props.fidP;
-  const qrs = props.fidS - props.fidQRS;
-  const qt = props.fidT - props.fidQRS;
-  const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
-  const st = (props.timeSeries.length > props.fidST) ? props.timeSeries[props.fidST] * 0.01 : 0;
 
-  const row = createData(props.examId, fc, rr, pq, qrs, qt, qtc, st);
+  const row = createData(props.examId, props.fc, props.rr, props.pq, props.qrs, props.qt, props.qtc, props.st);
 
   return (
     <TableContainer >

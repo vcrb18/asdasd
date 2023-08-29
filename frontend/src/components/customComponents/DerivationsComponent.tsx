@@ -26,7 +26,14 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     fidR2, setFidR2,
     fidS, setFidS,
     fidST, setFidST,
-    fidT, setFidT } = fiducialStates;
+    fidT, setFidT,
+    medFC, setMedFC,
+    medRR, setMedRR,
+    medPQ, setMedPQ,
+    medQRS, setMedQRS,
+    medQT, setMedQT,
+    medQTC, setMedQTC,
+    medST, setMedST, } = fiducialStates;
   
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
@@ -84,6 +91,50 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     },
   }
 
+  function setFiducialData(data: any, offset: number, interpolateST: boolean = false) {
+    const pStart = data.pStart + offset;
+    const qrsStart = data.qrsStart + offset;
+    const r1 = data.r + offset;
+    const r2 = data.r2 + offset;
+    const qrsEnd = data.qrsEnd + offset;
+    const tEnd = data.tEnd + offset;
+    const stFlag = (interpolateST) ?
+      Math.floor((qrsEnd + tEnd) / 2) :
+      data.tStart + offset;
+    if ([pStart, qrsStart, r1, qrsEnd, tEnd].some(el => isNaN(el))) {
+      throw new Error("Required primary fiducial points not found.");
+    }
+    setFidP(pStart);
+    setFidQRS(qrsStart);
+    setFidR(r1);
+    setFidR2(r2);
+    setFidS(qrsEnd);
+    setFidST(stFlag);
+    setFidT(tEnd);
+
+    const rr = Math.abs(r2 - r1);
+    const fc = (1000 * 60) / rr;
+    const pq = qrsStart - pStart;
+    const qrs = qrsEnd - qrsStart;
+    const qt = tEnd - qrsStart;
+    const qtc = (1000 * qt) / 1000 / Math.sqrt(rr / 1000);
+    const st = (selectedTimeSeries.length > stFlag) ? selectedTimeSeries[stFlag] * 0.01 : 0;
+    setMedRR(Math.round(rr));
+    setMedFC(Math.round(fc));
+    setMedPQ(Math.round(pq));
+    setMedQRS(Math.round(qrs));
+    setMedQT(Math.round(qt));
+    setMedQTC(Math.round(qtc));
+    setMedST(Math.round(st * 100) / 100);
+  }
+
+  function updateST() {
+    if (fidST > 0) {
+      const st = (selectedTimeSeries.length > fidST) ? selectedTimeSeries[fidST] * 0.01 : 0;
+      setMedST(Math.round(st * 100) / 100);
+    }
+  }
+
   useEffect(()=> {
     getTimeSeriesById(examId).then(
       response =>{
@@ -105,49 +156,48 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     }); 
   },[]);
 
-  useEffect(()=> {
-    getExamOperatorMarkers(examId).then(
-      (response) => {
-        if (response.status ==  200){
-          setFidP(response.data.pStart + offset)
-          setFidQRS(response.data.qrsStart + offset)
-          setFidR(response.data.r + offset)
-          setFidR2(response.data.r2 + offset)
-          setFidS(response.data.qrsEnd + offset)
-          const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-          setFidST(stPos + offset);
-          setFidT(response.data.tEnd + offset) 
-        }
-        else{
-          getExamPredictedMarkers(examId).then(
-            (response) => {
-              setFidP(response.data.pStart + offset)
-              setFidQRS(response.data.qrsStart + offset)
-              setFidR(response.data.r + offset)
-              setFidR2(response.data.r2 + offset)
-              setFidS(response.data.qrsEnd + offset)
-              const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-              setFidST(stPos + offset)
-              setFidT(response.data.tEnd + offset) 
-            }
-          );
-        }
-    });
+  const getMarkers = async () => {
+    let operatorMarkersFound: boolean;
+    try {
+      const operatorMarkers = await getExamOperatorMarkers(examId);
+      setFiducialData(operatorMarkers.data, offset, false);
+      operatorMarkersFound = true;
+    } catch (error) {
+      operatorMarkersFound = false;
+    }
+
+    if (operatorMarkersFound) { 
+      return;
+    }
+
+    try {
+      const predictedMarkers = await getExamPredictedMarkers(examId);
+      setFiducialData(predictedMarkers.data, offset, true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getMarkers();
   }, [count]);
+
+  useEffect(() => {
+    updateST();
+  }, [selectedTimeSeries]);
 
   const handleSelectedDerivationChange = (event: SelectChangeEvent) => {
     setSelectedDerivation(event.target.value as string);
     setSelectedTimeSeries(allTimeSeriesObject[event.target.value])
   };
 
-  const handleFiducialChartUpdate : Function = (childData : any) => {
-    setFidP(childData.pStart);
-    setFidQRS(childData.qrsStart);
-    setFidR(childData.r);
-    setFidR2(childData.r2);
-    setFidS(childData.qrsEnd);
-    setFidST(childData.tStart);
-    setFidT(childData.tEnd);
+  const handleFiducialChartUpdate: Function = (childData: any) => {
+    try {
+      setFiducialData(childData, 0, false);
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
@@ -177,13 +227,20 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
     await postOperatorMarkersComputations(examId, newOperatorMarkers);
     await postMarkersSistemed2(
       examId, 
-      newOperatorMarkers.pStart, 
-      newOperatorMarkers.qrsStart,
-      newOperatorMarkers.r,
-      newOperatorMarkers.qrsEnd,
-      newOperatorMarkers.tStart,
-      newOperatorMarkers.tEnd,
-      newOperatorMarkers.r2
+      newOperatorMarkers.pStart + offset, 
+      newOperatorMarkers.qrsStart + offset,
+      newOperatorMarkers.r + offset,
+      newOperatorMarkers.qrsEnd + offset,
+      newOperatorMarkers.tStart + offset,
+      newOperatorMarkers.tEnd + offset,
+      newOperatorMarkers.r2 + offset,
+      medFC,
+      medRR,
+      medPQ,
+      medQRS,
+      medQT,
+      medQTC,
+      medST,
       );
   }
 
@@ -204,15 +261,13 @@ const DerivationsComponent: React.FC<DerivationsProps> = ({examId, fiducialState
       <Element name="graphic">
       <Box sx={{ border: 2, borderColor: "#DDDDDD" }}>
         <FiducialMeasurementsTable
-          fidP={fidP}
-          fidQRS={fidQRS}
-          fidR={fidR}
-          fidR2={fidR2}
-          fidS={fidS}
-          fidST={fidST}
-          fidT={fidT}
-          examId={examId}
-          timeSeries={selectedTimeSeries}
+            fc={medFC}
+            rr={medRR}
+            pq={medPQ}
+            qrs={medQRS}
+            qt={medQT}
+            qtc={medQTC}
+            st={medST}
         />
       </Box>
       <Box

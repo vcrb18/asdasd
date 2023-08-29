@@ -1,29 +1,17 @@
 import { Box, Stack, Typography, Container, ListItemText, List, ListItem } from "@mui/material";
 import React, { useEffect } from "react";
-import { FiducialStates, DiagnosticPrediction, Diagnostic} from "../views/ExamsView";
 import { type Background, type Medication, type Symptom, type ExamMetadata } from "../../utils/MetadataTransforms";
 import FiducialMeasurementsTable from "./FiducialMeasurements";
-import { getExamOperatorMarkers, getExamPredictedMarkers, getTimeSeriesById, postOperatorMarkers, deleteOperatorMarkers, postOperatorMarkersComputations, deleteOperatorMarkersComputations} from "../../service/user.service";
+import { getTimeSeriesById } from "../../service/user.service";
 import LineChart from "../customComponents/TwelveDerivations";
 import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Element } from "react-scroll"
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import FaceIcon from '@mui/icons-material/Face';
 import { getFullNameToDisplay, getMetadataToDisplay } from "../../utils/MetadataTransforms";
 import { patientsMetadata } from "../../utils/patientMetadataDummy";
 
 const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisData, examMetadata, isLoading, diagnosticStates}): JSX.Element => {
-  const {
-    fidP, setFidP,
-    fidQRS, setFidQRS,
-    fidR, setFidR,
-    fidR2, setFidR2,
-    fidS, setFidS,
-    fidST, setFidST,
-    fidT, setFidT } = fiducialStates;
-  
+  const { medFC, medRR, medPQ, medQRS, medQT, medQTC, medST } = fiducialStates;
+
   const [timeSeriesI, setTimeSeriesI] = React.useState([]);
   const [timeSeriesII, setTimeSeriesII] = React.useState([]);
   const [timeSeriesIII, setTimeSeriesIII] = React.useState([]);
@@ -73,87 +61,14 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
     }); 
   },[]);
 
-
-  
-  let callUseEffect = 0;
   const { t } = useTranslation();
-  const [count, setCount] = React.useState(0); 
-
-  const offset = 640;
-
-  useEffect(()=> {
-    getExamOperatorMarkers(examId).then(
-      (response) => {
-        if (response.status ==  200){
-          setFidP(response.data.pStart + offset)
-          setFidQRS(response.data.qrsStart + offset)
-          setFidR(response.data.r + offset)
-          setFidR2(response.data.r2 + offset)
-          setFidS(response.data.qrsEnd + offset)
-          const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-          setFidST(stPos + offset);
-          setFidT(response.data.tEnd + offset) 
-        }
-        else{
-          getExamPredictedMarkers(examId).then(
-            (response) => {
-              setFidP(response.data.pStart + offset)
-              setFidQRS(response.data.qrsStart + offset)
-              setFidR(response.data.r + offset)
-              setFidR2(response.data.r2 + offset)
-              setFidS(response.data.qrsEnd + offset)
-              const stPos = Math.floor((response.data.qrsEnd + response.data.tEnd) / 2);
-              setFidST(stPos + offset);
-              setFidT(response.data.tEnd + offset) 
-            }
-          );
-        }
-    });
-  }, [count]);
 
   const handleOpenDerivation = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) : void => {
   }
 
-  const remapGender = (gender: string | undefined): string => {
-    switch (gender) {
-      case "HOMBRE":
-        return "male";
-      case "MUJER":
-        return "female";
-      default:
-        return "";
-    }
-  };
-
-  const getAge = (birthday: string | undefined): string => {
-    if (birthday === undefined) return '';
-
-    const splittedDate = birthday.split('-');
-    if (splittedDate.length != 3) return '';
-
-    const day = parseInt(splittedDate[0]);
-    const month = parseInt(splittedDate[1]);
-    const year = parseInt(splittedDate[2]);
-
-    const currentDate = new Date();
-    let age = currentDate.getFullYear() - year;
-
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentDay = currentDate.getDate();
-    if ((month > currentMonth) || (month == currentMonth && day > currentDay)) {
-      age = age - 1;
-    }
-
-    return age.toString();
-  };
-
   const date = analisisData?.createdAt == undefined
   ? '' 
   : (new Date(analisisData.createdAt)).toLocaleString('es-CL', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-
-  const displayAccepted : boolean = analisisData?.operatorAccept != undefined ? 
-    (analisisData?.operatorAccept === true ? true : false) : 
-      (analisisData?.accepted === true ? true : false);
 
   const styleToGraphics = {
     margin: "1px",
@@ -356,15 +271,13 @@ const ScreenshotComponent: React.FC<any> = ({examId, fiducialStates, analisisDat
           <Stack direction="column" height={"100%"}>
           <Box sx={{height:"10%", marginBottom:"15px", border: "2px solid black"}}>
             <FiducialMeasurementsTable
-              fidP={fidP}
-              fidQRS={fidQRS}
-              fidR={fidR}
-              fidR2={fidR2}
-              fidS={fidS}
-              fidST={fidST}
-              fidT={fidT}
-              examId={examId}
-              timeSeries={timeSeriesII}
+              fc={medFC}
+              rr={medRR}
+              pq={medPQ}
+              qrs={medQRS}
+              qt={medQT}
+              qtc={medQTC}
+              st={medST}
             />
           </Box>
           <Stack direction="row"

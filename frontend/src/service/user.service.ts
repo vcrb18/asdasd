@@ -222,16 +222,25 @@ export const rejectExamSistemed2 = async (examId: number, reasonForRejection: nu
   });
 }
 
-export const postMarkersSistemed2 = async (examId: number, p: number, q: number, r: number, s: number, st:number, t: number, r2: number): Promise<AxiosResponse> => {
+export const postMarkersSistemed2 = async (examId: number,
+  p: number, q: number, r: number, s: number, stFlag: number, t: number, r2: number,
+  fc: number, rr: number, pq: number, qrs: number, qt: number, qtc: number, st: number): Promise<AxiosResponse> => {
   return await axios.post(`/sistemed2_api/add_measurements/${examId}`, {
     withCredentials: true,
     p_start: p,
     qrs_start: q,
     r: r,
     qrs_end: s,
-    t_start: st,
+    t_start: stFlag,
     t_end: t,
-    r2: r2
+    r2: r2,
+    fc: fc,
+    rr: rr,
+    pq: pq,
+    qrs: qrs,
+    qt: qt,
+    qtc: qtc,
+    st: st,
   });
 }
 

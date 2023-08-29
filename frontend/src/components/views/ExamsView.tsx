@@ -5,10 +5,8 @@ import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
 import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import {
   getExam,
-  getExamPredictedMarkersComputations,
   markExamIdAsLocked,
   markExamIdAsUnlocked,
   putExamReview, putExamUnreview,
@@ -23,8 +21,6 @@ import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DiagnosisComponent from "../customComponents/DiagnosisComponent";
 
-import html2canvas from "html2canvas";
-import ScreenshotComponent from "../customComponents/ScreenshotComponent";
 import ScreenshotModal from "../customComponents/screenshotModal";
 import { Patient } from "../../utils/ExamTableConst";
 
@@ -32,17 +28,6 @@ interface ExamsViewProps {
   // examId: number ;
   buttons: Array<{ label: string; href: string }>;
   tabs?: Array<{ label: string; href: string }>;
-}
-
-interface PredictedValuesData {
-  examId: number;
-  fc: number;
-  rr: number;
-  pq: number;
-  qrs: number;
-  qt: number;
-  qtc: number;
-  st: number;
 }
 
 export interface ExamData {
@@ -79,6 +64,20 @@ export interface FiducialStates {
     setFidST: Dispatch<number>;
     fidT: number;
     setFidT: Dispatch<number>;
+    medFC: number;
+    setMedFC: Dispatch<number>;
+    medRR: number;
+    setMedRR: Dispatch<number>;
+    medPQ: number;
+    setMedPQ: Dispatch<number>;
+    medQRS: number;
+    setMedQRS: Dispatch<number>;
+    medQT: number;
+    setMedQT: Dispatch<number>;
+    medQTC: number;
+    setMedQTC: Dispatch<number>;
+    medST: number;
+    setMedST: Dispatch<number>;
 }
 
 export interface Diagnostic {
@@ -172,6 +171,13 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [fidS, setFidS] = React.useState(1900);
   const [fidST, setFidST] = React.useState(2000);
   const [fidT, setFidT] = React.useState(2100);
+  const [medFC, setMedFC] = React.useState(0);
+  const [medRR, setMedRR] = React.useState(0);
+  const [medPQ, setMedPQ] = React.useState(0);
+  const [medQRS, setMedQRS] = React.useState(0);
+  const [medQT, setMedQT] = React.useState(0);
+  const [medQTC, setMedQTC] = React.useState(0);
+  const [medST, setMedST] = React.useState(0);
   const fiducialStates: FiducialStates = {
     fidP: fidP, setFidP: setFidP,
     fidQRS: fidQRS, setFidQRS: setFidQRS,
@@ -179,7 +185,14 @@ const ExamsView: React.FC<ExamsViewProps> = ({
     fidR2: fidR2, setFidR2: setFidR2,
     fidS: fidS, setFidS: setFidS,
     fidST: fidST, setFidST: setFidST,
-    fidT: fidT, setFidT: setFidT
+    fidT: fidT, setFidT: setFidT,
+    medFC: medFC, setMedFC: setMedFC,
+    medRR: medRR, setMedRR: setMedRR,
+    medPQ: medPQ, setMedPQ: setMedPQ,
+    medQRS: medQRS, setMedQRS: setMedQRS,
+    medQT: medQT, setMedQT: setMedQT,
+    medQTC: medQTC, setMedQTC: setMedQTC,
+    medST: medST, setMedST: setMedST,
   };
 
   const [diagnosticosSugeridos, setDiagnosticosSugeridos] = useState<(DiagnosticPrediction)[]>([]);
@@ -197,43 +210,6 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [reloadTime, setReloadTime] = useState<number>();
 
   const viewRef = useRef<HTMLDivElement>(null);
-  const testRef = useRef<HTMLDivElement>(null);
-
-  const test = <div ref={testRef}>Test</div>;
-
-  const CapturePage = () => {
-    return (
-      <div>
-        <div className="screen-layout">
-          {/* Content for the screen layout */}
-          <h1>Hello, World!</h1>
-          <p>This is the content shown on the screen.</p>
-          <button onClick={handleCapture}>Capture</button>
-        </div>
-        <div className="print-layout" id="capture">
-          {/* Content for the print layout */}
-          <h1>Hello, World!</h1>
-          <p>This is the content for printing.</p>
-        </div>
-      </div>
-    );
-  };
-
-  const handleCapture = () => {
-    console.log("test");
-    const element = document.getElementById('capture');
-    if (element) {
-      html2canvas(element).then((canvas) => {
-        // Convert the canvas to an image data URL
-        const dataURL = canvas.toDataURL();
-        // Create a link element
-        const link = document.createElement('a');
-        link.href = dataURL;
-        link.download = `exam_${examId}.png`;
-        link.click();
-      });
-    }
-  };
 
   useEffect(
     () => {
@@ -374,7 +350,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
               false;
             acceptExamSistemed2(examIdNumber, isUrgent);
 
-            postMarkersSistemed2(examIdNumber, fidP, fidQRS, fidR, fidS, fidST, fidT, fidR2);
+            postMarkersSistemed2(examIdNumber,
+              fidP, fidQRS, fidR, fidS, fidST, fidT, fidR2,
+              medFC, medRR, medPQ, medQRS, medQT, medQTC, medST);
 
             const suggestedDiagnostics: DiagnosticSistemed2[] = [];
             diagnosticStates.diagnosticosSugeridos.forEach((item: DiagnosticPrediction) => {
