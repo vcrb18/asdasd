@@ -37,7 +37,7 @@ export const login = async (
           "x-access-token": response.data.token
         },
       });
-      localStorage.setItem("user", JSON.stringify(user.data));
+      localStorage.setItem("user", JSON.stringify(user.data.user));
     }
     return response.data;
   } catch (error) {
