@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { TableRow, Typography, IconButton, Collapse, Grid, Avatar, Box, Button } from "@mui/material";
+import { TableRow, Typography, IconButton, Collapse, Grid, Avatar, Box, Button, Modal } from "@mui/material";
 import React from "react";
 import { RowProps } from "../../utils/ExamTableConst";
 import Check from "../../static/images/checkVerde.png"
@@ -9,6 +9,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useTranslation } from "react-i18next";
 import { StyledTableCell, buttonsTheme } from "../../utils/ExamTableGroupBConst";
+import ScreenshotModal from "../customComponents/screenshotModal";
+import { getExam, getExamDataSistemed2 } from "../../service/user.service";
+import { ExamMetadata } from "../../utils/MetadataTransforms";
+import { FiducialStates } from "../views/ExamsView";
 
 function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {  
   const { t } = useTranslation();
@@ -49,6 +53,58 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 	);
   
 	const [open, setOpen] = React.useState(false);
+	const [openScreenshot, setOpenScreenshot] = React.useState(false);
+	const [examData, setExamData] = React.useState();
+	const [examMetadata, setExamMetadata] = React.useState<ExamMetadata>();
+
+	const [fidP, setFidP] = React.useState(0);
+	const [fidQRS, setFidQRS] = React.useState(0);
+	const [fidR, setFidR] = React.useState(0);
+	const [fidR2, setFidR2] = React.useState(0);
+	const [fidS, setFidS] = React.useState(0);
+	const [fidST, setFidST] = React.useState(0);
+	const [fidT, setFidT] = React.useState(0);
+	const fiducialStates: FiducialStates = {
+	  fidP: fidP, setFidP: setFidP,
+	  fidQRS: fidQRS, setFidQRS: setFidQRS,
+	  fidR: fidR, setFidR: setFidR,
+	  fidR2: fidR2, setFidR2: setFidR2,
+	  fidS: fidS, setFidS: setFidS,
+	  fidST: fidST, setFidST: setFidST,
+	  fidT: fidT, setFidT: setFidT
+	};
+
+	const handleOpenModal = async () => {
+		try{
+			const responseExamData = await getExam(row.examId);
+			setExamData(responseExamData.data);
+
+			const responseExamMetaData = await getExamDataSistemed2(row.examId);
+			setExamMetadata({
+				patientId: responseExamMetaData.data.PatientId,
+				birthday: responseExamMetaData.data.Birthday,
+				gender: responseExamMetaData.data.Gender,
+				backgrounds: Object.entries(responseExamMetaData.data.Backgrounds).map(([key, value]: [string, any]) => {
+				  return { id: value.ID, name: value.NAME };
+				}),
+				medications: Object.entries(responseExamMetaData.data.Medications).map(([key, value]: [string, any]) => {
+				  return { id: value.ID, name: value.NAME, dose: value.DOSE };
+				}),
+				symptoms: Object.entries(responseExamMetaData.data.Symptoms).map(([key, value]: [string, any]) => {
+				  return { id: value.ID, name: value.NAME, days: value.DAYS, hours: value.HOURS };
+				}),
+				identifier: responseExamMetaData.data.Identifier,
+				name: responseExamMetaData.data.Name,
+				lastName: responseExamMetaData.data.LastName,
+			  });
+		} catch{
+
+		}
+
+		setOpenScreenshot(true);
+	}
+	const handleCloseModal = () => setOpenScreenshot(false);
+
 	if (isMatch) {
 		return (    
 		<React.Fragment>
@@ -79,7 +135,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 				<StyledTableCell align="center">
 						<ThemeProvider theme={buttonsTheme}>
 						<Button
-								//onClick={() => handleAccess(row.examId, row.locked)}
+            					onClick={handleOpenModal}
 								color="primary"
 								variant="contained"
 								sx={{ color: "#fff" }}
@@ -108,6 +164,15 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 					</ThemeProvider>
 				</StyledTableCell>
 			</TableRow>
+			<Modal
+			open={openScreenshot}
+			onClose={handleCloseModal}
+			aria-labelledby="modal-modal-title"
+			aria-describedby="modal-modal-description"
+			>
+      			<ScreenshotModal examId={row.examId} fiducialStates={fiducialStates} examData={examData}
+         		examMetadata={examMetadata} isLoadingExamData={""} diagnosticStates={""} closeModal={handleCloseModal}/>
+    		</Modal>
 		</React.Fragment>
 	)
 }
@@ -134,7 +199,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 					<StyledTableCell align="center">
 						<ThemeProvider theme={buttonsTheme}>
 						<Button
-								//onClick={() => handleAccess(row.examId, row.locked)}
+								onClick={handleOpenModal}
 								color="primary"
 								variant="contained"
 								sx={{ color: "#fff" }}
@@ -221,6 +286,15 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 							</Collapse>
 					</StyledTableCell>
 				</TableRow>
+				<Modal
+				open={openScreenshot}
+				onClose={handleCloseModal}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+				>
+					<ScreenshotModal examId={row.examId} fiducialStates={fiducialStates} examData={examData}
+					examMetadata={examMetadata} isLoadingExamData={""} diagnosticStates={""} closeModal={handleCloseModal}/>
+				</Modal>
 			</React.Fragment>
 		)
 	}
