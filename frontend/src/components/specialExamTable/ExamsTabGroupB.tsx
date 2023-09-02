@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Footer from "../customComponents/Footer";
 import Header from "../customComponents/Header";
 import { mainMenuHeaderButtons, mainMenuPageButtons } from "../../utils/routingPropConsts";
-import { Grid, Typography, Divider, TextField, FormControl, InputLabel, Select, MenuItem, Button, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, Divider, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ExamTableGroupB from "./ExamTableGroupB";
 import { filterOption, FormInput } from "../../utils/ExamTableGroupBConst";
+import FiltersComponent from "./FiltersComponent";
+import { FilterComponentProps } from "../../utils/FiltersConst";
 
 const ExamsTabGroupB: React.FC = () => {
     const { t } = useTranslation();
@@ -20,71 +22,25 @@ const ExamsTabGroupB: React.FC = () => {
       setInputValue(data.folioSearch);
       setApplyFilter(!applyFilter);
     };
-  
-    const handleChangeReview = (event: SelectChangeEvent) => {
-      setFilterReviewCondition(event.target.value as filterOption);
-    };
-
-    const handleChangeState = (event: SelectChangeEvent) => {
-      setFilterStateCondition(event.target.value as filterOption);
-    };
 
     const handleApplyButton = () => {
       setApplyFilter(!applyFilter);
     }
-
-    const SwitchesGroup = () => {
-      return (
-        <Grid container display={"flex"} justifyContent={"space-around"}>
-          <Grid item xs={2} sm={2} md={2} lg={2} paddingY={"2%"}>
-            <FormControl fullWidth variant="standard">
-              <InputLabel>Revisión</InputLabel>
-              <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={filterReviewCondition}
-              label="Revisión"
-              onChange={handleChangeReview}
-              >
-                <MenuItem value={""}>No aplicar</MenuItem>
-                <MenuItem value={"true"}>Revisado</MenuItem>
-                <MenuItem value={"false"}>No revisado</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={2} paddingY={"2%"}>
-            <FormControl fullWidth variant="standard">
-              <InputLabel>Estado</InputLabel>
-              <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={filterStateCondition}
-              label="Revisión"
-              onChange={handleChangeState}
-              >
-                <MenuItem value={""}>No aplicar</MenuItem>
-                <MenuItem value={"true"}>Aceptados</MenuItem>
-                <MenuItem value={"false"}>Rechazados</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={2} sm={2} md={2} lg={2} paddingY={"2%"}>
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{ color: "#fff" }}
-              onClick={handleApplyButton}
-            >
-              <Typography fontSize={'120%'} color={'#fff'}>
-              Aplicar filtros
-              </Typography>
-            </Button>
-          </Grid>
-        </Grid>
-  
-      );
-    }
     
+    const filters: FilterComponentProps[] = [{
+      conditionValue: filterReviewCondition,
+      label: "filterByReview",
+      setCondition: setFilterReviewCondition,
+      trueOption: "reviewed",
+      falseOption: "toReview",
+    }, 
+    {
+      conditionValue: filterStateCondition,
+      label: "filterByState",
+      setCondition: setFilterStateCondition,
+      trueOption: "accepted",
+      falseOption: "rejected",
+    },]
   
     return (
       <>
@@ -135,7 +91,7 @@ const ExamsTabGroupB: React.FC = () => {
                 </form>
               </Grid>
               <Grid container lg={8} md={8} sm={12} xs={12}>
-                <SwitchesGroup/>
+                <FiltersComponent filterComponentProps={filters} handleApplyButton={handleApplyButton}/>
               </Grid>
             </Grid>
             <Grid
