@@ -9,22 +9,17 @@ import {
   mainMenuPageButtons,
   roles,
 } from "./utils/routingPropConsts";
-import ExamTable from "./components/tables/ExamTable";
 import MetricTabs from "./components/tabs/MetricTab";
 import AlertTab from "./components/tabs/AlertsTab";
-import AnalisisBox from "./components/customComponents/AnalisisBox";
-import DiagnosisComponent from "./components/customComponents/DiagnosisComponent";
-import PredictionBox from "./components/customComponents/PredictionBox";
 import ExamsView from "./components/views/ExamsView";
 import RequireAuth from "./components/customComponents/ProtectedRoute";
 import TablesView from "./components/views/TablesView";
-import ExamsTab from "./components/tabs/ExamsTab";
 import AdminView from "./components/views/AdminView";
 import ModifyParametersView from "./components/views/ModifyParametersView";
+import Exams from "./components/customComponents/exams";
 
 function Routing(): JSX.Element {
   const allRoles = [roles.admin, roles.doctor, roles.operator, roles.superOperator];
-
   return (
     <BrowserRouter>
       <Routes>
@@ -42,7 +37,7 @@ function Routing(): JSX.Element {
           path="/exams"
           element={
             <RequireAuth roles={allRoles}>
-              <ExamsTab />
+              <Exams/>
             </RequireAuth>
           }
         />
