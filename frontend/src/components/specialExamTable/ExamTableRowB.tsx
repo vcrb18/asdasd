@@ -33,7 +33,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 			)
 	};
 	
-	const getReviewState = (state: boolean): JSX.Element => (
+	const getChecks = (state: boolean): JSX.Element => (
 		<Box display="flex" justifyContent="center">
 			<Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
 		</Box>
@@ -129,7 +129,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 				</StyledTableCell> 
 
 				<StyledTableCell align="center">
-						{getReviewState(false)}
+						{getChecks(row.screenshot)}
 				</StyledTableCell>
 
 				<StyledTableCell align="center">
@@ -213,7 +213,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 					</StyledTableCell>
 
 					<StyledTableCell align="center">
-						{getReviewState(false)}
+						{getChecks(row.screenshot)}
 					</StyledTableCell>
 
 					<StyledTableCell>
@@ -280,7 +280,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 										</Typography>
 									</Grid>
 									<Grid item xs={2} sm={2} md={2} lg={2} >
-										{getReviewState(row.operatorReview)}
+										{getChecks(row.operatorReview)}
 									</Grid>
 								</Grid>
 							</Collapse>
