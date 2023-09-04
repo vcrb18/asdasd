@@ -6,15 +6,13 @@ import { Grid, Typography, Divider, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ExamTableGroupB from "./ExamTableGroupB";
-import { filterOption, FormInput } from "../../utils/ExamTableGroupBConst";
 import FiltersComponent from "./FiltersComponent";
 import { FilterComponentProps } from "../../utils/FiltersConst";
+import { FormInput, filterOption } from "../../utils/ExamTableConst";
 
 const ExamsTabGroupB: React.FC = () => {
     const { t } = useTranslation();
     const [inputValue, setInputValue] = useState<string>("");
-    const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
-    const [filterStateCondition, setFilterStateCondition] = useState<filterOption>("");
     const [filterScreenshotCondition, setFilterScreenshotCondition] = useState<filterOption>("");
     const [applyFilter, setApplyFilter] = useState<boolean>(false);
     const { register, handleSubmit } = useForm<FormInput>();
@@ -100,8 +98,6 @@ const ExamsTabGroupB: React.FC = () => {
             >
               <ExamTableGroupB 
               applyFilter={applyFilter} 
-              filterStateCondition={filterStateCondition} 
-              filterReviewCondition={filterReviewCondition}
               filterScreenshotCondition={filterScreenshotCondition} 
               filterId={inputValue}  
               />
