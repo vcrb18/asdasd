@@ -3,192 +3,32 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import CircularProgress from "@mui/material/CircularProgress";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { ThemeProvider, createTheme, styled, useTheme } from "@mui/material/styles";
-import Check from "../../static/images/checkVerde.png"
-import X from "../../static/images/X.png"
+import { useTheme } from "@mui/material/styles";
+
 import {
-  Avatar,
-  Box,
-  Button,
-  Collapse,
-  Grid,
-  IconButton,
   TableContainer,
-  TableHead,
   TablePagination,
-  TableRow,
-  TableSortLabel,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
-import { getExams, getExamsByFilter, getExamsById, getExamsCount, useExams } from "../../service/user.service";
-import { columns, RowProps, mobileColumns, ExamData,ExamHeadTableProps, Order, filterStateTypes, filterReviewTypes, filter, ExamTableProps, ExamTableResponse } from "../../utils/ExamTableConst";
-import { getComparator, stableSort } from "../../utils/ExamTableFunctions";
-import { visuallyHidden } from "@mui/utils";
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import { useTranslation } from "react-i18next";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { getExamsByFilter } from "../../service/user.service";
+import { columns, mobileColumns, ExamData, Order, ExamTableProps, ExamTableResponse, StyledTableCell } from "../../utils/ExamTableConst";
 import { AxiosResponse } from "axios";
-
-
-
-const API_URL = "http://localhost:8080/";
-// Styled head bar on the table
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#E4EDEF",
-    color: "#007088",
-    fontWeight: "bold",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#878787", 
-  },
-}));
-
-
-
-
-function ExamTableHead(props: ExamHeadTableProps): JSX.Element {
-  const { t } = useTranslation();
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler =
-    (property: string) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"));
-  if (isMatchMd){ 
-    return (
-      <TableHead>
-        <TableRow>
-          {columns.map((columns) => (
-            <StyledTableCell key={columns.id} align={columns.align}>
-              <TableSortLabel
-                active={orderBy === columns.id}
-                direction={orderBy === columns.id ? order : "asc"}
-                onClick={createSortHandler(columns.id)}
-              >
-                <Typography fontSize={"100%"} fontWeight={"bold"}>
-                  {t(columns.label)}
-                </Typography>
-                {orderBy === columns.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc" ? "sorted descending" : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </StyledTableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-  else {
-    return (
-      <TableHead>
-        <TableRow>
-          {mobileColumns.map((columns) => (
-            <StyledTableCell key={columns.id} align={columns.align}>
-              <TableSortLabel
-                active={orderBy === columns.id}
-                direction={orderBy === columns.id ? order : "asc"}
-                onClick={createSortHandler(columns.id)}
-              >
-                <Typography fontSize={"100%"} fontWeight={"bold"}>
-                  {t(columns.label)}
-                </Typography>
-                {orderBy === columns.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc" ? "sorted descending" : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </StyledTableCell>
-          ))}
-          <StyledTableCell align={"center"}>
-          </StyledTableCell>
-        </TableRow>
-      </TableHead>
-    );
-  }
-}
-
-function colorSwitcher(value: boolean): string {
-  return value ? "green" : "red";
-}
+import ExamTableHead from "./ExamTableHead";
+import ExamTableRow from "./ExamTableRow";
 
 const ExamTable = ({
-  filterStates,
-  filterReview,
-  useStateFilter,
-  useReviewFilter,
-  useIdFilter,
+  applyFilter,
+  filterStateCondition,
+  filterReviewCondition,
   filterId
 }: ExamTableProps): JSX.Element => {
-  const { t, i18n } = useTranslation();
-  const buttonsTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#007088",
-      },
-    },
-  });
-  const [reloadPage, setReloadPage] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("fecha");
   const [page, setPage] = React.useState(0);
-  const [maxPage, setMaxPage] = React.useState(-1);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [maxRows, setMaxRows] = React.useState(20);
   const [rows, setRows] = React.useState<ExamData[]>([]);
-  const [oldFolio, setOldFolio] = React.useState<string>(filterId);
-  const [filteredIdRows, setFilteredIdRows] = React.useState<ExamData[]>([]);
-  const [filteredRows, setFilteredRows] = React.useState<ExamData[]>([]);
-  const [oldFilterState, setOldFilterState] = React.useState<filterStateTypes>(filterStates);
-  const [oldFilterReview, setOldFilterReview] = React.useState<filterReviewTypes>(filterReview);
-
-  const formatDate = (dateString: string): JSX.Element => {
-    const date = new Date(dateString);
-    return (
-      <Typography color={"#878787"} fontWeight={"bold"}>
-        {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
-      </Typography>
-      )
-  };
-
-const getRemainingTimeColor = (colorNumber: number): "error" | "success" | "warning" => {
-  if (colorNumber === 1) {
-    return "success";
-  } else if (colorNumber === 2) {
-    return "warning";
-  }
-  return "error";
-};
-  
-  const getStatus = (state: boolean)=> (
-    <Typography
-      fontWeight={"bold"}
-      color={colorSwitcher(state)}
-      >
-        {state?  t("accepted") : t("rejected")}
-  </Typography>
-  );
-
-const getUrgency = (urgency: number): JSX.Element => (
-  <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
-);
-   
-  const getReviewState = (state: boolean): JSX.Element => (
-    <Box display="flex" justifyContent="center">
-      <Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
-    </Box>
-);
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -208,7 +48,6 @@ const getUrgency = (urgency: number): JSX.Element => (
   ): void => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-    setMaxPage(-1);
   };
 
   const handleRowsResponse = (response: AxiosResponse<ExamTableResponse,any>, newExams: ExamData[]): void => {
@@ -216,331 +55,21 @@ const getUrgency = (urgency: number): JSX.Element => (
       newExams.push(examData);
     });  
   }
+
   useEffect(()=> {
     setIsLoading(true);
-    let shouldLoad = false
-    let useFilter = useReviewFilter || useStateFilter || useIdFilter;
-    if (page > maxPage || useFilter || reloadPage){
-      shouldLoad = true
-      setMaxPage(page)
-      if (reloadPage){
-        setPage(0)
-      }
-      if (useFilter) {
-        if (useReviewFilter && useStateFilter){
-          getExamsByFilter(page, 11, filterStates.accepted, filterReview.reviewed).then((response) => {
-            console.log(response.data);
-            const newExams: ExamData[] = [];
-            setMaxRows(response.data.count)
-            handleRowsResponse(response, newExams)
-            if (maxRows == 0 ){
-              throw new Error("No se encontraron exámenes")
-            } 
-            if (filterStates == oldFilterState && filterReview == oldFilterReview){
-              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
-              setFilteredRows([...filteredRows, ...newExamsFiltered]); //
-              setReloadPage(false)
-            }
-            else if (filterStates == oldFilterState){
-              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
-              setOldFilterReview(filterReview)
-              setReloadPage(false)
-              setFilteredRows(newExamsFiltered); 
-            }
-            else if (filterReview == oldFilterReview) {
-              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
-              setReloadPage(false)
-              setOldFilterState(filterStates)
-              setFilteredRows(newExamsFiltered);
-            }
-            else{
-              if (maxRows == 0 ){
-                throw new Error("No se encontraron exámenes")
-              }   
-              setOldFilterReview(filterReview)
-              setOldFilterState(filterStates)
-              setFilteredRows(newExams);
-              setReloadPage(true)
-            }
-          return Promise
-        }).catch((error) => {
-          alert(error.message)
-        });
-      }
-      else if (useStateFilter) {
-        getExamsByFilter(page, 11, filterStates.accepted, null).then((response) => {
-          const newExams: ExamData[] = [];
-          setMaxRows(response.data.count)
-          handleRowsResponse(response, newExams)
-          if (filterStates == oldFilterState){
-            const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
-              setReloadPage(false)
-              setFilteredRows([...filteredRows, ...newExamsFiltered]); 
-          }
-          else {
-            if (newExams.length == 0 ){
-              throw new Error("No se encontraron exámenes")
-            }
-            setOldFilterState(filterStates);
-            setFilteredRows(newExams);
-            setReloadPage(true)
-          }
-          return Promise
-        }).catch((error) => {
-          alert(error.message);
-        });
-      }
-        else if (useReviewFilter) {
-          getExamsByFilter(page, 11, null, filterReview.reviewed).then((response) => {
-            const newExams: ExamData[] = [];
-            setMaxRows(response.data.count)
-            handleRowsResponse(response, newExams)
-            if (filterReview === oldFilterReview){
-              const newExamsFiltered = newExams.filter((exam: ExamData) => !filteredRows.some(row => row.examId === exam.examId));
-              setFilteredRows([...filteredRows, ...newExamsFiltered]);
-              setReloadPage(false)
-            }
-            else if (filterReview != oldFilterReview) {
-              setOldFilterReview(filterReview)
-              if (newExams.length == 0 ){
-                throw new Error("No se encontraron exámenes")
-              }
-              setReloadPage(true)
-              setFilteredRows(newExams);
-              
-            }
-            return Promise
-        }).catch((error) => {
-          alert(error.message);
+    getExamsByFilter(filterId, page, 11, filterStateCondition, filterReviewCondition).then((response) => {
+      setMaxRows(response.data.count);
+      const newExams: ExamData[] = [];
+      handleRowsResponse(response, newExams);
+      setRows(newExams);
+    });
+    setIsLoading(false);
+  }, [applyFilter, page]);
 
-        });
-      }        
-        else if (useIdFilter){
-          getExamsById(filterId, page, 11).then((response) => {
-            const newExams: ExamData[] = [];
-            setMaxRows(response.data.count)
-            handleRowsResponse(response, newExams)
-            if (filterId == oldFolio){
-              setOldFolio(filterId)
-              setReloadPage(false)
-              setFilteredIdRows([...filteredIdRows, ...newExams]);
-            }
-            else {
-              if (newExams.length == 0 ){
-                throw new Error("No se encontraron exámenes")
-              }
-              else{
-              setReloadPage(true)
-              setFilteredIdRows(newExams);
-              }
-            }
-            return Promise
-          }).catch((error) => {
-            alert(error.message);
-
-          });
-        }
-      }
-      else {
-      getExams(page, 11).then((response) => {
-        const newExams: ExamData[] = [];
-        setMaxRows(response.data.count)
-        handleRowsResponse(response, newExams)
-        const newExamsFiltered = newExams.filter((exam: ExamData) => !rows.some(row => row.examId === exam.examId));
-          setRows([...rows, ...newExamsFiltered]);
-          return Promise
-        }).catch((error) => {
-          alert(error.message);
-        });
-      }
-    }
-      if (shouldLoad) {
-        setTimeout(() => {
-          setIsLoading(false)
-        },200)
-      } else {
-        setIsLoading(false);
-      }
-    }
-, [page, filterId, oldFilterReview, oldFilterState, useReviewFilter, useStateFilter, useIdFilter])
-  const navigate: NavigateFunction = useNavigate();
-
-  const handleAccess = (examId: number, locked: boolean | null) => {
-    if(!locked){
-      navigate(`/examsview/${examId}`);
-    }
-  }
-
-  const parseTime = (time: string) => {
-    let timeParser = '';
-    let timeSplit = time.split(' ');
-    timeParser += t(timeSplit[1]);
-    if(timeParser.includes("X")){
-    timeParser = timeParser.replace("X", timeSplit[0]);
-    } else{
-      timeParser = timeSplit[0] + " " + timeParser;
-    } 
-    return timeParser
-  }
-
-  const Row: React.FC<RowProps> = ({ row, isMatch }) => {  
-    const [open, setOpen] = React.useState(false);
-    if (isMatch) {
-      return (    
-      <React.Fragment>
-        <TableRow hover role="checkbox" tabIndex={-1} key={row.examId}>
-          <StyledTableCell align="center">
-            <Typography fontSize={"100%"} fontWeight={"bold"}>
-              {row.examId}
-            </Typography>
-          </StyledTableCell>
-          <StyledTableCell align="left"  >
-            {row.organizationLegalName}
-          </StyledTableCell> 
-          <StyledTableCell align="left"  >
-            {row.patient.name} {row.patient.lastName}
-          </StyledTableCell> 
-          <StyledTableCell align="center">
-            {formatDate(row.createdAt)}
-          </StyledTableCell> 
-          <StyledTableCell align="center">
-            <Typography fontWeight={"bold"}>
-              {parseTime(row.remainingTime)}
-            </Typography>
-          </StyledTableCell>  
-          <StyledTableCell align="center">{getStatus(row.operatorAccept ?? row.accepted)}
-</StyledTableCell>
-          <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
-          <StyledTableCell align="center">{getReviewState(row.operatorReview)}</StyledTableCell>
-          <StyledTableCell align="center">
-            <ThemeProvider theme={buttonsTheme}>
-              <Button
-                onClick={() => handleAccess(row.examId, row.locked)}
-                color="primary"
-                variant="contained"
-                sx={{ color: "#fff" }}
-                value={row.examId}
-              >
-                <Typography fontSize={'120%'} color={'#fff'}>
-                  {row.locked === true ? t("locked") : t("view")}
-                </Typography>
-              </Button>
-            </ThemeProvider>
-          </StyledTableCell>
-        </TableRow>
-      </React.Fragment>
-    )
-  }
-    else {
-      return(
-        <React.Fragment>
-          <TableRow hover role="checkbox" tabIndex={-1} key={row.examId} sx={{ '& > *': { borderBottom: 'unset' } }}>
-            <StyledTableCell align="center">
-              <ThemeProvider theme={buttonsTheme}>
-                <Button
-                  onClick={() => handleAccess(row.examId, row.locked)}
-                  color="primary"
-                  variant="contained"
-                  sx={{ color: "#fff" }}
-                  value={row.examId}
-                >
-                  <Typography fontSize={'120%'} color={'#fff'}>
-                    {row.locked === true ? t("locked") : t("view")}
-                  </Typography>
-                </Button>
-              </ThemeProvider>
-            </StyledTableCell>
-            <StyledTableCell align="center">{getUrgency(row.urgency)}</StyledTableCell>
-            <StyledTableCell align="center">
-              <Typography fontWeight={"bold"}>
-                {parseTime(row.remainingTime)}
-              </Typography>
-            </StyledTableCell>
-            <StyledTableCell>
-              <IconButton
-                  aria-label="expand row"
-                  size="small"
-                  onClick={() => setOpen(!open)}
-                  >
-                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </StyledTableCell>
-          </TableRow>
-          <TableRow>
-            <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                  <Grid container spacing={1} paddingY={"1%"}>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("patient")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {row.patient.name} {row.patient.lastName}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("folio")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {row.examId}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("medicalCenter")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4}>
-                      {row.organizationLegalName}
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("date")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4}>
-                      {formatDate(row.createdAt)}
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("state")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4} md={4} lg={4}>
-                      {getStatus(row.operatorAccept ?? row.accepted)}
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2}>
-                      <Typography fontSize={"100%"} fontWeight={"bold"}>
-                        {t("review")}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2} lg={2} >
-                      {getReviewState(row.operatorReview)}
-                    </Grid>
-                  </Grid>
-                </Collapse>
-            </StyledTableCell>
-          </TableRow>
-        </React.Fragment>
-      )
-    }
-  };
-
-  const sortedRows = (useIdFilter)? stableSort(filteredIdRows, getComparator(order, orderBy)) :
-  ( (useReviewFilter || useStateFilter)?
-    stableSort(filteredRows, getComparator(order, orderBy)) :
-    stableSort(rows, getComparator(order, orderBy)))
-
-  const paginatedRows = sortedRows.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-    );
-
+  useEffect(()=> {
+    setPage(0);
+  }, [applyFilter]);
 
   const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
   return (
@@ -553,6 +82,8 @@ const getUrgency = (urgency: number): JSX.Element => (
              order={order}
              orderBy={orderBy}
              onRequestSort={handleRequestSort}
+             columns={columns}
+             mobileColumns={mobileColumns}
            />
            {isLoading ? (
             <TableBody>
@@ -569,7 +100,7 @@ const getUrgency = (urgency: number): JSX.Element => (
            )
            :(
             <TableBody>
-              {paginatedRows.map((row: ExamData) => <Row row={row} isMatch={isMatchMd} />)}
+              {rows.map((row: ExamData) => <ExamTableRow row={row} isMatch={isMatchMd} />)}
             </TableBody>)
           }
           </Table>
@@ -578,7 +109,6 @@ const getUrgency = (urgency: number): JSX.Element => (
          rowsPerPageOptions={[25]}
          component="div"
          count={maxRows}
-        //  count={rows.length}
          rowsPerPage={rowsPerPage}
          page={page}
          onPageChange={handleChangePage}

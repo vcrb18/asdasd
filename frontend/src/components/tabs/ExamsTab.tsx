@@ -4,12 +4,6 @@ import {
   Divider,
   Grid,
   TextField,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  IconButton,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -22,49 +16,30 @@ import {
 } from "../../utils/routingPropConsts";
 import Footer from "../customComponents/Footer";
 import { useForm } from "react-hook-form";
-import { truncate } from "fs";
 import { useLocation } from "react-router-dom";
+import { FilterComponentProps } from "../../utils/FiltersConst";
+import FiltersComponent from "../specialExamTable/FiltersComponent";
+import { FormInput, filterOption } from "../../utils/ExamTableConst";
 
-type FormInput = {
-  folioSearch: string;
-}
-type filterStateTypes = {
-  rejected: boolean,
-  accepted: boolean,
-}
-type filterReviewTypes = {
-  reviewed: boolean,
-  notReviewed: boolean,
-}
 const ExamsTab = (): JSX.Element => {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState<string>("");
-  const [filterReviewCondition, setFilterReviewCondition] = useState<boolean>(false);
-  const [filterStateCondition, setFilterStateCondition] = useState<boolean>(false);
-  const [filterIdCondition, setFilterIdCondition] = useState<boolean>(false);
-  const [filterState, setFilterState] = React.useState<filterStateTypes>({
-    rejected: true,
-    accepted: true,
-  });
-  const [filterReview, setFilterReview] = React.useState<filterReviewTypes>({
-    reviewed: true,
-    notReviewed: true,
-  })
+  const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
+  const [filterStateCondition, setFilterStateCondition] = useState<filterOption>("");
+  const [applyFilter, setApplyFilter] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<FormInput>();
   const [openSnackBarValidation, setOpenSnackBarValidation] = useState<boolean>(false);
   const [openSnackBarUndoValidation, setOpenSnackBarUndoValidation] = useState<boolean>(false);
 
 
-
   const onSubmit = (data: FormInput) : void => {
     setInputValue(data.folioSearch);
-    if (inputValue !== "") {
-      setFilterIdCondition(true);
-    } else {
-      setFilterIdCondition(false);
-    } 
-    // Do whatever you need with the input value here
+    setApplyFilter(!applyFilter);
   };
+
+  const handleApplyButton = () => {
+    setApplyFilter(!applyFilter);
+  }
 
   const handleCloseSnackBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -87,118 +62,20 @@ const ExamsTab = (): JSX.Element => {
     }
   }, []);
 
-  const handleStateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if ((event.target.name == "accepted" && filterState.rejected == true && event.target.checked) || (event.target.name == "rejected" && filterState.accepted == true && event.target.checked)){
-      setFilterState({
-        ...filterState,
-        [event.target.name] : event.target.checked
-      });
-      setFilterStateCondition(false)
-    }
-    else if ((event.target.name == "accepted" && filterState.rejected == false && !event.target.checked) || (event.target.name == "rejected" && filterState.accepted == false && !event.target.checked)){
-      setFilterState({
-        ...filterState,
-        [event.target.name] : event.target.checked
-      });
-      setFilterStateCondition(false)
-    }
-    else {
-      setFilterState({
-        ...filterState,
-        [event.target.name]: event.target.checked,
-      });
-      setFilterStateCondition(true)
-    }
-  };
-
-  const handleReviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if ((event.target.name == "reviewed" && filterReview.notReviewed == true && event.target.checked) || (event.target.name == "notReviewed" && filterReview.reviewed == true && event.target.checked)){
-      setFilterReview({
-        ...filterReview,
-        [event.target.name] : event.target.checked
-      });
-      setFilterReviewCondition(false)
-    }
-    else if ((event.target.name == "reviewed" && filterReview.notReviewed == false && !event.target.checked) || (event.target.name == "notReviewed" && filterReview.reviewed == false && !event.target.checked)){
-      setFilterReview({
-        ...filterReview,
-        [event.target.name] : event.target.checked
-      });
-      setFilterReviewCondition(false)
-    }
-    else {
-      setFilterReview({
-        ...filterReview,
-        [event.target.name]: event.target.checked,
-      });
-      setFilterReviewCondition(true)
-    }
-  };
-  const SwitchesGroup = () => {
-    return (
-      <Grid container display={"flex"} justifyContent={"space-around"}>
-        <Grid item xs={6} sm={6} md={6} lg={6} paddingY={"2%"}>
-          <FormControl component="fieldset" variant="standard">
-            <FormLabel component="legend">
-              <Typography fontWeight={"bold"}>
-                {t("filterByReview")}
-              </Typography>
-            </FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch checked={filterReview.reviewed} onChange={handleReviewChange} name="reviewed" />
-                }
-                label={
-                  <Typography>
-                    {t("reviewed")}
-                  </Typography>}
-              />
-              <FormControlLabel
-                control={
-                  <Switch checked={filterReview.notReviewed} onChange={handleReviewChange} name="notReviewed" />
-                }
-                label={
-                  <Typography>
-                    {t("toReview")}
-                  </Typography>}
-              />
-            </FormGroup>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} sm={6} md={6} lg={6} paddingY={"2%"}>
-          <FormControl component="fieldset" variant="standard">
-              <FormLabel component="legend">
-                <Typography fontWeight={"bold"}>
-                  {t("filterByState")}
-                </Typography>
-              </FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch checked={filterState.accepted} onChange={handleStateChange} name="accepted"/>
-                  }
-                  label={
-                    <Typography>
-                      {t("accepted")}
-                    </Typography>}
-                />
-                <FormControlLabel
-                  control={
-                    <Switch checked={filterState.rejected} onChange={handleStateChange} name="rejected" />
-                  }
-                  label={
-                    <Typography>
-                      {t("rejected")}
-                    </Typography>}
-                />
-              </FormGroup>
-            </FormControl>
-        </Grid>
-      </Grid>
-
-    );
-  }
+  const filters: FilterComponentProps[] = [{
+    conditionValue: filterReviewCondition,
+    label: "filterByReview",
+    setCondition: setFilterReviewCondition,
+    trueOption: "reviewed",
+    falseOption: "toReview",
+  }, 
+  {
+    conditionValue: filterStateCondition,
+    label: "filterByState",
+    setCondition: setFilterStateCondition,
+    trueOption: "accepted",
+    falseOption: "rejected",
+  },]
   
 
   return (
@@ -260,7 +137,7 @@ const ExamsTab = (): JSX.Element => {
               </form>
             </Grid>
             <Grid container lg={8} md={8} sm={12} xs={12}>
-              <SwitchesGroup/>
+              <FiltersComponent filterComponentProps={filters} handleApplyButton={handleApplyButton}/>
             </Grid>
           </Grid>
           <Grid
@@ -272,7 +149,12 @@ const ExamsTab = (): JSX.Element => {
             justifyContent={"flex-start"}
             sx={{ fontSize: "1.5rem" }}
           >
-            <ExamTable filterReview={filterReview} filterStates={filterState} useStateFilter={filterStateCondition} useReviewFilter={filterReviewCondition} useIdFilter={filterIdCondition} filterId={inputValue}  />
+            <ExamTable 
+              applyFilter={applyFilter} 
+              filterStateCondition={filterStateCondition} 
+              filterReviewCondition={filterReviewCondition}
+              filterId={inputValue}  
+            />
           </Grid>
         </Grid>
       </Grid>

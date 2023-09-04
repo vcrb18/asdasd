@@ -9,21 +9,17 @@ import {
   TablePagination,
   useMediaQuery,
 } from "@mui/material";
-import { getExamsByFilter2 } from "../../service/user.service";
-import { ExamData, ExamTableResponse } from "../../utils/ExamTableConst";
+import { getExamsByFilter } from "../../service/user.service";
+import { ExamData, ExamTableGroupBProps, ExamTableResponse, StyledTableCell, columnsGroupB, mobileColumnsGroupB, Order } from "../../utils/ExamTableConst";
 import { AxiosResponse } from "axios";
 import ExamTableHead from "../tables/ExamTableHead";
 import ExamTableRowB from "./ExamTableRowB";
-import { ExamTableProps, Order, StyledTableCell, columns, mobileColumns } from "../../utils/ExamTableGroupBConst";
-
 
 const ExamTableGroupB = ({
   applyFilter,
-  filterStateCondition,
-  filterReviewCondition,
   filterScreenshotCondition,
   filterId
-}: ExamTableProps): JSX.Element => {
+}: ExamTableGroupBProps): JSX.Element => {
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [order, setOrder] = React.useState<Order>("asc");
@@ -61,7 +57,7 @@ const ExamTableGroupB = ({
 
   useEffect(()=> {
     setIsLoading(true);
-    getExamsByFilter2(filterId, page, 11, filterStateCondition, filterReviewCondition, filterScreenshotCondition).then((response) => {
+    getExamsByFilter(filterId, page, 11, "", "", filterScreenshotCondition).then((response) => {
       setMaxRows(response.data.count);
       const newExams: ExamData[] = [];
       handleRowsResponse(response, newExams);
@@ -87,8 +83,8 @@ const ExamTableGroupB = ({
              order={order}
              orderBy={orderBy}
              onRequestSort={handleRequestSort}
-             columns={columns}
-             mobileColumns={mobileColumns}
+             columns={columnsGroupB}
+             mobileColumns={mobileColumnsGroupB}
            />
            {isLoading ? (
             <TableBody>

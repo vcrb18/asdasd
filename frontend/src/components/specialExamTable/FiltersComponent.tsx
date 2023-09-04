@@ -1,13 +1,13 @@
 import { SelectChangeEvent, Grid, FormControl, InputLabel, Select, MenuItem, Typography, Button, ThemeProvider } from "@mui/material";
-import { buttonsTheme, filterOption } from "../../utils/ExamTableGroupBConst";
 import { FilterComponentProps, FiltersComponentProps } from "../../utils/FiltersConst";
 import { useTranslation } from "react-i18next";
+import { buttonsTheme, filterOption } from "../../utils/ExamTableConst";
   
 function FilterComponent({conditionValue, label, setCondition, trueOption, falseOption}: FilterComponentProps){
 	const { t } = useTranslation();
 
 	const handleOnChange = (event: SelectChangeEvent) => {
-			setCondition(event.target.value as filterOption);
+		setCondition(event.target.value as filterOption);
 	}
 
 	return(
@@ -26,7 +26,7 @@ function FilterComponent({conditionValue, label, setCondition, trueOption, false
 					<MenuItem value={"false"}>{t(falseOption)}</MenuItem>
 				</Select>
 			</FormControl>
-</Grid>
+		</Grid>
 	);
 }
   

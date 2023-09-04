@@ -1,18 +1,16 @@
 import { ThemeProvider } from "@emotion/react";
-import { TableRow, Typography, IconButton, Collapse, Grid, Avatar, Box, Button, Modal } from "@mui/material";
+import { TableRow, Typography, IconButton, Collapse, Grid, Button, Modal } from "@mui/material";
 import React from "react";
-import { RowProps } from "../../utils/ExamTableConst";
-import Check from "../../static/images/checkVerde.png"
-import X from "../../static/images/X.png"
+import { RowProps, StyledTableCell, buttonsTheme } from "../../utils/ExamTableConst";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useTranslation } from "react-i18next";
-import { StyledTableCell, buttonsTheme } from "../../utils/ExamTableGroupBConst";
 import ScreenshotModal from "../customComponents/screenshotModal";
 import { getExam, getExamDataSistemed2 } from "../../service/user.service";
 import { ExamMetadata } from "../../utils/MetadataTransforms";
 import { FiducialStates } from "../views/ExamsView";
+import { formatDate, getChecks, getStatus } from "../../utils/ExamTableFunctions";
 
 function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {  
   const { t } = useTranslation();
@@ -23,34 +21,6 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 			navigate(`/examsview/${examId}`);
 		}
 	}
-
-	const formatDate = (dateString: string): JSX.Element => {
-		const date = new Date(dateString);
-		return (
-			<Typography color={"#878787"} fontWeight={"bold"}>
-			{date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
-			</Typography>
-			)
-	};
-	
-	const getChecks = (state: boolean): JSX.Element => (
-		<Box display="flex" justifyContent="center">
-			<Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
-		</Box>
-	);
-	
-	const colorSwitcher = (value: boolean): string => {
-		return value ? "green" : "red";
-	}
-	
-	const getStatus = (state: boolean)=> (
-		<Typography
-			fontWeight={"bold"}
-			color={colorSwitcher(state)}
-			>
-				{state?  t("accepted") : t("rejected")}
-	</Typography>
-	);
   
 	const [open, setOpen] = React.useState(false);
 	const [openScreenshot, setOpenScreenshot] = React.useState(false);
@@ -120,8 +90,7 @@ function ExamTableRowB({ row, isMatch }: RowProps): JSX.Element {
 				</StyledTableCell> 
 
 				<StyledTableCell align="left"  >
-					Robinson Crusoe
-					{/*row.patient.name} {row.patient.lastName*/}
+					{row.patient.name} {row.patient.lastName}
 				</StyledTableCell> 
 
 				<StyledTableCell align="center">

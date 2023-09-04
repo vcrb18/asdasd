@@ -2,9 +2,9 @@ import { useTheme } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import { useMediaQuery, TableHead, TableRow, TableSortLabel, Typography, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { ExamHeadTableProps2, StyledTableCell } from "../../utils/ExamTableGroupBConst";
+import { ExamHeadTableProps, StyledTableCell } from "../../utils/ExamTableConst";
 
-function ExamTableHead({order, orderBy, onRequestSort, columns, mobileColumns}: ExamHeadTableProps2): JSX.Element {
+function ExamTableHead({order, orderBy, onRequestSort, columns, mobileColumns}: ExamHeadTableProps): JSX.Element {
     const { t } = useTranslation();
     const createSortHandler =
       (property: string) => (event: React.MouseEvent<unknown>) => {
