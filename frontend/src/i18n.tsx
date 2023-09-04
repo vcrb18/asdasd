@@ -319,6 +319,8 @@ const resources = {
       dontApply: "Do not apply",
       capture: "Capture",
       sentToDoctor: "Sent to doctor",
+      sent: "Sent",
+      notSent: "Not sent",
     },
   },
   es: {
@@ -637,6 +639,8 @@ const resources = {
       dontApply: "No aplicar",
       capture: "Capturar",
       sentToDoctor: "Enviado al doctor",
+      sent: "Enviados",
+      notSent: "No enviados",
     },
   },
 };
