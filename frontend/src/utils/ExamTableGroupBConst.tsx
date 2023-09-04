@@ -24,6 +24,7 @@ export interface ExamTableProps {
 applyFilter: boolean;
 filterStateCondition: filterOption;
 filterReviewCondition: filterOption;
+filterScreenshotCondition: filterOption;
 filterId: string; 
 }
 
@@ -45,12 +46,12 @@ export const columns: Header[] = [
       label: "date",
     },
     {
-      id: "screenshot",
-      label: "Screenshot",
+      id: "sentToDoctor",
+      label: "sentToDoctor",
     },
     {
       id: "capture",
-      label: "Capture",
+      label: "capture",
     },
     {
       id: "results",
@@ -80,11 +81,11 @@ export const mobileColumns: Header[] = [
     },
     {
       id: "capture",
-      label: "Capture",
+      label: "capture",
     },
     {
-      id: "screenshot",
-      label: "Screenshot",
+      id: "sentToDoctor",
+      label: "sentToDoctor",
     },
   ]
 

@@ -120,6 +120,7 @@ export interface ExamData {
     locked: boolean | null;
     lockedBy: string;
     organizationLegalName: string;
+    screenshot: boolean;
   }
   
 export type Order = "asc" | "desc"

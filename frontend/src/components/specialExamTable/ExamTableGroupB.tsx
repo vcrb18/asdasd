@@ -21,6 +21,7 @@ const ExamTableGroupB = ({
   applyFilter,
   filterStateCondition,
   filterReviewCondition,
+  filterScreenshotCondition,
   filterId
 }: ExamTableProps): JSX.Element => {
 
@@ -60,7 +61,7 @@ const ExamTableGroupB = ({
 
   useEffect(()=> {
     setIsLoading(true);
-    getExamsByFilter2(filterId, page, 11, filterStateCondition, filterReviewCondition).then((response) => {
+    getExamsByFilter2(filterId, page, 11, filterStateCondition, filterReviewCondition, filterScreenshotCondition).then((response) => {
       setMaxRows(response.data.count);
       const newExams: ExamData[] = [];
       handleRowsResponse(response, newExams);

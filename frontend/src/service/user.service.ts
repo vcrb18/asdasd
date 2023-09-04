@@ -41,9 +41,8 @@ export const getExamsByFilter = async (page: number, order: number, accepted: bo
   }
 }
 
-export const getExamsByFilter2 = async (searchInt: string, page: number, order: number, accepted: filterOption, review: filterOption ) : Promise<AxiosResponse> => {
-
-    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&find=${searchInt}&count=25`, { withCredentials: true })
+export const getExamsByFilter2 = async (searchInt: string, page: number, order: number, accepted: filterOption, review: filterOption, screenshot: filterOption) : Promise<AxiosResponse> => {
+    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&screenshot=${screenshot}&find=${searchInt}&count=25`, { withCredentials: true })
 
 }
 

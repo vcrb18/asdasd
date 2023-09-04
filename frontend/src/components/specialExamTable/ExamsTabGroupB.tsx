@@ -15,6 +15,7 @@ const ExamsTabGroupB: React.FC = () => {
     const [inputValue, setInputValue] = useState<string>("");
     const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
     const [filterStateCondition, setFilterStateCondition] = useState<filterOption>("");
+    const [filterScreenshotCondition, setFilterScreenshotCondition] = useState<filterOption>("");
     const [applyFilter, setApplyFilter] = useState<boolean>(false);
     const { register, handleSubmit } = useForm<FormInput>();
     
@@ -27,19 +28,13 @@ const ExamsTabGroupB: React.FC = () => {
       setApplyFilter(!applyFilter);
     }
     
-    const filters: FilterComponentProps[] = [{
-      conditionValue: filterReviewCondition,
-      label: "filterByReview",
-      setCondition: setFilterReviewCondition,
-      trueOption: "reviewed",
-      falseOption: "toReview",
-    }, 
+    const filters: FilterComponentProps[] = [
     {
-      conditionValue: filterStateCondition,
-      label: "filterByState",
-      setCondition: setFilterStateCondition,
-      trueOption: "accepted",
-      falseOption: "rejected",
+      conditionValue: filterScreenshotCondition,
+      label: "filterByScreenshot",
+      setCondition: setFilterScreenshotCondition,
+      trueOption: "true",
+      falseOption: "false",
     },]
   
     return (
@@ -106,7 +101,8 @@ const ExamsTabGroupB: React.FC = () => {
               <ExamTableGroupB 
               applyFilter={applyFilter} 
               filterStateCondition={filterStateCondition} 
-              filterReviewCondition={filterReviewCondition} 
+              filterReviewCondition={filterReviewCondition}
+              filterScreenshotCondition={filterScreenshotCondition} 
               filterId={inputValue}  
               />
             </Grid>
