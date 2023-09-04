@@ -31,8 +31,8 @@ const ExamsTabGroupB: React.FC = () => {
       conditionValue: filterScreenshotCondition,
       label: "filterByScreenshot",
       setCondition: setFilterScreenshotCondition,
-      trueOption: "true",
-      falseOption: "false",
+      trueOption: t("sent"),
+      falseOption: t("notSent"),
     },]
   
     return (
