@@ -398,7 +398,7 @@ const getUrgency = (urgency: number): JSX.Element => (
             {row.organizationLegalName}
           </StyledTableCell> 
           <StyledTableCell align="left"  >
-            {row.patient.name} {row.patient.lastName}
+            {row.patient?.name} {row.patient?.lastName}
           </StyledTableCell> 
           <StyledTableCell align="center">
             {formatDate(row.createdAt)}
