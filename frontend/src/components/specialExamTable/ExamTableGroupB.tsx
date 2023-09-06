@@ -101,13 +101,13 @@ function ExamTableGroupB ({
           </Table>
       </TableContainer>
       <TablePagination
-      rowsPerPageOptions={[25]}
-      component="div"
-      count={maxRows}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[25]}
+        component="div"
+        count={maxRows}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
   )
