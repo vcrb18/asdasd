@@ -1,4 +1,4 @@
-import { filterOption } from "./ExamTableGroupBConst";
+import { filterOption } from "./ExamTableConst";
 
 export interface FilterComponentProps {
 	conditionValue: filterOption;

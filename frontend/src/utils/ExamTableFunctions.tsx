@@ -4,7 +4,7 @@ import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
 import Check from "../../src/static/images/checkVerde.png"
 import X from "../../src/static/images/X.png"
 
-export const formatDate = (dateString: string): JSX.Element => {
+export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return (
     <Typography color={"#878787"} fontWeight={"bold"}>
@@ -22,9 +22,7 @@ export const getRemainingTimeColor = (colorNumber: number): "error" | "success" 
   return "error";
 };
 
-export const colorSwitcher = (value: boolean): string => {
-  return value ? "green" : "red";
-}
+export const colorSwitcher = (value: boolean): string => value ? "green" : "red";
 
 export const getStatus = (state: boolean) => (
   <Typography
@@ -35,11 +33,11 @@ export const getStatus = (state: boolean) => (
 </Typography>
 );
 
-export const getUrgency = (urgency: number): JSX.Element => (
+export const getUrgency = (urgency: number) => (
   <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
 );
    
-export const getChecks = (state: boolean): JSX.Element => (
+export const getChecks = (state: boolean) => (
   <Box display="flex" justifyContent="center">
     <Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
   </Box>

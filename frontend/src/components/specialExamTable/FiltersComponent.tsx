@@ -3,7 +3,7 @@ import { FilterComponentProps, FiltersComponentProps } from "../../utils/Filters
 import { useTranslation } from "react-i18next";
 import { buttonsTheme, filterOption } from "../../utils/ExamTableConst";
   
-function FilterComponent({conditionValue, label, setCondition, trueOption, falseOption}: FilterComponentProps){
+function FilterComponent({ conditionValue, label, setCondition, trueOption, falseOption }: FilterComponentProps){
 	const { t } = useTranslation();
 
 	const handleOnChange = (event: SelectChangeEvent) => {
@@ -15,11 +15,11 @@ function FilterComponent({conditionValue, label, setCondition, trueOption, false
 			<FormControl fullWidth variant="standard">
 				<InputLabel>{t(label)}</InputLabel>
 				<Select
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
-				value={conditionValue}
-				label={t(label)}
-				onChange={handleOnChange}
+					labelId="demo-simple-select-label"
+					id="demo-simple-select"
+					value={conditionValue}
+					label={t(label)}
+					onChange={handleOnChange}
 				>
 					<MenuItem value={""}>{t("dontApply")}</MenuItem>
 					<MenuItem value={"true"}>{t(trueOption)}</MenuItem>
@@ -30,7 +30,7 @@ function FilterComponent({conditionValue, label, setCondition, trueOption, false
 	);
 }
   
-function FiltersComponent({filterComponentProps, handleApplyButton}: FiltersComponentProps) {
+function FiltersComponent({ filterComponentProps, handleApplyButton }: FiltersComponentProps) {
 	const { t } = useTranslation();
 
 	return(
@@ -41,14 +41,14 @@ function FiltersComponent({filterComponentProps, handleApplyButton}: FiltersComp
 			<Grid item xs={2} sm={2} md={2} lg={2} paddingY={"2%"}>
 			<ThemeProvider theme={buttonsTheme}>
 				<Button
-						color="primary"
-						variant="contained"
-						sx={{ color: "#fff" }}
-						onClick={handleApplyButton}
-					>
-						<Typography fontSize={'120%'} color={'#fff'}>
-							{t("applyFilter")}
-						</Typography>
+					color="primary"
+					variant="contained"
+					sx={{ color: "#fff" }}
+					onClick={handleApplyButton}
+				>
+					<Typography fontSize={'120%'} color={'#fff'}>
+						{t("applyFilter")}
+					</Typography>
 				</Button>
 			</ThemeProvider>
 			</Grid>
