@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import {
   Typography,
   Divider,
@@ -6,6 +6,7 @@ import {
   TextField,
   Snackbar,
   Alert,
+  Box,
 } from "@mui/material";
 import ExamTable from "../tables/ExamTable";
 import { useTranslation } from "react-i18next";
@@ -21,7 +22,7 @@ import { FilterComponentProps } from "../../utils/FiltersConst";
 import FiltersComponent from "../specialExamTable/FiltersComponent";
 import { FormInput, filterOption } from "../../utils/ExamTableConst";
 
-const ExamsTab = (): JSX.Element => {
+function ExamsTab() {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState<string>("");
   const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
@@ -31,37 +32,10 @@ const ExamsTab = (): JSX.Element => {
   const [openSnackBarValidation, setOpenSnackBarValidation] = useState<boolean>(false);
   const [openSnackBarUndoValidation, setOpenSnackBarUndoValidation] = useState<boolean>(false);
 
-
-  const onSubmit = (data: FormInput) : void => {
-    setInputValue(data.folioSearch);
-    setApplyFilter(!applyFilter);
-  };
-
-  const handleApplyButton = () => {
-    setApplyFilter(!applyFilter);
-  }
-
-  const handleCloseSnackBar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSnackBarValidation(false);
-    setOpenSnackBarUndoValidation(false);
-  };
-
   const query = new URLSearchParams(useLocation().search);
   const validated = query.get('validation');
   const rejected = query.get('undoValidation');
-
-  useEffect(() => {
-    if(validated){
-      setOpenSnackBarValidation(true);
-    } else if(rejected){
-      setOpenSnackBarUndoValidation(true);
-    }
-  }, []);
-
+  
   const filters: FilterComponentProps[] = [{
     conditionValue: filterReviewCondition,
     label: "filterByReview",
@@ -76,19 +50,44 @@ const ExamsTab = (): JSX.Element => {
     trueOption: "accepted",
     falseOption: "rejected",
   },]
-  
+
+  const onSubmit = (data: FormInput) => {
+    setInputValue(data.folioSearch);
+    setApplyFilter(!applyFilter);
+  };
+
+  const handleApplyButton = () => {
+    setApplyFilter(!applyFilter);
+  }
+
+  const handleCloseSnackBar = (_event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackBarValidation(false);
+    setOpenSnackBarUndoValidation(false);
+  };
+
+  useEffect(() => {
+    if(validated){
+      setOpenSnackBarValidation(true);
+    } else if(rejected){
+      setOpenSnackBarUndoValidation(true);
+    }
+  }, []);
 
   return (
     <>
       <Header
-          buttons={mainMenuHeaderButtons}
-          tabs={mainMenuPageButtons}
-          headerPositionLg="sticky"
-          headerPositionMd="sticky"
-          headerPositionXs="sticky"
-          onTabValueChange={function (index: number): void {
-            throw new Error("Function not implemented.");
-          }}
+        buttons={mainMenuHeaderButtons}
+        tabs={mainMenuPageButtons}
+        headerPositionLg="sticky"
+        headerPositionMd="sticky"
+        headerPositionXs="sticky"
+        onTabValueChange={function (index: number) {
+          throw new Error("Function not implemented.");
+        }}
       />
       <Snackbar open={openSnackBarValidation} autoHideDuration={3000} onClose={handleCloseSnackBar}>
         <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
@@ -100,7 +99,6 @@ const ExamsTab = (): JSX.Element => {
           {t("undoValidationMessage")}
         </Alert>
       </Snackbar>
-      <div style={{height: "100%", position: "relative"}}>
       <Grid
         item
         lg={12}
@@ -158,13 +156,13 @@ const ExamsTab = (): JSX.Element => {
           </Grid>
         </Grid>
       </Grid>
-      </div>
-      <div style={{width: "100%",bottom: 0, textAlign: "center", position: "relative"}}>
-    <Footer 
-      footerPositionLg="sticky"
-      footerPositionMd="sticky"
-      footerPositionXs="sticky" />
-      </div>
+      <Box style={{width: "100%",bottom: 0, textAlign: "center", position: "relative"}}>
+        <Footer 
+        footerPositionLg="sticky"
+        footerPositionMd="sticky"
+        footerPositionXs="sticky" 
+        />
+      </Box>
     </>
   );
 };
