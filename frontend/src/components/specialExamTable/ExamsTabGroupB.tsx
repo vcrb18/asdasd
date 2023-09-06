@@ -72,15 +72,15 @@ function ExamsTabGroupB() {
           >
             <Grid container lg={12} xs={12} md={12} display={'flex'} justifyContent={"space-evenly"} alignItems={"center"} paddingY={"2%"}>
               <Grid item lg={4} md={4} sm={12} xs={12} display={'flex'} justifyContent={'center'}>
-                <form onSubmit={handleSubmit(onSubmit)}> 
+                <Box component={"form"} onSubmit={handleSubmit(onSubmit)}> 
                   <TextField 
                     id="folio-search"
                     label={t("folioSearch")} 
                     variant="filled"
                     size="small"
                     {...register("folioSearch")}
-                  />
-                </form>
+                    />
+                </Box>
               </Grid>
               <Grid container lg={8} md={8} sm={12} xs={12}>
                 <FiltersComponent filterComponentProps={filters} handleApplyButton={handleApplyButton}/>
