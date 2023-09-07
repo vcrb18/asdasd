@@ -69,6 +69,15 @@ export interface ExamHeadTableProps {
   mobileColumns: Header[];
 }
   
+export interface ExamsByFilterParams {
+  searchInt: string,
+  page: number,
+  order: number,
+  accepted: filterOption,
+  review: filterOption,
+  screenshot: filterOption,
+}
+
 export type Order = "asc" | "desc"
 
 export type filterOption = "" | "true" | "false";
