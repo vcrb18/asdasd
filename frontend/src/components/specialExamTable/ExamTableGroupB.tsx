@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { getExamsByFilter } from "../../service/user.service";
-import { ExamData, ExamTableGroupBProps, ExamTableResponse, columnsGroupB, mobileColumnsGroupB, Order } from "../../utils/ExamTableConst";
+import { ExamData, ExamTableGroupBProps, ExamTableResponse, columnsGroupB, mobileColumnsGroupB, Order, ExamsByFilterParams } from "../../utils/ExamTableConst";
 import { AxiosResponse } from "axios";
 import ExamTableHead from "../tables/ExamTableHead";
 import ExamTableRowB from "./ExamTableRowB";
@@ -58,10 +58,17 @@ function ExamTableGroupB ({
       console.error(error);
     }
   }
-
   useEffect(()=> {
     setIsLoading(true);
-    getExamsByFilter(filterId, page, 11, "", "", filterScreenshotCondition).then((response) => {
+    const examsByFilterParams: ExamsByFilterParams = {
+      searchInt: filterId,
+      page: page,
+      order: 11,
+      accepted: "",
+      review: "",
+      screenshot: filterScreenshotCondition,
+    }
+    getExamsByFilter(examsByFilterParams).then((response) => {
       setMaxRows(response.data.count);
       const newExams: ExamData[] = [];
       handleRowsResponse(response, newExams);
