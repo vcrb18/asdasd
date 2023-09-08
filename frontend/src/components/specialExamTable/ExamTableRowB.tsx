@@ -7,7 +7,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useTranslation } from "react-i18next";
 import ScreenshotModal from "../customComponents/screenshotModal";
-import { getExam, getExamDataSistemed2 } from "../../service/user.service";
+import { getExam, getExamDataSistemed2, getExamPredictedMarkersComputations, getTimeSeriesById } from "../../service/user.service";
 import { ExamMetadata } from "../../utils/MetadataTransforms";
 import { FiducialStates } from "../views/ExamsView";
 import { formatDate, getChecks, getStatus } from "../../utils/ExamTableFunctions";
@@ -34,6 +34,13 @@ function ExamTableRowB({ row, isMatch }: RowProps) {
   const [fidS, setFidS] = useState(0);
   const [fidST, setFidST] = useState(0);
   const [fidT, setFidT] = useState(0);
+  const [medFC, setMedFC] = useState(0);
+  const [medRR, setMedRR] = useState(0);
+  const [medPQ, setMedPQ] = useState(0);
+  const [medQRS, setMedQRS] = useState(0);
+  const [medQT, setMedQT] = useState(0);
+  const [medQTC, setMedQTC] = useState(0);
+  const [medST, setMedST] = useState(0);
   const fiducialStates: FiducialStates = {
 	fidP: fidP, setFidP: setFidP,
 	fidQRS: fidQRS, setFidQRS: setFidQRS,
@@ -41,14 +48,38 @@ function ExamTableRowB({ row, isMatch }: RowProps) {
 	fidR2: fidR2, setFidR2: setFidR2,
 	fidS: fidS, setFidS: setFidS,
 	fidST: fidST, setFidST: setFidST,
-	fidT: fidT, setFidT: setFidT
+	fidT: fidT, setFidT: setFidT,
+	medFC: medFC, setMedFC: setMedFC,
+    medRR: medRR, setMedRR: setMedRR,
+    medPQ: medPQ, setMedPQ: setMedPQ,
+    medQRS: medQRS, setMedQRS: setMedQRS,
+    medQT: medQT, setMedQT: setMedQT,
+    medQTC: medQTC, setMedQTC: setMedQTC,
+    medST: medST, setMedST: setMedST,
   };
 
   const handleOpenModal = async () => {
 	try{
+	  const responseExamPredictedMarkersComputations = await getExamPredictedMarkersComputations(row.examId)
+	  setMedFC(responseExamPredictedMarkersComputations.data.fc);
+	  setMedRR(responseExamPredictedMarkersComputations.data.rr);
+	  setMedPQ(responseExamPredictedMarkersComputations.data.pq);
+	  setMedQRS(responseExamPredictedMarkersComputations.data.qrs);
+	  setMedQT(responseExamPredictedMarkersComputations.data.qt);
+	  setMedQTC(responseExamPredictedMarkersComputations.data.qtc);
+	  setMedST(responseExamPredictedMarkersComputations.data.st);
+	} catch(error){
+	  console.error(error);
+	}
+
+	try{
 	  const responseExamData = await getExam(row.examId);
 	  setExamData(responseExamData.data);
+	} catch(error){
+	  console.error(error);
+	}
 
+	try{
   	  const responseExamMetaData = await getExamDataSistemed2(row.examId);
 	  setExamMetadata({
 		patientId: responseExamMetaData.data.PatientId,
@@ -67,14 +98,16 @@ function ExamTableRowB({ row, isMatch }: RowProps) {
 		name: responseExamMetaData.data.Name,
 		lastName: responseExamMetaData.data.LastName,
 		});
-  } catch(error){
-	console.error(error);
-  }
+	} catch(error){
+	  console.error(error);
+	}
 
 	setOpenScreenshot(true);
+	
   }
+  
   const handleCloseModal = () => setOpenScreenshot(false);
-
+	
   if (isMatch) {
     return (    
     <>
@@ -90,7 +123,7 @@ function ExamTableRowB({ row, isMatch }: RowProps) {
 		</StyledTableCell> 
 
 		<StyledTableCell align="left"  >
-		  {row.patient.name} {row.patient.lastName}
+		  {row.patient?.name} {row.patient?.lastName}
 		</StyledTableCell> 
 
 		<StyledTableCell align="center">
@@ -207,7 +240,7 @@ else {
 				  </Grid>
 				  <Grid item xs={4} sm={4} md={4} lg={4}>
 					<Typography fontSize={"100%"} fontWeight={"bold"}>
-					  {row.patient.name} {row.patient.lastName}
+					  {row.patient?.name} {row.patient?.lastName}
 					</Typography>
 				  </Grid>
 				  <Grid item xs={2} sm={2} md={2} lg={2}>

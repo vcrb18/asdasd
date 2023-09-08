@@ -45,12 +45,6 @@ export interface ExamTableGroupBProps {
   filterId: string; 
 }
 
-export interface ExamHeadTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-    order: Order;
-    orderBy: string | number | boolean;
-  }
-
 export interface ExamTableResponse {
   rows: [],
   count: number

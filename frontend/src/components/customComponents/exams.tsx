@@ -4,7 +4,8 @@ import ExamsTabGroupB from "../specialExamTable/ExamsTabGroupB";
 
 function Exams() {
   const user = getCurrentUser();
-  const isGroupB = user.UserGroups.find((userGroup: { groupId: string; }) => userGroup.groupId === 'B');
+  console.log(user);
+  const isGroupB = user.groups.find((groupId: string) => groupId === 'B');
   return (
 	<>
 	  {isGroupB ? <ExamsTabGroupB /> : <ExamsTab />}
