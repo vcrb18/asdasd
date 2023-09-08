@@ -10,17 +10,17 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { getExamsByFilter } from "../../service/user.service";
-import { columns, mobileColumns, ExamData, Order, ExamTableProps, ExamTableResponse, ExamsByFilterParams } from "../../utils/ExamTableConst";
+import { ExamData, ExamTableGroupBProps, ExamTableResponse, columnsGroupB, mobileColumnsGroupB, Order, ExamsByFilterParams } from "../../utils/ExamTableConst";
 import { AxiosResponse } from "axios";
-import ExamTableHead from "./ExamTableHead";
-import ExamTableRow from "./ExamTableRow";
+import ExamTableHead from "../tables/ExamTableHead";
+import ExamTableRowB from "./ExamTableRowB";
 
-function ExamTable({
+function ExamTableGroupB ({
   applyFilter,
-  filterStateCondition,
-  filterReviewCondition,
+  filterScreenshotCondition,
   filterId
-}: ExamTableProps) {
+}: ExamTableGroupBProps) {
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<string>("fecha");
@@ -58,16 +58,15 @@ function ExamTable({
       console.error(error);
     }
   }
-
   useEffect(()=> {
     setIsLoading(true);
     const examsByFilterParams: ExamsByFilterParams = {
       searchInt: filterId,
       page: page,
       order: 11,
-      accepted: filterStateCondition,
-      review: filterReviewCondition,
-      screenshot: "",
+      accepted: "",
+      review: "",
+      screenshot: filterScreenshotCondition,
     }
     getExamsByFilter(examsByFilterParams).then((response) => {
       setMaxRows(response.data.count);
@@ -82,31 +81,33 @@ function ExamTable({
     setPage(0);
   }, [applyFilter]);
 
-  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"))
+
+  const isMatchMd = useMediaQuery(useTheme().breakpoints.up("md"));
+
   return (
     <Paper sx={{ width: "100%" }}>
-       <TableContainer>
-          <Table stickyHeader aria-label="Examenes">
-            <ExamTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              columns={columns}
-              mobileColumns={mobileColumns}
-            />
-            {isLoading ? (
-              <TableBody>
-                <CircularProgress/>
-              </TableBody>
-            )
-            :(
-              <TableBody>
-                {rows.map((row: ExamData) => <ExamTableRow row={row} isMatch={isMatchMd} />)}
-              </TableBody>)
-            }
-            </Table>
-        </TableContainer>
-        <TablePagination
+      <TableContainer>
+        <Table stickyHeader aria-label="Examenes">
+          <ExamTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            columns={columnsGroupB}
+            mobileColumns={mobileColumnsGroupB}
+          />
+          {isLoading ? (
+            <TableBody>
+              <CircularProgress/>
+            </TableBody>
+          )
+          :(
+            <TableBody>
+              {rows.map((row: ExamData) => <ExamTableRowB row={row} isMatch={isMatchMd} />)}
+            </TableBody>)
+          }
+          </Table>
+      </TableContainer>
+      <TablePagination
         rowsPerPageOptions={[25]}
         component="div"
         count={maxRows}
@@ -114,9 +115,9 @@ function ExamTable({
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-       />
+      />
     </Paper>
   )
 };
 
-export default ExamTable;
+export default ExamTableGroupB;

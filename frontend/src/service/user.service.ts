@@ -2,7 +2,7 @@ import axios, { Axios, type AxiosResponse } from "axios";
 import useSWR from "swr"
 import authHeader from "./auth.header";
 import { BasePopperPropsOverrides } from "@mui/x-data-grid";
-import { ExamHeadTableProps } from "../utils/ExamTableConst";
+import { ExamsByFilterParams } from "../utils/ExamTableConst";
 const API_URL = "http://localhost:8080/";
 
 function fetcher(url: string) {
@@ -28,16 +28,10 @@ export const getExams = async (page : number, order:number): Promise<AxiosRespon
   return await axios.get(`/exams?page=${page}&order=${order}&count=25`, { withCredentials: true });
 };
 
-export const getExamsByFilter = async (page: number, order: number, accepted: boolean | null, review: boolean | null ) : Promise<AxiosResponse> => {
-  if (accepted == null){
-    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&reviewed=${review}&count=25`, { withCredentials: true })
-  }
-  else if (review == null){
-    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&count=25`, { withCredentials: true })
-  }
-  else{
-    return await axios.get<ExamHeadTableProps>(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&count=25`, { withCredentials: true })
-  }
+export const getExamsByFilter = async (examsByFilterParams: ExamsByFilterParams) : Promise<AxiosResponse> => {
+  const { searchInt, page, order, accepted, review, screenshot } = examsByFilterParams;
+  return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&screenshot=${screenshot}&find=${searchInt}&count=25`, { withCredentials: true })
+
 }
 
 export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {

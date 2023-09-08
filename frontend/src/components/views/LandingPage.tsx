@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../customComponents/Header";
+import Header, { TabProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import { Box } from "@mui/material";
 // import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ import ContactUsTab from "../tabs/ContactUsTab";
 
 export interface LandingPageProps {
   buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string; href: string }>;
+  tabs?: TabProps[];
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ buttons, tabs }) => {

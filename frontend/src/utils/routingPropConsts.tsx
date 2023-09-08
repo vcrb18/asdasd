@@ -1,7 +1,9 @@
-export const landingPageTabs = [
-  { label: "home", href: "/information" },
-  { label: "aboutUs", href: "" },
-  { label: "contactUs", href: "" },
+import { TabProps } from "../components/customComponents/Header";
+
+export const landingPageTabs: TabProps[] = [
+  { label: "home", href: "/information", target: "" },
+  { label: "aboutUs", href: "", target: "" },
+  { label: "contactUs", href: "", target: "" },
 ];
 
 export const landingPageButtons = [

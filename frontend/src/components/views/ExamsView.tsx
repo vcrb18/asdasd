@@ -3,7 +3,7 @@ import React, { Dispatch, useEffect, useRef, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
-import Header from "../customComponents/Header";
+import Header, { TabProps } from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import {
   getExam,
@@ -27,7 +27,7 @@ import { Patient } from "../../utils/ExamTableConst";
 interface ExamsViewProps {
   // examId: number ;
   buttons: Array<{ label: string; href: string }>;
-  tabs?: Array<{ label: string; href: string }>;
+  tabs?: TabProps[];
 }
 
 export interface ExamData {
