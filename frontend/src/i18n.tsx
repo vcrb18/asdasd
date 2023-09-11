@@ -320,7 +320,7 @@ const resources = {
       capture: "Capture",
       sentToDoctor: "Screenshot sent to doctor",
       withScreenshot: "Screenshot sent",
-      withoutScreenshot: "Screenshot didnt send",
+      withoutScreenshot: "Screenshot not sent",
     },
   },
   es: {
