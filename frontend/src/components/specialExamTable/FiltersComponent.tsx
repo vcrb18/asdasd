@@ -1,7 +1,7 @@
 import { SelectChangeEvent, Grid, FormControl, InputLabel, Select, MenuItem, Typography, Button, ThemeProvider } from "@mui/material";
-import { FilterComponentProps, FiltersComponentProps } from "../../utils/FiltersConst";
+import { FilterComponentProps, FiltersComponentProps, filterOption } from "../../utils/FiltersConst";
 import { useTranslation } from "react-i18next";
-import { buttonsTheme, filterOption } from "../../utils/ExamTableConst";
+import { buttonsTheme } from "../../utils/ExamTableConst";
   
 function FilterComponent({ conditionValue, label, setCondition, trueOption, falseOption }: FilterComponentProps){
 	const { t } = useTranslation();
@@ -21,9 +21,9 @@ function FilterComponent({ conditionValue, label, setCondition, trueOption, fals
 					label={t(label)}
 					onChange={handleOnChange}
 				>
-					<MenuItem value={""}>{t("dontApply")}</MenuItem>
-					<MenuItem value={"true"}>{t(trueOption)}</MenuItem>
-					<MenuItem value={"false"}>{t(falseOption)}</MenuItem>
+					<MenuItem value={"both"}>{t("dontApply")}</MenuItem>
+					<MenuItem value={trueOption}>{t(trueOption)}</MenuItem>
+					<MenuItem value={falseOption}>{t(falseOption)}</MenuItem>
 				</Select>
 			</FormControl>
 		</Grid>

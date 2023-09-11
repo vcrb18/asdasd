@@ -29,9 +29,8 @@ export const getExams = async (page : number, order:number): Promise<AxiosRespon
 };
 
 export const getExamsByFilter = async (examsByFilterParams: ExamsByFilterParams) : Promise<AxiosResponse> => {
-  const { searchInt, page, order, accepted, review, screenshot } = examsByFilterParams;
-  return await axios.get(`/exams?page=${page}&order=${order}&accepted=${accepted}&reviewed=${review}&screenshot=${screenshot}&find=${searchInt}&count=25`, { withCredentials: true })
-
+  const { searchInt, page, order, acceptedFilter, reviewFilter, screenshotFilter } = examsByFilterParams;
+  return await axios.get(`/exams?page=${page}&order=${order}&acceptFilter=${acceptedFilter}&reviewFilter=${reviewFilter}&screenshotFilter=${screenshotFilter}&find=${searchInt}&count=25`, { withCredentials: true })
 }
 
 export const getExamsById = async (searchInt: string, page : number, order:number): Promise<AxiosResponse> => {

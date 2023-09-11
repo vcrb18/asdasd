@@ -64,9 +64,9 @@ function ExamTableGroupB ({
       searchInt: filterId,
       page: page,
       order: 11,
-      accepted: "",
-      review: "",
-      screenshot: filterScreenshotCondition,
+      acceptedFilter: "both",
+      reviewFilter: "both",
+      screenshotFilter: filterScreenshotCondition,
     }
     getExamsByFilter(examsByFilterParams).then((response) => {
       setMaxRows(response.data.count);

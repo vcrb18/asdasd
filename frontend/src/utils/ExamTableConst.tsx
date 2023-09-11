@@ -1,5 +1,6 @@
 import { createTheme, styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { filterExamsByReviewed, filterExamsByScreenshot, filterExamsByStatus } from "./FiltersConst";
   
 export interface RowProps {
     row: ExamData;
@@ -34,14 +35,14 @@ export interface ExamData {
 
 export interface ExamTableProps {
   applyFilter: boolean;
-  filterStateCondition: filterOption;
-  filterReviewCondition: filterOption;
+  filterStateCondition: filterExamsByStatus;
+  filterReviewCondition: filterExamsByReviewed;
   filterId: string; 
   }
 
 export interface ExamTableGroupBProps {
   applyFilter: boolean;
-  filterScreenshotCondition: filterOption;
+  filterScreenshotCondition: filterExamsByScreenshot;
   filterId: string; 
 }
 
@@ -62,19 +63,17 @@ export interface ExamHeadTableProps {
   columns: Header[];
   mobileColumns: Header[];
 }
-  
+
 export interface ExamsByFilterParams {
   searchInt: string,
   page: number,
   order: number,
-  accepted: filterOption,
-  review: filterOption,
-  screenshot: filterOption,
+  acceptedFilter: filterExamsByStatus,
+  reviewFilter: filterExamsByReviewed,
+  screenshotFilter: filterExamsByScreenshot,
 }
 
 export type Order = "asc" | "desc"
-
-export type filterOption = "" | "true" | "false";
 
 export type FormInput = {
   folioSearch: string;

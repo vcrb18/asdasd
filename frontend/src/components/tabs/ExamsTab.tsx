@@ -18,15 +18,15 @@ import {
 import Footer from "../customComponents/Footer";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { FilterComponentProps } from "../../utils/FiltersConst";
+import { FilterComponentProps, filterExamsByReviewed, filterExamsByStatus, filterOption } from "../../utils/FiltersConst";
 import FiltersComponent from "../specialExamTable/FiltersComponent";
-import { FormInput, filterOption } from "../../utils/ExamTableConst";
+import { FormInput } from "../../utils/ExamTableConst";
 
 function ExamsTab() {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState<string>("");
-  const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
-  const [filterStateCondition, setFilterStateCondition] = useState<filterOption>("");
+  const [filterReviewCondition, setFilterReviewCondition] = useState<filterExamsByReviewed>("both");
+  const [filterStateCondition, setFilterStateCondition] = useState<filterExamsByStatus>("both");
   const [applyFilter, setApplyFilter] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<FormInput>();
   const [openSnackBarValidation, setOpenSnackBarValidation] = useState<boolean>(false);
@@ -39,14 +39,14 @@ function ExamsTab() {
   const filters: FilterComponentProps[] = [{
     conditionValue: filterReviewCondition,
     label: "filterByReview",
-    setCondition: setFilterReviewCondition,
+    setCondition: (option: filterOption) => setFilterReviewCondition(option as filterExamsByReviewed),
     trueOption: "reviewed",
-    falseOption: "toReview",
+    falseOption: "notReviewed",
   }, 
   {
     conditionValue: filterStateCondition,
     label: "filterByState",
-    setCondition: setFilterStateCondition,
+    setCondition: (option: filterOption) => setFilterStateCondition(option as filterExamsByStatus),
     trueOption: "accepted",
     falseOption: "rejected",
   },]

@@ -7,13 +7,13 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ExamTableGroupB from "./ExamTableGroupB";
 import FiltersComponent from "./FiltersComponent";
-import { FilterComponentProps } from "../../utils/FiltersConst";
-import { FormInput, filterOption } from "../../utils/ExamTableConst";
+import { FilterComponentProps, filterExamsByScreenshot, filterOption } from "../../utils/FiltersConst";
+import { FormInput } from "../../utils/ExamTableConst";
 
 function ExamsTabGroupB() {
     const { t } = useTranslation();
     const [inputValue, setInputValue] = useState<string>("");
-    const [filterScreenshotCondition, setFilterScreenshotCondition] = useState<filterOption>("");
+    const [filterScreenshotCondition, setFilterScreenshotCondition] = useState<filterExamsByScreenshot>("both");
     const [applyFilter, setApplyFilter] = useState<boolean>(false);
     const { register, handleSubmit } = useForm<FormInput>();
     
@@ -21,9 +21,9 @@ function ExamsTabGroupB() {
       {
         conditionValue: filterScreenshotCondition,
         label: "filterByScreenshot",
-        setCondition: setFilterScreenshotCondition,
-        trueOption: t("sent"),
-        falseOption: t("notSent"),
+        setCondition: (option: filterOption) => setFilterScreenshotCondition(option as filterExamsByScreenshot),
+        trueOption: "withScreenshot",
+        falseOption: "withoutScreenshot",
       },]
 
     const onSubmit = (data: FormInput) => {
