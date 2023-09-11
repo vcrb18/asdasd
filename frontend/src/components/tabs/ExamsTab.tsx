@@ -18,38 +18,53 @@ import {
 import Footer from "../customComponents/Footer";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { FilterComponentProps } from "../../utils/FiltersConst";
+import {
+  FilterComponentProps,
+  filterExamsByReviewed,
+  filterExamsByStatus,
+  filterOption,
+} from "../../utils/FiltersConst";
 import FiltersComponent from "../specialExamTable/FiltersComponent";
-import { FormInput, filterOption } from "../../utils/ExamTableConst";
+import { FormInput } from "../../utils/ExamTableConst";
 
 function ExamsTab() {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState<string>("");
-  const [filterReviewCondition, setFilterReviewCondition] = useState<filterOption>("");
-  const [filterStateCondition, setFilterStateCondition] = useState<filterOption>("");
+  const [filterReviewCondition, setFilterReviewCondition] =
+    useState<filterExamsByReviewed>("both");
+  const [filterStateCondition, setFilterStateCondition] =
+    useState<filterExamsByStatus>("both");
   const [applyFilter, setApplyFilter] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<FormInput>();
-  const [openSnackBarValidation, setOpenSnackBarValidation] = useState<boolean>(false);
-  const [openSnackBarUndoValidation, setOpenSnackBarUndoValidation] = useState<boolean>(false);
+  const [openSnackBarValidation, setOpenSnackBarValidation] =
+    useState<boolean>(false);
+  const [openSnackBarUndoValidation, setOpenSnackBarUndoValidation] =
+    useState<boolean>(false);
 
   const query = new URLSearchParams(useLocation().search);
-  const validated = query.get('validation');
-  const rejected = query.get('undoValidation');
-  
-  const filters: FilterComponentProps[] = [{
-    conditionValue: filterReviewCondition,
-    label: "filterByReview",
-    setCondition: setFilterReviewCondition,
-    trueOption: "reviewed",
-    falseOption: "toReview",
-  }, 
-  {
-    conditionValue: filterStateCondition,
-    label: "filterByState",
-    setCondition: setFilterStateCondition,
-    trueOption: "accepted",
-    falseOption: "rejected",
-  },]
+  const validated = query.get("validation");
+  const rejected = query.get("undoValidation");
+
+  const filters: FilterComponentProps[] = [
+    {
+      conditionValue: filterReviewCondition,
+      label: "filterByReview",
+      setCondition: (option: filterOption) =>
+        setFilterReviewCondition(option as filterExamsByReviewed),
+      bothOption: "both",
+      trueOption: "reviewed",
+      falseOption: "notReviewed",
+    },
+    {
+      conditionValue: filterStateCondition,
+      label: "filterByState",
+      setCondition: (option: filterOption) =>
+        setFilterStateCondition(option as filterExamsByStatus),
+      bothOption: "both",
+      trueOption: "accepted",
+      falseOption: "rejected",
+    },
+  ];
 
   const onSubmit = (data: FormInput) => {
     setInputValue(data.folioSearch);
@@ -58,10 +73,13 @@ function ExamsTab() {
 
   const handleApplyButton = () => {
     setApplyFilter(!applyFilter);
-  }
+  };
 
-  const handleCloseSnackBar = (_event: SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleCloseSnackBar = (
+    _event: SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -70,9 +88,9 @@ function ExamsTab() {
   };
 
   useEffect(() => {
-    if(validated){
+    if (validated) {
       setOpenSnackBarValidation(true);
-    } else if(rejected){
+    } else if (rejected) {
       setOpenSnackBarUndoValidation(true);
     }
   }, []);
@@ -89,13 +107,29 @@ function ExamsTab() {
           throw new Error("Function not implemented.");
         }}
       />
-      <Snackbar open={openSnackBarValidation} autoHideDuration={3000} onClose={handleCloseSnackBar}>
-        <Alert onClose={handleCloseSnackBar} severity="success" sx={{ width: '100%' }}>
+      <Snackbar
+        open={openSnackBarValidation}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackBar}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           {t("validationMessage")}
         </Alert>
       </Snackbar>
-      <Snackbar open={openSnackBarUndoValidation} autoHideDuration={3000} onClose={handleCloseSnackBar}>
-        <Alert onClose={handleCloseSnackBar} severity="warning" sx={{ width: '100%' }}>
+      <Snackbar
+        open={openSnackBarUndoValidation}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackBar}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
           {t("undoValidationMessage")}
         </Alert>
       </Snackbar>
@@ -117,25 +151,41 @@ function ExamsTab() {
           {t("exams")}
         </Typography>
         <Divider variant="middle" />
-        <Grid
-          container
-          lg={12}
-          paddingX={"3%"}
-        >
-          <Grid container lg={12} xs={12} md={12} display={'flex'} justifyContent={"space-evenly"} alignItems={"center"} paddingY={"2%"}>
-            <Grid item lg={4} md={4} sm={12} xs={12} display={'flex'} justifyContent={'center'}>
-              <Box component={"form"} onSubmit={handleSubmit(onSubmit)}> 
-                <TextField 
+        <Grid container lg={12} paddingX={"3%"}>
+          <Grid
+            container
+            lg={12}
+            xs={12}
+            md={12}
+            display={"flex"}
+            justifyContent={"space-evenly"}
+            alignItems={"center"}
+            paddingY={"2%"}
+          >
+            <Grid
+              item
+              lg={4}
+              md={4}
+              sm={12}
+              xs={12}
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+                <TextField
                   id="folio-search"
-                  label={t("folioSearch")} 
+                  label={t("folioSearch")}
                   variant="filled"
                   size="small"
                   {...register("folioSearch")}
-                  />
+                />
               </Box>
             </Grid>
             <Grid container lg={8} md={8} sm={12} xs={12}>
-              <FiltersComponent filterComponentProps={filters} handleApplyButton={handleApplyButton}/>
+              <FiltersComponent
+                filterComponentProps={filters}
+                handleApplyButton={handleApplyButton}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -147,25 +197,31 @@ function ExamsTab() {
             justifyContent={"flex-start"}
             sx={{ fontSize: "1.5rem" }}
           >
-            <ExamTable 
-              applyFilter={applyFilter} 
-              filterStateCondition={filterStateCondition} 
+            <ExamTable
+              applyFilter={applyFilter}
+              filterStateCondition={filterStateCondition}
               filterReviewCondition={filterReviewCondition}
-              filterId={inputValue}  
+              filterId={inputValue}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Box style={{width: "100%",bottom: 0, textAlign: "center", position: "relative"}}>
-        <Footer 
-        footerPositionLg="sticky"
-        footerPositionMd="sticky"
-        footerPositionXs="sticky" 
+      <Box
+        style={{
+          width: "100%",
+          bottom: 0,
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <Footer
+          footerPositionLg="sticky"
+          footerPositionMd="sticky"
+          footerPositionXs="sticky"
         />
       </Box>
     </>
   );
-};
-
+}
 
 export default ExamsTab;
