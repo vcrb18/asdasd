@@ -2,8 +2,9 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 
-const Hero = () => {
+function Hero() {
   const { t } = useTranslation();
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box
@@ -19,18 +20,14 @@ const Hero = () => {
           {t('landing.hero.title')}
         </Typography>
         <Typography mt={8} mb={4} variant="h5" align="justify" color="grey.700">
-          Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo dedicado a explorar el potencial de la
-          inteligencia artificial (IA) en el campo de la cardiología.
+          {t('landing.hero.firstDescription')}
         </Typography>
         <Typography variant="h5" align="justify" color="grey.700">
-          Nuestro equipo se centra en desarrollar herramientas y tecnologías de IA de vanguardia para ayudar a mejorar
-          el diagnóstico, tratamiento y manejo de las enfermedades del corazón. A través de nuestra investigación,
-          buscamos ampliar los límites de lo que es posible en el campo de la cardiología y contribuir al avance de la
-          ciencia médica.
+          {t('landing.hero.secondDescription')}
         </Typography>
       </Box>
     </Box>
   );
-};
+}
 
 export default Hero;

@@ -1,7 +1,57 @@
 {
   "landing": {
     "hero": {
-      "title": "Inteligencia Artificial para Cardiología"
+      "title": "Inteligencia Artificial para Cardiología",
+      "firstDescription": "Bienvenido a ISATEC Heart, un equipo de investigación y desarrollo dedicado a explorar el potencial de la inteligencia artificial (IA) en el campo de la cardiología.",
+      "secondDescription": "Nuestro equipo se centra en desarrollar herramientas y tecnologías de IA de vanguardia para ayudar a mejorar el diagnóstico, tratamiento y manejo de las enfermedades del corazón. A través de nuestra investigación, buscamos ampliar los límites de lo que es posible en el campo de la cardiología y contribuir al avance de la ciencia médica."
+    },
+    "projects": {
+      "title": "Nuestros Proyectos",
+      "firstProject": {
+        "title": "Requiere Verificación Médica"
+      },
+      "secondProject": {
+        "title": "Atención Personalizada"
+      },
+      "thirdProject": {
+        "title": "Análisis de IA"
+      },
+      "fourthProject": {
+        "title": "Diagnósticos con IA",
+        "firstDescription": "Diagnósticos",
+        "secondDescription": "Ritmo sinusal",
+        "thirdDescription": "Requiere verificación médica",
+        "fourthDescription": "Trazado dentro de los limites",
+        "fifthDescription": "Multiples anomalías"
+      }
+    },
+    "team": {
+      "title": "Nuestro Equipo",
+      "firstDescription": "Nuestro equipo está compuesto por investigadores, ingenieros y profesionales médicos talentosos que están apasionados por mejorar la vida de los pacientes con enfermedades del corazón.",
+      "secondDescription": "Trabajamos en estrecha colaboración con las principales instituciones y organizaciones médicas para asegurar que nuestra investigación esté a la vanguardia de los últimos desarrollos científicos."
+    },
+    "footer": {
+      "footerText": "© 2023 ISATEC Heart. Todos los derechos reservados."
     }
+  },
+  "auth": {
+    "authForm": {
+      "registerTitle": "Regístrate en ECG",
+      "loginTitle": "Inicia Sesión en ECG",
+      "rememberMe": "Recuérdame",
+      "forgotPassword": "He olvidado mi contraseña",
+      "registerText": "¿No tienes una cuenta? Regístrate",
+      "loginText": "¿Ya tienes una cuenta? Inicia sesión"
+    }
+  },
+  "general": {
+    "isatecEcg": "ISATEC ECG",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "mainMenu": "Menú Principal",
+    "index": "Inicio"
   }
 }

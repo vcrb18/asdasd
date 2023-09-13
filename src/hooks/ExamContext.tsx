@@ -8,7 +8,9 @@ import { ExamContextProps, ExamProviderProps } from '@/ts/types/examContext';
 const ExamContext = createContext<ExamContextProps | null>(null);
 
 function UseExam() {
-  return useContext(ExamContext);
+  const context = useContext(ExamContext);
+  if (!context) throw new Error('UseExamContext must be used within an ExamProvider');
+  return context;
 }
 
 function ExamProvider({ children, examId }: ExamProviderProps) {
@@ -24,28 +26,17 @@ function ExamProvider({ children, examId }: ExamProviderProps) {
       const examData = await getExamById(examId);
       const exam = examData.data;
       setExam({
-        id: exam.examId,
-        patientId: exam.patientId,
-        createdAt: exam.createdAt,
+        ...exam,
         status: status,
         accepted: accepted,
-        urgency: exam.urgency,
-        results: exam.results,
-        operatorReview: exam.operatorReview,
-        operatorAccept: exam.operatorAccept,
-        rejectionId: exam.rejectionId,
-        rejectedDerivation: exam.rejected_derivation, // Arreglar cuando se mergee el cambio en el back
         rejectionReason: rejectionReason,
         derivation: derivation,
-        accuracy: exam.accuracy,
-        remainingTime: exam.remainingTime,
       });
       setStatus(exam.status);
       setAccepted(exam.accepted);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-      return <>No se pudo cargar el examen</>;
     }
   }, [examId, status, accepted, rejectionReason, derivation]);
 

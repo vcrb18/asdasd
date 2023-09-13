@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { Avatar, Button, Grid, Typography } from '@mui/material';
 
-import { mainMenuPageButtons } from '@/utils/MenuButtons';
+import { mainMenuPageButtons } from '@/utils/constants/MenuButtons';
 
 import { MenuButton } from '@/ts/interfaces/menuButton';
 

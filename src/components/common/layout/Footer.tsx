@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
+
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
 function Footer() {
+  const { t } = useTranslation();
   return (
     <AppBar
       position="static"
@@ -12,7 +15,7 @@ function Footer() {
       }}
     >
       <Toolbar sx={{ justifyContent: 'center' }}>
-        <Typography variant="h6">Copyright@2022 ISATEC ECG. All rights reserved</Typography>
+        <Typography variant="h5">{t('landing.footer.footerText')}</Typography>
       </Toolbar>
     </AppBar>
   );

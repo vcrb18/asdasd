@@ -1,5 +1,5 @@
 interface Exam {
-  id: number;
+  examId: number;
   patientId: number;
   createdAt: string;
   status: boolean | null;
@@ -26,4 +26,8 @@ interface Derivation {
   derivation: string;
 }
 
-export type { Derivation, Exam, RejectionReason };
+interface ExamViewButtonsProps {
+  buttonText: string;
+}
+
+export type { Derivation, Exam, ExamViewButtonsProps, RejectionReason };

@@ -122,6 +122,11 @@ const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
     },
     typography: {
       fontFamily: ['Poppins', 'sans-serif'].join(','),
+      button: {
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+      },
     },
   };
 };

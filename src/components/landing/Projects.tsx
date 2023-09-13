@@ -1,10 +1,10 @@
+import { useTranslation } from 'react-i18next';
+
 import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
 
-import ArritmiasImage from '@/assets/images/arritmia_image.png';
-import ExtrasistoleImage from '@/assets/images/extrasistole.png';
-import VerificacionExamenesImage from '@/assets/images/verificacion_examenes.png';
+import { projectsDetails, projectsDiagnosticsNames } from '@/utils/constants/landing/index';
 
-const CustomGridElement = ({ children }: { children: JSX.Element[] }): JSX.Element => (
+const CustomGridElement = ({ children }: { children: JSX.Element[] }) => (
   <Grid item xs={12} lg={6}>
     <Paper sx={{ height: '100%', bgcolor: 'primary.main', px: 2 }} variant="outlined">
       {children}
@@ -12,7 +12,9 @@ const CustomGridElement = ({ children }: { children: JSX.Element[] }): JSX.Eleme
   </Grid>
 );
 
-const Projects = () => {
+function Projects() {
+  const { t } = useTranslation();
+
   const imagesStyle = {
     width: '50%',
     height: 'auto',
@@ -32,7 +34,7 @@ const Projects = () => {
         }}
       >
         <Typography variant="h2" mt={10} align="center" color="primary">
-          Nuestros Proyectos
+          {t('landing.projects.title')}
         </Typography>
         <Grid
           container
@@ -46,52 +48,30 @@ const Projects = () => {
             heigth: '-webkit-fill-available',
           }}
         >
+          {projectsDetails.map((project) => (
+            <CustomGridElement>
+              <Typography variant="h4" align="center" color="grey.100">
+                {t(project.title)}
+              </Typography>
+              <Avatar src={project.image} alt={project.alt} variant="square" sx={imagesStyle} />
+            </CustomGridElement>
+          ))}
           <CustomGridElement>
             <Typography variant="h4" align="center" color="grey.100">
-              Verificación de exámenes
-            </Typography>
-            <Avatar
-              src={VerificacionExamenesImage}
-              alt="verificacion-examenes-image"
-              variant="square"
-              sx={imagesStyle}
-            />
-          </CustomGridElement>
-          <CustomGridElement>
-            <Typography variant="h4" align="center" color="grey.100">
-              Atención personalizada
-            </Typography>
-            <Avatar src={ArritmiasImage} alt="arritmias-image" variant="square" sx={imagesStyle} />
-          </CustomGridElement>
-          <CustomGridElement>
-            <Typography variant="h4" align="center" color="grey.100">
-              Análisis de IA
-            </Typography>
-            <Avatar src={ExtrasistoleImage} alt="extrasistole-image" variant="square" sx={imagesStyle} />
-          </CustomGridElement>
-          <CustomGridElement>
-            <Typography variant="h4" align="center" color="grey.100">
-              Diagnósticos
+              {t('landing.projects.fourthProject.title')}
             </Typography>
             <Box m={4} mx={4}>
-              <Typography variant="h6" color="grey.100">
-                Ritmo sinusal
-              </Typography>
-              <Typography variant="h6" color="grey.100">
-                Requiere verificación médica
-              </Typography>
-              <Typography variant="h6" color="grey.100">
-                Trazado dentro de los limites
-              </Typography>
-              <Typography variant="h6" color="grey.100">
-                Multiples anomalías
-              </Typography>
+              {projectsDiagnosticsNames.map((diagnostic) => (
+                <Typography variant="h6" color="grey.100">
+                  {t(diagnostic.title)}
+                </Typography>
+              ))}
             </Box>
           </CustomGridElement>
         </Grid>
       </Box>
     </Box>
   );
-};
+}
 
 export default Projects;

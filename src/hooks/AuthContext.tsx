@@ -1,27 +1,32 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
+import AuthenticatedUser from '@/ts/classes/AuthenticatedUser';
+import GuestUser from '@/ts/classes/GuestUser';
 import { User } from '@/ts/interfaces/user';
 import { AuthContextProps, AuthProviderProps, SignInParams, SignUpParams } from '@/ts/types/authContext';
+import { OSessionState, SessionState } from '@/ts/types/sessionTypes';
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
 function AuthProvider({ store, client, ...props }: AuthProviderProps) {
-  const [state, setState] = useState<'loading' | 'unauthenticated' | 'authenticated'>('loading');
-  const [user, setUser] = useState<User | null>(null);
+  const [state, setState] = useState<SessionState>(OSessionState.Loading);
+  const [user, setUser] = useState<User>(new GuestUser());
   const [token, setToken] = useState<string | undefined>(undefined);
+  const shouldReRender = useRef(false);
 
   const signOut = useCallback(() => {
     store.del();
     setToken(undefined);
-    setUser(null);
-    setState('unauthenticated');
+    setUser(new GuestUser());
+    setState(OSessionState.Unauthenticated);
   }, [store]);
 
   const setLoadingState = useCallback(
     (newToken: string) => {
+      document.cookie = 'token=' + newToken + '; path=/';
       store.set(newToken);
-      setState('loading');
-      setUser(null);
+      setState(OSessionState.Loading);
+      setUser(new GuestUser());
       setToken(newToken);
     },
     [store],
@@ -35,9 +40,9 @@ function AuthProvider({ store, client, ...props }: AuthProviderProps) {
             'x-access-token': token,
           },
         });
-
-        setUser(data);
-        setState('authenticated');
+        const user = new AuthenticatedUser(data.user);
+        setUser(user);
+        setState(OSessionState.Authenticated);
       } catch (error) {
         signOut();
       }
@@ -46,14 +51,17 @@ function AuthProvider({ store, client, ...props }: AuthProviderProps) {
   );
 
   useEffect(() => {
-    const token = store.get();
-    if (token) {
-      setLoadingState(token);
-      getUserInfo(token);
-    } else {
-      signOut();
+    if (!shouldReRender.current) {
+      shouldReRender.current = true;
+      const token = store.get();
+      if (token) {
+        setLoadingState(token);
+        getUserInfo(token);
+      } else {
+        signOut();
+      }
     }
-  }, [setLoadingState, getUserInfo, signOut, store]);
+  }, [getUserInfo, setLoadingState, signOut, store]);
 
   useEffect(() => {
     if (!token) return;
@@ -80,7 +88,7 @@ function AuthProvider({ store, client, ...props }: AuthProviderProps) {
     [client, getUserInfo, setLoadingState],
   );
 
-  return <AuthContext.Provider {...props} value={{ user, signUp, signIn, signOut, state }} />;
+  return <AuthContext.Provider {...props} value={{ user, signUp, signIn, signOut, state, store }} />;
 }
 
 function useAuth() {

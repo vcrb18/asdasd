@@ -1,20 +1,13 @@
+import { useTranslation } from 'react-i18next';
+
 import { Box, Grid, Typography } from '@mui/material';
 
-import LogoCMM from '@/assets/images/logo_cmm.png';
-import LogoIsatecCompleto from '@/assets/images/logo_isatec_completo.png';
-import LogoUC from '@/assets/images/logo_uc.png';
-import LogoUChile from '@/assets/images/logo_uchile.png';
+import { logosDetails, teamDescription } from '@/utils/constants/landing/index';
 
 const Team = () => {
-  const logosCMM = {
-    maxWidth: '100%',
-    maxHeight: '100%',
-  };
-  const logosPUC = {
-    maxWidth: '100%',
-    maxHeight: '100%',
-  };
-  const logosUChile = {
+  const { t } = useTranslation();
+
+  const logosSize = {
     maxWidth: '100%',
     maxHeight: '100%',
   };
@@ -31,21 +24,15 @@ const Team = () => {
         }}
       >
         <Typography variant="h2" mb={5} align={'center'} color="primary">
-          Equipo
+          {t('landing.team.title')}
         </Typography>
-        <Box padding={2}>
-          <Typography variant="h5" align="center" color="grey.700">
-            Nuestro equipo está compuesto por investigadores, ingenieros y profesionales médicos talentosos que están
-            apasionados por mejorar la vida de los pacientes con enfermedades del corazón.
-          </Typography>
-        </Box>
-        <Box padding={2}>
-          <Typography variant="h5" align="center">
-            Trabajamos en estrecha colaboración con las principales instituciones y organizaciones médicas para asegurar
-            que nuestra investigación esté a la vanguardia de los últimos desarrollos científicos.
-          </Typography>
-        </Box>
-
+        {teamDescription.map((team) => (
+          <Box padding={2}>
+            <Typography variant="h5" align="center">
+              {t(team.text)}
+            </Typography>
+          </Box>
+        ))}
         <Grid
           container
           mb={10}
@@ -58,54 +45,20 @@ const Team = () => {
             alignItems: 'center',
           }}
         >
-          <Grid item xs={12} md={6} lg={3}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: 'md',
-                margin: '0 auto',
-              }}
-            >
-              <img src={LogoIsatecCompleto} alt="isatec" width={'50%'} height={'50%'} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3} sx={{ logosCMM }}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: 'md',
-                margin: '0 auto',
-              }}
-            >
-              <img src={LogoCMM} alt="cmm" width={'40%'} height={'40%'} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3} sx={{ logosUChile }}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: 'md',
-                margin: '0 auto',
-              }}
-            >
-              <img src={LogoUChile} alt="universidad de chile" width={'25%'} height={'25%'} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3} sx={{ logosPUC }}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: 'md',
-                margin: '0 auto',
-              }}
-            >
-              <img src={LogoUC} alt="universidad catolica" width={'30%'} height={'30%'} />
-            </Box>
-          </Grid>
+          {logosDetails.map((logo) => (
+            <Grid item xs={12} md={6} lg={3} sx={{ logosSize }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  maxWidth: 'md',
+                  margin: '0 auto',
+                }}
+              >
+                <img src={logo.image} alt={logo.alt} width={logo.width} height={logo.height} />
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </Box>

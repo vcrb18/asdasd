@@ -1,5 +1,3 @@
-import Footer from '@/components/landing/Footer';
-import ResponsiveAppBar from '@/components/landing/ResponsiveAppBar';
 import MainMenuButtons from '@/components/mainMenu/Buttons';
 import MainMenuLogo from '@/components/mainMenu/Logo';
 
@@ -8,7 +6,6 @@ import { Grid } from '@mui/material';
 function MainMenu() {
   return (
     <>
-      <ResponsiveAppBar />
       <Grid
         container
         display={'flex'}
@@ -29,7 +26,6 @@ function MainMenu() {
           <MainMenuButtons />
         </Grid>
       </Grid>
-      <Footer />
     </>
   );
 }

@@ -1,27 +1,36 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import { useAuth } from '@/hooks/AuthContext';
 
-import { Avatar, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Link, Typography } from '@mui/material';
 
 import { LoginValidation } from '@/utils/Validations';
 
-import { AuthPage } from '@/ts/types/types';
+import { AuthPage, OAuthPage } from '@/ts/types/sessionTypes';
 
 import FullIsatecLogo from '@/assets/images/logo_isatec_completo.png';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
+import { CustomTextField } from './CustomTextField';
+
 function Buttons({ mode }: { mode: AuthPage }) {
+  const { t } = useTranslation();
   return (
     <>
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        {mode === 'register' ? 'Sign Up' : 'Sign In'}
+        {mode === OAuthPage.Register ? 'Sign Up' : 'Sign In'}
       </Button>
       <Grid container>
+        <Grid item xs>
+          <Link href="#" variant="body2">
+            {t('auth.authForm.forgotPassword')}
+          </Link>
+        </Grid>
         <Grid item>
-          <Link href={mode === 'register' ? '/login' : '/register'} variant="body2">
-            {mode === 'register' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+          <Link href={mode === OAuthPage.Register ? '/login' : '/register'} variant="body2">
+            {mode === OAuthPage.Register ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
           </Link>
         </Grid>
       </Grid>
@@ -32,7 +41,7 @@ function Buttons({ mode }: { mode: AuthPage }) {
 function AuthForm({ mode }: { mode: AuthPage }) {
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -41,12 +50,12 @@ function AuthForm({ mode }: { mode: AuthPage }) {
     validationSchema: LoginValidation,
     onSubmit: async (values: { email: string; password: string }) => {
       try {
-        if (mode === 'register') {
+        if (mode === OAuthPage.Register) {
           await signUp(values);
-        } else if (mode === 'login') {
+        } else if (mode === OAuthPage.Login) {
           await signIn(values);
         }
-        navigate('/');
+        navigate('/mainMenu');
       } catch (error) {
         formik.setStatus('Error: Invalid email or password');
       }
@@ -83,15 +92,12 @@ function AuthForm({ mode }: { mode: AuthPage }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          {mode === 'register' ? 'Register for ECG' : 'Sign in to ECG'}
+          {mode === OAuthPage.Register ? 'Register for ECG' : 'Sign in to ECG'}
         </Typography>
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
+          <CustomTextField
             id="email"
-            label="Email Address"
+            label={t('general.email')}
             name="email"
             autoComplete="email"
             autoFocus
@@ -99,18 +105,19 @@ function AuthForm({ mode }: { mode: AuthPage }) {
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
+          <CustomTextField
             id="password"
-            autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+            name="password"
+            label={t('general.password')}
+            type="password"
+            autoComplete={mode === OAuthPage.Register ? 'new-password' : 'current-password'}
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="secondary" />}
+            label={t('auth.authForm.rememberMe')}
           />
           {formik.status && (
             <Typography variant="body2" color="error" align="center" sx={{ mb: 2 }}>
@@ -122,7 +129,7 @@ function AuthForm({ mode }: { mode: AuthPage }) {
         <Typography variant="body2" align="center" sx={{ mt: 8, mb: 4 }}>
           {'© '}
           <Link color="inherit" href="/">
-            ISATEC ECG
+            {t('general.isatecEcg')}
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}

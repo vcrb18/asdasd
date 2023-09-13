@@ -1,7 +1,57 @@
 {
   "landing": {
     "hero": {
-      "title": "Artificial Intelligence for Cardiology"
+      "title": "Artificial Intelligence for Cardiology",
+      "firstDescription": "Welcome to ISATEC Heart, a research and development team dedicated to exploring the potential of artificial intelligence (AI) in the field of cardiology.",
+      "secondDescription": "Our team focuses on developing cutting-edge AI tools and technologies to help improve the diagnosis, treatment, and management of heart diseases. Through our research, we aim to push the boundaries of what is possible in the field of cardiology and contribute to the advancement of medical science."
+    },
+    "projects": {
+      "title": "Our Projects",
+      "firstProject": {
+        "title": "Requires Medical Verification"
+      },
+      "secondProject": {
+        "title": "Personalized Care"
+      },
+      "thirdProject": {
+        "title": "AI Analysis"
+      },
+      "fourthProject": {
+        "title": "AI Diagnostics",
+        "firstDescription": "Diagnostics",
+        "secondDescription": "Sinus Rhythm",
+        "thirdDescription": "Requires Medical Verification",
+        "fourthDescription": "Trace within Limits",
+        "fifthDescription": "Multiple Anomalies"
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "firstDescription": "Our team is composed of talented researchers, engineers, and medical professionals who are passionate about improving the lives of patients with heart diseases.",
+      "secondDescription": "We work closely with leading medical institutions and organizations to ensure that our research is at the forefront of the latest scientific developments."
+    },
+    "footer": {
+      "footerText": "© 2023 ISATEC Heart. All rights reserved."
     }
+  },
+  "auth": {
+    "authForm": {
+      "registerTitle": "Sign up to ECG",
+      "loginTitle": "Login to ECG",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "registerText": "Don't have an account? Sign up",
+      "loginText": "Already have an account? Sign in"
+    }
+  },
+  "general": {
+    "isatecEcg": "ISATEC ECG",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Logout",
+    "mainMenu": "Main Menu",
+    "index": "Home"
   }
 }

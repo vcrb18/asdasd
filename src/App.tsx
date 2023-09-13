@@ -11,6 +11,9 @@ import i18n from '@/utils/i18n';
 
 import '@/global.css';
 
+import Footer from './components/common/layout/Footer';
+import ResponsiveAppBar from './components/common/layout/ResponsiveAppBar';
+
 interface RouteCommon {
   loader?: LoaderFunction;
   action?: ActionFunction;
@@ -36,7 +39,7 @@ const getNormalizedPathName = (fileName: string): string => {
 
 const getRouteFromFileName = (fileName: string): string => {
   switch (fileName) {
-    case 'index':
+    case 'login':
       return '/';
     case 'examView':
       return '/exam/:idExam';
@@ -60,10 +63,18 @@ for (const path of Object.keys(pages)) {
   });
 }
 
+console.log(routes);
+
 const router = createBrowserRouter(
   routes.map(({ Element, ErrorBoundary, ...rest }) => ({
     ...rest,
-    element: <Element />,
+    element: (
+      <>
+        <ResponsiveAppBar />
+        <Element />
+        <Footer />
+      </>
+    ),
     ...(ErrorBoundary && { errorElement: <ErrorBoundary /> }),
   })),
 );
@@ -74,7 +85,7 @@ const store = {
   del: () => localStorage.removeItem('token'),
 };
 
-const App = () => {
+function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <AuthProvider store={store} client={client}>
@@ -84,6 +95,6 @@ const App = () => {
       </AuthProvider>
     </I18nextProvider>
   );
-};
+}
 
 export default App;
