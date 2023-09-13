@@ -30,4 +30,26 @@ interface ExamViewButtonsProps {
   buttonText: string;
 }
 
-export type { Derivation, Exam, ExamViewButtonsProps, RejectionReason };
+interface DiagnosticSistemed2 {
+  ID: number;
+  METRIC: number;
+}
+
+interface FiducialPoints {
+  p: number;
+  q: number;
+  r: number;
+  s: number;
+  stFlag: number;
+  t: number;
+  r2: number;
+  fc: number;
+  rr: number;
+  pq: number;
+  qrs: number;
+  qt: number;
+  qtc: number;
+  st: number;
+}
+
+export type { Derivation, DiagnosticSistemed2, Exam, ExamViewButtonsProps, FiducialPoints, RejectionReason };

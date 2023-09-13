@@ -5,14 +5,13 @@ import { useTimer } from 'react-timer-hook';
 import { isEmptyArray } from 'formik';
 
 import { removeClientToken, setClientToken } from '@/api/client';
-import GenericButton from '@/atoms/Button';
 import { useAuth } from '@/hooks/AuthContext';
 
-import { Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import { MedicalCenter } from '@/utils/AdminViewInterfaces';
 
-import { activateAI, deactivateAI, getAIActiveOrganizations } from '../../api/users.service';
+import { AdminApi } from '../..//api/admin';
 import AdminBox from './AdminBox';
 import MedicalCenterList from './MedicalCenterList';
 import MedicalCenterSearch from './MedicalCenterSearch';
@@ -66,11 +65,11 @@ function MedicalCenters() {
     const newTime = calculateNewTime(amountOfTimeActive);
 
     if (activeTimer) {
-      deactivateAI(arrayIds, false).then(() => {
+      AdminApi.deactivateAI(arrayIds, false).then(() => {
         handlePostSuccess(newTime, false);
       });
     } else {
-      activateAI(amountOfTimeActive, arrayIds, false).then(() => {
+      AdminApi.activateAI(amountOfTimeActive, arrayIds, false).then(() => {
         handlePostSuccess(newTime, true);
       });
     }
@@ -93,7 +92,7 @@ function MedicalCenters() {
       try {
         setClientToken(store);
 
-        const medicalCenters = await getAIActiveOrganizations();
+        const medicalCenters = await AdminApi.getActiveAIOrganizations();
         if (!hasTimerChanged.current) {
           hasTimerChanged.current = true;
 
@@ -142,11 +141,30 @@ function MedicalCenters() {
         handleDeleteClick={handleDeleteClick}
       />
 
-      <GenericButton label={t('admin.modifyParams')} onPress={handleModifyParameters} />
-      <GenericButton
-        label={activeTimer ? t('admin.deactivateAI') : t('admin.activateAI')}
-        onPress={handleApplyButton}
-      />
+      <Button
+        sx={{
+          backgroundColor: '#007088',
+          color: '#000000',
+          width: 'auto',
+          marginX: '10%',
+        }}
+        variant="contained"
+        onClick={handleModifyParameters}
+      >
+        <Typography color={'#ffffff'}>{t('modifyParams')}</Typography>
+      </Button>
+      <Button
+        sx={{
+          backgroundColor: '#007088',
+          color: '#000000',
+          width: 'auto',
+          marginX: '10%',
+        }}
+        variant="contained"
+        onClick={handleApplyButton}
+      >
+        <Typography color={'#ffffff'}>{activeTimer ? 'Desactivar IA' : 'Activar IA'}</Typography>
+      </Button>
     </Grid>
   );
 }

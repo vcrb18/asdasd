@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
-import { getExamById } from '@/api/users.service';
+import { ExamsApi } from '@/api/exams';
 
 import { Derivation, Exam, RejectionReason } from '@/ts/interfaces/exam';
 import { ExamContextProps, ExamProviderProps } from '@/ts/types/examContext';
@@ -23,7 +23,7 @@ function ExamProvider({ children, examId }: ExamProviderProps) {
 
   const getExam = useCallback(async () => {
     try {
-      const examData = await getExamById(examId);
+      const examData = await ExamsApi.getExamById(examId);
       const exam = examData.data;
       setExam({
         ...exam,

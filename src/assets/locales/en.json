@@ -41,9 +41,7 @@
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?",
       "registerText": "Don't have an account? Sign up",
-      "loginText": "Already have an account? Sign in",
-      "login":"Sign in",
-      "register":"Sign up"
+      "loginText": "Already have an account? Sign in"
     }
   },
   "general": {
@@ -54,19 +52,6 @@
     "register": "Sign up",
     "logout": "Logout",
     "mainMenu": "Main Menu",
-    "index": "Home",
-    "cancel": "Cancel",
-    "submit": "Submit"
-  },
-  "admin": {
-    "apply": "Apply",
-    "adminTitle": "Administrator",
-    "modifyParams": "Modify Parameters",
-    "activateAI": "Activate AI",
-    "deactivateAI": "Deactivate AI",
-    "selectAll": "Select all"
-  },
-  "examDetails": {
-    "back": "Back"
+    "index": "Home"
   }
 }

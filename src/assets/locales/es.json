@@ -41,9 +41,7 @@
       "rememberMe": "Recuérdame",
       "forgotPassword": "He olvidado mi contraseña",
       "registerText": "¿No tienes una cuenta? Regístrate",
-      "loginText": "¿Ya tienes una cuenta? Inicia sesión",
-      "login":"Iniciar Sesión",
-      "register":"Registrarse"
+      "loginText": "¿Ya tienes una cuenta? Inicia sesión"
     }
   },
   "general": {
@@ -54,20 +52,6 @@
     "register": "Registrarse",
     "logout": "Cerrar Sesión",
     "mainMenu": "Menú Principal",
-    "index": "Inicio",
-    "cancel": "Cancelar",
-    "submit": "Enviar"
-  },
-  "admin": {
-    "apply": "Aplicar",
-    "adminTitle": "Administrador",
-    "modifyParams": "Modificar Parámetros",
-    "activateAI": "Activar IA",
-    "deactivateAI": "Desactivar IA",
-    "selectAll": "Seleccionar todos"
-  },
-  "examDetails": {
-    "back": "Volver"
+    "index": "Inicio"
   }
 }
-
