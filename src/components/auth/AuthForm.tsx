@@ -15,12 +15,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { CustomTextField } from './CustomTextField';
 
+
 function Buttons({ mode }: { mode: AuthPage }) {
   const { t } = useTranslation();
   return (
     <>
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        {mode === OAuthPage.Register ? 'Sign Up' : 'Sign In'}
+        {mode === OAuthPage.Register ? t('auth.authForm.register') : t('auth.authForm.login')}
       </Button>
       <Grid container>
         <Grid item xs>

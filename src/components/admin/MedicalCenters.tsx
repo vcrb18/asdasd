@@ -5,9 +5,10 @@ import { useTimer } from 'react-timer-hook';
 import { isEmptyArray } from 'formik';
 
 import { removeClientToken, setClientToken } from '@/api/client';
+import GenericButton from '@/atoms/Button';
 import { useAuth } from '@/hooks/AuthContext';
 
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { MedicalCenter } from '@/utils/AdminViewInterfaces';
 
@@ -141,30 +142,11 @@ function MedicalCenters() {
         handleDeleteClick={handleDeleteClick}
       />
 
-      <Button
-        sx={{
-          backgroundColor: '#007088',
-          color: '#000000',
-          width: 'auto',
-          marginX: '10%',
-        }}
-        variant="contained"
-        onClick={handleModifyParameters}
-      >
-        <Typography color={'#ffffff'}>{t('modifyParams')}</Typography>
-      </Button>
-      <Button
-        sx={{
-          backgroundColor: '#007088',
-          color: '#000000',
-          width: 'auto',
-          marginX: '10%',
-        }}
-        variant="contained"
-        onClick={handleApplyButton}
-      >
-        <Typography color={'#ffffff'}>{activeTimer ? 'Desactivar IA' : 'Activar IA'}</Typography>
-      </Button>
+      <GenericButton label={t('admin.modifyParams')} onPress={handleModifyParameters} />
+      <GenericButton
+        label={activeTimer ? t('admin.deactivateAI') : t('admin.activateAI')}
+        onPress={handleApplyButton}
+      />
     </Grid>
   );
 }
