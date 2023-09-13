@@ -3,7 +3,7 @@ import React, { Dispatch, useEffect, useRef, useState } from "react";
 import PredictionBox from "../customComponents/PredictionBox";
 import AnalisisBox from "../customComponents/AnalisisBox";
 import DerivationsComponent from "../customComponents/DerivationsComponent";
-import Header, { TabProps } from "../customComponents/Header";
+import Header from "../customComponents/Header";
 import Footer from "../customComponents/Footer";
 import {
   getExam,
@@ -27,7 +27,7 @@ import { Patient } from "../../utils/ExamTableConst";
 interface ExamsViewProps {
   // examId: number ;
   buttons: Array<{ label: string; href: string }>;
-  tabs?: TabProps[];
+  tabs?: Array<{ label: string; href: string }>;
 }
 
 export interface ExamData {
@@ -208,6 +208,9 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [isLocked, setIsLocked] = useState<boolean>();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reloadTime, setReloadTime] = useState<number>();
+
+  // usestate token wsp
+  const [token, setToken] = useState<string>("");
 
   const viewRef = useRef<HTMLDivElement>(null);
 
@@ -413,9 +416,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
   const [open, setOpen] = React.useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
   const [fiducialChart, setFiducialChart] = React.useState(null);
-  const handleOpenModal = () => {
-    setOpen(true);
-  }
+  const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
   const style = {
@@ -848,7 +849,7 @@ const ExamsView: React.FC<ExamsViewProps> = ({
 
     >
       <ScreenshotModal examId={examId} fiducialStates={fiducialStates} examData={examData}
-         examMetadata={examMetadata} isLoadingExamData={isLoadingExamData} diagnosticStates={diagnosticStates} closeModal={handleCloseModal}/>
+         examMetadata={examMetadata} isLoadingExamData={isLoadingExamData} diagnosticStates={diagnosticStates} token={token} closeModal={handleCloseModal}/>
     </Modal>
     <div style={{width: "100%", bottom: 0, position: "relative"}}>
       <Footer

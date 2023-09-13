@@ -1,56 +1,42 @@
-import { Avatar, Box, Typography } from "@mui/material";
-import { t } from "i18next";
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import Check from "../../src/static/images/checkVerde.png"
-import X from "../../src/static/images/X.png"
-
-export const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return (
-    <Typography color={"#878787"} fontWeight={"bold"}>
-      {date.toLocaleString('es-CL',{timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone})}
-    </Typography>
-    )
-};
-
-export const getRemainingTimeColor = (colorNumber: number): "error" | "success" | "warning" => {
-  if (colorNumber === 1) {
-    return "success";
-  } else if (colorNumber === 2) {
-    return "warning";
+import { Order, ExamData } from "./ExamTableConst";
+export function descendingComparator<T>(a: T, b: T, orderBy: keyof T): number {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
   }
-  return "error";
-};
-
-export const colorSwitcher = (value: boolean): string => value ? "green" : "red";
-
-export const getStatus = (state: boolean) => (
-  <Typography
-    fontWeight={"bold"}
-    color={colorSwitcher(state)}
-    >
-      {state?  t("accepted") : t("rejected")}
-</Typography>
-);
-
-export const getUrgency = (urgency: number) => (
-  <Brightness1RoundedIcon color={getRemainingTimeColor(urgency)} />
-);
-   
-export const getChecks = (state: boolean) => (
-  <Box display="flex" justifyContent="center">
-    <Avatar src={state ? Check : X} alt={state ? "checkVerde" : "checkRojo"} variant="square" />
-  </Box>
-);
-
-export const parseTime = (time: string) => {
-  let timeParser = '';
-  let timeSplit = time.split(' ');
-  timeParser += t(timeSplit[1]);
-  if(timeParser.includes("X")){
-  timeParser = timeParser.replace("X", timeSplit[0]);
-  } else{
-    timeParser = timeSplit[0] + " " + timeParser;
-  } 
-  return timeParser
-}
+  
+export function getComparator<Key extends keyof any>(
+    order: Order,
+    orderBy: Key
+  ): (
+    a: { [key in Key]: number | string },
+    b: { [key in Key]: number | string }
+  ) => number {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+  
+  // Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
+  // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
+  // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
+  // with exampleArray.slice().sort(exampleComparator)
+export function stableSort<T>(
+    array: ExamData[],
+    comparator: (a: T, b: T) => number
+  ): any {
+    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+  

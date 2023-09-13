@@ -1,12 +1,102 @@
-import { createTheme, styled } from "@mui/material/styles";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { filterExamsByReviewed, filterExamsByScreenshot, filterExamsByStatus } from "./FiltersConst";
+
+export interface Column {
+  id: "folio"| "timeLeft" | "patient" | "date" | "state" | "urgency" | "review"| "results" | "medicalCenter";
+  label: string;
+  align?: "center" | "left" | "right";
+  minWidth?: string;
+  format?:
+    | ((value: number) => string)
+    | ((value: boolean) => string)
+    | ((value: string) => string);
+}
   
 export interface RowProps {
     row: ExamData;
     isMatch: boolean;
   }
   
+  
+  export const columns: readonly Column[] = [
+    { 
+      id: "folio",
+      label: "Folio",
+      align: "center" },
+    {
+      id: "medicalCenter",
+      label: "medicalCenter",
+      align: "center",
+    },
+    {
+      id: "patient",
+      label: "patient",
+      align: "center",
+    },
+    {
+      id: "date",
+      label: "date",
+      align: "center",
+      format: (value: string) => {
+        return value.replace("T", " ");
+      },
+  
+    },
+    {
+      id: "timeLeft",
+      label: "timeLeft",
+      align: "center",
+      format: (value: string) => {
+        return value.replace("T", " ");
+      },
+    },
+    {
+      id: "state",
+      label: "state",
+      align: "center",
+      format: (value: boolean) => {
+        const returnValue = value ? "Aceptado" : "Rechazado";
+        return returnValue;
+      },
+    },
+    {
+      id: "urgency",
+      label: "urgency",
+      align: "center",
+      format: (value: number) => {
+        const returnValue = value === 1 ? "Urgente" : "Normal";
+        return returnValue;
+      },
+    },
+    {
+      id: "review",
+      label: "review",
+      align: "center",
+    },
+    {
+      id: "results",
+      label: "results",
+      align: "center",
+    },
+  ];
+  
+export const mobileColumns: readonly Column[] =[
+    {
+      id: "results",
+      label: "results",
+      align: "center",
+    },
+    {
+      id: "urgency",
+      label: "urgency",
+      align: "center",
+    },
+    {
+      id: "timeLeft",
+      label: "timeLeft",
+      align: "center",
+    },
+  ]
+  
+
 export interface Patient {
   patientId: number,
   birth: string,
@@ -17,185 +107,50 @@ export interface Patient {
 }
 
 export interface ExamData {
-  examId: number;
-  patient: Patient;
-  createdAt: string;
-  deadline: string;
-  urgency: number;
-  remainingTime: string,
-  operatorReview: boolean;
-  results: string;
-  accepted: boolean;
-  operatorAccept: boolean | null;
-  locked: boolean | null;
-  lockedBy: string;
-  organizationLegalName: string;
-  screenshot: boolean;
-}
-
-export interface ExamTableProps {
-  applyFilter: boolean;
-  filterStateCondition: filterExamsByStatus;
-  filterReviewCondition: filterExamsByReviewed;
-  filterId: string; 
+    examId: number;
+    patient: Patient;
+    createdAt: string;
+    deadline: string;
+    urgency: number;
+    remainingTime: string,
+    operatorReview: boolean;
+    results: string;
+    accepted: boolean;
+    operatorAccept: boolean | null;
+    locked: boolean | null;
+    lockedBy: string;
+    organizationLegalName: string;
   }
+  
+export type Order = "asc" | "desc"
 
-export interface ExamTableGroupBProps {
-  applyFilter: boolean;
-  filterScreenshotCondition: filterExamsByScreenshot;
-  filterId: string; 
+export type filterStateTypes = {
+    rejected: boolean,
+    accepted: boolean,
+  }
+export type filterReviewTypes = {
+    reviewed: boolean,
+    notReviewed: boolean,
 }
+export type filter = {
+    review: filterReviewTypes,
+    state: filterStateTypes
+}
+export interface ExamTableProps {
+    filterStates: filterStateTypes;
+    filterReview: filterReviewTypes;
+    useStateFilter: boolean;
+    useReviewFilter: boolean;
+    useIdFilter: boolean;
+    filterId: string; 
+}
+export interface ExamHeadTableProps {
+    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+    order: Order;
+    orderBy: string | number | boolean;
+  }
 
 export interface ExamTableResponse {
   rows: [],
   count: number
 }
-
-export interface Header {
-  id: string;
-  label: string;
-}
-
-export interface ExamHeadTableProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-  order: Order;
-  orderBy: string | number | boolean;
-  columns: Header[];
-  mobileColumns: Header[];
-}
-
-export interface ExamsByFilterParams {
-  searchInt: string,
-  page: number,
-  order: number,
-  acceptedFilter: filterExamsByStatus,
-  reviewFilter: filterExamsByReviewed,
-  screenshotFilter: filterExamsByScreenshot,
-}
-
-export type Order = "asc" | "desc"
-
-export type FormInput = {
-  folioSearch: string;
-}
-
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#E4EDEF",
-    color: "#007088",
-    fontWeight: "bold",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#878787", 
-  },
-}));
-
-export const buttonsTheme = createTheme({
-	palette: {
-		primary: {
-			main: "#007088",
-		},
-	},
-});
-
-export const columns: Header[] = [
-  { 
-    id: "folio",
-    label: "Folio",
-  },
-  {
-    id: "medicalCenter",
-    label: "medicalCenter",
-  },
-  {
-    id: "patient",
-    label: "patient",
-  },
-  {
-    id: "date",
-    label: "date",
-  },
-  {
-    id: "timeLeft",
-    label: "timeLeft",
-  },
-  {
-    id: "state",
-    label: "state",
-  },
-  {
-    id: "urgency",
-    label: "urgency",
-  },
-  {
-    id: "review",
-    label: "review",
-  },
-  {
-    id: "results",
-    label: "results",
-  },
-];
-
-export const mobileColumns: Header[] =[
-  {
-    id: "results",
-    label: "results",
-  },
-  {
-    id: "urgency",
-    label: "urgency",
-  },
-  {
-    id: "timeLeft",
-    label: "timeLeft",
-  },
-]
-
-export const columnsGroupB: Header[] = [
-  { 
-    id: "folio",
-    label: "Folio",
-  },
-  {
-    id: "medicalCenter",
-    label: "medicalCenter",
-  },
-  {
-    id: "patient",
-    label: "patient",
-  },
-  {
-    id: "date",
-    label: "date",
-  },
-  {
-    id: "sentToDoctor",
-    label: "sentToDoctor",
-  },
-  {
-    id: "capture",
-    label: "capture",
-  },
-  {
-    id: "results",
-    label: "results",
-  },
-];
-
-export const mobileColumnsGroupB: Header[] = [
-  {
-    id: "results",
-    label: "results",
-  },
-  {
-    id: "capture",
-    label: "capture",
-  },
-  {
-    id: "sentToDoctor",
-    label: "sentToDoctor",
-  },
-]
