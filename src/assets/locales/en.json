@@ -42,8 +42,8 @@
       "forgotPassword": "Forgot password?",
       "registerText": "Don't have an account? Sign up",
       "loginText": "Already have an account? Sign in",
-      "login":"Sign in",
-      "register":"Sign up"
+      "login": "Sign in",
+      "register": "Sign up"
     }
   },
   "general": {

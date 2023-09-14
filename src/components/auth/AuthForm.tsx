@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
+import GenericButton from '@/atoms/Button';
 import { useAuth } from '@/hooks/AuthContext';
 
 import { Avatar, Box, Checkbox, FormControlLabel, Grid, Link, Stack, Typography } from '@mui/material';
@@ -14,7 +15,6 @@ import FullIsatecLogo from '@/assets/images/logo_isatec_completo.png';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { CustomTextField } from './CustomTextField';
-import GenericButton from '@/atoms/Button';
 
 function AuthForm({ mode }: { mode: AuthPage }) {
   const { signIn, signUp } = useAuth();
@@ -103,8 +103,8 @@ function AuthForm({ mode }: { mode: AuthPage }) {
                 {formik.status}
               </Typography>
             )}
-            <GenericButton 
-              label={mode === OAuthPage.Register ? t('auth.authForm.register') : t('auth.authForm.login')} 
+            <GenericButton
+              label={mode === OAuthPage.Register ? t('auth.authForm.register') : t('auth.authForm.login')}
               onPress={formik.handleSubmit}
               full
             />

@@ -42,8 +42,8 @@
       "forgotPassword": "He olvidado mi contraseña",
       "registerText": "¿No tienes una cuenta? Regístrate",
       "loginText": "¿Ya tienes una cuenta? Inicia sesión",
-      "login":"Iniciar Sesión",
-      "register":"Registrarse"
+      "login": "Iniciar Sesión",
+      "register": "Registrarse"
     }
   },
   "general": {
@@ -70,4 +70,3 @@
     "back": "Volver"
   }
 }
-
