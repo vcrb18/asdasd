@@ -5,7 +5,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { IDropdownProps } from '@/ts/interfaces/dropDownProps';
 
 export default function Dropdown(props: IDropdownProps) {
-  const { value, type, label } = props;
+  const { value, type, label, onChange } = props;
   const { t } = useTranslation('translation', { keyPrefix: `dropdownInfo.${type}s` });
 
   return (
@@ -17,7 +17,7 @@ export default function Dropdown(props: IDropdownProps) {
       getOptionLabel={(option) => t(type.concat(option.toString()))}
       value={value || null}
       onChange={(_, value) => {
-        console.log(value);
+        onChange(value);
       }}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label={label} />}

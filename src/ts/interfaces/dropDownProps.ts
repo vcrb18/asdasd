@@ -1,7 +1,7 @@
 import { VariantTypes } from '../types/generalStyleTypes';
 
 export interface IDropdownProps {
-  onChange?: (value: number | null) => void;
+  onChange: (value: number | null) => void;
   value?: number;
   label: string;
   id: string;
