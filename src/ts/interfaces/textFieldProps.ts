@@ -13,6 +13,7 @@ interface TextFieldParams {
   value: string;
   onChange: (event: ChangeEvent) => void;
   error?: boolean;
+  helperText?: any;
 }
 
 export type { TextFieldParams };
