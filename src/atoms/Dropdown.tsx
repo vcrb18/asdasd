@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next';
+
 import { Autocomplete, TextField } from '@mui/material';
+
 import { IDropdownProps } from '@/ts/interfaces/dropDownProps';
 
 export default function Dropdown(props: IDropdownProps) {
@@ -14,8 +16,10 @@ export default function Dropdown(props: IDropdownProps) {
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={(option) => t(type.concat(option.toString()))}
       value={value || null}
-      onChange={(_, value)=> {console.log(value)}}
-      sx={{width: 300}}
+      onChange={(_, value) => {
+        console.log(value);
+      }}
+      sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label={label} />}
     />
   );

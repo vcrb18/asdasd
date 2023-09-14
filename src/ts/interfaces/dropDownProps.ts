@@ -1,4 +1,4 @@
-import { VariantTypes } from "../types/generalStyleTypes";
+import { VariantTypes } from '../types/generalStyleTypes';
 
 export interface IDropdownProps {
   onChange?: (value: number | null) => void;
