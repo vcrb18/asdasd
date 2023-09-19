@@ -68,6 +68,7 @@ function ExamTable({
       acceptedFilter: filterStateCondition,
       reviewFilter: filterReviewCondition,
       screenshotFilter: "both",
+      reportFilter: "both",
     }
     getExamsByFilter(examsByFilterParams).then((response) => {
       setMaxRows(response.data.count);
