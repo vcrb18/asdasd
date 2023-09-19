@@ -1,6 +1,6 @@
 import { createTheme, styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import { filterExamsByReviewed, filterExamsByScreenshot, filterExamsByStatus } from "./FiltersConst";
+import { filterExamsByReviewed, filterExamsByScreenshot, filterExamsByStatus, filterExamsByReported } from "./FiltersConst";
   
 export interface RowProps {
     row: ExamData;
@@ -71,6 +71,7 @@ export interface ExamsByFilterParams {
   acceptedFilter: filterExamsByStatus,
   reviewFilter: filterExamsByReviewed,
   screenshotFilter: filterExamsByScreenshot,
+  reportFilter: filterExamsByReported,
 }
 
 export type Order = "asc" | "desc"

@@ -12,6 +12,11 @@ export type filterExamsByScreenshot =
   | "withoutScreenshot"
   | "both";
 
+export type filterExamsByReported = 
+| "reported"
+| "toReport"
+| "both";
+
 export interface FilterComponentProps {
   conditionValue: filterOption;
   label: string;
