@@ -72,10 +72,16 @@ function NavButtons() {
               backgroundColor: '#007088',
               color: '#fff',
               display: { xs: 'none', sm: 'flex' },
+              fontSize: {
+                xs: '0.7rem',
+                md: '0.8rem',
+                lg: '0.9rem',
+                xl: '1rem',
+              },
             }}
           >
-            <MenuItem value="es"> Spanish </MenuItem>
-            <MenuItem value="en"> English </MenuItem>
+            <MenuItem value="es"> {t('languages.spanish')} </MenuItem>
+            <MenuItem value="en"> {t('languages.english')} </MenuItem>
           </Select>
         </Stack>
       ) : null}

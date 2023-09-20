@@ -53,5 +53,9 @@
     "logout": "Cerrar Sesión",
     "mainMenu": "Menú Principal",
     "index": "Inicio"
+  },
+  "languages": {
+    "english": "Inglés",
+    "spanish": "Español"
   }
 }

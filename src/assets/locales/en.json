@@ -53,5 +53,9 @@
     "logout": "Logout",
     "mainMenu": "Main Menu",
     "index": "Home"
+  },
+  "languages": {
+    "english": "English",
+    "spanish": "Spanish"
   }
 }

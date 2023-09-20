@@ -4,27 +4,28 @@ import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/AuthContext';
 
-import { IconButton, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { IconButton, Menu, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
 function ResponsiveMenu() {
   const navigate: NavigateFunction = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const { user, signOut } = useAuth();
   const location = useLocation();
 
   const currentViewIsMainMenu = location.pathname === '/mainMenu';
   const currentViewIsLogin = location.pathname === '/';
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    setMenuAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setMenuAnchorEl(null);
   };
 
   function handleLogOut() {
@@ -50,7 +51,7 @@ function ResponsiveMenu() {
         <MenuIcon sx={{ marginLeft: 'auto', color: '#000' }} />
       </IconButton>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+      <Menu anchorEl={menuAnchorEl} open={Boolean(menuAnchorEl)} onClose={handleMenuClose}>
         <Stack direction="column">
           {user.isAuthenticated() ? (
             <Stack direction="column">
@@ -89,6 +90,20 @@ function ResponsiveMenu() {
               <Typography color="primary">{t('general.login')}</Typography>
             </MenuItem>
           )}
+          <Select
+            value={language}
+            onChange={(event: SelectChangeEvent) => i18n.changeLanguage(event.target.value)}
+            sx={{
+              boxShadow: 0,
+            }}
+          >
+            <MenuItem value="es">
+              <Typography color="primary">{t('languages.spanish')}</Typography>
+            </MenuItem>
+            <MenuItem value="en">
+              <Typography color="primary">{t('languages.english')}</Typography>
+            </MenuItem>
+          </Select>
         </Stack>
       </Menu>
     </>
