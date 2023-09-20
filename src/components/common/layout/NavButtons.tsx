@@ -11,7 +11,7 @@ import { OSessionState } from '@/ts/types/sessionTypes';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
+function NavButtons({ setOpenDrawer, openDrawer }: AppBarButtons) {
   const navigate: NavigateFunction = useNavigate();
   const { t, i18n } = useTranslation();
   const language = i18n.language;
@@ -74,4 +74,4 @@ function Buttons({ setOpenDrawer, openDrawer }: AppBarButtons) {
   );
 }
 
-export default Buttons;
+export default NavButtons;
