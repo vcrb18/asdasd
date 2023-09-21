@@ -129,18 +129,18 @@ const themeSettings = (mode: 'light' | 'dark'): ThemeOptions => {
       },
       h2: {
         color: colors.primary[500],
-        textAlign: 'center'
+        textAlign: 'center',
       },
       h4: {
-        color: colors.greys[100]
+        color: colors.greys[100],
       },
       h5: {
         color: colors.greys[700],
-        textAlign: 'justify'
+        textAlign: 'justify',
       },
       h6: {
-        color: colors.greys[100]
-      }
+        color: colors.greys[100],
+      },
     },
   };
 };
