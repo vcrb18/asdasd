@@ -2,11 +2,11 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { removeClientToken, setClientToken } from '@/api/client';
+import GenericButton from '@/atoms/Button';
 import { useAuth } from '@/hooks/AuthContext';
 
 import {
   Autocomplete,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -94,20 +94,12 @@ function MedicalCenterSearch({ onNewMedicalCenter, handleMedicalCentersToAdd }: 
       </Grid>
 
       <Grid item lg={6} md={6} sm={6} xs={6} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-        <Button
-          sx={{
-            backgroundColor: '#007088',
-            color: '#000000',
-            width: 'auto',
-          }}
-          variant="contained"
-          onClick={() => {
+        <GenericButton
+          label={t('admin.selectAll')}
+          onPress={() => {
             setOpenDialog(true);
           }}
-          fullWidth
-        >
-          <Typography color={'#ffffff'}>{t('selectAll')}</Typography>
-        </Button>
+        />
       </Grid>
       <Dialog fullWidth={true} maxWidth={'sm'} open={openDialog} onClose={handleCloseMedicalCenter}>
         <DialogTitle display={'flex'} justifyContent={'center'} alignItems={'center'}>
@@ -134,30 +126,8 @@ function MedicalCenterSearch({ onNewMedicalCenter, handleMedicalCentersToAdd }: 
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button
-            sx={{
-              backgroundColor: '#007088',
-              color: '#000000',
-              width: 'auto',
-            }}
-            variant="contained"
-            onClick={handleCloseMedicalCenter}
-            fullWidth
-          >
-            <Typography color={'#ffffff'}>{t('cancel')}</Typography>
-          </Button>
-          <Button
-            sx={{
-              backgroundColor: '#007088',
-              color: '#000000',
-              width: 'auto',
-            }}
-            variant="contained"
-            onClick={handleActiveAllMedicalCenters}
-            fullWidth
-          >
-            <Typography color={'#ffffff'}>{t('submit')}</Typography>
-          </Button>
+          <GenericButton label={t('general.cancel')} onPress={handleCloseMedicalCenter} />
+          <GenericButton label={t('general.submit')} onPress={handleActiveAllMedicalCenters} />
         </DialogActions>
       </Dialog>
     </Grid>

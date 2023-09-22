@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 import { removeClientToken, setClientToken } from '@/api/client';
+import GenericButton from '@/atoms/Button';
 import { useAuth } from '@/hooks/AuthContext';
 
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 
 import { postExamIdAI } from '../../api/users.service';
 import AdminBox from './AdminBox';
@@ -68,18 +69,7 @@ function IdAIApplication() {
           borderRadius={4}
           width={'80%'}
         >
-          <Button
-            sx={{
-              backgroundColor: '#007088',
-              color: '#000000',
-              width: 'auto',
-            }}
-            variant="contained"
-            onClick={handleIdSubmit}
-            fullWidth
-          >
-            <Typography color={'#ffffff'}>{t('apply')}</Typography>
-          </Button>
+          <GenericButton label={t('admin.apply')} onPress={handleIdSubmit} />
         </Grid>
       </Grid>
     </Grid>

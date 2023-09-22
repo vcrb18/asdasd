@@ -16,7 +16,7 @@ function AdminView() {
         justifyContent={'center'}
         sx={{ color: '#6fb6c1', fontSize: '4rem', fontWeight: 'bold' }}
       >
-        {t('admin')}
+        {t('admin.adminTitle')}
       </Typography>
 
       <Box sx={AdminViewBoxStyle}>
