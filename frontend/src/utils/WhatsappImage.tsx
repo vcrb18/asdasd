@@ -9,9 +9,9 @@ export function ImageToBlobParser(image: HTMLCanvasElement) {
     return new Blob([intArray], { type: 'image/png' });
 }
 
-export const createFormData = (imageBlob: Blob, fileName: string, doctorId: string) => {
+export const createFormData = (imageBlob: Blob, fileName: string, doctorId: number | null) => {
     const formData = new FormData();
-    formData.append('doctorId', doctorId);
+    formData.append('doctorId', `${doctorId}`);
     formData.append('fileName', fileName);
     formData.append('imageBlob', imageBlob);
     return formData;

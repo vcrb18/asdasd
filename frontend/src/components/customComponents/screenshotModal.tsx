@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Box, Button, Stack, Typography, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { Grid } from "@mui/material";
@@ -8,6 +7,12 @@ import html2canvas from "html2canvas";
 import { ImageToBlobParser, createFormData } from "../../utils/WhatsappImage";
 import { sendImageToDoctor } from "../../service/user.service";
 
+
+interface DoctorProps {
+  id: number,
+  firstName: string,
+  lastName: string
+}
 
 export default function ScreenshotModal({ examId, fiducialStates, examData, examMetadata, isLoadingExamData, diagnosticStates, closeModal }: any) {
 
@@ -26,19 +31,31 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
     p: 2,
   };
 
-  const doctors = [
-    "Dr. Uno",
-    "Dra. Dos",
-    "Dr. Tres",
+  const doctors: DoctorProps[] = [
+    {
+      "id": 2,
+      "firstName": "Erling",
+      "lastName": "Haaland"
+    },
+    {
+      "id": 6,
+      "firstName": "Pedro",
+      "lastName": "Torres"
+    },
+    {
+      "id": 7,
+      "firstName": "Rene",
+      "lastName": "Guerrero"
+    }
   ];
 
-  const [selectedDoctor, setSelectedDoctor] = useState('');
+  const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null);
   const { t } = useTranslation();
 
   const [whatsappMessageStatus, setWhatsappMessageStatus] = useState("");
 
-  const handleSelectedDoctorChange = (event: SelectChangeEvent) => {
-    setSelectedDoctor(event.target.value as string);
+  const handleSelectedDoctorChange = (event: SelectChangeEvent<number | null>) => {
+    setSelectedDoctorId(event.target.value as number);
   };
 
   const handleSendScreenshot = async () => {
@@ -47,10 +64,10 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
       const capture = await html2canvas(element);
       const imageBlob = ImageToBlobParser(capture);
       const fileName = `exam_${examId}.png`;
-      const formData = createFormData(imageBlob, fileName, "doctorId");
+      const formData = createFormData(imageBlob, fileName, selectedDoctorId);
       try {
         await sendImageToDoctor(formData);
-        setWhatsappMessageStatus(`Screenshot sent to ${selectedDoctor}`);
+        setWhatsappMessageStatus(`Screenshot sent to the Doctor`);
       }
       catch {
         setWhatsappMessageStatus(`Screenshot wasn't able to be sent`);
@@ -107,15 +124,15 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
           <FormControl sx={{ m: 3, minWidth: 100, width: '16ch' }}>
             <InputLabel>{t("selectDoctor")}</InputLabel>
             <Select
-              value={selectedDoctor}
+              value={selectedDoctorId}
               onChange={handleSelectedDoctorChange}
             >
-              {doctors.map((name) => (
+              {doctors.map((doctor) => (
                 <MenuItem
-                  key={name}
-                  value={name}
+                  key={doctor.id}
+                  value={doctor.id}
                 >
-                  {name}
+                  {doctor.firstName} {doctor.lastName}
                 </MenuItem>
               ))}
             </Select>
@@ -127,7 +144,7 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
               color: "#fff",
               minWidth: 100,
             }}
-            disabled={!selectedDoctor}
+            disabled={selectedDoctorId == null}
             onClick={handleSendScreenshot}>
             <Typography fontStyle={"bold"} color={"#ffffff"}>
               {t("sendToDoctor")}
