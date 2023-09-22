@@ -1,11 +1,11 @@
 import { Box, Button, Stack, Typography, SelectChangeEvent, Select, FormControl, InputLabel, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ScreenshotComponent from "./ScreenshotComponent";
 import html2canvas from "html2canvas";
 import { ImageToBlobParser, createFormData } from "../../utils/WhatsappImage";
-import { sendImageToDoctor } from "../../service/user.service";
+import { getDoctorIDs, sendImageToDoctor } from "../../service/user.service";
 
 
 interface DoctorProps {
@@ -15,6 +15,8 @@ interface DoctorProps {
 }
 
 export default function ScreenshotModal({ examId, fiducialStates, examData, examMetadata, isLoadingExamData, diagnosticStates, closeModal }: any) {
+
+  const { t } = useTranslation();
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -31,36 +33,17 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
     p: 2,
   };
 
-  const doctors: DoctorProps[] = [
-    {
-      "id": 2,
-      "firstName": "Erling",
-      "lastName": "Haaland"
-    },
-    {
-      "id": 6,
-      "firstName": "Pedro",
-      "lastName": "Torres"
-    },
-    {
-      "id": 7,
-      "firstName": "Rene",
-      "lastName": "Guerrero"
-    }
-  ];
-
-  const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null);
-  const { t } = useTranslation();
-
+  const [doctors, setDoctors] = useState<DoctorProps[]>([]);
+  const [selectedDoctorId, setSelectedDoctorId] = useState<number>();
   const [whatsappMessageStatus, setWhatsappMessageStatus] = useState("");
 
-  const handleSelectedDoctorChange = (event: SelectChangeEvent<number | null>) => {
+  const handleSelectedDoctorChange = (event: SelectChangeEvent<number>) => {
     setSelectedDoctorId(event.target.value as number);
   };
 
   const handleSendScreenshot = async () => {
     const element = document.getElementById('capture');
-    if (element) {
+    if (element && selectedDoctorId) {
       const capture = await html2canvas(element);
       const imageBlob = ImageToBlobParser(capture);
       const fileName = `exam_${examId}.png`;
@@ -86,6 +69,20 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
       link.click();
     }
   };
+
+  useEffect(() => {
+    async function fetchData () {
+      try {
+        const response = await getDoctorIDs();
+        setDoctors(response.data);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <Box sx={style}>
@@ -127,14 +124,20 @@ export default function ScreenshotModal({ examId, fiducialStates, examData, exam
               value={selectedDoctorId}
               onChange={handleSelectedDoctorChange}
             >
-              {doctors.map((doctor) => (
-                <MenuItem
-                  key={doctor.id}
-                  value={doctor.id}
-                >
-                  {doctor.firstName} {doctor.lastName}
+              {doctors.length === 0 ? (
+                <MenuItem>
+                  {t("dataUnavailable")}
                 </MenuItem>
-              ))}
+                ) : (
+                doctors.map((doctor) => (
+                  <MenuItem
+                    key={doctor.id}
+                    value={doctor.id}
+                  >
+                    {doctor.firstName} {doctor.lastName}
+                  </MenuItem>
+              )))
+              }
             </Select>
           </FormControl>
           <Button

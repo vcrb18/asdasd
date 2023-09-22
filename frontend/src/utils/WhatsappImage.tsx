@@ -9,7 +9,7 @@ export function ImageToBlobParser(image: HTMLCanvasElement) {
     return new Blob([intArray], { type: 'image/png' });
 }
 
-export const createFormData = (imageBlob: Blob, fileName: string, doctorId: number | null) => {
+export const createFormData = (imageBlob: Blob, fileName: string, doctorId: number) => {
     const formData = new FormData();
     formData.append('doctorId', `${doctorId}`);
     formData.append('fileName', fileName);

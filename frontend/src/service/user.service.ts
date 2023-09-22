@@ -296,3 +296,7 @@ export const sendImageToDoctor = async (formData: FormData): Promise<AxiosRespon
     }
   });
 }
+
+export const getDoctorIDs = async (): Promise<AxiosResponse> => {
+  return await axios.get(`/users/doctors`, { withCredentials: true });
+}

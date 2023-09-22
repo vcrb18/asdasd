@@ -315,6 +315,7 @@ const resources = {
       cleanCenters: "Clean centers",
       acceptanceLevel: "Acceptance level",
       changeParametersMessage: "Parameters changed successfully",
+      dataUnavailable: "Data unavailable",
     },
   },
   es: {
@@ -629,6 +630,7 @@ const resources = {
       cleanCenters: "Limpiar centros",
       acceptanceLevel: "Nivel de aceptación",
       changeParametersMessage: "Parámetros cambiados con éxito",
+      dataUnavailable: "Datos no disponibles",
     },
   },
 };
