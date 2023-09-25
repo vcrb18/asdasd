@@ -31,6 +31,7 @@ export interface ExamData {
   lockedBy: string;
   organizationLegalName: string;
   screenshot: boolean;
+  statusId: number | null;
 }
 
 export interface ExamTableProps {
