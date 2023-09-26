@@ -3,9 +3,18 @@ import { TextField } from '@mui/material';
 import { getStyle } from '@/utils/styleAuxFunctions';
 
 import { IInputFieldProps } from '@/ts/interfaces/InputFieldProps';
+import { useTranslation } from 'react-i18next';
 
 export default function InputField(props: IInputFieldProps) {
-  const { styles } = props;
+  const { t } = useTranslation();
+  const { styles, label, helperText, ...rest } = props;
   const params = getStyle(styles);
-  return <TextField {...props} {...params} />;
+  return(
+    <TextField 
+      label={t(label)}
+      helperText={t(helperText? helperText : "")}
+      {...rest} 
+      {...params} 
+    />
+  ); 
 }
