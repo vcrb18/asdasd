@@ -57,7 +57,8 @@
   "error": {
     "invalidEmail": "Correo electrónico inválido",
     "emailRequired": "Debe ingresar un correo electrónico",
-    "passwordRequired": "Debe ingresar su contraseña"
+    "passwordRequired": "Debe ingresar su contraseña",
+    "onlyNumber": "Sólo puede ingresar números"
   },
   "dropdownInfo": {
     "diagnostics": {

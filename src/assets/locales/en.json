@@ -57,7 +57,8 @@
   "error": {
     "invalidEmail": "Invalid email address",
     "emailRequired": "Email is required",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "onlyNumber": "Only numbers are allowed"
   },
   "dropdownInfo": {
     "diagnostics": {
